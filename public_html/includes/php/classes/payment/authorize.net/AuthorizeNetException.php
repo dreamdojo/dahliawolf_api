@@ -1,0 +1,5 @@
+<?
+class AuthorizeNetException extends Exception
+{
+}
+?>

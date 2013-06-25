@@ -1,0 +1,1320 @@
+DATE: 2013-03-09 19:09:02
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&state=32e0d29c8048663ab108ce667cb378b8&code=AQAu2BYPRbN03pC3ssYTkn7hg3E1_1o3VAbiPEWSMk1Ha39SSnHZgj6A4QNtG_17hWqaBw8S95nqJgyesA7PhIc7UnnltzWuyH3fooP6l5KRhL-0SzerGLWz5ot4ZB8QcC68vMww4pVs9azm11L7HQG6_kDzMcoQxCBTQ1CbSuYgHEgEJpZxX14wR9_b56iwlRwvFBVip6LsMvQvNBk2jhpP
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Array
+(
+    [0] => Unable to save row to "user". Duplicate entry 'solomon@zyonnetworks.com' for key 'email'.
+)
+
+
+DATE: 2013-03-09 19:09:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&state=32e0d29c8048663ab108ce667cb378b8&code=AQAu2BYPRbN03pC3ssYTkn7hg3E1_1o3VAbiPEWSMk1Ha39SSnHZgj6A4QNtG_17hWqaBw8S95nqJgyesA7PhIc7UnnltzWuyH3fooP6l5KRhL-0SzerGLWz5ot4ZB8QcC68vMww4pVs9azm11L7HQG6_kDzMcoQxCBTQ1CbSuYgHEgEJpZxX14wR9_b56iwlRwvFBVip6LsMvQvNBk2jhpP
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-03-09 19:09:48
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&state=32e0d29c8048663ab108ce667cb378b8&code=AQAu2BYPRbN03pC3ssYTkn7hg3E1_1o3VAbiPEWSMk1Ha39SSnHZgj6A4QNtG_17hWqaBw8S95nqJgyesA7PhIc7UnnltzWuyH3fooP6l5KRhL-0SzerGLWz5ot4ZB8QcC68vMww4pVs9azm11L7HQG6_kDzMcoQxCBTQ1CbSuYgHEgEJpZxX14wR9_b56iwlRwvFBVip6LsMvQvNBk2jhpP
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-03-09 19:09:59
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout=true
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-03-09 19:10:16
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-03-09 19:10:58
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&state=6e7604dd71acb3dea6ac00cb727f91f2&code=AQDUSXfRph_3LocSL4PGTyT4ncERXu30xOoL6Zk08dWFXkJaPVcWK64QS7LCdsj49dZGypHfYW_n9l3lUvgdBwiNFuMf822RKspq1F6Fq7Vdv1fo6gg1BmEht6jOR1S-J5pDy7MSR4Db73B26Sk9vfwWckTiZeoEyveIK2eRbAy5dDN5ZlpoyEpFtdD3rSo5FigzwWkNW36rQw6YpvqmMb8i
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-03-09 19:14:18
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&state=6e7604dd71acb3dea6ac00cb727f91f2&code=AQDUSXfRph_3LocSL4PGTyT4ncERXu30xOoL6Zk08dWFXkJaPVcWK64QS7LCdsj49dZGypHfYW_n9l3lUvgdBwiNFuMf822RKspq1F6Fq7Vdv1fo6gg1BmEht6jOR1S-J5pDy7MSR4Db73B26Sk9vfwWckTiZeoEyveIK2eRbAy5dDN5ZlpoyEpFtdD3rSo5FigzwWkNW36rQw6YpvqmMb8i
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-03-09 19:15:02
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&state=6e7604dd71acb3dea6ac00cb727f91f2&code=AQDUSXfRph_3LocSL4PGTyT4ncERXu30xOoL6Zk08dWFXkJaPVcWK64QS7LCdsj49dZGypHfYW_n9l3lUvgdBwiNFuMf822RKspq1F6Fq7Vdv1fo6gg1BmEht6jOR1S-J5pDy7MSR4Db73B26Sk9vfwWckTiZeoEyveIK2eRbAy5dDN5ZlpoyEpFtdD3rSo5FigzwWkNW36rQw6YpvqmMb8i
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-03-11 12:33:30
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Unable to load Social_Network_Controller
+
+DATE: 2013-03-11 12:33:32
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Unable to load db
+
+DATE: 2013-03-11 13:00:54
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Unable to load Social_Network_Controller
+
+DATE: 2013-03-11 20:35:38
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=instagram
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Hybriauth config does not exist on the given path.
+
+DATE: 2013-03-11 20:35:42
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=instagram
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: Hybriauth config does not exist on the given path.
+
+DATE: 2013-03-11 21:30:41
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=instagram
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: User profile request failed! Instagram returned an error: exception 'Exception' with message 'The Authorization Service has return: ' in /var/www/api.dahliawolf.com/public_html/lib/php/instagram/oauth/Hybrid/thirdparty/OAuth/OAuth2Client.php:82
+Stack trace:
+#0 /var/www/api.dahliawolf.com/public_html/lib/php/instagram/oauth/Hybrid/Provider_Model_OAuth2.php(114): OAuth2Client->authenticate('f07c7207b1fc486...')
+#1 /var/www/api.dahliawolf.com/public_html/lib/php/instagram/oauth/Hybrid/Endpoint.php(175): Hybrid_Provider_Model_OAuth2->loginFinish()
+#2 /var/www/api.dahliawolf.com/public_html/lib/php/instagram/oauth/Hybrid/Endpoint.php(56): Hybrid_Endpoint::processAuthDone()
+#3 /var/www/api.dahliawolf.com/public_html/lib/php/instagram/oauth/index.php(15): Hybrid_Endpoint::process()
+#4 {main}
+
+DATE: 2013-03-21 15:05:41
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fdev.dahliawolf.com&state=0b255fa39dd44b9817f2e7e9e2e79346&code=AQAudd4p-RF8TAIFE_kcK8t0MNSSE6cL2jKFGAMmrEhRLfGSaN9HpV7CkKejYYWX4oq3O8Bp08nyAKlSO0xJNI6A1aKu3JLowe4K0IzunW8zcZfGfecELE95osd6Gagr9P5Lp06hHP6Yr7XQW-4kt8vOlkpA9KL7pJJg2GxJCtn27qRDpuqf3lKY2IIC7U6nHmB92MP1z9aGue0D7dW9qjjS
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [input_validation] => Array
+        (
+            [api_website_id] => Array
+                (
+                    [label] => API Website ID
+                    [errors] => Array
+                        (
+                            [0] => is required
+                        )
+
+                )
+
+        )
+
+)
+
+
+DATE: 2013-03-21 15:36:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/social-login.php&logout_redirect_url=http://dev.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [input_validation] => Array
+        (
+            [api_website_id] => Array
+                (
+                    [label] => API Website ID
+                    [errors] => Array
+                        (
+                            [0] => is required
+                        )
+
+                )
+
+        )
+
+)
+
+
+DATE: 2013-03-23 20:48:41
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Linux; U; Android 4.0.4; en-; SAMSUNG-SGH-I727 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-23 20:56:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8H7 Safari/6533.18.5
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-23 20:57:26
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8H7 Safari/6533.18.5
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-23 20:57:48
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8H7 Safari/6533.18.5
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-23 21:31:53
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/social-login.php&logout_redirect_url=http://dev.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-23 23:00:32
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/social-login.php&logout_redirect_url=http://dev.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-24 00:49:15
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/social-login.php&logout_redirect_url=http://dev.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPad; CPU OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-24 09:36:42
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Linux; U; Android 4.0.4; en-; SAMSUNG-SGH-I727 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-24 12:21:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/social-login.php&logout_redirect_url=http://dev.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-24 13:23:20
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Linux; U; Android 4.0.4; en-; SAMSUNG-SGH-I727 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
+MESSAGE: Array
+(
+    [0] => Invalid API website ID.
+)
+
+
+DATE: 2013-03-28 17:56:28
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fdev.dahliawolf.com%2Fmobile&state=8821f23374ef0b714f31cc2d761dabf4&code=AQDoJiNhIGE3xLNVC5CHCH7WkvEbiskk3P0g4tf7WDCpZ4-FguWhZKO1YYb8_KLVR-RkzmFGtAb69fm-1vOFZhLHapgueGP-MQJQ8d29E8RZ0PCz2BpAFx_unmeE-kAV2Tm4P5rEGgRi54lddn5_937IhgtkIW41gnmhJEtWIfHem3EWOUBN_wJGQepATfx2uRSBuunOJsfQTi6Qd3b_63b1
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-28 17:56:38
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fdev.dahliawolf.com%2Fmobile&state=8821f23374ef0b714f31cc2d761dabf4&code=AQDnq9wnWv53v_7hWYbu2pooZ7i37uZCzZxLaIsewLEvGBWRn7hEXyJx6BY8avkogKRJUwej-X4uR0Sz_ZW4qFSBZiKeN-EaCizoetNc5ubKzQk3shByzrEhanjEwgItMLOhGJx41KCHv8uAGyFMFSTLLBn5-eeXzcNfnx2d00T7GwYAlzm8XplABMOk3eBfQqQtcM7kMWIWmEsY9ZAWRX7G
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-28 17:57:20
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-28 17:57:54
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-28 18:06:28
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fdev.dahliawolf.com%2Fmobile&state=453ef7367a571a779bdf45485be5bb3f&code=AQBP2aYR1KYfH3KnSJhrZl095ZzRMknKWAZjcYMcg7IZGxpyyJRtBIN9yeekr2RucldFNYJXudjN0wjRhdR6t_n-3o1_Ry3kNeOK9pAsw-6xdZy-ShE0HRCOuDOZhFvTDYilRBy9rQjEtR6Kh_uuDdws6EjQoVm3qLpzUYcps3Or5k0vbKWpPDQiIOkXX30WkgJ6ZW4isq0l-SM9og35aqX4
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 5_0_1 like Mac OS X; en-us) AppleWebKit/534.46 (KHTML, like Gecko) CriOS/23.0.1271.96 Mobile/9A405 Safari/7534.48.3
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-28 18:06:37
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fdev.dahliawolf.com%2Fmobile&state=453ef7367a571a779bdf45485be5bb3f&code=AQBP2aYR1KYfH3KnSJhrZl095ZzRMknKWAZjcYMcg7IZGxpyyJRtBIN9yeekr2RucldFNYJXudjN0wjRhdR6t_n-3o1_Ry3kNeOK9pAsw-6xdZy-ShE0HRCOuDOZhFvTDYilRBy9rQjEtR6Kh_uuDdws6EjQoVm3qLpzUYcps3Or5k0vbKWpPDQiIOkXX30WkgJ6ZW4isq0l-SM9og35aqX4
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 5_0_1 like Mac OS X; en-us) AppleWebKit/534.46 (KHTML, like Gecko) CriOS/23.0.1271.96 Mobile/9A405 Safari/7534.48.3
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-28 18:08:55
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fdev.dahliawolf.com%2Fmobile&state=453ef7367a571a779bdf45485be5bb3f&code=AQBP2aYR1KYfH3KnSJhrZl095ZzRMknKWAZjcYMcg7IZGxpyyJRtBIN9yeekr2RucldFNYJXudjN0wjRhdR6t_n-3o1_Ry3kNeOK9pAsw-6xdZy-ShE0HRCOuDOZhFvTDYilRBy9rQjEtR6Kh_uuDdws6EjQoVm3qLpzUYcps3Or5k0vbKWpPDQiIOkXX30WkgJ6ZW4isq0l-SM9og35aqX4
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 5_0_1 like Mac OS X; en-us) AppleWebKit/534.46 (KHTML, like Gecko) CriOS/23.0.1271.96 Mobile/9A405 Safari/7534.48.3
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 10:48:15
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=770b5046d3ff81656187a206bc1f8750&code=AQA_y3LKNaW_n2IaGQLGn6L_nvoC42Na6D88V0WacB4Cy71yh-EHw2c-gt7VVtoVR67Rge1u601i84d0sptOFNOMxTq9aW3swdLSuxjXZjmiWHj5YUHgmdj8Boz91C2CLkFVbp8YPqnICmeNwQXr8YD9akUJ7e3SEKGmHLmTsR5hmRbJCRA8CenPgZdjD_fftqklja3iYqYFrUCT8Mq3es8E
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:8.0.1) Gecko/20100101 Firefox/8.0.1
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 10:48:15
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:8.0.1) Gecko/20100101 Firefox/8.0.1
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 10:48:23
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:8.0.1) Gecko/20100101 Firefox/8.0.1
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 10:50:05
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=3f44085849b18aaecc8b83388a121828&code=AQDkqw7jG42jtxBX-vjOLmSRzkL9vFHL06oN8lzjWXHd2bRP66Vahs_m2_ktAkRh2BYbPwXU2rx-G7pqNX0S8ilRChyArIQq76NlZIJ6ci4l9j31eAcLWxjnyZIl4peRbq0AYZA7tVcm1udLDj6L2t-HDk8Jk68uOV9wscLxA1yzIEkKKu6iWIEZYaA_RfCAF4YIWNar1tuqcFME2W06ZVUq
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.77 Safari/535.7
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 10:52:16
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=6d2484e174b2175e89585d0525319d0e&code=AQBsQ4ICvf1cUmKJuI9Ekf06zwtHGGAtcQrob-mB3QAAWkq8RssmjwO8pX2_pnIm2vW-a-rQbu8wLZCxGeLqtUA82bK01VGqTPPwh1mR142QagTSGu_8T0zm0lk8maZwNPRG4AwGX771_PHjucg_rFgxVNVEFAkcfXr75eX51c-xv2Hb2z4q7E26x_VYFWSBqSYkZXMQBh_8b1NNRoH4pyvo
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 11:12:10
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 11:32:45
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 11:43:10
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=eab87e59a8e15f6cb122a50645c85717&code=AQA9fpiCCKlv_9Blpvh6xR5ZG4n8Zg08JYhFAKvweU9y88LgSHlzJGB2pCG51mX3bLNwXjk1zBIk7nGcRGg4usU2HT4o5P551HBnUQwxiK0yMggZnORk0qE-aJW8JRC0h3XrDwcv64sRFPDS02o5lSw83uvjdXoRrZ3xXK5lZc0yGs4DG1nUN8mSx5YSMFf5AsmLFO19FhoZriKUALZN86vx
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 11:43:14
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=eab87e59a8e15f6cb122a50645c85717&code=AQA9fpiCCKlv_9Blpvh6xR5ZG4n8Zg08JYhFAKvweU9y88LgSHlzJGB2pCG51mX3bLNwXjk1zBIk7nGcRGg4usU2HT4o5P551HBnUQwxiK0yMggZnORk0qE-aJW8JRC0h3XrDwcv64sRFPDS02o5lSw83uvjdXoRrZ3xXK5lZc0yGs4DG1nUN8mSx5YSMFf5AsmLFO19FhoZriKUALZN86vx
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 11:48:32
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 11:48:35
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 11:51:43
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 17:52:46
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fdev.dahliawolf.com%2Fmobile&state=9429b9bba429f1d30c8ce10e27d0200a&code=AQBeVacayDZetYCVtz-KhwB7H45YXAfUrxjS7PTWn3_jqnalaUzvOCPaCzBEUuMn-m7p9yBZKwi4D0kDk-pLRxEgjy289V5WBoytJCVhfdGRVlrKTV5laN8xH4TUiUozBaR8-QHIDtzQck_blyqJsltDyTic5jwS2iau8TFcSNulXzqO_DmipXF6h1iK7caa0oiicXN9iN6vErSmL9MCbn4Z
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 18:05:46
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 18:06:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 18:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 18:06:26
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-29 18:32:16
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-30 06:14:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fdev.dahliawolf.com%2Fmobile&state=72824a48d6e4ee3e4010e20990642401&code=AQCbvYn2m3lboMmgvciHDZFgYlcTZ-gpC84ekJwwTc03LPGT-_O2H1-5P2vx8s04HG5RILxwGJU_njnYsVaquixlDgq1GrMNLjAOw23c9WFQK0sZ012uldV0X9Z6sFGD-cgVFnCg2Kg3u5tyw0TrtmzhTg6yqHWQUqLWsGbjFfs5fcE8hiHW3zCOCLfOtfKVa_rrunja2PZr4XGzRKtuy1je
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-30 12:40:20
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQBkrOnSCsfL8eS5PkvP6TZKRbmVdsemTgyftoxCSIAj-KfXmJx_mxDHrLPxB7EC_adI-5GMNVTcYkMqc0y3y2gCW0dcK6Kbvpd8l6cOKHG84AtMoJBMPNJGXfNDTj6-xCbUY0a8gbupk9oLQ8KmYerA9V_ezO12yFAZXuccQ3iGo9JpYNaFw3-Nt_sqW7oeRwr_1uyQCS3q_UYKZRl5hJju&state=44838f84e8a671ef7bef5441fc2e7117
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-03-30 12:40:23
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQBkrOnSCsfL8eS5PkvP6TZKRbmVdsemTgyftoxCSIAj-KfXmJx_mxDHrLPxB7EC_adI-5GMNVTcYkMqc0y3y2gCW0dcK6Kbvpd8l6cOKHG84AtMoJBMPNJGXfNDTj6-xCbUY0a8gbupk9oLQ8KmYerA9V_ezO12yFAZXuccQ3iGo9JpYNaFw3-Nt_sqW7oeRwr_1uyQCS3q_UYKZRl5hJju&state=44838f84e8a671ef7bef5441fc2e7117
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 00:06:25
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://dev.dahliawolf.com/mobile/social-login.php&logout_redirect_url=http://dev.dahliawolf.com/mobile&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 09:08:51
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=a2d2659616b9c08c3312974b992403dd&code=AQCw7jLCjFAJvsKZVyZCQZUaemUdkRtjrEj6MjzZsK3mH8lkSkjZG-6IljnIRqfhadqTJeIAhMsaAe_jps8W6BMBzYxN0iy7DXCsO-0iZFrN0BpHKzlRJHl-c33uftt7embkCOFSNst8ARLRBmYqROjVNbuWj098-ZDZt31UR0xm4PBvu0ZGXh8gM5qY_s33E8eBLC9Fd2yC1a5q8-CIkfEG
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.28.10 (KHTML, like Gecko) Version/6.0.3 Safari/536.28.10
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 09:09:08
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.28.10 (KHTML, like Gecko) Version/6.0.3 Safari/536.28.10
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 09:09:16
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.28.10 (KHTML, like Gecko) Version/6.0.3 Safari/536.28.10
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 10:29:19
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=00dcb4716a4a8b7ad96f67af9fa0ff3e&code=AQD57fdFe-qxL4Nd8D3jTlDsN5mERL2eHS_rAwUMitz_6Cp9OReEIbUZCPnKHXG4iqgmngsODcsF9KlInN9Kn3wl7kO8YfNEgx2QCDgKroDW43Izz8LaxNOTelRHsUjR-7V8E56zCvroArRt14oBmzTRWcm_rAvfWhXbFIG6ijZrUvpoipDEBCOEQa2xMPuyrQaEvyihccFSoumfCZwTZeg1
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.28.10 (KHTML, like Gecko) Version/6.0.3 Safari/536.28.10
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 10:29:28
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=00dcb4716a4a8b7ad96f67af9fa0ff3e&code=AQD57fdFe-qxL4Nd8D3jTlDsN5mERL2eHS_rAwUMitz_6Cp9OReEIbUZCPnKHXG4iqgmngsODcsF9KlInN9Kn3wl7kO8YfNEgx2QCDgKroDW43Izz8LaxNOTelRHsUjR-7V8E56zCvroArRt14oBmzTRWcm_rAvfWhXbFIG6ijZrUvpoipDEBCOEQa2xMPuyrQaEvyihccFSoumfCZwTZeg1
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.28.10 (KHTML, like Gecko) Version/6.0.3 Safari/536.28.10
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 10:29:42
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.28.10 (KHTML, like Gecko) Version/6.0.3 Safari/536.28.10
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 10:38:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQDjJqTbLPZZLVIVcA92zddFn4n5Fu5RF3U9QzwWYctnrNOkxGtOKJZhbKaO3lZBtZ2ZofgV96gvOh1i--AondUTyGEI8VCABQFXEZnbpcqafyGTMcmPP-93bvEfjzzi-aDEPHqCcx52tVbKKRidxCLRdMsDrJ1GKEFbAtGq_-n-dEgL6jURpx4UmPgC2PSUIYrKEFGi6YjDMMfFRT8mSvAD&state=4eda5ff8122b53f59a037428d233674b
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 10:41:51
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 10:42:35
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 10:42:38
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 10:43:07
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 14:43:05
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=7cf6be5d7ba0cf9518c97904a86cc9bc&code=AQAI__lQ_LkaAxrYyN7Rxpzsp_jtDT38obq2L0Jp71P92lVNNvhcChJqDnJz87u73MJotpUV-6BtxGHxJygW_a0YZgT3a4qq8BnlQWQFZWAtcbbg1W9Wl8IUpD909xXZoypGOUIppZTl-XfpS5fS3HD4cBaqiH2CwLhOE92NFBytRfEbgae3zldUkxxq5AxzlpCdOKjaAAnVc4D5q2qXQ2jM
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:25:05
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=e7f28e53b1d49b92e010baa3812fcb40&code=AQCyMy1QqRoPfKPKuO-Wsm8Fazq7HYUt4O7-LXFM0l1IUs5d3gRK2RTse-sF9afSLkWZrtvclRxA-OSuZS4RwpHSG2CuoflPxgpo1gOlrx577GDJf5QSO8o2Qmzp5qoFIuQGzo0cyFAug7zqDuEyivNyM_muI31fWlOTjDaG0CNfb3wsNhMW2Ua3r5fAEMwd7924hwbcvQ2yP09CkrMxn4Z2
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:25:13
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&state=e7f28e53b1d49b92e010baa3812fcb40&code=AQAYrNqcEixv-m1HMprHXZU1d1JetIjKqD6KmF0gt359nOVBxyiW7dUJorg_UQMtYD5Q3wPkXjO69EmdQR5XSJjCJhFytw71RdcJ7-rSPhZGk6PIF4urnc0dhsMnw1k5v4T7Y_ull5Nxayaf-k6A_rGYuEVrOOoE2XLk3O3G3z2HsiUbkCdC8Psu25i7YA0t7-1SsgEDMysrB8dum_fM_bXV
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:27:01
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQBRB2IxX5W5iymJ1I5OsyHl53xYjbAq_I8dCTeE_K0YFOpZi85bm2Ocd1l6J0TCokpmjNak-yehEVbk-lIvN7Stxuxd_OJ2s06z2JhchdOSUe1r5SGF4tFMucqpUxxCGw-8lDY728ZFDu-s3CFjyuRETsHqt-LtGG396sZIh1S1M3wbmi2Ir0UqsN_v_9fv8K6e70NrNQR9niihKzycLg3D&state=a1cfe1d78401c5f47f08166efb2fc575
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:42:11
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:42:25
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:42:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:42:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:42:39
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:42:41
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:42:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:46:13
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:46:17
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:46:19
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 15:48:00
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 16:11:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQBdo4s8kN1McFZt4aEvIgnnh3CHxKu0PJUuai3Qgw0z8wPzCPCBZmPnBd3N8tjWzREiqN3QdjA9uJfHjxvGxelpGXaXIpRI2HIxmqdY79U8uGwoasFuhuo-gFakjX_8dJP5C25M_7PQNOSJPXw9ByrqtXJfUzG8szvKG_SnllmkRzW1XClUgGOgUq-pCFmC9HMcdWcwWJ7a1eUN2itxNHNH&state=40e7e1d1d1f0c1ea97aa7b3968358893
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 16:19:37
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQBdo4s8kN1McFZt4aEvIgnnh3CHxKu0PJUuai3Qgw0z8wPzCPCBZmPnBd3N8tjWzREiqN3QdjA9uJfHjxvGxelpGXaXIpRI2HIxmqdY79U8uGwoasFuhuo-gFakjX_8dJP5C25M_7PQNOSJPXw9ByrqtXJfUzG8szvKG_SnllmkRzW1XClUgGOgUq-pCFmC9HMcdWcwWJ7a1eUN2itxNHNH&state=40e7e1d1d1f0c1ea97aa7b3968358893
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This email already exists. Please use another.
+)
+
+
+DATE: 2013-04-01 18:58:25
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => Unable to get regexp usernames.
+)
+
+
+DATE: 2013-04-01 18:58:42
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => Unable to get regexp usernames.
+)
+
+
+DATE: 2013-04-01 18:58:56
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => Unable to get regexp usernames.
+)
+
+
+DATE: 2013-04-01 18:59:04
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 18:59:11
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:05:28
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:06:09
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:06:48
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:06:56
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:06:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:06:58
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:06:59
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:07:00
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:07:00
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:07:01
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:07:02
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:07:02
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-04-01 19:07:03
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: Array
+(
+    [0] => This username already exists. Please choose another.
+)
+
+
+DATE: 2013-05-22 18:22:46
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQAFQ2MCmP_5c_oK88BcxNso-h6le97Ud89DkgqdMwsVubBihh6SC_PAIV3maWhTEBk_mcZrzm_kvLoghrVEwDghk7OuAQri3o2Q7tBFobArh4D2o_xQIwP8YVaB82QL2XXhVP4nkkvbp3CdsMMlh41tmNncBImtJ9TbjQ76_IDcjZ-4HanXuj_foCqT_2uWCH6BtYxBtVFBwI1hDp_tji7amFGddFxR_hnb3wkfhyZBf27eDqe-riK0tvS86A1DNFbxCErEFv0dViMxsTNcKm4zlqPDZYmlb5nGmicj1aVhNHddA9_HdXsV_YuqTIanp9I&state=94a0a310d324a67294c43b1680b94cc1
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Opera/9.80 (Windows NT 5.1) Presto/2.12.388 Version/12.14
+MESSAGE: Array
+(
+    [input_validation] => Array
+        (
+            [email] => Array
+                (
+                    [label] => Email Address
+                    [errors] => Array
+                        (
+                            [0] => is required
+                        )
+
+                )
+
+        )
+
+)
+
+
+DATE: 2013-05-22 18:23:20
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQDR1MgdXMTGUKz2l31t2gKLyu97Pgx9g2cw9pnBzZKVRDQqm9ADQQUDn61XfGZwZcAdxtONH4GjQLGA52VIutMTRh_AlpEPcKy0t2U4xqkhzcq6TrGT9UG8gHn70cmTGq75cFnoU23YqYNeR09lx1_vZi25AjKWbvyIQqEYg7KT1sL0DCAWquftiOZ4yRE6V9IYjgEaFouVIF3YXU-74tTLGRcujQL4NhNQMjnldXbAOWYTYfgoYGLVmX9xkd0omslwmxBndQ9sMDjGkHgWGe77LFEYh4JBkcBUl2QrP_z2V8u0Sr2uElDph1TmhlJkjAw&state=94a0a310d324a67294c43b1680b94cc1
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Opera/9.80 (Windows NT 5.1) Presto/2.12.388 Version/12.14
+MESSAGE: Array
+(
+    [input_validation] => Array
+        (
+            [email] => Array
+                (
+                    [label] => Email Address
+                    [errors] => Array
+                        (
+                            [0] => is required
+                        )
+
+                )
+
+        )
+
+)
+
+
+DATE: 2013-05-22 21:43:45
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQDYHn7CfkhdKW3nO7qbbbfhfQff94E3D1BMneG2c_wjwEbUsocYyNPtS3_zVU07RaxQe4tZbTjeMZhx6aUYk_S27DVXHgQJ35agn2rVuGsELFnawwbVRs3l8JOVefEKYJKCAkUlbQDwLnJaFLArDfA_eBrK1R12yXaO0oI-TdmoD5toE30amUONoS2Ex6Z_RR8TO_eq89zC8cPOKaQvYnRDr5TMIy2-NuNQeFcabpT1IcQapPEYw1tW3evbi_srxxIgiaAgu6W5aG2dj3rV6NAEdDFr_bWnXNwpVbslH6f1HTJz-jycyji6CxsnebeS-lM&state=02fdf9f9c5b279e5a1f74c69fc6acb22
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.1; rv:12.0) Gecko/20100101 Firefox/12.0
+MESSAGE: Array
+(
+    [input_validation] => Array
+        (
+            [email] => Array
+                (
+                    [label] => Email Address
+                    [errors] => Array
+                        (
+                            [0] => is required
+                        )
+
+                )
+
+        )
+
+)
+
+
+DATE: 2013-05-23 00:21:58
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQBFAeyZIXGhZ7y3IVSe93zc3JthCbLMwl05XWyXTYinhzpEkjUu4Gd55-DYFG15shDxZCWVB4j2VGj5A8r3V6Xyn_zq9nGeJfRfPoCQaGH0osfUBXkkXCPybs7N6TgT5OEK5yzUvHeNm2ThI9cgr_lVZky5A9Qhoc20aJKAB4jQkwdhL9VcEKiZ1a6_BR0LOX_7eej0wiKwrHgspjcVk5d9GJF1zu13G86zk4yLRb-JPO6qvRbjvitvmUPS5HsBYLviTJnHSOeYUI8Gf2_WEIQnjQjwhnpsGH81omdbSyfdOekofXzResFZf7hQSIUm7y0&state=9f2c61799ccb7e8a8fc55facbfcbeba2
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.64 Safari/537.31
+MESSAGE: Array
+(
+    [input_validation] => Array
+        (
+            [email] => Array
+                (
+                    [label] => Email Address
+                    [errors] => Array
+                        (
+                            [0] => is required
+                        )
+
+                )
+
+        )
+
+)
+
+

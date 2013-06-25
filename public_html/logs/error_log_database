@@ -1,0 +1,720 @@
+DATE: 2013-03-09 15:50:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'social_id' in 'where clause'
+
+			SELECT user.*
+			FROM user
+			WHERE email IS NULL AND social_id = :social_id
+			ORDER BY user_id ASC
+			LIMIT 1
+
+DATE: 2013-03-09 15:59:13
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'social_id' in 'where clause'
+
+			SELECT user.*
+			FROM user
+			WHERE email IS NULL AND social_id = :social_id
+			ORDER BY user_id ASC
+			LIMIT 1
+
+DATE: 2013-03-09 16:23:14
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'social_id' in 'where clause'
+
+			SELECT user.*
+			FROM user
+			WHERE email IS NULL AND social_id = :social_id
+			ORDER BY user_id ASC
+			LIMIT 1
+
+DATE: 2013-03-09 19:09:02
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&state=32e0d29c8048663ab108ce667cb378b8&code=AQAu2BYPRbN03pC3ssYTkn7hg3E1_1o3VAbiPEWSMk1Ha39SSnHZgj6A4QNtG_17hWqaBw8S95nqJgyesA7PhIc7UnnltzWuyH3fooP6l5KRhL-0SzerGLWz5ot4ZB8QcC68vMww4pVs9azm11L7HQG6_kDzMcoQxCBTQ1CbSuYgHEgEJpZxX14wR9_b56iwlRwvFBVip6LsMvQvNBk2jhpP
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22
+MESSAGE: /social-login.php?social_network=facebook&state=32e0d29c8048663ab108ce667cb378b8&code=AQAu2BYPRbN03pC3ssYTkn7hg3E1_1o3VAbiPEWSMk1Ha39SSnHZgj6A4QNtG_17hWqaBw8S95nqJgyesA7PhIc7UnnltzWuyH3fooP6l5KRhL-0SzerGLWz5ot4ZB8QcC68vMww4pVs9azm11L7HQG6_kDzMcoQxCBTQ1CbSuYgHEgEJpZxX14wR9_b56iwlRwvFBVip6LsMvQvNBk2jhpP\Database_Helper SQL Error: 
+Duplicate entry 'solomon@zyonnetworks.com' for key 'email'
+INSERT
+				 INTO "user" ("first_name", "last_name", "username", "email", "hash", "active") 
+				 VALUES (:first_name, :last_name, :username, :email,  NULL , :active)
+			
+
+DATE: 2013-03-11 16:54:26
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/address.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/address.json\Database_Helper SQL Error: 
+Table 'admin_offline_v1_2013.country' doesn't exist
+
+			SELECT name, code
+			FROM country
+			ORDER BY name ASC
+		
+
+DATE: 2013-03-11 16:54:26
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/address.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/address.json\Database_Helper SQL Error: 
+Table 'admin_offline_v1_2013.state' doesn't exist
+
+			SELECT name, code
+			FROM state
+			ORDER BY name ASC
+		
+
+DATE: 2013-03-11 17:05:19
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/address.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/address.json\Database_Helper SQL Error: 
+Unknown column 'company' in 'field list'
+INSERT
+				 INTO "address" ("user_id", "type", "first_name", "last_name", "street", "street_2", "city", "state", "zip", "country", "company") 
+				 VALUES (:user_id, :type, :first_name, :last_name, :street,  NULL , :city, :state, :zip, :country,  NULL )
+			
+
+DATE: 2013-03-12 16:41:07
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/payment.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/payment.json\Database_Helper SQL Error: 
+Unknown column 'actives' in 'where clause'
+
+			SELECT payment_method.*
+			FROM payment_method
+			WHERE actives = :actives
+			ORDER BY payment_method_id ASC
+			
+
+DATE: 2013-04-01 18:58:25
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9\Database_Helper SQL Error: 
+Table 'admin_offline_v1_2013.user_username' doesn't exist
+
+			SELECT username
+			FROM user_username
+			WHERE username REGEXP :username
+		
+
+DATE: 2013-04-01 18:58:42
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9\Database_Helper SQL Error: 
+Table 'admin_offline_v1_2013.user_username' doesn't exist
+
+			SELECT username
+			FROM user_username
+			WHERE username REGEXP :username
+		
+
+DATE: 2013-04-01 18:58:56
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22
+MESSAGE: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQD7sroNZdVMOsBxqoKxkdAApkQw5XGVQoLR1L05onYyrElblDdcWQ_Mm7YUKcdXV0fkxWPZzbVWyyuq4C3LX98Mq_zAhd-gy9m-6z9BBEyENjOkpomATWcldEtKT83E5jU9xp2J3XvSQeRXYE29sNVISIlR7Co0-Aol_U_blWat5ykFEcXLrEYnZqTf_6UREFziCfPrmR31my_8jldhVH41&state=30a3022479c6c2a6d0a9002ade4ca9e9\Database_Helper SQL Error: 
+Table 'admin_offline_v1_2013.user_username' doesn't exist
+
+			SELECT username
+			FROM user_username
+			WHERE username REGEXP :username
+		
+
+DATE: 2013-04-09 18:51:16
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'user.user_name' in 'field list'
+
+			SELECT user.user_id, user.first_name, user.last_name, user.user_name, user.email
+			FROM user
+				INNER JOIN login_instance ON user.user_id = login_instance.user_id
+			WHERE login_instance.user_id = :user_id
+				AND login_instance.token = :token
+				AND login_instance.logout IS NULL
+		 LIMIT 1
+
+DATE: 2013-04-09 18:51:18
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'user.user_name' in 'field list'
+
+			SELECT user.user_id, user.first_name, user.last_name, user.user_name, user.email
+			FROM user
+				INNER JOIN login_instance ON user.user_id = login_instance.user_id
+			WHERE login_instance.user_id = :user_id
+				AND login_instance.token = :token
+				AND login_instance.logout IS NULL
+		 LIMIT 1
+
+DATE: 2013-04-09 18:51:25
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'user.user_name' in 'field list'
+
+			SELECT user.user_id, user.first_name, user.last_name, user.user_name, user.email
+			FROM user
+				INNER JOIN login_instance ON user.user_id = login_instance.user_id
+			WHERE login_instance.user_id = :user_id
+				AND login_instance.token = :token
+				AND login_instance.logout IS NULL
+		 LIMIT 1
+
+DATE: 2013-04-09 18:51:36
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'user.user_name' in 'field list'
+
+			SELECT user.user_id, user.first_name, user.last_name, user.user_name, user.email
+			FROM user
+				INNER JOIN login_instance ON user.user_id = login_instance.user_id
+			WHERE login_instance.user_id = :user_id
+				AND login_instance.token = :token
+				AND login_instance.logout IS NULL
+		 LIMIT 1
+
+DATE: 2013-04-24 18:09:50
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Duplicate entry 'SASHANOON' for key 'username'
+UPDATE "user" SET "user_id" = :val_user_id, "first_name" = :val_first_name, "last_name" = :val_last_name, "date_of_birth" = :val_date_of_birth, "gender" = :val_gender, "username" = :val_username, "email" = :val_email, "api_website_id" = :val_api_website_id WHERE user_id = :user_id
+
+DATE: 2013-04-24 18:11:50
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Duplicate entry 'SASHANOON' for key 'username'
+UPDATE "user" SET "user_id" = :val_user_id, "first_name" = :val_first_name, "last_name" = :val_last_name, "date_of_birth" = :val_date_of_birth, "gender" = :val_gender, "username" = :val_username, "email" = :val_email, "api_website_id" = :val_api_website_id WHERE user_id = :user_id
+
+DATE: 2013-05-16 18:04:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'admin_offline_v1_2013.posting_like' doesn't exist
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, posting_like.posting_id
+				, user_username.user_id, user_username.username
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN posting_like ON activity_log.entity_id = posting_like.posting_id
+				INNER JOIN user_username ON posting_like.user_id = user_username.user_id
+			WHERE activity_log.entity IS NOT NULL
+				AND user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND entity = "posting_like"
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:05:16
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'admin_offline_v1_2013.posting_like' doesn't exist
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, posting_like.posting_id
+				, user_username.user_id, user_username.username
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN posting_like ON activity_log.entity_id = posting_like.posting_id
+				INNER JOIN user_username ON posting_like.user_id = user_username.user_id
+			WHERE activity_log.entity IS NOT NULL
+				AND user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND entity = "posting_like"
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:05:36
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Column 'user_id' in where clause is ambiguous
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, posting_like.posting_id
+				, user_username.user_id, user_username.username
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.posting_like ON activity_log.entity_id = posting_like.posting_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON posting_like.user_id = user_username.user_id
+			WHERE activity_log.entity IS NOT NULL
+				AND user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND entity = "posting_like"
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:05:53
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown column 'posting_like' in 'where clause'
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, posting_like.posting_id
+				, user_username.user_id, user_username.username
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.posting_like ON activity_log.entity_id = posting_like.posting_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON posting_like.user_id = user_username.user_id
+			WHERE activity_log.entity IS NOT NULL
+				AND activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND entity = "posting_like"
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:46:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown column 'activity_log.noteactivity_log.read' in 'field list'
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.noteactivity_log.read
+				, user_username.user_id, user_username.username
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.follow ON activity_log.entity_id = follow.follow_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON follow.follower_user_id = user_username.user_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'follow'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:46:26
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown column 'activity_log.noteactivity_log.read' in 'field list'
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.noteactivity_log.read
+				, user_username.user_id, user_username.username
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.follow ON activity_log.entity_id = follow.follow_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON follow.follower_user_id = user_username.user_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'follow'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:46:26
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown column 'activity_log.noteactivity_log.read' in 'field list'
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.noteactivity_log.read
+				, user_username.user_id, user_username.username
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.follow ON activity_log.entity_id = follow.follow_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON follow.follower_user_id = user_username.user_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'follow'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:56:18
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown column 'http://www.dahliawolf.com/post-details?posting_id=' in 'field list'
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, like_winner.posting_id, like_winner.likes
+				, user_username.user_id, user_username.username
+				, CONCAT("http://www.dahliawolf.com/post-details?posting_id=", like_winner.posting_id) AS post_url
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON comment.user_id = user_username.user_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'like_winner'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:56:19
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown column 'http://www.dahliawolf.com/post-details?posting_id=' in 'field list'
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, like_winner.posting_id, like_winner.likes
+				, user_username.user_id, user_username.username
+				, CONCAT("http://www.dahliawolf.com/post-details?posting_id=", like_winner.posting_id) AS post_url
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON comment.user_id = user_username.user_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'like_winner'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:56:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown column 'http://www.dahliawolf.com/post-details?posting_id=' in 'field list'
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, like_winner.posting_id, like_winner.likes
+				, user_username.user_id, user_username.username
+				, CONCAT("http://www.dahliawolf.com/post-details?posting_id=", like_winner.posting_id) AS post_url
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON comment.user_id = user_username.user_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'like_winner'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-16 18:56:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown column 'comment.user_id' in 'on clause'
+
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, like_winner.posting_id, like_winner.likes
+				, user_username.user_id, user_username.username
+				, CONCAT('http://www.dahliawolf.com/post-details?posting_id=', like_winner.posting_id) AS post_url
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON comment.user_id = user_username.user_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'like_winner'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-22 11:03:27
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_' at line 2
+
+			SELECT COUNT(*)
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'like_winner'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-22 11:03:45
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_' at line 6
+
+			SELECT 
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, like_winner.posting_id, like_winner.likes
+				, CONCAT('http://www.dahliawolf.com/post-details?posting_id=', like_winner.posting_id) AS post_url
+			
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'like_winner'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-05-22 11:03:48
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_' at line 6
+
+			SELECT 
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, like_winner.posting_id, like_winner.likes
+				, CONCAT('http://www.dahliawolf.com/post-details?posting_id=', like_winner.posting_id) AS post_url
+			
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = 'like_winner'
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-06-10 11:55:19
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-06-10 11:55:19
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-06-11 16:53:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-06-11 16:53:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-06-11 16:53:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-06-11 16:53:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-06-11 16:53:58
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-06-11 16:53:59
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-06-14 09:47:46
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-06-14 16:53:48
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+
+UPDATE "activity_log" SET "previewed" = :val_previewed WHERE activity_log_id = :activity_log_id AND user_id = :user_id AND activity_id = :activity_id
+
+DATE: 2013-06-14 16:54:35
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 10.48.113.2
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+
+UPDATE "activity_log" SET "previewed" = :val_previewed WHERE activity_log_id = :activity_log_id AND user_id = :user_id AND activity_id = :activity_id
+
