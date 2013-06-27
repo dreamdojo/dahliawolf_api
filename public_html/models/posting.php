@@ -421,11 +421,15 @@ class Posting extends db {
 			GROUP BY posting.posting_id
 			ORDER BY ' . (!empty($outer_order_by_str) ? $outer_order_by_str : $order_by_str) . '
 		';
-		/*if (isset($_GET['t'])) {
+
+
+        if (isset($_GET['t'])) {
 			echo $query;
 			print_r($values);die();
 		}
 
+
+        /*
 		$query = '
 			SELECT posting.*, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
 				, user_username.username, user_username.location, user_username.avatar
