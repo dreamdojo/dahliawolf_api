@@ -845,8 +845,6 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 					, 'source' => $_REQUEST['source']
 					, 'dimensionsX' => $_REQUEST['dimensionsX']
 					, 'dimensionsY' => $_REQUEST['dimensionsY']
-					, 'domain' => !empty($_REQUEST['domain']) ? $_REQUEST['domain'] : NULL
-					, 'attribution_url' => !empty($_REQUEST['attribution_url']) ? $_REQUEST['attribution_url'] : NULL
 				)
 			);
 			$image = $Image->add_image($image_params);
