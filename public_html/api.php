@@ -28,7 +28,7 @@ require_once 'models/Email.php';
 
 if(isset($_GET['t']))
 {
-    var_dump($_REQUEST);
+    var_dump($_GET);
     var_dump($_REQUEST);
 }
 
