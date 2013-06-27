@@ -1,6 +1,10 @@
 <?php
 //error_reporting(E_ALL);
 //ini_set('display_errors', '1');
+
+header('Content-Type: application/jsonp');
+error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT);
+ini_set('display_errors', '0');
 session_start();
 
 require_once 'includes/config.php';
