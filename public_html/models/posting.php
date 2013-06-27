@@ -268,11 +268,12 @@ class Posting extends db {
 		}
 
 		$query = '
-			SELECT posting.*, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
+			SELECT posting.*,
+			    image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height, image.attribution_url, image.domain
 				, user_username.username, user_username.avatar, user_username.location
 				, CONCAT(image.source, "image.php?imagename=", image.imagename) AS image_url
 				, IFNULL(COUNT(pl.posting_like_id), 0) AS likes
-				, imageInfo.baseurl, imageInfo.attribution_url
+				, imageInfo.baseurl, imageInfo.attribution_url, imageInfo.domain
 				, site.domain, site.domain_keyword
 				, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
 				' . $select_str . '

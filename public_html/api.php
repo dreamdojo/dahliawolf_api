@@ -858,10 +858,13 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			$Posting = new Posting();
 			$post_params = array(
 				'data' => array(
-					/*'created' => $_REQUEST['created']
-					, */'image_id' => $image_id
-					, 'user_id' => $_REQUEST['user_id']
-					, 'description' => !empty($_REQUEST['description']) ? $_REQUEST['description'] : ''
+					 /*'created' => $_REQUEST['created'],
+					 */
+                     'image_id' => $image_id ,
+					 'user_id' => $_REQUEST['user_id'],
+					 'description' => !empty($_REQUEST['description']) ? $_REQUEST['description'] : '',
+                     'domain' => ( $_REQUEST['domain'] ),
+             		 'attribution_url' => ( $_REQUEST['attribution_url'] )
 				)
 			);
 			$post = $Posting->addPost($post_params);
