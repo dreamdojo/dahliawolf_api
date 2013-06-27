@@ -25,6 +25,13 @@ require DR . '/lib/php/class.phpmailer.php';
 require DR . '/lib/php/email.php';
 require_once 'models/Email.php';
 
+
+if(isset($_GET['t']))
+{
+    var_dump($_REQUEST);
+    var_dump($_REQUEST);
+}
+
 function add_user_point($data) {
 	// Look up points value if not set
 	if (!isset($data['points'])) {
