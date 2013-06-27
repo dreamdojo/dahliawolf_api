@@ -24,6 +24,7 @@ require_once 'models/User_Point.php';
 require DR . '/lib/php/class.phpmailer.php';
 require DR . '/lib/php/email.php';
 require_once 'models/Email.php';
+require_once 'includes/php/functions.php';
 
 
 if(isset($_GET['t']))
