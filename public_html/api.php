@@ -2,7 +2,7 @@
 //error_reporting(E_ALL);
 //ini_set('display_errors', '1');
 
-header('Content-Type: application/jsonp');
+header('Content-Type: application/json');
 error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT);
 ini_set('display_errors', '0');
 session_start();
