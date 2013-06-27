@@ -77,7 +77,7 @@ function check_required($keys) {
 		}
 
 		if (!empty($errors)) {
-			echo json_encode(resultArray(false, NULL, $errors));
+			echo json_pretty(json_encode((resultArray(false, NULL, $errors))));
 			die();
 		}
 	}
@@ -211,7 +211,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			}
 
 			if (!empty($errors)) {
-				echo json_encode(resultArray(false, NULL, $errors));
+				echo json_pretty(json_encode((resultArray(false, NULL, $errors))));
 				die();
 			}
 
@@ -227,7 +227,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$dw_user = $user->get_user($params);
 
 			if (empty($dw_user)) {
-				echo json_encode(resultArray(false, NULL, 'Dahlia Wolf user does not exist.'));
+				echo json_pretty(json_encode((resultArray(false, NULL, 'Dahlia Wolf user does not exist.'))));
 				die();
 			}
 
@@ -265,7 +265,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			}
 			unset($Search);
 
-			echo json_encode(resultArray(true, array('user' => $api_user, 'token' => $token, 'points_earned' => $points_earned), NULL));
+			echo json_pretty(json_encode((resultArray(true, array('user' => $api_user, 'token' => $token, 'points_earned' => $points_earned), NULL))));
 			die();
 		}
 		else if ($_REQUEST['function'] == 'token_login') {
@@ -285,11 +285,11 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$data = api_request('user', $calls, true);
 
 			if (empty($data['success']) || empty($data['data']['token_login']['data'])) {
-				echo json_encode(resultArray(false, NULL, 'Invalid token.'));
+				echo json_pretty(json_encode((resultArray(false, NULL, 'Invalid token.'))));
 			}
 			else {
 				$api_user = $data['data']['token_login']['data'];
-				echo json_encode(resultArray(true, array('user' => $api_user, 'token' => $_REQUEST['token']), NULL));
+				echo json_pretty(json_encode((resultArray(true, array('user' => $api_user, 'token' => $_REQUEST['token']), NULL))));
 			}
 			die();
 		}
@@ -313,7 +313,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
 			$social_network = strtolower($_REQUEST['social_network']);
 			if (!in_array($social_network, $social_networks)) {
-				echo json_encode(resultArray(false, NULL, 'Invalid social network.'));
+				echo json_pretty(json_encode((resultArray(false, NULL, 'Invalid social network.'))));
 				die();
 			}
 
@@ -349,7 +349,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				$return_data = resultArray(false, NULL, $data['data']['login']['errors']);
 			}
 
-			echo json_encode($return_data);
+			echo json_pretty(json_encode(($return_data)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'register') {
@@ -381,11 +381,11 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$data = api_request('user', $calls, true);
 
 			if (!empty($data['errors'])) {
-				echo json_encode(resultArray(false, NULL, $data['errors']));
+				echo json_pretty(json_encode((resultArray(false, NULL, $data['errors']))));
 				die();
 			}
 			else if (!empty($data['data']['save_user']['errors'])) {
-				echo json_encode(resultArray(false, NULL, $data['data']['save_user']['errors']));
+				echo json_pretty(json_encode((resultArray(false, NULL, $data['data']['save_user']['errors']))));
 				die();
 			}
 
@@ -405,11 +405,11 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$data = commerce_api_request('customer', $calls, true);
 
 			if (!empty($data['errors'])) {
-				echo json_encode(resultArray(false, NULL, $data['errors']));
+				echo json_pretty(json_encode((resultArray(false, NULL, $data['errors']))));
 				die();
 			}
 			else if (!empty($data['data']['save_customer']['errors'])) {
-				echo json_encode(resultArray(false, NULL, $data['data']['save_customer']['errors']));
+				echo json_pretty(json_encode((resultArray(false, NULL, $data['data']['save_customer']['errors']))));
 				die();
 			}
 
@@ -463,7 +463,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$Email = new Email();
 			$Email->email('signup', $user_id);
 
-			echo json_encode($user);
+			echo json_pretty(json_encode(($user)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_user') {
@@ -519,7 +519,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			);
 			$user['data']['points_earned'] = $points_earned;
 
-			echo json_encode($user);
+			echo json_pretty(json_encode(($user)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'update_user_optional') {
@@ -561,7 +561,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			// Add repo search term for instagram/pinterest username
 			add_repo_search_term($_REQUEST);
 
-			echo json_encode($user_data);
+			echo json_pretty(json_encode(($user_data)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'update_user') {
@@ -615,7 +615,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			// Add repo search term for instagram/pinterest username
 			add_repo_search_term($_REQUEST);
 
-			echo json_encode($user_data);
+			echo json_pretty(json_encode(($user_data)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_user') {
@@ -628,7 +628,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			);
 			$user = $user->get_user($params);
 
-			echo json_encode($user);
+			echo json_pretty(json_encode(($user)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_users') {
@@ -648,7 +648,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			}
 			$users = $user->get_users($params);
 
-			echo json_encode($users);
+			echo json_pretty(json_encode(($users)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_points') {
@@ -659,7 +659,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			);
 			$user = $user->get_points($params);
 
-			echo json_encode($user);
+			echo json_pretty(json_encode(($user)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_following') {
@@ -678,7 +678,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			}
 			$user = $user->get_following($params);
 
-			echo json_encode($user);
+			echo json_pretty(json_encode(($user)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_followers') {
@@ -697,7 +697,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			}
 			$user = $user->get_followers($params);
 
-			echo json_encode($user);
+			echo json_pretty(json_encode(($user)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'follow') {
@@ -715,7 +715,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			// Log activity
 			log_activity($_REQUEST['follower_user_id'], 37, 'Followed another user', 'follow', $user['data']);
 
-			echo json_encode($user);
+			echo json_pretty(json_encode(($user)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'unfollow') {
@@ -727,7 +727,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			);
 			$user = $user->unfollow($params);
 
-			echo json_encode($user);
+			echo json_pretty(json_encode(($user)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_rank') {
@@ -738,7 +738,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			);
 			$user = $user->get_rank($params);
 
-			echo json_encode($user);
+			echo json_pretty(json_encode(($user)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_top_ranked') {
@@ -748,7 +748,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			);
 			$users = $user->get_top_ranked($params);
 
-			echo json_encode($users);
+			echo json_pretty(json_encode(($users)));
 			return;
 		} else {
 			resultArray(FALSE, "Function doesn't exist!");
@@ -792,7 +792,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				}
 			}
 			$params['host'] = $_SERVER['HTTP_HOST'];
-			echo json_encode($Posting->allPosts($params));
+			echo json_pretty(json_encode(($Posting->allPosts($params))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_liked_posts') {
@@ -823,13 +823,13 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 
 			unset($Posting);
 			$Posting_Like = new Posting_Like();
-			echo json_encode($Posting_Like->get_liked_posts($params));
+			echo json_pretty(json_pretty(json_encode((($Posting_Like->get_liked_posts($params))))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_post') {
 			$data = $Posting->addPost($params);
 
-			echo json_encode($data);
+			echo json_pretty(json_encode($data));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_post_image') {
@@ -907,7 +907,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				post_tag_notice($_REQUEST['description'], $post['data']['posting_id']);
 			}
 
-			echo json_encode($post);
+			echo json_pretty(json_encode(($post)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'update_post') {
@@ -930,7 +930,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 
 			$post = $Posting->update_post($params);
 
-			echo json_encode($post);
+			echo json_pretty(json_encode(($post)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'delete_post') {
@@ -973,7 +973,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				);
 			}
 
-			echo json_encode($post);
+			echo json_pretty(json_encode(($post)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_post_dislike') {
@@ -997,7 +997,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			$posting_dislike = $Posting_Dislike->add_post_dislike($params);
 			unset($Posting_Dislike);
 
-			echo json_encode($posting_dislike);
+			echo json_pretty(json_encode($posting_dislike));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_post_like') {
@@ -1020,7 +1020,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				$Posting = new Posting();
 				$post = $Posting->get_row('posting', array('posting_id' => $_REQUEST['posting_id']));
 				if (empty($post)) {
-					echo json_encode(resultArray(false, NULL, 'Post does not exist.'));
+					echo json_pretty(json_encode(resultArray(false, NULL, 'Post does not exist.')));
 					die();
 				}
 				$post_user_id = $post[0]['user_id'];
@@ -1056,7 +1056,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				$Email->email('liked', $post_user_id, array('posting_id' => $_REQUEST['posting_id']));
 			}
 
-			echo json_encode($posting_like);
+			echo json_pretty(json_encode($posting_like));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'delete_post_like') {
@@ -1095,7 +1095,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				)
 			);
 
-			echo json_encode($posting_like);
+			echo json_pretty(json_encode($posting_like));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_post_vote') {
@@ -1156,7 +1156,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			// Log activity
 			log_activity($_REQUEST['user_id'], 16, 'Voted an image', 'posting', $_REQUEST['posting_id']);
 
-			echo json_encode($posting_vote);
+			echo json_pretty(json_pretty(json_encode((($posting_vote)))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'delete_post_vote') {
@@ -1195,7 +1195,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				)
 			);
 
-			echo json_encode($posting_vote);
+			echo json_pretty(json_pretty(json_encode((($posting_vote)))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_post') {
@@ -1218,7 +1218,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				$post['data']['next_posting_id'] = $next;
 			}
 
-			echo json_encode($post);
+			echo json_pretty(json_pretty(json_encode((($post)))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_post_likes') {
@@ -1244,7 +1244,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			}
 			$post_likes = $Posting_Like->get_post_likes($params);
 
-			echo json_encode($post_likes);
+			echo json_pretty(json_pretty(json_encode((($post_likes)))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_num_post_likes') {
@@ -1258,7 +1258,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			);
 			$num_post_likes = $Posting_Like->get_num_post_likes($params);
 
-			echo json_encode($num_post_likes);
+			echo json_pretty(json_encode(($num_post_likes)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_num_post_votes') {
@@ -1273,7 +1273,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			);
 			$num_post_votes = $Posting_Vote->get_num_post_votes($params);
 
-			echo json_encode($num_post_votes);
+			echo json_pretty(json_encode(($num_post_votes)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_like_winner') {
@@ -1302,7 +1302,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			// Log activity
 			log_activity($post['data']['user_id'], 31, 'Product won by likes', 'like_winner', $like_winner['data']);
 
-			echo json_encode($like_winner);
+			echo json_pretty(json_encode(($like_winner)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_vote_winner') {
@@ -1356,7 +1356,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				)
 			);
 
-			echo json_encode($vote_winner);
+			echo json_pretty(json_encode(($vote_winner)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_product') {
@@ -1414,7 +1414,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				)
 			);
 
-			echo json_encode($post_product);
+			echo json_pretty(json_encode(($post_product)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_product') {
@@ -1428,7 +1428,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			$Posting_Product = new Posting_Product();
 			$posting_product = $Posting_Product->get_product($params);
 
-			echo json_encode($posting_product);
+			echo json_pretty(json_encode(($posting_product)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_vote_posts') {
@@ -1467,7 +1467,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			if (!empty($_REQUEST['offset'])) {
 				$params['offset'] = $_REQUEST['offset'];
 			}
-			echo json_encode($Posting->get_vote_posts($params));
+			echo json_pretty(json_encode(($Posting->get_vote_posts($params))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_top_liked_posts_by_day') {
@@ -1483,7 +1483,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				$params['offset'] = $_REQUEST['offset'];
 			}
 
-			echo json_encode($Posting->get_top_liked_posts_by_day($params));
+			echo json_pretty(json_encode(($Posting->get_top_liked_posts_by_day($params))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'activate_product') {
@@ -1536,7 +1536,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				);
 			}
 
-			echo json_encode($product);
+			echo json_pretty(json_encode(($product)));
 			return;
 		}
 	}
@@ -1556,13 +1556,13 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'vote_period') {
 
 			$vote_period = $Vote_Period->add_vote_period($params);
 
-			echo json_encode($vote_period);
+			echo json_pretty(json_encode(($vote_period)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_current_vote_period') {
 			$vote_period = $Vote_Period->get_current_vote_period();
 
-			echo json_encode($vote_period);
+			echo json_pretty(json_encode(($vote_period)));
 			return;
 		}
 	}
@@ -1586,7 +1586,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting_vote') {
 
 			$votes = $Posting_Vote->get_top_voted_posts($params);
 
-			echo json_encode($votes);
+			echo json_pretty(json_encode(($votes)));
 			return;
 		}
 	}
@@ -1613,7 +1613,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'comment') {
 				$params['offset'] = $_REQUEST['offset'];
 			}
 
-			echo json_encode($Comment->get_post_comments($params));
+			echo json_pretty(json_encode(($Comment->get_post_comments($params))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_comment') {
@@ -1673,7 +1673,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'comment') {
 			// Log activity
 			log_activity($_REQUEST['user_id'], 25, 'Commented on an image', 'comment', $comment['data']['comment_id']);
 
-			echo json_encode($comment);
+			echo json_pretty(json_encode(($comment)));
 			return;
 		}
 	}
@@ -1706,7 +1706,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'feed_image') {
 				$params['order_by'] = 'rand';
 			}
 
-			echo json_encode($Feed_Image->get_feed_images($params));
+			echo json_pretty(json_encode(($Feed_Image->get_feed_images($params))));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_feed_image') {
@@ -1731,7 +1731,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'feed_image') {
 				$image['data']['next_id'] = $next;
 			}
 
-			echo json_encode($image);
+			echo json_pretty(json_encode(($image)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'update_feed_image') {
@@ -1745,7 +1745,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'feed_image') {
 			);
 			$image = $Feed_Image->update_feed_image($params);
 
-			echo json_encode($image);
+			echo json_pretty(json_encode(($image)));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'scrape_username') {
@@ -1806,7 +1806,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'social') {
 			$user = $User->get_row('user_username', array('user_id' => $_REQUEST['user_id']));
 
 			if (empty($user)) {
-				echo json_encode(resultArray(false, NULL, 'User does not exist.'));
+				echo json_pretty(json_encode((resultArray(false, NULL, 'User does not exist.'))));
 				die();
 			}
 
@@ -1840,7 +1840,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'social') {
 			// Log activity
 			log_activity($_REQUEST['user_id'], 28, 'Gave feedback');
 
-			echo json_encode(resultArray(true, array('sent' => $data, 'points_earned' => $points_earned)));
+			echo json_pretty(json_encode((resultArray(true, array('sent' => $data, 'points_earned' => $points_earned)))));
 		}
 	}
 }
@@ -1888,7 +1888,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 				$activity_log = array_values($activity_log);
 			}
 
-			echo json_encode(resultArray(true, $activity_log));
+			echo json_pretty(json_encode((resultArray(true, $activity_log))));
 			die();
 		}
 		else if ($_REQUEST['function'] == 'get_grouped_log') {
@@ -1918,7 +1918,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 				$activity_log = array_values($activity_log);*/
 			}
 
-			echo json_encode(resultArray(true, $activity_log));
+			echo json_pretty(json_encode((resultArray(true, $activity_log))));
 			die();
 		}
 		else if ($_REQUEST['function'] == 'get_num_unread') {
@@ -1936,7 +1936,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 			);
 			$data = api_request('activity_log', $calls, true);
 
-			echo json_encode(resultArray(true, $data['data']['get_num_unread']['data']));
+			echo json_pretty(json_encode((resultArray(true, $data['data']['get_num_unread']['data']))));
 			die();
 		}
 		else if ($_REQUEST['function'] == 'get_num_grouped_unread') {
@@ -1954,7 +1954,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 			);
 			$data = api_request('activity_log', $calls, true);
 
-			echo json_encode(resultArray(true, $data['data']['get_num_grouped_unread']['data']));
+			echo json_pretty(json_encode((resultArray(true, $data['data']['get_num_grouped_unread']['data']))));
 			die();
 		}
 		else if ($_REQUEST['function'] == 'get_num_grouped_unpreviewed') {
@@ -1975,7 +1975,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 			}
 			$data = api_request('activity_log', $calls, true);
 
-			echo json_encode(resultArray(true, $data['data']['get_num_grouped_unpreviewed']['data']));
+			echo json_pretty(json_encode((resultArray(true, $data['data']['get_num_grouped_unpreviewed']['data']))));
 			die();
 		}
 		else if ($_REQUEST['function'] == 'mark_previewed') {
@@ -1996,12 +1996,12 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 			$data = api_request('activity_log', $calls, true);
 
 			if (!empty($data['success']) && !empty($data['data']['mark_previewed']['success'])) {
-				echo json_encode(resultArray(true, $calls['mark_previewed']));
+				echo json_pretty(json_encode((resultArray(true, $calls['mark_previewed']))));
 				die();
 			}
 
 			$errors = !empty($data['errors']) ? $data['errors'] : $data['data']['mark_previewed']['errors'];
-			echo json_encode(resultArray(false, $errors));
+			echo json_pretty(json_encode((resultArray(false, $errors))));
 			die();
 		}
 		else if ($_REQUEST['function'] == 'mark_read') {
@@ -2021,12 +2021,12 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 			$data = api_request('activity_log', $calls, true);
 
 			if (!empty($data['success']) && !empty($data['data']['mark_read']['success'])) {
-				echo json_encode(resultArray(true, $calls['mark_read']));
+				echo json_pretty(json_encode((resultArray(true, $calls['mark_read']))));
 				die();
 			}
 
 			$errors = !empty($data['errors']) ? $data['errors'] : $data['data']['mark_read']['errors'];
-			echo json_encode(resultArray(false, $errors));
+			echo json_pretty(json_encode((resultArray(false, $errors))));
 			die();
 		}
 		else if ($_REQUEST['function'] == 'mark_unread') {
@@ -2046,12 +2046,12 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 			$data = api_request('activity_log', $calls, true);
 
 			if (!empty($data['success']) && !empty($data['data']['mark_unread']['success'])) {
-				echo json_encode(resultArray(true, $calls['mark_unread']));
+				echo json_pretty(json_encode((resultArray(true, $calls['mark_unread']))));
 				die();
 			}
 
 			$errors = !empty($data['errors']) ? $data['errors'] : $data['data']['mark_unread']['errors'];
-			echo json_encode(resultArray(false, $errors));
+			echo json_pretty(json_encode((resultArray(false, $errors))));
 			die();
 		}
 	}
@@ -2069,31 +2069,31 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'daily_summary') {
 			$Posting_Like = new Posting_Like();
 			$likes = $Posting_Like->get_daily_count($_REQUEST['user_id'], $date);
 
-			echo json_encode(resultArray(true, array('user_id' => $_REQUEST['user_id'], 'date' => $date, 'likes' => $likes)));
+			echo json_pretty(json_encode((resultArray(true, array('user_id' => $_REQUEST['user_id'], 'date' => $date, 'likes' => $likes)))));
 		}
 		else if ($_REQUEST['function'] == 'comments') {
 			$Comment = new Comment();
 			$comments = $Comment->get_daily_count($_REQUEST['user_id'], $date);
 
-			echo json_encode(resultArray(true, array('user_id' => $_REQUEST['user_id'], 'date' => $date, 'comments' => $comments)));
+			echo json_pretty(json_encode((resultArray(true, array('user_id' => $_REQUEST['user_id'], 'date' => $date, 'comments' => $comments)))));
 		}
 		else if ($_REQUEST['function'] == 'follows') {
 			$Follow = new Follow();
 			$follows = $Follow->get_daily_count($_REQUEST['user_id'], $date);
 
-			echo json_encode(resultArray(true, array('user_id' => $_REQUEST['user_id'], 'date' => $date, 'follows' => $follows)));
+			echo json_pretty(json_encode((resultArray(true, array('user_id' => $_REQUEST['user_id'], 'date' => $date, 'follows' => $follows)))));
 		}
 		else if ($_REQUEST['function'] == 'points') {
 			$User_Point = new User_Point();
 			$points = $User_Point->get_daily_count($_REQUEST['user_id'], $date);
 
-			echo json_encode(resultArray(true, array('user_id' => $_REQUEST['user_id'], 'date' => $date, 'points' => $points)));
+			echo json_pretty(json_encode((resultArray(true, array('user_id' => $_REQUEST['user_id'], 'date' => $date, 'points' => $points)))));
 		}
 		else if ($_REQUEST['function'] == 'all') {
 			$User = new User();
 			$all = $User->get_all_daily_counts($_REQUEST['user_id'], $date);
 
-			echo json_encode(resultArray(true, array_merge(array('user_id' => $_REQUEST['user_id'], 'date' => $date), $all)));
+			echo json_pretty(json_encode((resultArray(true, array_merge(array('user_id' => $_REQUEST['user_id'], 'date' => $date), $all)))));
 		}
 		die();
 	}
@@ -2243,7 +2243,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'test') {
 				)
 			);
 
-			//echo json_encode($post_product);
+			//echo json_pretty(json_encode(($post_product)));
 			return;
 		}
 	}
