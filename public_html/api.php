@@ -30,7 +30,7 @@ require_once 'includes/php/json_functions.php';
 if(isset($_GET['t']))
 {
     var_dump($_GET);
-    var_dump($_REQUEST);
+    var_dump($_POST);
 }
 
 function add_user_point($data) {
