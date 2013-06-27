@@ -47,7 +47,7 @@ function json_pretty($json, $indent='  ')
         $prevChar = $char;
     }
 
-    return $result;
+    return trim($result);
 }
  
 
