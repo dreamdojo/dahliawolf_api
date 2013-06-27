@@ -273,8 +273,8 @@ class Posting extends db {
 				, user_username.username, user_username.avatar, user_username.location
 				, CONCAT(image.source, "image.php?imagename=", image.imagename) AS image_url
 				, IFNULL(COUNT(pl.posting_like_id), 0) AS likes
-				, imageInfo.baseurl, imageInfo.attribution_url
-				, site.domain, site.domain_keyword
+				, imageInfo.baseurl
+				, site.domain_keyword
 				, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
 				' . $select_str . '
 			FROM ' . $from_prefix . '
