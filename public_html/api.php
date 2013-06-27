@@ -845,6 +845,8 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 					, 'source' => $_REQUEST['source']
 					, 'dimensionsX' => $_REQUEST['dimensionsX']
 					, 'dimensionsY' => $_REQUEST['dimensionsY']
+					, 'domain' => !empty($_REQUEST['domain']) ? $_REQUEST['domain'] : NULL
+					, 'attribution_url' => !empty($_REQUEST['attribution_url']) ? $_REQUEST['attribution_url'] : NULL
 				)
 			);
 			$image = $Image->add_image($image_params);
@@ -860,9 +862,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 					 */
                      'image_id' => $image_id ,
 					 'user_id' => $_REQUEST['user_id'],
-					 'description' => !empty($_REQUEST['description']) ? $_REQUEST['description'] : '',
-                     'domain' => ( $_REQUEST['domain'] ),
-             		 'attribution_url' => ( $_REQUEST['attribution_url'] )
+					 'description' => !empty($_REQUEST['description']) ? $_REQUEST['description'] : ''
 				)
 			);
 			$post = $Posting->addPost($post_params);
