@@ -295,7 +295,7 @@ class Posting extends db {
 
 		//$row = $this->get_row($this->table, $params['conditions']);
 		$data = $this->run($query, $values);
-		$row = $data->fetchAll();
+		$row = $data ? $data->fetchAll() : false;
 		if ($row === false) {
 			 return resultArray(false, NULL, 'Could not get category.');
 		}
