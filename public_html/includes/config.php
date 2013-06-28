@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT);
+ini_set('display_errors', '0');
 
 //define('API_KEY_DEVELOPER', '4fcd8fd1bd0f8b3e99074fa393ce76a6');
 //define('PRIVATE_KEY_DEVELOPER', 'a885d0a41c3daa7e8bdb73984771d696');
