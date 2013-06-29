@@ -279,7 +279,7 @@ class Posting extends db {
 				' . $select_str . '
 			FROM ' . $from_prefix . '
 				INNER JOIN image ON posting.image_id = image.id
-				INNER JOIN user_username ON posting.user_id = user_username.user_id
+				INNER JOIN user_username ON posting.user_id = .user_id
 				LEFT JOIN posting_like AS pl ON posting.posting_id = pl.posting_id
 				LEFT JOIN dahliawolf_repository.imageInfo AS imageInfo ON image.repo_image_id = imageInfo.id
 				LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
@@ -565,7 +565,7 @@ class Posting extends db {
 				, IFNULL(COUNT(pv.posting_id), 0) AS votes
 				' . $select_str . '
 				, product_lang.name AS product_name
-				, product.status, product.price
+				, product.status, product.price, product.wholesale_price
 				, CONCAT("http://content.dahliawolf.com/shop/product/image.php?file_id=", (SELECT product_file_id FROM offline_commerce_v1_2013.product_file WHERE product_id = product_lang.id_product ORDER BY product_file_id ASC LIMIT 1)) AS image_url
 				, CONCAT("http://content.dahliawolf.com/shop/product/inspirations/image.php?id_product=", product_lang.id_product) AS inspiration_image_url
 				, m.posting_ids
