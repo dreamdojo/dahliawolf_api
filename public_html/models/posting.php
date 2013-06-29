@@ -279,7 +279,7 @@ class Posting extends db {
 				' . $select_str . '
 			FROM ' . $from_prefix . '
 				INNER JOIN image ON posting.image_id = image.id
-				INNER JOIN user_username ON posting.user_id = .user_id
+				INNER JOIN user_username ON posting.user_id = user_username.user_id
 				LEFT JOIN posting_like AS pl ON posting.posting_id = pl.posting_id
 				LEFT JOIN dahliawolf_repository.imageInfo AS imageInfo ON image.repo_image_id = imageInfo.id
 				LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
