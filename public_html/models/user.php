@@ -451,7 +451,7 @@ class User extends db {
 		}
 
 		$query = '
-			SELECT user_username.*
+			SELECT UNIQUE user_username.*
 				' . $select_str . '
 			FROM follow
 				INNER JOIN user_username AS user ON follow.user_id = user.user_id

@@ -685,9 +685,9 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 		else if ($_REQUEST['function'] == 'get_followers') {
 			$params = array(
 				'where' => array(
-					'user_id' => !empty($_REQUEST['user_id']) ? $_REQUEST['user_id'] : NULL
-					, 'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL
-					, 'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL
+                    'user_id' => !empty($_REQUEST['user_id']) ? $_REQUEST['user_id'] : NULL,
+                    'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
+                    'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL
 				)
 			);
 			if (!empty($_REQUEST['limit'])) {
