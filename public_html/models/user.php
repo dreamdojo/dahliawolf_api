@@ -451,7 +451,7 @@ class User extends db {
 		}
 
 		$query = '
-			SELECT UNIQUE user_username.*
+			SELECT DISTINCT user_username.*
 				' . $select_str . '
 			FROM follow
 				INNER JOIN user_username AS user ON follow.user_id = user.user_id
@@ -461,6 +461,11 @@ class User extends db {
 			ORDER BY follow.created DESC
 			' . $this->generate_limit_offset_str($params) . '
 		';
+
+        if(isset($_GET['t']))
+        {
+            echo sprintf('query: %s', $query);
+        }
 
 		$result = $this->run($query, $values);
 
