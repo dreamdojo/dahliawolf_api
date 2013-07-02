@@ -176,7 +176,7 @@ class User extends db {
 					WHERE follow.follower_user_id = user_username.user_id
 				) AS following
 				, (
-					SELECT COUNT(*)
+					SELECT DISTINCT COUNT(*)
 					FROM follow
 					WHERE follow.user_id = user_username.user_id
 				) AS followers
