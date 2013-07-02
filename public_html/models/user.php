@@ -203,6 +203,8 @@ class User extends db {
 			LIMIT 1
 		';
 
+        if(isset($_GET['t'])) echo sprintf('query: %s', $query);
+
 		$result = $this->run($query, $values);
 		$rows = $result->fetchAll();
 
@@ -462,10 +464,7 @@ class User extends db {
 			' . $this->generate_limit_offset_str($params) . '
 		';
 
-        if(isset($_GET['t']))
-        {
-            echo sprintf('query: %s', $query);
-        }
+        if(isset($_GET['t'])) echo sprintf('query: %s', $query);
 
 		$result = $this->run($query, $values);
 
