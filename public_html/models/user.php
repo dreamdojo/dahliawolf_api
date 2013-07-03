@@ -204,10 +204,14 @@ class User extends db {
 			LIMIT 1
 		';
 
-        if(isset($_GET['t'])) echo sprintf('query: %s', $query);
-
-		$result = $this->run($query, $values);
+        $result = $this->run($query, $values);
 		$rows = $result->fetchAll();
+
+        if(isset($_GET['t']))
+        {
+            echo sprintf('query: %s', $query);
+            echo sprintf('result: %s', var_export($rows, true));
+        }
 
 		if (empty($rows)) {
 			 return resultArray(false, NULL, 'Could not get user.');
