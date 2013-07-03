@@ -209,22 +209,16 @@ class User extends db {
 
         if(isset($_GET['t']))
         {
-            echo sprintf('query: %s', $query);
-            echo sprintf('result: %s', var_export($rows, true));
+            echo sprintf("query: %s\n", $query);
+            echo sprintf("result: %s\n", var_export($rows, true));
         }
 
-		if (empty($rows)) {
-			 return resultArray(false, NULL, 'Could not get user.');
-		}
-
         $followers = self::get_followers($params);
-        if(@count($followers)>0)$rows['followers'] = count($followers);
+        if(@count($followers['data'])>0) $rows[0]['followers'] = count($followers['data']);
+        else $rows[0]['followers'] = 0;
 
-
-        if(isset($_GET['t']))
-        {
-            echo sprintf('final_result: %s', $rows);
-            echo sprintf('followers: %s', var_export($followers, true));
+        if (empty($rows)) {
+            return resultArray(false, NULL, 'Could not get user.');
         }
 
 		return resultArray(true, $rows[0]);
