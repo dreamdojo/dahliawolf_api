@@ -217,6 +217,9 @@ class User extends db {
 			 return resultArray(false, NULL, 'Could not get user.');
 		}
 
+        $followers = self::get_followers($params);
+        if(count)$rows['followers'] = count($followers);
+
 		return resultArray(true, $rows[0]);
 	}
 
