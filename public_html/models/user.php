@@ -163,15 +163,6 @@ class User extends db {
 		}
 
 
-
-        $followers_query = ' (
-        			SELECT DISTINCT user_username_follow.*
-        			FROM user_username AS user_username_follow
-        				INNER JOIN user_username AS user_follow_ ON user_username_follow.user_id = user_follow.user_id
-        				INNER JOIN user_username AS ON user_username_follow.follower_user_id = user_username.user_id
-        			WHERE ' . 'user_username.user_id = :user_id ) ';
-
-
 		$query = '
 			SELECT user_username.*
 				, (
@@ -186,14 +177,9 @@ class User extends db {
 					WHERE follow.follower_user_id = user_username.user_id
 				) AS following
 				, (
-					SELECT DISTINCT COUNT(*)
-                        FROM (
-                            SELECT DISTINCT user_username_follow.*
-                            FROM follow AS user_username_follow
-                                INNER JOIN user_username AS user_follow ON user_username_follow.user_id = user_follow.user_id
-                                INNER JOIN user_username AS user_follow2 ON user_username_follow.follower_user_id = user_follow2.user_id
-                            WHERE user_username_follow.user_id = :user_id ) as user_follower
-
+					SELECT COUNT(*)
+					FROM follow
+					WHERE follow.user_id = user_username.user_id
 				) AS followers
 				, (
 					SELECT COUNT(*)
