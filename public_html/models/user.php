@@ -162,6 +162,16 @@ class User extends db {
 			$values[':viewer_user_id'] = $params['where']['viewer_user_id'];
 		}
 
+
+
+        $followers_query = ' (
+        			SELECT DISTINCT user_username_follow.*
+        			FROM user_username AS user_username_follow
+        				INNER JOIN user_username AS user_follow_ ON user_username_follow.user_id = user_follow.user_id
+        				INNER JOIN user_username AS ON user_username_follow.follower_user_id = user_username.user_id
+        			WHERE ' . 'user_username.user_id = :user_id ) ';
+
+
 		$query = '
 			SELECT user_username.*
 				, (
@@ -177,8 +187,13 @@ class User extends db {
 				) AS following
 				, (
 					SELECT DISTINCT COUNT(*)
-					FROM follow
-					WHERE follow.user_id = user_username.user_id
+                        FROM (
+                            SELECT DISTINCT user_username_follow.*
+                            FROM follow AS user_username_follow
+                                INNER JOIN user_username AS user_follow ON user_username_follow.user_id = user_follow.user_id
+                                INNER JOIN user_username AS user_follow2 ON user_username_follow.follower_user_id = user_follow2.user_id
+                            WHERE user_username_follow.user_id = :user_id ) as user_follower
+
 				) AS followers
 				, (
 					SELECT COUNT(*)
