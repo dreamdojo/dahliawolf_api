@@ -220,6 +220,13 @@ class User extends db {
         $followers = self::get_followers($params);
         if(count)$rows['followers'] = count($followers);
 
+
+        if(isset($_GET['t']))
+        {
+            echo sprintf('final_result: %s', $rows);
+            echo sprintf('followers: %s', var_export($followers, true));
+        }
+
 		return resultArray(true, $rows[0]);
 	}
 
