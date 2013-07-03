@@ -218,7 +218,7 @@ class User extends db {
 		}
 
         $followers = self::get_followers($params);
-        if(count)$rows['followers'] = count($followers);
+        if(@count($followers)>0)$rows['followers'] = count($followers);
 
 
         if(isset($_GET['t']))
