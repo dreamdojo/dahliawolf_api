@@ -423,7 +423,8 @@ class Posting extends db {
 
         if (isset($_GET['t'])) {
 			echo $query;
-			print_r($values);die();
+			print_r($values);
+            //die();
 		}
 
 
