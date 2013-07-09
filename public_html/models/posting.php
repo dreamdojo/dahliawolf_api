@@ -567,7 +567,7 @@ class Posting extends db {
 				, CONCAT("http://content.dahliawolf.com/shop/product/inspirations/image.php?id_product=", product_lang.id_product) AS inspiration_image_url
 				, m.posting_ids
 			FROM (
-					SELECT MIN(posting_product.created) AS pp_created, GROUP_CONCAT(posting_product.posting_id SEPARATOR "|") AS posting_ids
+					SELECT MIN(posting_product.created) AS pp_created, GROUP_CONCAT(posting_product.posting_id ORDER BY posting_product.created ASC SEPARATOR "|") AS posting_ids
 					FROM posting
 						INNER JOIN posting_product ON posting.posting_id = posting_product.posting_id
 					GROUP BY posting_product.product_id
