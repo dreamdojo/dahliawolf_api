@@ -538,8 +538,9 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'facebook_post'
 				, 'instagram_username'
 				, 'pinterest_username'
-				, 'comment_notifications'
-				, 'like_notifications'
+				//, 'comment_notifications'
+				//, 'like_notifications'
+				, 'notification_interval'
 
 				// temp for import
 				, 'member_id'
@@ -589,7 +590,9 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'instagram_username'
 				, 'pinterest_username'
 				, 'comment_notifications'
-				, 'like_notifications'
+				//, 'like_notifications'
+				//, 'comment_notifications'
+				, 'notification_interval'
 			);
 
 			foreach ($fields as $field) {
