@@ -1053,8 +1053,8 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 
 				// Send email
 				unset($Posting);
-				$Email = new Email();
-				$Email->email('liked', $post_user_id, array('posting_id' => $_REQUEST['posting_id']));
+				/*$Email = new Email();
+				$Email->email('liked', $post_user_id, array('posting_id' => $_REQUEST['posting_id']));*/
 			}
 
 			echo json_pretty(json_encode($posting_like));
@@ -1661,12 +1661,12 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'comment') {
 
 			// Send email
 			unset($Comment);
-			$Posting = new Posting();
+			/*$Posting = new Posting();
 			$post = $Posting->get_row('posting', array('posting_id' => $_REQUEST['posting_id']));
 			$post_user_id = $post[0]['user_id'];
 			unset($Posting);
 			$Email = new Email();
-			$Email->email('commented', $post_user_id, array('posting_id' => $_REQUEST['posting_id']));
+			$Email->email('commented', $post_user_id, array('posting_id' => $_REQUEST['posting_id']));*/
 
 			// Log activity
 			log_activity($post_user_id, 32, 'Received a comment on an image', 'comment', $comment['data']['comment_id']);
