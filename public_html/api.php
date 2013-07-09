@@ -769,17 +769,23 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
             }
             $user_data = $user->getTopFollowing($params);
 
+            if($_REQUEST['t'])
+            {
+                //var_dump($user_data);
+            }
+
             if(is_array($user_data['data']))
             {
+                //var_dump($user_data);
+
                 $posts_params = array();
                 foreach($user_data['data'] as $u_data)
                 {
+                    //var_dump($u_data);
+
                     $where_params = array(
-                        'user_id',
+                        'user_id' =>  $u_data['user_id']
                     );
-
-
-                    $posting  = new Posting();
 
                     if (!empty($_REQUEST['posts_offset'])) $posts_params['offset'] = $_REQUEST['posts_offset'];
 
@@ -798,7 +804,11 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                         }
                     }
 
+                    $posting  = new Posting();
                     $user_posts =  $posting->allPosts($posts_params);
+
+                    var_dump($posts_params);
+                    var_dump($user_posts);
 
                     if($user_posts['data']) $u_data['posts'] = $user_posts['data'];
                 }
