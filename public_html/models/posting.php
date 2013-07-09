@@ -366,21 +366,17 @@ class Posting extends db {
 
 		// Hot (sort by likes within x days)
 		if (!empty($params['like_day_threshold'])) {
-			$outer_select_str = ', total_posting_likes.day_threshold_likes';
-			$outer_join_str = '
-				LEFT JOIN (
-					SELECT posting_like.posting_id, IFNULL(COUNT(posting_like.posting_id), 0) AS day_threshold_likes
-					FROM posting_like
-						INNER JOIN posting ON posting_like.posting_id = posting.posting_id
-						INNER JOIN user_username ON posting.user_id = user_username.user_id
-						' . (!empty($params['where']['viewer_user_id']) ? 'LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
-						AND posting_dislike.user_id = :viewer_user_id' : '') . '
-					WHERE posting_like.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW() ' . $where_str . '
-					GROUP BY posting.posting_id
-				) AS total_posting_likes ON posting.posting_id = total_posting_likes.posting_id
+			$outer_select_str = ', posting.day_threshold_likes';
+			$hot_select_str = ', IFNULL(COUNT(posting_like.posting_id), 0) AS day_threshold_likes';
+			$join_str .= '
+				INNER JOIN posting_like ON posting.posting_id = posting_like.posting_id
 			';
-			$outer_order_by_str = 'day_threshold_likes DESC';
+			$hot_order_by_str = 'day_threshold_likes DESC';
 			$values[':like_day_threshold'] = $params['like_day_threshold'];
+
+			// Only show posts within threshold
+			$where_str .= ' AND posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()';
+			$group_by_str = 'GROUP BY posting.posting_id';
 		}
 
 		// Timestamp
@@ -401,6 +397,7 @@ class Posting extends db {
 						, user_username.username, user_username.location, user_username.avatar
 						, CONCAT(image.source, "image.php?imagename=", image.imagename) AS image_url
 						' . $select_str . '
+						' . (!empty($hot_select_str) ? $hot_select_str : '') . '
 					FROM posting
 						INNER JOIN image ON posting.image_id = image.id
 						INNER JOIN user_username ON posting.user_id = user_username.user_id
@@ -409,6 +406,7 @@ class Posting extends db {
 					    AND image.dimensionsX > 0 AND image.dimensionsY > 0
 						AND posting.deleted IS NULL
 						' . (!empty($where_str) ? $where_str : '') . '
+					' . (!empty($group_by_str) ? $group_by_str : '') . '
 					ORDER BY ' . $order_by_str . '
 					' . $this->generate_limit_offset_str($params) . '
 				) AS posting
@@ -418,9 +416,8 @@ class Posting extends db {
 				LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
 				LEFT JOIN dahliawolf_repository.site AS site ON search_site_link.site_id = site.site_id
 				LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
-				' . (!empty($outer_join_str) ? $outer_join_str : '') . '
 			GROUP BY posting.posting_id
-			ORDER BY ' . (!empty($outer_order_by_str) ? $outer_order_by_str : $order_by_str) . '
+			ORDER BY ' . (!empty($hot_order_by_str) ? $hot_order_by_str : $order_by_str) . '
 		';
 
 
