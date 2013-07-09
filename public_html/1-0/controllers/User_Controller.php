@@ -676,7 +676,7 @@ class User_Controller extends _Controller {
 				'label' => 'Password'
 				, 'rules' => array(
 					'is_set' => NULL
-					, 'is_len_min' => 8
+					, 'is_len_min' => 4
 				)
 			)
 			, 'password_old' => array(
@@ -784,7 +784,7 @@ class User_Controller extends _Controller {
 				'label' => 'Password'
 				, 'rules' => array(
 					'is_set' => NULL
-					, 'is_len_min' => 8
+					, 'is_len_min' => 4
 				)
 			)
 			, 'key' => array(
