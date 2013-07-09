@@ -2,7 +2,7 @@
 error_reporting(0);
 require('includes/config.php');
 require('models/database.php');
-require('models/posting.php'); // Added by Dev
+require('models/Posting.php'); // Added by Dev
 $db = new Posting( "mysql:host=$db_host;dbname=$db_name", $db_user, $db_pass );
 
 

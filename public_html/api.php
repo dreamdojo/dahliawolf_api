@@ -9,7 +9,7 @@ session_start();
 
 require_once 'includes/config.php';
 //require_once 'models/users.php';
-require_once 'models/posting.php';
+require_once 'models/Posting.php';
 require_once 'models/Image.php';
 require_once 'models/user.php';
 require_once 'models/Posting_Like.php';
@@ -751,6 +751,64 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
 			echo json_pretty(json_encode(($users)));
 			return;
+        }
+        else if ($_REQUEST['function'] == 'get_top_following')
+        {
+            $params = array(
+                'where' => array(
+                    'user_id' => !empty($_REQUEST['user_id']) ? $_REQUEST['user_id'] : NULL,
+                    'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
+                    'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL
+                )
+            );
+            if (!empty($_REQUEST['limit'])) {
+                $params['limit'] = $_REQUEST['limit'];
+            }
+            if (!empty($_REQUEST['offset'])) {
+                $params['offset'] = $_REQUEST['offset'];
+            }
+            $user_data = $user->getTopFollowing($params);
+
+            if(is_array($user_data['data']))
+            {
+                $posts_params = array();
+                foreach($user_data['data'] as $u_data)
+                {
+                    $where_params = array(
+                        'user_id',
+                    );
+
+
+                    $posting  = new Posting();
+
+                    if (!empty($_REQUEST['posts_offset'])) $posts_params['offset'] = $_REQUEST['posts_offset'];
+
+                    //query limits
+                    if (!empty($_REQUEST['posts_limit']))  $posts_params['limit'] = $_REQUEST['posts_limit'];
+                    else $posts_params['limit'] = 5;
+
+                    $params['where'] = array(
+                        'user_id' ,
+                        'username',
+                        'viewer_user_id'
+                    );
+                    foreach ($where_params as $param) {
+                        if (isset($_REQUEST[$param])) {
+                            $params['where'][$param] = $_REQUEST[$param];
+                        }
+                    }
+
+                    $user_posts =  $posting->allPosts($posts_params);
+
+                    if($user_posts['data']) $u_data['posts'] = $user_posts['data'];
+                }
+
+            }
+
+
+            echo json_pretty(json_encode(($user_data)));
+            return;
+
 		} else {
 			resultArray(FALSE, "Function doesn't exist!");
 		}
