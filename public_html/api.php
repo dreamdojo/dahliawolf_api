@@ -1,7 +1,4 @@
 <?php
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
-
 header('Content-Type: application/json');
 error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT);
 ini_set('display_errors', '0');
@@ -25,13 +22,6 @@ require DR . '/lib/php/class.phpmailer.php';
 require DR . '/lib/php/email.php';
 require_once 'models/Email.php';
 require_once 'includes/php/json_functions.php';
-
-
-if(isset($_GET['t']))
-{
-    var_dump($_GET);
-    var_dump($_POST);
-}
 
 function add_user_point($data) {
 	// Look up points value if not set
@@ -178,8 +168,6 @@ function search_term_cron_curl($username, $domain_keyword = NULL) {
 	//close connection
 	curl_close($ch);
 }
-
-header('Content-type: application/json');
 
 if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 	if (isset($_REQUEST['function'])) {
