@@ -316,9 +316,6 @@ class Posting extends db {
 			if (in_array($params['order_by'], $order_by_columns)) {
 				$order_by_str = $params['order_by'] . ' DESC';
 			}
-			else if ($params['order_by'] == 'rand') {
-				$order_by_str = 'RAND()';
-			}
 		}
 
 		$select_str = '';
@@ -377,6 +374,15 @@ class Posting extends db {
 			// Only show posts within threshold
 			$where_str .= ' AND posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()';
 			$group_by_str = 'GROUP BY posting.posting_id';
+		}
+
+		// Filter by following
+		if (!empty($params['filter_by']) && !empty($params['follower_user_id'])) {
+			$join_str .= '
+				INNER JOIN follow ON user_username.user_id = follow.user_id
+			';
+			$where_str .= ' AND follow.follower_user_id = :follower_user_id';
+			$values[':follower_user_id'] = $params['follower_user_id'];
 		}
 
 		// Timestamp

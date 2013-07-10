@@ -826,6 +826,10 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			if (!empty($_REQUEST['order_by'])) {
 				$params['order_by'] = $_REQUEST['order_by'];
 			}
+			if (!empty($_REQUEST['filter_by']) && !empty($_REQUEST['follower_user_id'])) {
+				$params['filter_by'] = $_REQUEST['filter_by'];
+				$params['follower_user_id'] = $_REQUEST['follower_user_id'];
+			}
 			if (!empty($_REQUEST['like_day_threshold'])) {
 				$params['like_day_threshold'] = $_REQUEST['like_day_threshold'];
 			}
