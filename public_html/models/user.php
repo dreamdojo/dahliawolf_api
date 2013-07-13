@@ -669,6 +669,37 @@ class User extends db {
 		return resultArray(true, $rows[0]['points']);
 	}
 
+	public function get_membership_level($user_id) {
+		$query = '
+			SELECT user.points, user.points_threshold
+				, membership_level.name
+			FROM
+				(
+					SELECT user_username.points
+						, (
+							SELECT MAX(points)
+							FROM membership_level
+							WHERE membership_level.points <= user_username.points
+							LIMIT 1
+						) AS points_threshold
+					FROM user_username
+					WHERE user_username.user_id = :user_id
+				) AS user
+				INNER JOIN membership_level ON user.points_threshold = membership_level.points
+		';
+		$values = array(
+			':user_id' => $user_id
+		);
+		$result = $this->run($query, $values);
+
+		if ($result === false) {
+			 return resultArray(false, NULL, 'Could not get user membership level.');
+		}
+
+		$rows = $result->fetchAll();
+		return resultArray(true, $rows[0]);
+	}
+
 	public function get_users_by_username($usernames) {
 		$in_str = implode(',', array_fill(0, count($usernames), '?'));
 		$query = '

@@ -1,7 +1,7 @@
 <?
 // @daily php /var/www/crons/daily-summary-emails.php
 if (!empty($_SERVER)) {
-	//die();
+	die();
 }
 
 set_time_limit(0);

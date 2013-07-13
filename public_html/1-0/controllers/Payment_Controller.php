@@ -46,6 +46,10 @@ class Payment_Controller extends _Controller {
 			array(
 				'active' => '1'
 			)
+			, array(
+				'order_by_field' => 'name'
+				, 'order_by_desc' => false
+			)
 		);
 		
 		return static::wrap_result(true, $data);
@@ -137,7 +141,142 @@ class Payment_Controller extends _Controller {
 		return static::wrap_result(true, $data);
 	}
 	
+	public function begin_paypal_purchase($params = array()) {
+		$this->load('Config');
+		$this->load('Payment_Method');
+		$data = array();
+		
+		$validate_names = array(
+			'purchase_info' => NULL
+			, 'return_url' => NULL
+			, 'cancel_url' => NULL
+		);
+		
+		$validate_params = array_merge($validate_names, $params);
+		
+		// Validations
+		$input_validations = array(
+			'purchase_info' => array(
+				'label' => 'Amount'
+				, 'rules' => array(
+					'is_set' => NULL
+					, 'is_array' => NULL
+				)
+			)
+			, 'return_url' => array(
+				'label' => 'Return Url'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+			, 'cancel_url' => array(
+				'label' => 'Cancel Url'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+		);
+		
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+		
+		$pm = $this->Payment_Method->get_row(
+			array(
+				'name' => 'PayPal'
+				, 'active' => '1'
+			)
+		);
+		if (empty($pm)) {
+			_Model::$Exception_Helper->request_failed_exception('PayPal payment method not found.');
+		}
+		
+		$paymentArray = array(
+			'amount' => $params['purchase_info']['amount']
+			, 'currency' => 'USD'
+			, 'item_description' => $params['purchase_info']['item_description']
+			, 'item_name' => $params['purchase_info']['item_name']
+		);
+		
+		$username = $this->Config->get_value('PayPal API Username');
+		$password = $this->Config->get_value('PayPal API Password');
+		$signature = $this->Config->get_value('PayPal API Signature');
+		$use_sandbox_config = $this->Config->get_value('PayPal API Use Sandbox');
+		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		if (empty($username) || empty($password) || empty($signature) || !is_numeric($use_sandbox_config)) {
+			_Model::$Exception_Helper->request_failed_exception('PayPal configurations are not set.');
+		}
+		
+		$p = new PayPalExpressCheckout($use_sandbox, $username, $password, $signature);
+		
+		$results = $p->beginPurchase($paymentArray, $params['return_url'], $params['cancel_url']);
+		
+		if (!$results['success']) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $results['errors']);
+		}
+		
+		$data = $results['data'];
+		$data['payment_method_id'] = $pm['payment_method_id'];
+		
+		return static::wrap_result(true, $data);
+	}
 	
+	public function complete_paypal_purchase($params = array()) {
+		$this->load('Config');
+		$this->load('Payment_Method');
+		$data = array();
+		
+		$validate_names = array(
+			'amount' => NULL
+			, 'token' => NULL
+		);
+		
+		$validate_params = array_merge($validate_names, $params);
+		
+		// Validations
+		$input_validations = array(
+			'amount' => array(
+				'label' => 'Amount'
+				, 'rules' => array(
+					'is_set' => NULL
+					, 'is_decimal' => 2
+					, 'is_positive' => NULL
+				)
+			)
+			, 'token' => array(
+				'label' => 'Return Url'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+		);
+		
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+		
+		
+		$username = $this->Config->get_value('PayPal API Username');
+		$password = $this->Config->get_value('PayPal API Password');
+		$signature = $this->Config->get_value('PayPal API Signature');
+		$use_sandbox_config = $this->Config->get_value('PayPal API Use Sandbox');
+		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		if (empty($username) || empty($password) || empty($signature) || !is_numeric($use_sandbox_config)) {
+			_Model::$Exception_Helper->request_failed_exception('PayPal configurations are not set.');
+		}
+		
+		$p = new PayPalExpressCheckout($use_sandbox, $username, $password, $signature);
+		
+		$results = $p->completePurchase($params['token'], $params['amount']);
+		
+		if (!$results['success']) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $results['errors']);
+		}
+		
+		$data = $results['data'];
+		
+		return static::wrap_result(true, $data);
+	}
 }
 
 ?>

@@ -176,9 +176,22 @@ class _Model {
 		$sql = '
 			SELECT ' . $select_str . '
 			FROM ' . $called_class::TABLE . '
-			WHERE ' . (!empty($where_str) ? $where_str : '1') . '
-			ORDER BY ' . $called_class::PRIMARY_KEY_FIELD . ' ASC
-			' . ($single ? 'LIMIT 1' : '');
+			WHERE ' . (!empty($where_str) ? $where_str : '1') . ' ';
+			
+		if (!empty($options['order_by_field'])) {
+			$sql .= ' ORDER BY ' . $options['order_by_field'];
+			if (!empty($options['order_by_desc']) && $options['order_by_desc'] === true) {
+				$sql .= ' DESC ';
+			}
+			else {
+				$sql .= ' ASC ';
+			}
+		}
+		else {
+			$sql .= ' ORDER BY ' . $called_class::PRIMARY_KEY_FIELD . ' ASC ';
+		}
+		
+		$sql .=  $single ? ' LIMIT 1' : '';
 		
 		try {
 			$data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $pdo_params);

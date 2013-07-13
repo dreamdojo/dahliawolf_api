@@ -644,12 +644,30 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_points') {
+			check_required(
+				array(
+					'user_id'
+				)
+			);
+
 			$params = array(
 				'where' => array(
 					'user_id' => !empty($_REQUEST['user_id']) ? $_REQUEST['user_id'] : NULL
 				)
 			);
 			$user = $user->get_points($params);
+
+			echo json_pretty(json_encode(($user)));
+			return;
+		}
+		else if ($_REQUEST['function'] == 'get_membership_level') {
+			check_required(
+				array(
+					'user_id'
+				)
+			);
+
+			$user = $user->get_membership_level($_REQUEST['user_id']);
 
 			echo json_pretty(json_encode(($user)));
 			return;
