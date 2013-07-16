@@ -4,10 +4,10 @@ class Feed_Image extends db {
 
 	private $table = 'imageInfo';
 
-	public function __construct() { 
+	public function __construct() {
 		parent::__construct('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME_REPOSITORY);
 	}
-	
+
 	public function get_feed_images($params = array()) {
 		$where_sql = '';
 		$values = array();
@@ -65,7 +65,8 @@ class Feed_Image extends db {
 				$order_by = 'RAND()';
 			}
 		}
-		
+
+        /*
 		$sql = '
 			SELECT imageInfo.*
 				, CONCAT("upload/", imageURL) AS src
@@ -83,6 +84,34 @@ class Feed_Image extends db {
 			ORDER BY ' . $order_by . '
 			' . $limit_sql . '
 		';
+        */
+
+        $sql = "SELECT
+                *
+                FROM
+                    (SELECT
+                        imageInfo . *,
+                            CONCAT('upload/', imageURL) AS src,
+                            IF(bigImageURL = '', NULL, CONCAT('upload/', bigImageURL)) AS big_src,
+                            imagename AS alt,
+                            imageInfo.keyword AS keywords,
+                            site.domain,
+                            site.domain_keyword
+                    FROM
+                        imageInfo
+                    LEFT JOIN search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
+                    LEFT JOIN search ON search_site_link.search_id = search.search_id
+                    LEFT JOIN site ON search_site_link.site_id = site.site_id
+                    $join_str
+                    WHERE
+                        imageURL IS NOT NULL AND imageURL != '' ".
+                        (!empty($where_sql) ? $where_sql : '')
+                        #ORDER BY id DESC
+                    ."
+                    LIMIT 1000 ) as images
+                ORDER BY $order_by
+                $limit_sql
+                ";
 		/*
 		 * LEFT JOIN search ON imageInfo.search_id = search.search_id
 				LEFT JOIN search_site_link ON search.search_id = search_site_link.search_id
@@ -90,16 +119,20 @@ class Feed_Image extends db {
 		 */
 		 if (isset($_GET['t'])) {
 		 	echo $sql;
-		 	print_r($values);die();
+		 	print_r($values);
+            //die();
 		 }
 
-		$result = $this->run($sql, $values);
-		
-		if (empty($result)) {
-			 return resultArray(false, NULL, 'Could not get feed images.');
-		}
-		$rows = $result->fetchAll();
-		
+        try{
+
+            $result = $this->run($sql, $values);
+
+            if (empty($result)) {
+                 return resultArray(false, NULL, 'Could not get feed images.');
+            }
+            $rows = $result->fetchAll();
+        }catch (Exception $e ) {$rows = array();}
+
 		return resultArray(true, $rows);
 	}
 	

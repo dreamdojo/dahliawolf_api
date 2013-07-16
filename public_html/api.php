@@ -1764,6 +1764,10 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'feed_image') {
 	if (isset($_REQUEST['function'])) {
 		$Feed_Image = new Feed_Image();
 		if ($_REQUEST['function'] == 'get_feed_images') {
+
+            $start = microtime(true);
+            error_log("api_call start: ". $start );
+
 			$params = array(
 				'where' => array()
 			);
@@ -1788,7 +1792,10 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'feed_image') {
 				$params['order_by'] = 'rand';
 			}
 
+            error_log( "api_call before Feed_Image->get_feed_images(): ". (microtime(true)-$start) );
 			echo json_pretty(json_encode(($Feed_Image->get_feed_images($params))));
+            $start = microtime(true);
+            error_log( "api_call end: ". (microtime(true)-$start) );
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_feed_image') {
