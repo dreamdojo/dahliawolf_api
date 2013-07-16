@@ -364,9 +364,9 @@ class Posting extends db {
 		// Hot (sort by likes within x days)
 		if (!empty($params['like_day_threshold'])) {
 			$outer_select_str = ', posting.day_threshold_likes';
-			$hot_select_str = ', IFNULL(COUNT(posting_like.posting_id), 0) AS day_threshold_likes';
+			$hot_select_str = ', IFNULL(COUNT(posting_like_hot.posting_id), 0) AS day_threshold_likes';
 			$join_str .= '
-				INNER JOIN posting_like ON posting.posting_id = posting_like.posting_id
+				INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
 			';
 			$hot_order_by_str = 'day_threshold_likes DESC';
 			$values[':like_day_threshold'] = $params['like_day_threshold'];
