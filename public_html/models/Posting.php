@@ -560,21 +560,23 @@ class Posting extends db {
 			$values[':viewer_user_id'] = $params['where']['viewer_user_id'];
 		}
 
-		$query = '
-			SELECT posting.*
+		$query = "
+			SELECT
+			    posting.*,
+			    count( (select count(*) from offline_commerce_v1_2013.favorite_product)) AS `wishlist_count`
 				, image.imagename, image.source
 				, user_username.username, user_username.location, user_username.avatar
 				, posting_product.product_id
 				, vote_period.vote_period_id
 				, IFNULL(COUNT(pv.posting_id), 0) AS votes
-				' . $select_str . '
+				" . $select_str . "
 				, product_lang.name AS product_name
 				, product.status, product.price, product.wholesale_price
-				, CONCAT("http://content.dahliawolf.com/shop/product/image.php?file_id=", (SELECT product_file_id FROM offline_commerce_v1_2013.product_file WHERE product_id = product_lang.id_product ORDER BY product_file_id ASC LIMIT 1)) AS image_url
-				, CONCAT("http://content.dahliawolf.com/shop/product/inspirations/image.php?id_product=", product_lang.id_product) AS inspiration_image_url
+				, CONCAT('http://content.dahliawolf.com/shop/product/image.php?file_id=', (SELECT product_file_id FROM offline_commerce_v1_2013.product_file WHERE product_id = product_lang.id_product ORDER BY product_file_id ASC LIMIT 1)) AS image_url
+				, CONCAT('http://content.dahliawolf.com/shop/product/inspirations/image.php?id_product=', product_lang.id_product) AS inspiration_image_url
 				, m.posting_ids
 			FROM (
-					SELECT MIN(posting_product.created) AS pp_created, GROUP_CONCAT(posting_product.posting_id ORDER BY posting_product.created ASC SEPARATOR "|") AS posting_ids
+					SELECT MIN(posting_product.created) AS pp_created, GROUP_CONCAT(posting_product.posting_id ORDER BY posting_product.created ASC SEPARATOR '|') AS posting_ids
 					FROM posting
 						INNER JOIN posting_product ON posting.posting_id = posting_product.posting_id
 					GROUP BY posting_product.product_id
@@ -587,13 +589,19 @@ class Posting extends db {
 				INNER JOIN vote_period ON posting_product.vote_period_id = vote_period.vote_period_id
 				LEFT JOIN posting_vote AS pv ON posting.posting_id = pv.posting_id
 					AND pv.vote_period_id = :vote_period_id
-				' . $join_str . '
+            " . $join_str . "
 				LEFT JOIN offline_commerce_v1_2013.product AS product ON posting_product.product_id = product.id_product
+				LEFT JOIN offline_commerce_v1_2013.favorite_product AS whishlist ON whishlist.id_product = product.id_product
 			WHERE vote_period.vote_period_id = :vote_period_id
 			GROUP BY posting.posting_id
 			ORDER BY posting_product.created DESC
-			' . $this->generate_limit_offset_str($params) . '
-		';
+			" . $this->generate_limit_offset_str($params) . "
+		;";
+
+        if($_GET['t']){
+            echo "bind params: \n" . var_export($params, true) . "\n";
+            echo $query;
+        }
 
 		//$rows = $this->get_all($this->table);
 		$result = $this->run($query, $values);
