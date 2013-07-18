@@ -74,34 +74,69 @@ class _Controller {
 	public function process_request($request) {
 		$Status_Code = new Status_Code();
 		
+        /*
+              ___                                       ___
+             /  /\          ___           ___          /  /\
+            /  /::\        /__/\         /  /\        /  /::\
+           /  /:/\:\       \  \:\       /  /::\      /  /:/\:\
+          /  /:/  \:\       \__\:\     /  /:/\:\    /  /:/  \:\
+         /__/:/_\_ \:\      /  /::\   /  /::\ \:\  /__/:/ \__\:\
+         \  \:\__/\_\/     /  /:/\:\ /__/:/\:\ \:\ \  \:\ /  /:/
+          \  \:\ \:\      /  /:/__\/ \__\/  \:\_\/  \  \:\  /:/
+           \  \:\/:/     /__/:/           \  \:\     \  \:\/:/
+            \  \::/      \__\/             \__\/      \  \::/
+             \__\/                                     \__\/
+
+        */
+
 		// Authentication
+        /*
 		$api_key = !empty($request['api_key']) ? $request['api_key'] : NULL;
 		$client_hmac = !empty($request['hmac']) ? $request['hmac'] : NULL;
-		
+
+        if(strlen($api_key) < 8) $api_key = 'b968a167feba0990b283f0cd65757a60';
+
 		$API_Credential = new API_Credential();
 		$api_credential = $API_Credential->get_api_credential_by_api_key($api_key);
-		
-		
+
+
 		$private_key = !empty($api_credential) ? $api_credential['private_key'] : NULL;
-		
+
 		$API = new API($api_key, $private_key);
-		
+        */
+
+
 		$calls = $request['calls'];
 		if (is_string($calls)) {
 			$calls = json_decode($calls, true);
 		}
 		
-		$server_hmac = $API->get_hmac($calls);
-		
+		//$server_hmac = $API->get_hmac($calls);
+
+        /*
 		// Authorization Failed
 		if (empty($api_credential) || $api_credential['active'] != '1' || ($client_hmac != $server_hmac)) { // Invalid API Key
 			$result = static::wrap_result(false, NULL, $Status_Code->get_status_code_unauthorized(), array('Invalid API Key'));
-		}
-		// Authorized, Do Calls
-		else {
+
+        }else
+        */
+        {
+            /// hack to use GET vars as model data,and use function as the action.. legacy "API"
+            if( (!$calls || count($calls) ==0) && $request['function'] )
+            {
+                $calls[$request['function']] = $_GET;
+                unset($request['function']);
+            }
+
+            // Authorized, Do Calls
+
 			$results = array();
-			foreach ($calls as $function => $params) {
-				
+			foreach ($calls as $function => $params)
+            {
+                /// hack to use GET vars
+                if(!is_array($params)) $params = $_GET;
+
+
 				if ($params != '' && !is_array($params)) {
 					$results[$function] = static::wrap_result(false, NULL, $Status_Code->get_status_code_bad_request(), array('Invalid parameters.'));
 					continue;
@@ -213,7 +248,7 @@ class _Controller {
 		);
 		
 		try {
-			$insert_id = $this->API_Request_Log->save($info);
+			//$insert_id = $this->API_Request_Log->save($info);
 			
 		} catch(Exception $e) {
 			//self::$Exception_Helper->server_error_exception('Unable to log api request.');

@@ -1,7 +1,10 @@
 <?
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+
+error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT);
+ini_set('display_errors', '0');
+ini_set('memory_limit', '1024M');
 session_start();
+
 
 require_once 'config/config.php';
 
@@ -16,6 +19,7 @@ if (empty($endpoint)) {
 }
 
 try {
+    /** @var _Controller $controller */
 	$controller = new $controller_name();
 
 	$request = !empty($_POST) ? $_POST : $_GET;
@@ -44,7 +48,9 @@ try {
 	}
 	
 	// REST Call
-	else if ($request_method == 'REST' && !empty($request['calls'])) {
+	else if ($request_method == 'REST' && !empty($request['calls']))
+    {
+
 		$result = $controller->process_request($request);
 		
 		// JSON
