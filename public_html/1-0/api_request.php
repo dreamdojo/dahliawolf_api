@@ -1,6 +1,6 @@
 <?
 
-error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT);
+error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE);
 ini_set('display_errors', '0');
 ini_set('memory_limit', '1024M');
 session_start();
@@ -48,14 +48,15 @@ try {
 	}
 	
 	// REST Call
-	else if ($request_method == 'REST' && !empty($request['calls']))
+	else if ($request_method == 'REST' )
     {
-
 		$result = $controller->process_request($request);
+
+        header( sprintf("Content-Type: application/%s", $response_format));
 		
 		// JSON
 		if ($response_format == 'json') {
-			echo json_encode($result);
+			echo json_pretty($result);
 		}
 		// JSONP
 		else if ($response_format == 'jsonp') {
@@ -64,6 +65,14 @@ try {
 		
 		die();
 	}
+
+    header( sprintf("Content-Type: application/%s", $response_format));
+    echo json_pretty(array(
+
+              "success" => false,
+              "errors"=>'no api method'
+    ));
+
 	
 } catch (Exception $e) {
 	die($e->getMessage());	

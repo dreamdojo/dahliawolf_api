@@ -15,6 +15,8 @@ class _Model {
 	protected static $dbs = array();
 	protected $db_host = '';
 	protected $db_name = '';
+
+    protected $errors =null;
 	
 	public function __construct($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE) {
 		
@@ -24,17 +26,17 @@ class _Model {
 		if (class_exists('Database_Helper') 
 			&& (empty(self::$dbs[$db_host]) 
 			|| empty(self::$dbs[$db_host][$db_name]))
-		) {
+		){
 		
 			if (empty(self::$dbs[$db_host])) {
 				self::$dbs[$db_host] = array();
 			}
 			
 			$settings = array(
-				'host' => $db_host
-				, 'user' => $db_user
-				, 'password' => $db_password
-				, 'db_name' => $db_name
+                'host' => $db_host,
+                'user' => $db_user,
+                'password' => $db_password,
+                'db_name' => $db_name,
 			);
 			self::$dbs[$db_host][$db_name] = new Database_Helper();
 			self::$dbs[$db_host][$db_name]->open_connection($settings);
@@ -52,6 +54,23 @@ class _Model {
 		}
 		
 	}
+
+
+    protected function addError($key, $msg)
+    {
+        if(!$this->errors) $this->errors = array();
+        $this->errors[$key] = $msg;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function hasError()
+    {
+        return (@count($this->errors)>0);
+    }
 	
 	public function __destruct() {
 		/*
@@ -291,5 +310,18 @@ class _Model {
 		
 		return NULL;
 	}
+
+
+    public function fetch($sql, $pdo_params)
+    {
+        try {
+            $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $pdo_params);
+            return $data;
+        } catch (Exception $e) {
+            self::$Exception_Helper->server_error_exception($e->getMessage());
+            return null;
+        }
+        return null;
+    }
 }
 ?>

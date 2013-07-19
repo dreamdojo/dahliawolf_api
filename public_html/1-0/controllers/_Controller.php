@@ -4,6 +4,7 @@ class _Controller {
 	
 	public $default_error_message = 'Request could not be completed.';
 	public $data;
+    protected $data_objects;
 	
 	protected $Validate;
 	
@@ -25,8 +26,21 @@ class _Controller {
 	public function __destruct() {
 		unset($this->Model);
 	}
-	
-	
+
+
+    protected function addDataObject($object)
+    {
+        if(!$this->data_objects) $this->data_objects = array();
+        $this->data_objects[]=$object;
+    }
+
+
+    public function getStatusCode()
+    {
+        $status_code = new Status_Code();
+        return $status_code->get_status_code_ok();
+    }
+
 	
 	protected function load($model, $db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE) {
 		$className = ltrim($model, '_');
@@ -50,14 +64,14 @@ class _Controller {
 		if (!empty($errors) && !is_array($errors)) {
 			$errors = array($errors);
 		}
-		
-		return array(
-			'success' => $success === true ? true : false
-			, 'errors' => !empty($errors) ? $errors : NULL
-			, 'status_code' => !empty($status_code) ? $status_code : _Model::$Status_Code->get_status_code_ok()
-			, 'data' => isset($data) ? $data : NULL
-		);
-	}
+
+        return array(
+            'success' => $success === true ? true : false,
+            'errors' => !empty($errors) ? $errors : NULL,
+            'status_code' => !empty($status_code) ? $status_code : 200,
+            'data' => isset($data) ? $data : NULL
+        );
+    }
 	
 	public function convert_null_value(&$item, $key) {
 		if (empty($item) && trim($item) == '') {
@@ -120,70 +134,72 @@ class _Controller {
 
         }else
         */
+        //{
+
+
+        /// hack to use GET vars as model data,and use function as the action.. legacy "API"
+        if( (!$calls || count($calls) ==0) && $request['function'] )
         {
-            /// hack to use GET vars as model data,and use function as the action.. legacy "API"
-            if( (!$calls || count($calls) ==0) && $request['function'] )
-            {
-                $calls[$request['function']] = $_GET;
-                unset($request['function']);
+            $calls[$request['function']] = $_GET;
+            unset($request['function']);
+        }
+
+        // Authorized, Do Calls
+
+        $results = array();
+        if(is_array($calls)) foreach ($calls as $function => $params)
+        {
+            /// hack to use GET vars
+            if(!is_array($params)) $params = $_GET;
+
+
+            if ($params != '' && !is_array($params)) {
+                $results[$function] = static::wrap_result(false, NULL, $Status_Code->get_status_code_bad_request(), array('Invalid parameters.'));
+                continue;
             }
 
-            // Authorized, Do Calls
 
-			$results = array();
-			foreach ($calls as $function => $params)
-            {
-                /// hack to use GET vars
-                if(!is_array($params)) $params = $_GET;
+            //if (function_exists($function) || 1) {
+            if (method_exists($this, $function)) {
+                if (!is_array($params)) {
+                    $params = array();
+                }
 
+                if (empty($params) || is_assoc($params)) {
+                    try {
+                        array_walk_recursive($params, array($this, 'convert_null_value'));
+                        $results[$function] = $this->$function($params);
+                    } catch (Exception $e) {
+                        $errors = method_exists($e, 'get_errors') ? $e->get_errors() : $e->getMessage();
+                        $status_code = method_exists($e, 'get_status_code') ? $e->get_status_code() : NULL;
+                        $results[$function] = static::wrap_result(false, NULL, $status_code, $errors);
+                    }
+                }
+                else {
+                    $results[$function] = array();
 
-				if ($params != '' && !is_array($params)) {
-					$results[$function] = static::wrap_result(false, NULL, $Status_Code->get_status_code_bad_request(), array('Invalid parameters.'));
-					continue;
-				}
-				
-				
-				//if (function_exists($function) || 1) {
-				if (method_exists($this, $function)) {
-					if (!is_array($params)) {
-						$params = array();
-					}
-					
-					if (empty($params) || is_assoc($params)) {
-						try {
-							array_walk_recursive($params, array($this, 'convert_null_value'));
-							$results[$function] = $this->$function($params);
-						} catch (Exception $e) {
-							$errors = method_exists($e, 'get_errors') ? $e->get_errors() : $e->getMessage();
-							$status_code = method_exists($e, 'get_status_code') ? $e->get_status_code() : NULL;
-							$results[$function] = static::wrap_result(false, NULL, $status_code, $errors);
-						}
-					}
-					else {
-						$results[$function] = array();
-						
-						foreach ($params as $sub_params) {
-							try {
-								array_walk_recursive($sub_params, array($this, 'convert_null_value'));
-								$sub_results = $this->$function($sub_params);
-							} catch (Exception $e) {
-								$errors = method_exists($e, 'get_errors') ? $e->get_errors() : $e->getMessage();
-								$status_code = method_exists($e, 'get_status_code') ? $e->get_status_code() : NULL;
-								$sub_results = static::wrap_result(false, NULL, $status_code, $errors);
-							}
-							
-							array_push($results[$function], $sub_results);
-						}
-					}
-				}
-				// API function does not exist
-				else {
-					$results[$function] = static::wrap_result(false, NULL, $Status_Code->get_status_code_not_found(), array('Invalid API Call'));
-				}
-			}
-		
-			$result = static::wrap_result(true, $results);
-		}
+                    foreach ($params as $sub_params) {
+                        try {
+                            array_walk_recursive($sub_params, array($this, 'convert_null_value'));
+                            $sub_results = $this->$function($sub_params);
+                        } catch (Exception $e) {
+                            $errors = method_exists($e, 'get_errors') ? $e->get_errors() : $e->getMessage();
+                            $status_code = method_exists($e, 'get_status_code') ? $e->get_status_code() : NULL;
+                            $sub_results = static::wrap_result(false, NULL, $status_code, $errors);
+                        }
+
+                        array_push($results[$function], $sub_results);
+                    }
+                }
+            }
+            // API function does not exist
+            else {
+                $results[$function] = static::wrap_result(false, NULL, $Status_Code->get_status_code_not_found(), array('Invalid API Call'));
+            }
+        }
+
+        //$result = static::wrap_result(true, $results);
+		//}
 		
 		// Log API Request
 		$response_format = !empty($_GET['response_format']) ? $_GET['response_format'] : NULL;
@@ -192,7 +208,7 @@ class _Controller {
 		$this->log_api_request($_SERVER['REMOTE_ADDR'], $_GET['endpoint'], $protocol, $request, $result);
 		
 		// Done
-		return $result;
+		return $results;
 	}
 	
 	private function log_api_request($ip_address, $endpoint, $protocol, $request, $result) {
