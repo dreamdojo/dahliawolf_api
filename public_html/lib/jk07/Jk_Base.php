@@ -1,7 +1,5 @@
 <?php
 
-require_once(APP_PATH . 'core/Jk_Root.php');
-
 
 abstract class Jk_Base extends Jk_Root
 {

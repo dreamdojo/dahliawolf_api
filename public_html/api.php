@@ -1,8 +1,10 @@
 <?php
 header('Content-Type: application/json');
-error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT);
-ini_set('display_errors', '0');
+//error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE|E_ALL);
+error_reporting(E_ALL|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE);
+ini_set('display_errors', '1');
 session_start();
+
 
 require_once 'includes/config.php';
 //require_once 'models/users.php';
@@ -18,10 +20,28 @@ require_once 'models/Vote_Winner.php';
 require_once 'models/Point.php';
 require_once 'models/User_Point.php';
 
+
 require DR . '/lib/php/class.phpmailer.php';
 require DR . '/lib/php/email.php';
 require_once 'models/Email.php';
 require_once 'includes/php/json_functions.php';
+
+
+define(APP_PATH, realpath('./')."/");
+$include_paths = explode(":", get_include_path());
+$include_paths[] = realpath('./lib/jk07');
+set_include_path(implode(":", $include_paths));
+
+
+require DR . '/lib/jk07/Jk_Root.php';
+require DR . '/lib/jk07/Jk_Base.php';
+require DR . '/lib/jk07/Jk_Logger.php';
+require DR . '/lib/jk07/utils/Error_Handler.php';
+
+$error_handler = new Error_Handler();
+$error_handler->registerShutdownHandler();
+$error_handler->registerErrorHandler();
+
 
 function add_user_point($data) {
 	// Look up points value if not set
@@ -788,7 +808,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                 //var_dump($user_data);
 
                 $posts_params = array();
-                foreach($user_data['data'] as $u_data)
+                foreach($user_data['data'] as $udkey => $u_data)
                 {
                     //var_dump($u_data);
 
@@ -813,13 +833,17 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                         }
                     }
 
+
+                    unset($posting);
+                    new Posting();
+
                     $posting  = new Posting();
                     $user_posts =  $posting->allPosts($posts_params);
 
-                    var_dump($posts_params);
-                    var_dump($user_posts);
-
                     if($user_posts['data']) $u_data['posts'] = $user_posts['data'];
+
+                    $user_data['data'][$udkey] =  $u_data;
+                    //var_dump($u_data['posts']);
                 }
 
             }
@@ -2337,13 +2361,13 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'test') {
 		}
 	}
 } else {
-	outputResult(
+    json_pretty(json_encode(
 		false
 		, NULL
 		, array(
 			'Invalid function call.'
 		)
-	);
+	));
 }
 die();
 ?>
