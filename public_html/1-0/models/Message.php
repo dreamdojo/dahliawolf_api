@@ -86,9 +86,9 @@ class Message extends _Model{
             ORDER by mt.message_id DESC
         ";
 
-        self::trace($query);
-
         $data = $this->fetch($query, $values);
+
+        self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($data) ) );
 
         try {
             return array('messages' => $data );
