@@ -72,6 +72,7 @@ spl_autoload_register(function($class_name) {
 		, DR . '/' . API_VERSION . '/models/'
 		, DR . '/includes/php/classes/'
 		, DR . '/' . API_VERSION . '/lib/php/'
+		, DR . '/lib/jk07/'
 	);
 	
 	foreach ($class_dirs as $class_dir) {

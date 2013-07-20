@@ -205,7 +205,7 @@ class _Controller {
 		$response_format = !empty($_GET['response_format']) ? $_GET['response_format'] : NULL;
 		$request_methods = get_request_methods();
 		$protocol = !empty($request_methods[$response_format]) ? $request_methods[$response_format] : NULL;
-		$this->log_api_request($_SERVER['REMOTE_ADDR'], $_GET['endpoint'], $protocol, $request, $result);
+		$this->log_api_request($_SERVER['REMOTE_ADDR'], $_GET['endpoint'], $protocol, $request, $results);
 		
 		// Done
 		return $results;

@@ -1,6 +1,6 @@
 <?
 // Base Model utility properties and methods
-class _Model {
+class _Model extends Jk_Base{
 	public static $domain;
 	public static $site_name;
 	public static $time;
@@ -13,7 +13,8 @@ class _Model {
 	public static $Exception_Helper;
 	
 	protected static $dbs = array();
-	protected $db_host = '';
+    protected $logger;
+    protected $db_host = '';
 	protected $db_name = '';
 
     protected $errors =null;
@@ -311,8 +312,13 @@ class _Model {
 		return NULL;
 	}
 
-
     public function fetch($sql, $pdo_params)
+    {
+        return self::query($sql, $pdo_params);
+    }
+
+
+    public function query($sql, $pdo_params)
     {
         try {
             $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $pdo_params);
@@ -323,5 +329,15 @@ class _Model {
         }
         return null;
     }
+
+
+    protected function trace($m)
+    {
+        $m = ( is_array($m) || is_object($m) ?  json_encode($m) : "$m");
+        if($this->logger==null) $this->logger = new Jk_Logger(APP_PATH . 'logs/userlogs.log', Jk_Logger::DEBUG);
+
+        $this->logger->LogInfo($m);
+    }
+
 }
 ?>

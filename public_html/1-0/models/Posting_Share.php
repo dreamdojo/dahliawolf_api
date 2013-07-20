@@ -27,10 +27,10 @@ class Posting_Share extends _Model
             'sharing_user_id',
             'network',
             'posting_owner_user_id',
-            'created',
+            'created_at',
         );
 
-        $data['created'] = date('Y-m-d h:i:s');
+        $data['created_at'] = date('Y-m-d h:i:s');
 
         foreach ($fields as $field) {
             if (array_key_exists($field, $data)) {
@@ -121,7 +121,7 @@ class Posting_Share extends _Model
         );
 
         //$row = $this->get_row($this->table, $params['conditions']);
-        $data = $this->run($query, $values);
+        $data = $this->fetch($query, $values);
         $row = $data->fetchAll();
         if ($row === false) {
             return resultArray(false, NULL, 'Could not get post shares.');
