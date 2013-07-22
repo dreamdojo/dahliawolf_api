@@ -97,6 +97,8 @@ function check_required($keys) {
 		}
 	}
 }
+
+/*
 function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id = NULL) {
 	$calls = array(
 		'log_activity' => array(
@@ -112,6 +114,9 @@ function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id 
 
 	return $data;
 }
+*/
+
+
 function post_tag_notice($message, $posting_id) {
 	preg_match_all('/\B@([\S]+)/', $message, $matches);
 
@@ -210,11 +215,13 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			// Admin API call
 			$calls = array(
 				'login' => array(
-					'email' => $_REQUEST['email']
-					, 'password' => $_REQUEST['password']
+					'email' => $_REQUEST['email'],
+					'password' => $_REQUEST['password']
 				)
 			);
 			$data = api_request('user', $calls, true);
+
+            var_dump($data);
 
 			if (!empty($data['errors'])) {
 				$errors = $data['errors'];
