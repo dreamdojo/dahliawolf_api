@@ -98,7 +98,7 @@ function check_required($keys) {
 	}
 }
 
-/*
+
 function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id = NULL) {
 	$calls = array(
 		'log_activity' => array(
@@ -114,7 +114,7 @@ function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id 
 
 	return $data;
 }
-*/
+
 
 
 function post_tag_notice($message, $posting_id) {
@@ -267,7 +267,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			}
 
 			// Log activity
-			log_activity($api_user['user_id'], 1, 'Logged in', 'user_username', $api_user['user_id']);
+			//log_activity($api_user['user_id'], 1, 'Logged in', 'user_username', $api_user['user_id']);
 
 
 			// Scrape social usernames
