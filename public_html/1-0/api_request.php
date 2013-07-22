@@ -11,7 +11,7 @@ require_once 'config/config.php';
 //require_once 'controllers/_Controller.php';
 //require_once 'controllers/Account_Controller.php';
 
-define(APP_PATH, realpath('./')."/");
+define('APP_PATH', realpath('./')."/");
 $include_paths = explode(":", get_include_path());
 $include_paths[] = realpath('./lib/jk07');
 set_include_path(implode(":", $include_paths));
