@@ -60,6 +60,18 @@ class Message_Controller extends _Controller
 
 
 
+    public function mark_read($request_data = array())
+    {
+        $this->load('Message');
+
+        $message = new Message();
+        $data = $message->markAsRead($request_data);
+
+        return static::wrap_result(($message->hasError()? false:true), $data, 200, $message->getErrors() );
+    }
+
+
+
 
 }
 

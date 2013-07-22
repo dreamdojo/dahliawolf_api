@@ -99,6 +99,43 @@ class Message extends _Model{
 
     }
 
+    public function markAsRead($request_data)
+    {
+        $error = NULL;
+
+        $values = array();
+
+        $fields = array(
+            'from_user_id',
+            'to_user_id',
+            'body',
+            'header',
+            'created_at'
+        );
+
+        //static vars
+        $data['created_at'] = date('Y-m-d h:i:s');
+        $data['read_timestamp'] = NULL;
+
+        foreach ($fields as $field) {
+            if (array_key_exists($field, $data)) {
+                $values[$field] = $data[$field];
+            }
+        }
+
+        try {
+            $insert_id = $this->db_update()$values, $data);
+            return array(
+                    strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
+                    //'model_data' => $data
+                    );
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception("Unable to send message.". $e->getMessage());
+        }
+
+    }
+
 }
 
 ?>

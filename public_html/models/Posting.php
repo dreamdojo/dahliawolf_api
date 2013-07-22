@@ -267,27 +267,31 @@ class Posting extends db {
 			$values[':viewer_user_id'] = $params['where']['viewer_user_id'];
 		}
 
-		$query = '
+		$query = "
 			SELECT posting.*,
 			    image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height, image.attribution_url AS image_attribution_url, image.domain AS image_attribution_domain
 				, user_username.username, user_username.avatar, user_username.location
-				, CONCAT(image.source, "image.php?imagename=", image.imagename) AS image_url
+				, CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
 				, IFNULL(COUNT(pl.posting_like_id), 0) AS likes
 				, imageInfo.baseurl
 				, site.domain_keyword
 				, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
-				' . $select_str . '
-			FROM ' . $from_prefix . '
+                , product.id_product AS product_id, product.status, product.price, product.wholesale_price
+
+				" . $select_str . "
+			FROM " . $from_prefix . "
 				INNER JOIN image ON posting.image_id = image.id
 				INNER JOIN user_username ON posting.user_id = user_username.user_id
+                LEFT JOIN posting_product as posting_product ON posting.posting_id = posting_product.posting_id
+				LEFT JOIN offline_commerce_v1_2013.product AS product ON posting_product.product_id = product.id_product
 				LEFT JOIN posting_like AS pl ON posting.posting_id = pl.posting_id
 				LEFT JOIN dahliawolf_repository.imageInfo AS imageInfo ON image.repo_image_id = imageInfo.id
 				LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
 				LEFT JOIN dahliawolf_repository.site AS site ON search_site_link.site_id = site.site_id
 				LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
-				' . $join_str . '
-			' . (!empty($params['where']['posting_id']) ? 'WHERE posting.posting_id = :posting_id' : '') . '
-		';
+				" . $join_str
+			 . (!empty($params['where']['posting_id']) ? 'WHERE posting.posting_id = :posting_id' : '') . "
+		";
 		if (isset($_GET['t'])) {
 			echo $query;
 			print_r($values);
@@ -571,7 +575,7 @@ class Posting extends db {
 				, IFNULL(COUNT(pv.posting_id), 0) AS votes
 				" . $select_str . "
 				, product_lang.name AS product_name
-				, product.status, product.price, product.wholesale_price
+				, product.id_product, product.status, product.price, product.wholesale_price
 				, CONCAT('http://content.dahliawolf.com/shop/product/image.php?file_id=', (SELECT product_file_id FROM offline_commerce_v1_2013.product_file WHERE product_id = product_lang.id_product ORDER BY product_file_id ASC LIMIT 1)) AS image_url
 				, CONCAT('http://content.dahliawolf.com/shop/product/inspirations/image.php?id_product=', product_lang.id_product) AS inspiration_image_url
 				, m.posting_ids

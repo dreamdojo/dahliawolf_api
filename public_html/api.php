@@ -1309,8 +1309,8 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			$viewer_user_id = !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL;
 			$params = array(
 				'where' => array(
-					'posting_id' => $posting_id
-					, 'viewer_user_id' => $viewer_user_id
+					'posting_id' => $posting_id,
+					'viewer_user_id' => $viewer_user_id
 				)
 			);
 			$post = $Posting->getPostDetails($params);
