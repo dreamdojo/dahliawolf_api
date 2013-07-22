@@ -42,6 +42,10 @@ $error_handler = new Error_Handler();
 $error_handler->registerShutdownHandler();
 $error_handler->registerErrorHandler();
 
+if($_GET['t']){
+    var_dump($_GET);
+}
+
 
 function add_user_point($data) {
 	// Look up points value if not set
@@ -455,8 +459,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			// Log the user in
 			$calls = array(
 				'login' => array(
-					'email' => $_REQUEST['email']
-					, 'password' => $_REQUEST['password']
+					'email' => $_REQUEST['email'],
+					'password' => $_REQUEST['password']
 				)
 			);
 			$data = api_request('user', $calls, true);
