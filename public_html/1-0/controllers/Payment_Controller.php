@@ -135,8 +135,21 @@ class Payment_Controller extends _Controller {
 		$transaction_key = $this->Config->get_value('Authorize.net Transaction Key');
 		$use_sandbox_config = $this->Config->get_value('Authorize.net Use Sandbox');
 		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		$transactionType = $this->Config->get_value('Payment Transaction Type');
+		$paymentAction = ($transactionType == 'Capture') ? 'Sale' : 'Authorization';
+		$authorizePayment = ($paymentAction == 'Authorization') ? true : false;
+		
 		$auth = new AuthNetAIM($api_login_id, $transaction_key, $use_sandbox);
-		$data = $auth->authorizeCapture($payment_info);
+		
+		if ($authorizePayment) {
+			$data = $auth->authorizeOnly($payment_info);
+			$data->is_authorization = true;
+		}
+		else {
+			$data = $auth->authorizeCapture($payment_info);
+			$data->is_authorization = false;
+		}
 		
 		return static::wrap_result(true, $data);
 	}
@@ -207,15 +220,20 @@ class Payment_Controller extends _Controller {
 			_Model::$Exception_Helper->request_failed_exception('PayPal configurations are not set.');
 		}
 		
+		$transactionType = $this->Config->get_value('Payment Transaction Type');
+		$paymentAction = ($transactionType == 'Capture') ? 'Sale' : 'Authorization';
+		$authorizePayment = ($paymentAction == 'Authorization') ? true : false;
+		
 		$p = new PayPalExpressCheckout($use_sandbox, $username, $password, $signature);
 		
-		$results = $p->beginPurchase($paymentArray, $params['return_url'], $params['cancel_url']);
+		$results = $p->beginPurchase($paymentArray, $params['return_url'], $params['cancel_url'], $paymentAction);
 		
 		if (!$results['success']) { // failed
 			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $results['errors']);
 		}
 		
 		$data = $results['data'];
+		$data['is_authorization'] = $authorizePayment ? true : false;
 		$data['payment_method_id'] = $pm['payment_method_id'];
 		
 		return static::wrap_result(true, $data);
@@ -265,15 +283,20 @@ class Payment_Controller extends _Controller {
 			_Model::$Exception_Helper->request_failed_exception('PayPal configurations are not set.');
 		}
 		
+		$transactionType = $this->Config->get_value('Payment Transaction Type');
+		$paymentAction = ($transactionType == 'Capture') ? 'Sale' : 'Authorization';
+		$authorizePayment = ($paymentAction == 'Authorization') ? true : false;
+		
 		$p = new PayPalExpressCheckout($use_sandbox, $username, $password, $signature);
 		
-		$results = $p->completePurchase($params['token'], $params['amount']);
+		$results = $p->completePurchase($params['token'], $params['amount'], $paymentAction);
 		
 		if (!$results['success']) { // failed
 			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $results['errors']);
 		}
 		
 		$data = $results['data'];
+		$data['is_authorization'] = $authorizePayment ? true : false;
 		
 		return static::wrap_result(true, $data);
 	}

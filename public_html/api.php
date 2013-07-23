@@ -68,7 +68,7 @@ function check_required($keys) {
 		}
 
 		if (!empty($errors)) {
-			echo json_pretty(json_encode((resultArray(false, NULL, $errors))));
+			echo json_pretty(json_encode(resultArray(false, NULL, $errors)));
 			die();
 		}
 	}
@@ -1385,6 +1385,45 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			log_activity($post['data']['user_id'], 31, 'Product won by likes', 'like_winner', $like_winner['data']);
 
 			echo json_pretty(json_encode(($like_winner)));
+			return;
+		}
+		else if ($_REQUEST['function'] == 'delete_like_winner') {
+			check_required(
+				array(
+					'like_winner_id'
+				)
+			);
+
+			unset($Posting);
+
+			// Check if like_winner was primary like_winner
+			// because we have to reverse points
+			$Like_Winner = new Like_Winner();
+			$primary_winner = $Like_Winner->get_primary_product_winner($_REQUEST['like_winner_id']);
+
+			if (!empty($primary_winner)) {
+				if ($primary_winner['like_winner_id'] == $_REQUEST['like_winner_id']) {
+					// Uncredit user points
+					delete_user_point(
+						array(
+							'user_id' => $primary_winner['user_id']
+							, 'point_id' => 8
+							, 'posting_id' => $primary_winner['posting_id']
+						)
+					);
+				}
+			}
+
+			// Delete like winner
+			$params = array(
+				'where' => array(
+					'like_winner_id' => $_REQUEST['like_winner_id']
+				)
+			);
+			$like_winner = $Like_Winner->delete_like_winner($params);
+			unset($Like_Winner);
+
+			echo json_pretty(json_encode($like_winner));
 			return;
 		}
 		else if ($_REQUEST['function'] == 'add_vote_winner') {

@@ -22,14 +22,14 @@
     	<td style="font-size:20px; color:white; font-weight:bold; font-family:arial; padding-bottom:20px;">BELOW IS A LIST OF YOUR CURRENT ACTIVITY</td>
      </tr>
      <tr align="center" bgcolor="#000000">
-    	<td style="font-size:13px; color:white; font-family:arial; padding-bottom:20px;">RANK: <span style="color:#a53247 !important;  font-weight:bold;">(insert rank)</span> POINTS: <span style="color:#a53247 !important;  font-weight:bold;">(insert points)</span>.</td>
+    	<td style="font-size:13px; color:white; font-family:arial; padding-bottom:20px;">RANK: <span style="color:#a53247 !important;  font-weight:bold;"><?= $user['rank'] ?></span> POINTS: <span style="color:#a53247 !important;  font-weight:bold;"><?= $user['points'] ?></span>.</td>
      </tr></table>
      <table width="650" height="100" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="#000000">
      <tr align="center" bgcolor="#000000">
-    	<td style="font-size:16px; color:white; font-family:arial;">+<span style="color:#a53247 !important;  font-weight:bold;">(insert #)</span><br />COMMENTS</td>
-        <td style="font-size:16px; color:white; font-family:arial;">+<span style="color:#a53247 !important;  font-weight:bold;">(insert #)</span><br />POSTS</td>
-        <td style="font-size:16px; color:white; font-family:arial;">+<span style="color:#a53247 !important;  font-weight:bold;">(insert #)<br /></span>LOVES</td>
-        <td style="font-size:16px; color:white; font-family:arial;">+<span style="color:#a53247 !important;  font-weight:bold;">(insert #)<br /></span>FOLLOWERS</td>
+    	<td style="font-size:16px; color:white; font-family:arial;">+<span style="color:#a53247 !important;  font-weight:bold;"><?= $user['comments'] ?></span><br />COMMENTS</td>
+        <td style="font-size:16px; color:white; font-family:arial;">+<span style="color:#a53247 !important;  font-weight:bold;"><?= $user['posts'] ?></span><br />POSTS</td>
+        <td style="font-size:16px; color:white; font-family:arial;">+<span style="color:#a53247 !important;  font-weight:bold;"><?= $user['likes'] ?><br /></span>LOVES</td>
+        <td style="font-size:16px; color:white; font-family:arial;">+<span style="color:#a53247 !important;  font-weight:bold;"><?= $user['follows'] ?><br /></span>FOLLOWERS</td>
      </tr>
 </table>
 
@@ -48,6 +48,6 @@
 		<td style="font-size:9px; color:gray; background-color:#000000" ><center>If you no longer want to recieve messages from Dahlia Wolf turn off your email setting.</center></td>
 	</tr>
 </table>
-    
+
 </body>
 </html>
