@@ -17,6 +17,9 @@ class API {
 	public function rest_api_request($api_service, $calls = array(), $reponse_format = 'json') {
 		$api_url = $this->api_url . '/' . $api_service . '.' . $reponse_format;
 
+
+        var_d
+
 		// Initialize
 		$ch = curl_init();
 		$this->set_rest_api_request_options($ch, $api_url, $calls);

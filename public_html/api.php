@@ -1,8 +1,10 @@
 <?php
 header('Content-Type: application/json');
-error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT);
-ini_set('display_errors', '0');
+//error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE|E_ALL);
+error_reporting(E_ALL|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE);
+ini_set('display_errors', '1');
 session_start();
+
 
 require_once 'includes/config.php';
 //require_once 'models/users.php';
@@ -18,10 +20,32 @@ require_once 'models/Vote_Winner.php';
 require_once 'models/Point.php';
 require_once 'models/User_Point.php';
 
+
 require DR . '/lib/php/class.phpmailer.php';
 require DR . '/lib/php/email.php';
 require_once 'models/Email.php';
 require_once 'includes/php/json_functions.php';
+
+
+define(APP_PATH, realpath('./')."/");
+$include_paths = explode(":", get_include_path());
+$include_paths[] = realpath('./lib/jk07');
+set_include_path(implode(":", $include_paths));
+
+
+require DR . '/lib/jk07/Jk_Root.php';
+require DR . '/lib/jk07/Jk_Base.php';
+require DR . '/lib/jk07/Jk_Logger.php';
+require DR . '/lib/jk07/utils/Error_Handler.php';
+
+$error_handler = new Error_Handler();
+$error_handler->registerShutdownHandler();
+$error_handler->registerErrorHandler();
+
+if($_GET['t']){
+    var_dump($_GET);
+}
+
 
 function add_user_point($data) {
 	// Look up points value if not set
@@ -73,6 +97,8 @@ function check_required($keys) {
 		}
 	}
 }
+
+
 function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id = NULL) {
 	$calls = array(
 		'log_activity' => array(
@@ -88,6 +114,9 @@ function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id 
 
 	return $data;
 }
+
+
+
 function post_tag_notice($message, $posting_id) {
 	preg_match_all('/\B@([\S]+)/', $message, $matches);
 
@@ -186,8 +215,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			// Admin API call
 			$calls = array(
 				'login' => array(
-					'email' => $_REQUEST['email']
-					, 'password' => $_REQUEST['password']
+					'email' => $_REQUEST['email'],
+					'password' => $_REQUEST['password']
 				)
 			);
 			$data = api_request('user', $calls, true);
@@ -238,7 +267,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			}
 
 			// Log activity
-			log_activity($api_user['user_id'], 1, 'Logged in', 'user_username', $api_user['user_id']);
+			//log_activity($api_user['user_id'], 1, 'Logged in', 'user_username', $api_user['user_id']);
 
 
 			// Scrape social usernames
@@ -435,8 +464,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			// Log the user in
 			$calls = array(
 				'login' => array(
-					'email' => $_REQUEST['email']
-					, 'password' => $_REQUEST['password']
+					'email' => $_REQUEST['email'],
+					'password' => $_REQUEST['password']
 				)
 			);
 			$data = api_request('user', $calls, true);
@@ -788,7 +817,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                 //var_dump($user_data);
 
                 $posts_params = array();
-                foreach($user_data['data'] as $u_data)
+                foreach($user_data['data'] as $udkey => $u_data)
                 {
                     //var_dump($u_data);
 
@@ -813,13 +842,17 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                         }
                     }
 
+
+                    unset($posting);
+                    new Posting();
+
                     $posting  = new Posting();
                     $user_posts =  $posting->allPosts($posts_params);
 
-                    var_dump($posts_params);
-                    var_dump($user_posts);
-
                     if($user_posts['data']) $u_data['posts'] = $user_posts['data'];
+
+                    $user_data['data'][$udkey] =  $u_data;
+                    //var_dump($u_data['posts']);
                 }
 
             }
@@ -1285,8 +1318,8 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			$viewer_user_id = !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL;
 			$params = array(
 				'where' => array(
-					'posting_id' => $posting_id
-					, 'viewer_user_id' => $viewer_user_id
+					'posting_id' => $posting_id,
+					'viewer_user_id' => $viewer_user_id
 				)
 			);
 			$post = $Posting->getPostDetails($params);
@@ -2376,13 +2409,13 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'test') {
 		}
 	}
 } else {
-	outputResult(
+    json_pretty(json_encode(
 		false
 		, NULL
 		, array(
 			'Invalid function call.'
 		)
-	);
+	));
 }
 die();
 ?>

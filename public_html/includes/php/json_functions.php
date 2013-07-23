@@ -1,5 +1,4 @@
-    <?php
-
+<?php
 /**
  * User: JDorado
  * Date: 6/27/13

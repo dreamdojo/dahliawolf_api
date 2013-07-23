@@ -147,14 +147,17 @@ class API_Credential extends _Model {
 		$sql = '
 			SELECT api_credential.*
 			FROM api_credential
-			INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
 			WHERE api_credential.api_key = :api_key 
 		';
 		
 		$params = array(
 			':api_key' => $api_key
 		);
-		
+
+        var_dump($sql);
+        var_dump($params);
+
 		try {
 			$data = self::$dbs[$this->db_host][$this->db_name]->select_single($sql, $params);
 			
