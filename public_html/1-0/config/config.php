@@ -18,8 +18,8 @@ define('API_VERSION', '1-0');
 define('DB_API_HOST', '127.0.0.1');
 define('DB_API_USER', 'offlineadmin');
 define('DB_API_PASSWORD', '9w8^^^qFtwCD7N^N^');
-//define('DB_API_DATABASE', 'admin_offline_v1_2013');
-define('DB_API_DATABASE', 'dahliawolf_v1_2013');
+define('DB_API_DATABASE', 'admin_offline_v1_2013');
+//define('DB_API_DATABASE', 'dahliawolf_v1_2013');
 
 
 define('MYSQLHOST', DB_API_HOST);
