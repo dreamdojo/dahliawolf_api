@@ -560,7 +560,12 @@ class Posting extends db {
 				LEFT JOIN posting_vote ON posting.posting_id = posting_vote.posting_id
 					AND posting_vote.vote_period_id = :vote_period_id
 					AND posting_vote.user_id = :viewer_user_id
+
+                LEFT JOIN offline_commerce_v1_2013.favorite_product AS wishlist   ON wishlist.id_product = product.id_product  AND wishlist.id_customer = :viewer_user_id
 			';
+
+            $select_str .= "\n, IFNULL( COUNT(wishlist.id_customer) > 0, 0) AS in_wishlist";
+
 			$values[':viewer_user_id'] = $params['where']['viewer_user_id'];
 		}
 
@@ -579,6 +584,8 @@ class Posting extends db {
 				, CONCAT('http://content.dahliawolf.com/shop/product/image.php?file_id=', (SELECT product_file_id FROM offline_commerce_v1_2013.product_file WHERE product_id = product_lang.id_product ORDER BY product_file_id ASC LIMIT 1)) AS image_url
 				, CONCAT('http://content.dahliawolf.com/shop/product/inspirations/image.php?id_product=', product_lang.id_product) AS inspiration_image_url
 				, m.posting_ids
+
+
 			FROM (
 					SELECT MIN(posting_product.created) AS pp_created, GROUP_CONCAT(posting_product.posting_id ORDER BY posting_product.created ASC SEPARATOR '|') AS posting_ids
 					FROM posting
@@ -587,6 +594,7 @@ class Posting extends db {
 				) AS m
 				INNER JOIN posting_product ON posting_product.created = m.pp_created
 				INNER JOIN posting ON posting_product.posting_id = posting.posting_id
+				LEFT JOIN offline_commerce_v1_2013.product AS product ON posting_product.product_id = product.id_product
 				INNER JOIN image ON posting.image_id = image.id
 				INNER JOIN user_username ON posting.user_id = user_username.user_id
 				INNER JOIN offline_commerce_v1_2013.product_lang AS product_lang ON (posting_product.product_id = product_lang.id_product AND product_lang.id_lang = 1)
@@ -594,8 +602,9 @@ class Posting extends db {
 				LEFT JOIN posting_vote AS pv ON posting.posting_id = pv.posting_id
 					AND pv.vote_period_id = :vote_period_id
             " . $join_str . "
-				LEFT JOIN offline_commerce_v1_2013.product AS product ON posting_product.product_id = product.id_product
-				LEFT JOIN offline_commerce_v1_2013.favorite_product AS whishlist ON whishlist.id_product = product.id_product
+
+				LEFT JOIN offline_commerce_v1_2013.favorite_product AS favorite_product ON favorite_product.id_product = product.id_product
+
 			WHERE vote_period.vote_period_id = :vote_period_id
 			GROUP BY posting.posting_id
 			ORDER BY posting_product.created DESC

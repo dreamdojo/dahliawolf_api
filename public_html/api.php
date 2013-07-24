@@ -1992,8 +1992,8 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 
 			$calls = array(
 				'get_log' => array(
-					'user_id' => $_REQUEST['user_id']
-					, 'api_website_id' => API_WEBSITE_ID
+					'user_id' => $_REQUEST['user_id'],
+					'api_website_id' => API_WEBSITE_ID
 				)
 			);
 			$data = api_request('activity_log', $calls, true);
