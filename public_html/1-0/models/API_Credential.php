@@ -155,9 +155,6 @@ class API_Credential extends _Model {
 			':api_key' => $api_key
 		);
 
-        var_dump($sql);
-        var_dump($params);
-
 		try {
 			$data = self::$dbs[$this->db_host][$this->db_name]->select_single($sql, $params);
 			

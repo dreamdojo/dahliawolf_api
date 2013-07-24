@@ -115,7 +115,7 @@ class Activity_Log extends _Model {
 			return $activities;
 
 		} catch(Exception $e) {
-			echo $e->getMessage();
+			//echo $e->getMessage();
 			self::$Exception_Helper->server_error_exception('Unable to get activity log.');
 		}
 	}
