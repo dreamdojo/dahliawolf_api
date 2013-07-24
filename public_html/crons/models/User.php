@@ -75,6 +75,12 @@ class User extends db {
 				, IFNULL(comments.comments, 0) AS comments
 				, IFNULL(follows.follows, 0) AS follows
 				, IFNULL(points.points, 0) AS points
+				, (
+					SELECT COUNT(*)
+					FROM user_username AS u
+					WHERE
+						u.points > user_username.points
+				) + 1 AS rank
 			FROM user_username
 				LEFT JOIN (
 					SELECT posting.user_id, COUNT(*) AS posts

@@ -103,7 +103,7 @@ class PayPalExpressCheckout
 			*/
         return $decodedHttpParsedResponsAr;
         }
-    private function buildBeginPurchaseNvpString($nvpArray)
+    private function buildBeginPurchaseNvpString($nvpArray, $action = 'Sale')
         {
 			/*
 		 $nvpString = "&PAYMENTREQUEST_0_AMT=" . $nvpArray['amount'];
@@ -126,18 +126,18 @@ class PayPalExpressCheckout
 						, 'L_PAYMENTREQUEST_0_NAME0' => $nvpArray['item_name']
 						, 'L_PAYMENTREQUEST_0_DESC0' => $nvpArray['item_description']
 						
-						, 'PAYMENTREQUEST_0_PAYMENTACTION' => 'Sale'//'Authorization'
+						, 'PAYMENTREQUEST_0_PAYMENTACTION' => $action//'Authorization'
 						);
 		$nvpString = '&'. http_build_query($fields);
 		
         return $nvpString;
         }
-    private function buildCompletePurchaseNVPString($paymentDetailArray)
+    private function buildCompletePurchaseNVPString($paymentDetailArray, $action = 'Sale')
         {
         $token = urldecode($paymentDetailArray['TOKEN']);
         $payer_id = urldecode($paymentDetailArray['PAYERID']);
         $amount = urldecode($paymentDetailArray['AMT']);
-        $nvpString = "&PAYMENTREQUEST_0_PAYMENTACTION=Sale&PAYERID=$payer_id&TOKEN=$token&PAYMENTREQUEST_0_AMT=$amount";
+        $nvpString = "&PAYMENTREQUEST_0_PAYMENTACTION=" . $action . "&PAYERID=$payer_id&TOKEN=$token&PAYMENTREQUEST_0_AMT=$amount";
         return $nvpString;
         }
     private function buildRefundNvpString($nvpArray)
@@ -219,12 +219,12 @@ class PayPalExpressCheckout
 			, 'data' => $responseArray
 		);
         }
-    public function beginPurchase($paymentArray, $returnUri, $cancelUri)
+    public function beginPurchase($paymentArray, $returnUri, $cancelUri, $action = 'Sale')
         {
         $this->method_name = "SetExpressCheckout";
         $this->return_url = $returnUri;
         $this->cancel_url = $cancelUri;
-        $nvpString = $this->buildBeginPurchaseNvpString($paymentArray);
+        $nvpString = $this->buildBeginPurchaseNvpString($paymentArray, $action);
 		
         $responseArray = $this->doExpress($nvpString);
 		
@@ -259,7 +259,7 @@ class PayPalExpressCheckout
         $responseArray = $this->doExpress($nvpString);
         return $responseArray;
         }  
-    public function completePurchase($token, $amount)
+    public function completePurchase($token, $amount, $action = 'Sale')
         {
         
         $buyerDetails = $this->getExpressCheckoutDetails($token);
@@ -277,7 +277,7 @@ class PayPalExpressCheckout
 			);
 		}
 		
-        $nvpString = $this->buildCompletePurchaseNVPString($buyerDetails['data']);
+        $nvpString = $this->buildCompletePurchaseNVPString($buyerDetails['data'], $action);
         $paymentDetails = $this->completePayment($nvpString);
 		if (!$paymentDetails['success']) {
 			return $paymentDetails;

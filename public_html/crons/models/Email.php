@@ -29,7 +29,7 @@ class Email extends db {
 		$date = date('m/d/Y', strtotime($params['date']));
 		$subject = 'Dahlia Wolf ' . $params['interval'] . ' Summary';
 
-		$html_body_header = 'Dear ' . $user['first_name'] . ',
+		/*$html_body_header = 'Dear ' . $user['first_name'] . ',
 
 Below is your ' . $params['interval'] . ' summary for ' . $date . ':
 
@@ -60,7 +60,12 @@ Below is your ' . $params['interval'] . ' summary for ' . $date . ':
 ';
 
 		$html_body_footer = $this->get_email_footer();
-		$html_body = nl2br($html_body_header) . $html_body_html . nl2br($html_body_footer);
+		$html_body = nl2br($html_body_header) . $html_body_html . nl2br($html_body_footer);*/
+
+		ob_start();
+		require $_SERVER['DOCUMENT_ROOT'] . '/emails/custom/notifications-email.php';
+		$html_body = ob_get_contents();
+		ob_end_clean();
 
 		return array(
 			'subject' => $subject
