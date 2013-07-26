@@ -1,0 +1,4 @@
+.idea/*
+public_html/1-0/logs/*
+public_html/restore_owner.sh
+public_html/logs/*
