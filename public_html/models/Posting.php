@@ -580,7 +580,7 @@ class Posting extends db {
 				, IFNULL(COUNT(pv.posting_id), 0) AS votes
 				" . $select_str . "
 				, product_lang.name AS product_name
-				, product.id_product, product.status, product.price, product.wholesale_price
+				, product.id_product, product.status, product.price, product.wholesale_price, product.commission, product.commission_from_date, product.commission_to_date
 				, CONCAT('http://content.dahliawolf.com/shop/product/image.php?file_id=', (SELECT product_file_id FROM offline_commerce_v1_2013.product_file WHERE product_id = product_lang.id_product ORDER BY product_file_id ASC LIMIT 1)) AS image_url
 				, CONCAT('http://content.dahliawolf.com/shop/product/inspirations/image.php?id_product=', product_lang.id_product) AS inspiration_image_url
 				, m.posting_ids
