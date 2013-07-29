@@ -276,7 +276,7 @@ class Posting extends db {
 				, imageInfo.baseurl
 				, site.domain_keyword
 				, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
-                , product.id_product AS product_id, product.status, product.price, product.wholesale_price, product.commission
+                , product.id_product AS product_id, product.status, product.price, product.wholesale_price, product.commission, product.commission_from_date, product.commission_to_date
 
 				" . $select_str . "
 			FROM " . $from_prefix . "
