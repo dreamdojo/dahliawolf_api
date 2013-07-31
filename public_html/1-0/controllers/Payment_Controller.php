@@ -120,6 +120,10 @@ class Payment_Controller extends _Controller {
 		$this->Validate->add_many($input_validations, $validate_params, true);
 		$this->Validate->run();
 		
+		if (empty($params['address']) || !is_array($params['address'])) {
+			_Model::$Exception_Helper->bad_request_exception('Address info is empty.');
+		}
+		
 		$now = _Model::$date_time;
 		
 		// Process with Authorize.net
@@ -142,6 +146,18 @@ class Payment_Controller extends _Controller {
 		
 		$auth = new AuthNetAIM($api_login_id, $transaction_key, $use_sandbox);
 		
+		// Set address fields
+		$address = array(
+			"first_name" => $params['address']['first_name'],
+			"last_name"	=> $params['address']['last_name'],
+			"address" => $params['address']['street'],
+			"city" => $params['address']['city'],
+			"state" => $params['address']['state'],
+			"zip" => $params['address']['zip'],
+		);
+		
+		$auth->setBillingAddress($address);
+		
 		if ($authorizePayment) {
 			$data = $auth->authorizeOnly($payment_info);
 			$data->is_authorization = true;
@@ -149,6 +165,159 @@ class Payment_Controller extends _Controller {
 		else {
 			$data = $auth->authorizeCapture($payment_info);
 			$data->is_authorization = false;
+		}
+		
+		if (!$data->approved) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $data->response_reason_text);
+		}
+		
+		return static::wrap_result(true, $data);
+	}
+	
+	public function capture_credit_card($params = array()) {
+		$this->load('Config');
+		
+		$data = array();
+		
+		$validate_names = array(
+			'amount' => NULL
+			, 'authorization_transaction_id' => NULL
+		);
+		
+		$validate_params = array_merge($validate_names, $params);
+		
+		// Validations
+		$input_validations = array(
+			'amount' => array(
+				'label' => 'Amount'
+				, 'rules' => array(
+					'is_set' => NULL
+					, 'is_decimal' => 2
+					, 'is_positive' => NULL
+				)
+			)
+			, 'authorization_transaction_id' => array(
+				'label' => 'Authorization Transaction ID'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+		);
+		
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+		
+		$api_login_id = $this->Config->get_value('Authorize.net API Login ID');
+		$transaction_key = $this->Config->get_value('Authorize.net Transaction Key');
+		$use_sandbox_config = $this->Config->get_value('Authorize.net Use Sandbox');
+		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		$auth = new AuthNetAIM($api_login_id, $transaction_key, $use_sandbox);
+		
+		$data = $auth->capturePriorAuthorization($params['authorization_transaction_id'], $params['amount']);
+		
+		if (!$data->approved) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $data->response_reason_text);
+		}
+		
+		return static::wrap_result(true, $data);
+	}
+	
+	public function void_credit_card($params = array()) {
+		$this->load('Config');
+		
+		$data = array();
+		
+		$validate_names = array(
+			'amount' => NULL
+			, 'authorization_transaction_id' => NULL
+		);
+		
+		$validate_params = array_merge($validate_names, $params);
+		
+		// Validations
+		$input_validations = array(
+			'authorization_transaction_id' => array(
+				'label' => 'Authorization Transaction ID'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+		);
+		
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+		
+		$now = _Model::$date_time;
+		
+		$api_login_id = $this->Config->get_value('Authorize.net API Login ID');
+		$transaction_key = $this->Config->get_value('Authorize.net Transaction Key');
+		$use_sandbox_config = $this->Config->get_value('Authorize.net Use Sandbox');
+		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		$auth = new AuthNetAIM($api_login_id, $transaction_key, $use_sandbox);
+		
+		$data = $auth->voidTransaction($params['authorization_transaction_id']);
+		
+		if (!$data->approved) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $data->response_reason_text);
+		}
+		
+		return static::wrap_result(true, $data);
+	}
+	
+	public function credit_credit_card($params = array()) {
+		$this->load('Config');
+		
+		$data = array();
+		
+		$validate_names = array(
+			'amount' => NULL
+			, 'transaction_id' => NULL
+		);
+		
+		$validate_params = array_merge($validate_names, $params);
+		
+		// Validations
+		$input_validations = array(
+			'amount' => array(
+				'label' => 'Amount'
+				, 'rules' => array(
+					'is_set' => NULL
+					, 'is_decimal' => 2
+					, 'is_positive' => NULL
+				)
+			)
+			, 'transaction_id' => array(
+				'label' => 'Transaction ID'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+			, 'card_number' => array(
+				'label' => 'Card Number'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+		);
+		
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+		
+		$now = _Model::$date_time;
+		
+		$api_login_id = $this->Config->get_value('Authorize.net API Login ID');
+		$transaction_key = $this->Config->get_value('Authorize.net Transaction Key');
+		$use_sandbox_config = $this->Config->get_value('Authorize.net Use Sandbox');
+		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		$auth = new AuthNetAIM($api_login_id, $transaction_key, $use_sandbox);
+		
+		$data = $auth->issueRefund($params['transaction_id'], $params['amount'], $params['card_number']);
+		
+		if (!$data->approved) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $data->response_reason_text);
 		}
 		
 		return static::wrap_result(true, $data);
@@ -285,7 +454,7 @@ class Payment_Controller extends _Controller {
 		
 		$transactionType = $this->Config->get_value('Payment Transaction Type');
 		$paymentAction = ($transactionType == 'Capture') ? 'Sale' : 'Authorization';
-		$authorizePayment = ($paymentAction == 'Authorization') ? true : false;
+		$authorizePayment = ($paymentAction == 'Authorization') ? true : false; 
 		
 		$p = new PayPalExpressCheckout($use_sandbox, $username, $password, $signature);
 		
@@ -297,6 +466,168 @@ class Payment_Controller extends _Controller {
 		
 		$data = $results['data'];
 		$data['is_authorization'] = $authorizePayment ? true : false;
+		
+		return static::wrap_result(true, $data);
+	}
+	public function capture_paypal_payment($params = array()) {
+		$this->load('Config');
+		$this->load('Payment_Method');
+		$data = array();
+		
+		$validate_names = array(
+			'amount' => NULL
+			, 'authorization_transaction_id' => NULL
+		);
+		
+		$validate_params = array_merge($validate_names, $params);
+		
+		// Validations
+		$input_validations = array(
+			'amount' => array(
+				'label' => 'Amount'
+				, 'rules' => array(
+					'is_set' => NULL
+					, 'is_decimal' => 2
+					, 'is_positive' => NULL
+				)
+			)
+			, 'authorization_transaction_id' => array(
+				'label' => 'Authorization Transaction ID'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+		);
+		
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+		
+		$username = $this->Config->get_value('PayPal API Username');
+		$password = $this->Config->get_value('PayPal API Password');
+		$signature = $this->Config->get_value('PayPal API Signature');
+		$use_sandbox_config = $this->Config->get_value('PayPal API Use Sandbox');
+		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		if (empty($username) || empty($password) || empty($signature) || !is_numeric($use_sandbox_config)) {
+			_Model::$Exception_Helper->request_failed_exception('PayPal configurations are not set.');
+		}
+		
+		$p = new PayPalExpressCheckout($use_sandbox, $username, $password, $signature);
+		
+		$results = $p->doCapture($params['authorization_transaction_id'], $params['amount']);
+		
+		if (!$results['success']) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $results['errors']);
+		}
+		
+		$data = $results['data'];
+		
+		return static::wrap_result(true, $data);
+	}
+	public function void_paypal_payment($params = array()) {
+		$this->load('Config');
+		$this->load('Payment_Method');
+		$data = array();
+		
+		$validate_names = array(
+			'amount' => NULL
+			, 'authorization_transaction_id' => NULL
+		);
+		
+		$validate_params = array_merge($validate_names, $params);
+		
+		// Validations
+		$input_validations = array(
+			'authorization_transaction_id' => array(
+				'label' => 'Authorization Transaction ID'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+		);
+		
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+		
+		$username = $this->Config->get_value('PayPal API Username');
+		$password = $this->Config->get_value('PayPal API Password');
+		$signature = $this->Config->get_value('PayPal API Signature');
+		$use_sandbox_config = $this->Config->get_value('PayPal API Use Sandbox');
+		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		if (empty($username) || empty($password) || empty($signature) || !is_numeric($use_sandbox_config)) {
+			_Model::$Exception_Helper->request_failed_exception('PayPal configurations are not set.');
+		}
+		
+		$p = new PayPalExpressCheckout($use_sandbox, $username, $password, $signature);
+		
+		$results = $p->doVoid($params['authorization_transaction_id']);
+		
+		if (!$results['success']) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $results['errors']);
+		}
+		
+		$data = $results['data'];
+		
+		return static::wrap_result(true, $data);
+	}
+	public function return_paypal_payment($params = array()) {
+		$this->load('Config');
+		$this->load('Payment_Method');
+		$data = array();
+		
+		$validate_names = array(
+			'amount' => NULL
+			, 'transaction_id' => NULL
+		);
+		
+		$validate_params = array_merge($validate_names, $params);
+		
+		// Validations
+		$input_validations = array(
+			'amount' => array(
+				'label' => 'Amount'
+				, 'rules' => array(
+					'is_set' => NULL
+					, 'is_decimal' => 2
+					, 'is_positive' => NULL
+				)
+			)
+			, 'transaction_id' => array(
+				'label' => 'Transaction ID'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+		);
+		
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+		
+		$username = $this->Config->get_value('PayPal API Username');
+		$password = $this->Config->get_value('PayPal API Password');
+		$signature = $this->Config->get_value('PayPal API Signature');
+		$use_sandbox_config = $this->Config->get_value('PayPal API Use Sandbox');
+		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		if (empty($username) || empty($password) || empty($signature) || !is_numeric($use_sandbox_config)) {
+			_Model::$Exception_Helper->request_failed_exception('PayPal configurations are not set.');
+		}
+		
+		$p = new PayPalExpressCheckout($use_sandbox, $username, $password, $signature);
+		
+		$results = $p->issueRefund(
+			array(
+				'transaction_id' => $params['transaction_id']
+				, 'amount' => $params['amount']
+			)
+		);
+		
+		if (!$results['success']) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $results['errors']);
+		}
+		
+		$data = $results['data'];
 		
 		return static::wrap_result(true, $data);
 	}

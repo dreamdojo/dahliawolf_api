@@ -86,6 +86,7 @@ abstract class AuthorizeNetRequest
         $this->_setPostString();
         $post_url = $this->_getPostUrl();
         $curl_request = curl_init($post_url);
+		
         curl_setopt($curl_request, CURLOPT_POSTFIELDS, $this->_post_string);
         curl_setopt($curl_request, CURLOPT_HEADER, 0);
         curl_setopt($curl_request, CURLOPT_TIMEOUT, 45);

@@ -10,11 +10,26 @@ class AuthNetAIM {
     private $cc_number;
     private $user_domain_name;
     private $use_sandbox;
+	private $billing_address = array(
+	
+	
+	);
    
 	public function __construct($authnetApiId, $authnetTransKey, $useSandbox) {
         $this->api_id = $authnetApiId;
         $this->transaction_key = $authnetTransKey;
         $this->use_sandbox = $useSandbox;
+	}
+	
+	public function setBillingAddress($address) {
+		$this->billing_address = array(
+			"x_first_name" => $address['first_name'],
+			"x_last_name" => $address['last_name'],
+			"x_address"	=> $address['address'],
+			"x_city" => $address['city'],
+			"x_state" => $address['state'],
+			"x_zip"	=> $address['zip'],
+		);
 	}
 	
     private function doTransaction($transactionType) {
@@ -30,6 +45,10 @@ class AuthNetAIM {
                 $this->payment_array['echeck_type'] = 'WEB';
                 }
             }
+			
+			if (!empty($this->billing_address)) {
+				$a->setCustomFields($this->billing_address);
+			}
        
         switch ($transactionType) {
             case 'authorizeCapture':
@@ -84,7 +103,7 @@ class AuthNetAIM {
     public function issueRefund($transactionId, $amount, $ccNumber) {
         $this->transaction_id = $transactionId;
         $this->amount = $amount;
-        $this->cc_number  = $ccNumber;
+       $this->cc_number  = $ccNumber;
         $result = $this->doTransaction('issueRefund');
         return $result;
 	}

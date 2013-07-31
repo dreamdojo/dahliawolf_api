@@ -143,10 +143,10 @@ class PayPalExpressCheckout
     private function buildRefundNvpString($nvpArray)
         {
         $nvpString = "&TRANSACTIONID=" . $nvpArray['transaction_id'];
-        $nvpString .= "&REFUNDTYPE=" . $nvpArray['refund_type'];
-        $nvpString .= "&PAYMENTREQUEST_0_CURRENCYCODE=" . $nvpArray['currency'];
-        $nvpString .=  "&AMT=" . $nvpArray['amount'];
-        $nvpString .= "&NOTE=" . $nvpArray['note'];
+        $nvpString .= "&REFUNDTYPE=Full"; // Full, Partial, ExternalDispute, Other  (Note: If RefundType is Full, do not set the amount.)
+       // $nvpString .= "&PAYMENTREQUEST_0_CURRENCYCODE=" . $nvpArray['currency'];
+        //$nvpString .=  "&AMT=" . $nvpArray['amount'];
+       // $nvpString .= "&NOTE=" . $nvpArray['note'];
         return $nvpString;
         }
     private function buildBeginSubscriptionNvpString($nvpArray)
@@ -251,13 +251,93 @@ class PayPalExpressCheckout
 		);
 	
        
-        }    
+        }
+	private function buildDoCaptureNvpString($authCode, $amount)
+        {
+        $nvpString = "&AUTHORIZATIONID=" . $authCode;
+        $nvpString .= "&COMPLETETYPE=Complete";
+        $nvpString .=  "&AMT=" . $amount;
+        return $nvpString;
+        }
+	private function buildDoVoidNvpString($authCode)
+        {
+        $nvpString = "&AUTHORIZATIONID=" . $authCode;
+        return $nvpString;
+        }
+	public function doVoid($authCode)
+        {
+        $this->method_name = "DoVoid";
+        $nvpString = $this->buildDoVoidNvpString($authCode);
+		
+        $responseArray = $this->doExpress($nvpString);
+		
+      	if ($responseArray['ACK'] != 'Success'){
+			return array(
+				'success' => false
+				, 'errors' => array(
+					$responseArray['L_LONGMESSAGE0']
+				)
+				, 'data' => NULL
+			);
+			
+		} 
+		
+		return array(
+			'success' => true
+			, 'errors' => NULL
+			, 'data' => $responseArray
+		);
+	
+	} 
+	public function doCapture($authCode, $amount)
+        {
+        $this->method_name = "DoCapture";
+        $nvpString = $this->buildDoCaptureNvpString($authCode, $amount);
+		
+        $responseArray = $this->doExpress($nvpString);
+		
+      	if ($responseArray['ACK'] != 'Success'){
+			return array(
+				'success' => false
+				, 'errors' => array(
+					$responseArray['L_LONGMESSAGE0']
+				)
+				, 'data' => NULL
+			);
+			
+		} 
+		
+		return array(
+			'success' => true
+			, 'errors' => NULL
+			, 'data' => $responseArray
+		);
+	
+	}  
+		 
     public function issueRefund($refundArray)
         {
         $this->method_name = "RefundTransaction";
         $nvpString = $this->buildRefundNvpString($refundArray);
         $responseArray = $this->doExpress($nvpString);
-        return $responseArray;
+		
+		if ($responseArray['ACK'] != 'Success'){
+			return array(
+				'success' => false
+				, 'errors' => array(
+					$responseArray['L_LONGMESSAGE0']
+				)
+				, 'data' => NULL
+			);
+			
+		} 
+		
+		return array(
+			'success' => true
+			, 'errors' => NULL
+			, 'data' => $responseArray
+		);
+		
         }  
     public function completePurchase($token, $amount, $action = 'Sale')
         {
