@@ -70,7 +70,7 @@ function get_request_methods() {
 	
 }
 
-function log_error($msg, $error_type) {
+function log_error($msg, $error_type="error_log_user") {
 	
 	$log_files = array(
 		'user' => 'error_log_user'

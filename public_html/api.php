@@ -461,6 +461,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			);
 			$user['data']['points_earned'] = $points_earned;
 
+
+
 			// Log the user in
 			$calls = array(
 				'login' => array(
@@ -480,6 +482,39 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			unset($User);
 			$Email = new Email();
 			$Email->email('signup', $user_id);
+
+
+
+            $register_defalul_follows = function()
+            {
+                //follow default
+                $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
+
+                global $user_id;
+
+                foreach($follow_these as $ftk => $fthisone)
+                {
+
+                    $calls = array(
+                        'follow' => array(
+                            'user_id' => $fthisone,
+                            'follower_user_id' => $user_id
+
+                        )
+                    );
+
+                    $follow_user_response = api_request('user', $calls, true);
+
+                    $logger = new Jk_Logger('/var/gitrepos/dev_dahliawolf_api/public_html/logs/debug.log', Jk_Logger::DEBUG);
+                    $logger->LogDebug("user follow params: $user_id". json_encode($calls));
+                    //$logger->LogDebug("user follow response: $user_id". json_encode($follow_user_response));
+
+                    $logger->LogDebug("user follow response: $ftk :\n" . json_encode($follow_user_response) );
+                }
+
+            };
+
+            $register_defalul_follows();
 
 			echo json_pretty(json_encode(($user)));
 			return;

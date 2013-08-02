@@ -766,6 +766,20 @@ class User_Controller extends _Controller {
 		return static::wrap_result(true, NULL, _Model::$Status_Code->get_status_code_no_content());
 	}
 
+
+
+    public function follow($request_data)
+    {
+
+        $this->load('User');
+
+        $user = new User();
+        $data = $user->followUser($request_data);
+
+        return static::wrap_result( ($user->hasError()? false:true), $data, 200, $user->getErrors() );
+    }
+
+
 	/*
 	user resetpassword
 	*/

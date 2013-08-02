@@ -120,4 +120,39 @@ class User extends _Model {
 			self::$Exception_Helper->server_error_exception('Unable to get regexp usernames.');
 		}
 	}
+
+
+    public function followUser($data = array())
+    {
+        $error = NULL;
+
+        $values = array();
+
+        $fields = array(
+            'user_id',
+            'follower_user_id',
+        );
+
+
+        foreach ($fields as $field) {
+            if (array_key_exists($field, $data)) {
+                $values[$field] = $data[$field];
+            }
+        }
+
+        try {
+            $insert_id = $this->do_db_save($values, $data);
+            return array(
+                    strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
+                    //'model_data' => $data
+                    );
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception("Unable to follow users.". $e->getMessage());
+        }
+
+    }
+
+
+
 }
