@@ -770,13 +770,10 @@ class User_Controller extends _Controller {
 
     public function follow($request_data)
     {
+        $this->load('User', DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
+        $data  = $this->User->followUser($request_data);
 
-        $this->load('User');
-
-        $user = new User();
-        $data = $user->followUser($request_data);
-
-        return static::wrap_result( ($user->hasError()? false:true), $data, 200, $user->getErrors() );
+        return static::wrap_result( ($this->User->hasError()? false:true), $data, 200, $this->User->getErrors() );
     }
 
 
