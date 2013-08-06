@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 //error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE|E_ALL);
-error_reporting(E_ALL|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE);
+error_reporting(E_ERROR| E_WARNING | E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE);
 ini_set('display_errors', '1');
 session_start();
 
@@ -27,7 +27,7 @@ require_once 'models/Email.php';
 require_once 'includes/php/json_functions.php';
 
 
-define(APP_PATH, realpath('./')."/");
+define('APP_PATH', realpath('./')."/");
 $include_paths = explode(":", get_include_path());
 $include_paths[] = realpath('./lib/jk07');
 set_include_path(implode(":", $include_paths));
@@ -42,7 +42,7 @@ $error_handler = new Error_Handler();
 $error_handler->registerShutdownHandler();
 $error_handler->registerErrorHandler();
 
-if($_GET['t']){
+if(isset($_GET['t'])){
     var_dump($_GET);
 }
 

@@ -50,6 +50,8 @@ class _Controller {
 		if (!empty($errors) && !is_array($errors)) {
 			$errors = array($errors);
 		}
+
+        if(!_Model::$Status_Code) _Model::$Status_Code = new Status_Code();
 		
 		return array(
 			'success' => $success === true ? true : false
@@ -70,43 +72,86 @@ class _Controller {
 		
 		return $status_code;
 	}
+
+
+    protected function checkHMAC($calls)
+    {
+        // Authentication
+		$api_key = !empty($request['api_key']) ? $request['api_key'] : NULL;
+
+
+		$API_Credential = new API_Credential();
+		$api_credential = $API_Credential->get_api_credential_by_api_key($api_key);
+
+
+		$private_key = !empty($api_credential) ? $api_credential['private_key'] : NULL;
+
+		$API = new API($api_key, $private_key);
+
+
+        $client_hmac = !empty($request['hmac']) ? $request['hmac'] : NULL;
+        $Status_Code = new Status_Code();
+
+        $server_hmac = $API->get_hmac($calls);
+
+
+        // Authorization Failed
+		if (empty($api_credential) || $api_credential['active'] != '1' || ($client_hmac != $server_hmac)) { // Invalid API Key
+            return false;
+		}
+
+        return true;
+    }
 	
 	public function process_request($request) {
 		$Status_Code = new Status_Code();
-		
-		// Authentication
-		$api_key = !empty($request['api_key']) ? $request['api_key'] : NULL;
-		$client_hmac = !empty($request['hmac']) ? $request['hmac'] : NULL;
-		
-		$API_Credential = new API_Credential();
-		$api_credential = $API_Credential->get_api_credential_by_api_key($api_key);
-		
-		
-		$private_key = !empty($api_credential) ? $api_credential['private_key'] : NULL;
-		
-		$API = new API($api_key, $private_key);
+
 		
 		$calls = $request['calls'];
 		if (is_string($calls)) {
 			$calls = json_decode($calls, true);
 		}
-		
-		$server_hmac = $API->get_hmac($calls);
-		
-		// Authorization Failed
-		if (empty($api_credential) || $api_credential['active'] != '1' || ($client_hmac != $server_hmac)) { // Invalid API Key
-			$result = static::wrap_result(false, NULL, $Status_Code->get_status_code_unauthorized(), array('Invalid API Key'));
-		}
+
+        if( isset($request['use_hmac_check']) && (bool)$request['use_hmac_check'] === false )
+        {
+            $hmac_ok = true;
+        }else{
+            $hmac_ok = self::checkHMAC($calls);
+        }
+
+
+        /// hack to use GET vars as model data,and use function as the action.. legacy "API"
+        if( (!$calls || count($calls) ==0) && $request['function'] )
+        {
+            $calls[$request['function']] = $_GET;
+            unset($request['function']);
+        }
+
+        /*
+        var_dump($calls);
+        die();
+        */
+
+        if(!$hmac_ok)
+        {
+            return static::wrap_result(false, NULL, $Status_Code->get_status_code_unauthorized(), array('Invalid API Key'));
+        }
+
 		// Authorized, Do Calls
 		else {
 			$results = array();
-			foreach ($calls as $function => $params) {
-				
+            if(is_array($calls)) foreach ($calls as $function => $params)
+            {
+                /// hack to use GET vars
+                if(!is_array($params)) $params = $_GET;
+
 				if ($params != '' && !is_array($params)) {
 					$results[$function] = static::wrap_result(false, NULL, $Status_Code->get_status_code_bad_request(), array('Invalid parameters.'));
 					continue;
 				}
-				
+
+                var_dump( method_exists($this, $function) ? " TRUE" : " FALSE ");
+                die();
 				
 				//if (function_exists($function) || 1) {
 				if (method_exists($this, $function)) {
@@ -213,7 +258,7 @@ class _Controller {
 		);
 		
 		try {
-			$insert_id = $this->API_Request_Log->save($info);
+			$insert_id = ($this->API_Request_Log ? $this->API_Request_Log->save($info) : NULL );
 			
 		} catch(Exception $e) {
 			//self::$Exception_Helper->server_error_exception('Unable to log api request.');
