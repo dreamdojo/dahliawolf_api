@@ -11,9 +11,9 @@ class Message extends _Model{
 
     private $table = self::TABLE;
 
-    public function __construct()
+    public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
     {
-        parent::__construct();
+        parent::__construct($db_host, $db_user, $db_password, $db_name );
     }
 
     public function sendMessage($data = array())

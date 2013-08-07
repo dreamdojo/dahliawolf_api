@@ -190,9 +190,9 @@ abstract class Jk_Base extends Jk_Root
         $backtrace = debug_backtrace();
         for($ii = 1; $ii < count($backtrace); ++$ii)
         {
-            $retstring[] = @basename($backtrace[$ii]['file']) . ' - ' .
+            $retstring[] = @basename(isset($backtrace[$ii]['file'])?$backtrace[$ii]['file'] : "") . ' - ' .
                             @$backtrace[$ii]['function'] .
-                             ' (' . @$backtrace[$ii]['line'] . ')';
+                             ' (' . @(isset($backtrace[$ii]['line']) ? $backtrace[$ii]['line'] : "") . ')';
         }
         return "function stack \r\n".  implode(" \r\n", $retstring);
     }
@@ -202,7 +202,10 @@ abstract class Jk_Base extends Jk_Root
     {
         $retstring = '';
         $backtrace = debug_backtrace();
-        return basename($backtrace[$depth-1]['file']) ."->" . @$backtrace[$depth]['function'].'()';
+
+        $file = ($backtrace[$depth-1] && isset($backtrace[$depth-1]['file']) ? $backtrace[$depth-1]['file'] : "FILE ");
+        $function = @(isset($backtrace[$depth]['function']) ? $backtrace[$depth]['function'] : "");
+        return sprintf("%s -> $function()", basename($file));
     }
 
     public static function getCalleeObject($depth=2)

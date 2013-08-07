@@ -150,9 +150,11 @@ class _Controller {
 					continue;
 				}
 
-                var_dump( method_exists($this, $function) ? " TRUE" : " FALSE ");
+                /*
+                var_dump( method_exists($this, $function) ? get_class($this)."->$function() TRUE" : get_class($this)."->$function FALSE ");
                 die();
-				
+				*/
+
 				//if (function_exists($function) || 1) {
 				if (method_exists($this, $function)) {
 					if (!is_array($params)) {
