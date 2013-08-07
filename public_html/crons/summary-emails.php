@@ -28,12 +28,12 @@ if(!defined('INTERVAL')) define('INTERVAL', 'Daily');
 
 echo "WORKING PATH: $absolute_path/  \n";
 
-
+/*
 var_dump(APP_PATH);
 var_dump(DR);
 var_dump(INTERVAL);
 var_dump(explode(":", get_include_path()));
-
+*/
 
 require_once 'Jk_Root.php';
 require_once 'Jk_Base.php';
