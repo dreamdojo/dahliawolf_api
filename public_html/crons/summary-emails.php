@@ -1,6 +1,7 @@
 <?
 // @daily php /var/www/crons/daily-summary-emails.php
 if (!empty($_SERVER)) {
+    echo "die";
 	die();
 }
 
