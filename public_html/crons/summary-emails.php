@@ -28,12 +28,12 @@ if(!defined('INTERVAL')) define('INTERVAL', 'Daily');
 
 echo "WORKING PATH: $absolute_path/  \n";
 
-/*
+
 var_dump(APP_PATH);
 var_dump(DR);
 var_dump(INTERVAL);
 var_dump(explode(":", get_include_path()));
-*/
+
 
 require_once 'Jk_Root.php';
 require_once 'Jk_Base.php';
@@ -54,9 +54,9 @@ $dbpass = DB_API_PASSWORD;
 
 require 'lib/php/class.phpmailer.php';
 //require 'lib/php/email.php';
-require 'models/db.php';
-require 'models/User.php';
-require 'models/Email.php';
+require 'crons/models/db.php';
+require 'crons/models/User.php';
+require 'crons/models/Email.php';
 
 $User = new User();
 
