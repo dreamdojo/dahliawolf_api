@@ -1,10 +1,12 @@
 <?
 // @daily php /var/www/crons/daily-summary-emails.php
+/*
 if (!empty($_SERVER)) {
     echo "die";
 	die();
 }
-s
+*/
+
 set_time_limit(0);
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -30,6 +32,8 @@ $User = new User();
 $date = date('Y-m-d');
 $users = $User->get_summary_users(INTERVAL, $date);
 unset($User);
+
+echo sprintf("USER COUNT: %s", count($users));
 
 if (!empty($users)) {
 	$Email = new Email(FROM, FROM_EMAIL);
