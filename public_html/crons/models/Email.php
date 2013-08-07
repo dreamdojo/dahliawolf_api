@@ -63,7 +63,7 @@ Below is your ' . $params['interval'] . ' summary for ' . $date . ':
 		$html_body = nl2br($html_body_header) . $html_body_html . nl2br($html_body_footer);*/
 
 		ob_start();
-		require $_SERVER['DOCUMENT_ROOT'] . '/emails/custom/notifications-email.php';
+		require ( isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] != "" ? $_SERVER['DOCUMENT_ROOT'] : ( defined('DR')? DR : "") ) . '/emails/custom/notifications-email.php';
 		$html_body = ob_get_contents();
 		ob_end_clean();
 
