@@ -44,7 +44,6 @@ $error_handler = new Error_Handler();
 $error_handler->registerShutdownHandler();
 $error_handler->registerErrorHandler();
 
-require_once DR . '/1-0/config/config.php';
 require_once $absolute_path . '/1-0/config/config.php';
 
 $dbhost = DB_API_HOST;
