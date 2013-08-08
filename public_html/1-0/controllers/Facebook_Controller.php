@@ -22,8 +22,8 @@ class Facebook_Controller extends Social_Network_Controller {
 	public function login() {
 		$user = $this->facebook->getUser();
 
-        $logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
-        $logger->LogInfo("FB LOGIN INIT");
+        //$logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
+        //$logger->LogInfo("FB LOGIN INIT");
 
 		// If user isn't logged in through Facebook, redirect them to do so
 		if (!$user) {
@@ -34,7 +34,7 @@ class Facebook_Controller extends Social_Network_Controller {
 				)
 			);
 
-            $logger->LogInfo("FB LOGIN REDIRECT >> $login_url");
+            //$logger->LogInfo("FB LOGIN REDIRECT >> $login_url");
 			header('Location: ' . $login_url);
 			die();
 		}
@@ -75,7 +75,7 @@ class Facebook_Controller extends Social_Network_Controller {
 			, 'logout_url' => $logout_url
 		);
 
-        $logger->LogInfo("FB USER DATA: " . var_export($user, true) );
+        //$logger->LogInfo("FB USER DATA: " . var_export($user, true) );
 
 		// Gender
 		if (!empty($user_profile['sex'])) {

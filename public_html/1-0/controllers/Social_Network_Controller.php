@@ -46,7 +46,7 @@ class Social_Network_Controller extends _Controller {
 	
 	public function login($params = array())
     {
-        $logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
+        //$logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
 
 		require_once DR . '/includes/php/functions-api.php';
 		
@@ -123,15 +123,15 @@ class Social_Network_Controller extends _Controller {
 		// Check if email already exists
 		$this->load('User');
 		$existing_user = $this->User->check_social_network_email_exists($params['email'], $params['social_network_id']);
-        $logger->LogInfo("IS EXISTING check_social_network ?: " . var_export($existing_user, true));
+        //$logger->LogInfo("IS EXISTING check_social_network ?: " . var_export($existing_user, true));
 
 		$logout_url = !empty($params['logout_url']) ? $params['logout_url'] : '';
 
 		// Get user info
 		$user = $this->User->get_user($params['email']);
 
-        $logger->LogInfo("LOCAL USER INFO: " . var_export($user, true));
-        $logger->LogInfo("DO WE HAVE THIS ACTIVE EMAIL REGISTERED ?: " .  (strtolower(trim($user['email'])) == strtolower(trim($params['email'])) ? "TRUE" : "FALSE") );
+        //$logger->LogInfo("LOCAL USER INFO: " . var_export($user, true));
+        //$logger->LogInfo("DO WE HAVE THIS ACTIVE EMAIL REGISTERED ?: " .  (strtolower(trim($user['email'])) == strtolower(trim($params['email'])) ? "TRUE" : "FALSE") );
 
         /////////////////////////////
         /////// PREPARE USER DATA //////
@@ -170,7 +170,7 @@ class Social_Network_Controller extends _Controller {
 			);
 			$dw_user = api_call('user', 'get_user', $dw_params, true);
 
-            $logger->LogInfo("dw_user ?: " . var_export($dw_user, true));
+            //$logger->LogInfo("dw_user ?: " . var_export($dw_user, true));
 
 			
 			if (!empty($dw_user['data']['pinterest_username'])) {
@@ -194,14 +194,14 @@ class Social_Network_Controller extends _Controller {
             {
                 //update fb_id
                 $update_data = api_call('user', 'update_user_optional', $user_params);
-                $logger->LogInfo("updating user with fb_id:" . var_export($user_params, true));
+                //$logger->LogInfo("updating user with fb_id:" . var_export($user_params, true));
             }
 
 			// Generate token & insert login instance
 			return $this->authen($user, $logout_url);
 		}
         else {
-            $logger->LogInfo("register new user passed data:" . var_export($params, true));
+            //$logger->LogInfo("register new user passed data:" . var_export($params, true));
             // Else register the user
             // if username is taken, should redirect back to register page to choose
 

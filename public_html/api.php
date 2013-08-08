@@ -820,12 +820,14 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                     'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL
                 )
             );
-            if (!empty($_REQUEST['limit'])) {
-                $params['limit'] = $_REQUEST['limit'];
-            }
+
+            $params['limit'] = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+
             if (!empty($_REQUEST['offset'])) {
                 $params['offset'] = $_REQUEST['offset'];
             }
+
+
             $user_data = $user->getTopFollowing($params);
 
             if($_REQUEST['t'])
