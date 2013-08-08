@@ -134,7 +134,7 @@ class Social_Network_Controller extends _Controller {
         $logger->LogInfo("DO WE HAVE THIS ACTIVE EMAIL REGISTERED ?: " .  (strtolower(trim($user['email'])) == strtolower(trim($params['email'])) ? "TRUE" : "FALSE") );
 
         /////////////////////////////
-        /////// PREPARE USER DATA ///
+        /////// PREPARE USER DATA //////
         $user_params = array(
             'user_id' => $user['user_id'],
             'username' => $params['username'],
@@ -160,10 +160,10 @@ class Social_Network_Controller extends _Controller {
             }
         }
         /////////////////////////////
-
+        //
 
 		// Check that dahliawolf user exists
-		if ($existing_user || strtolower(trim($user[email])) == strtolower(trim($user_params['email_address'])) ) {
+		if ($existing_user || strtolower(trim($user[email])) == strtolower(trim($user_params['email_address']))) {
 			// Scrape username
 			$dw_params = array(
 				'user_id' => $user['user_id']
@@ -194,10 +194,11 @@ class Social_Network_Controller extends _Controller {
             {
                 //update fb_id
                 $update_data = api_call('user', 'update_user_optional', $user_params);
+                $logger->LogInfo("updating user with fb_id:" . var_export($user_params, true));
             }
 
 			// Generate token & insert login instance
-			return $this->authen($existing_user, $logout_url);
+			return $this->authen($user, $logout_url);
 		}
         else {
             $logger->LogInfo("register new user passed data:" . var_export($params, true));

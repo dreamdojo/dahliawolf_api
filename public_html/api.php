@@ -573,6 +573,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'location'
 				, 'website'
 				, 'facebook_post'
+                , 'fb_uid'
 				, 'instagram_username'
 				, 'pinterest_username'
 				//, 'comment_notifications'
