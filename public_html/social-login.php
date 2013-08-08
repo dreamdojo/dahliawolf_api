@@ -3,6 +3,22 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 require '1-0/config/config.php';
 
+
+define('APP_PATH', sprintf("%s/", realpath($_SERVER['DOCUMENT_ROOT'])) );
+$include_paths = explode(":", get_include_path());
+$include_paths[] = realpath(APP_PATH.'lib/jk07');
+set_include_path(implode(":", $include_paths));
+
+
+require DR . '/lib/jk07/Jk_Root.php';
+require DR . '/lib/jk07/Jk_Base.php';
+require DR . '/lib/jk07/Jk_Logger.php';
+require DR . '/lib/jk07/utils/Error_Handler.php';
+
+$error_handler = new Error_Handler();
+$error_handler->registerShutdownHandler();
+$error_handler->registerErrorHandler();
+
 // Referrer to know where to send user back to
 if (!empty($_GET['redirect_url'])) {
 	$_SESSION['redirect_url'] = $_GET['redirect_url'];

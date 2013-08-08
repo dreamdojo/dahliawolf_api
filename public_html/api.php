@@ -27,21 +27,6 @@ require_once 'models/Email.php';
 require_once 'includes/php/json_functions.php';
 
 
-define('APP_PATH', realpath('./')."/");
-$include_paths = explode(":", get_include_path());
-$include_paths[] = realpath('./lib/jk07');
-set_include_path(implode(":", $include_paths));
-
-
-require DR . '/lib/jk07/Jk_Root.php';
-require DR . '/lib/jk07/Jk_Base.php';
-require DR . '/lib/jk07/Jk_Logger.php';
-require DR . '/lib/jk07/utils/Error_Handler.php';
-
-$error_handler = new Error_Handler();
-$error_handler->registerShutdownHandler();
-$error_handler->registerErrorHandler();
-
 if(isset($_GET['t'])){
     var_dump($_GET);
 }
