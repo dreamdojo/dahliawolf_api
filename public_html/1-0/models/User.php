@@ -47,6 +47,24 @@ class User extends _Model {
         $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
 		return $result;
 	}
+
+	public function getUserByUsername($username) {
+		$query = '
+			SELECT user_id.*
+			FROM user
+			WHERE username = :username
+		';
+		$params = array(
+			':username' => $username
+		);
+
+        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
+
+        $logger->LogInfo("FETCH USER INFO: -h:{$this->db_host} -db:$this->db_name");
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+		return $result;
+	}
 	
 	public function get_user_by_token($user_id, $token) {
 		$query = '

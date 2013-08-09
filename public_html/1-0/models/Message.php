@@ -40,6 +40,44 @@ class Message extends _Model{
             }
         }
 
+        $logger = new Jk_Logger(APP_PATH.'logs/user_messages.log');
+        $logger->LogInfo("SENDING MESSAGE with data: ", var_export($data, true));
+
+        if(isset($data['to_user_name']))
+        {
+            $messages_sent = array();
+            $user_model = New User();
+            $users = explode(',', $data['to_user_name']);
+            if(is_array($users) && count($users) > 0) foreach($users as $user_name)
+            {
+                $user_data = $user_model->getUserByUsername(trim($user_name, '@'));
+                $user_id = $user_data['user_id'];
+
+                /// replace with current user id
+                $values['to_user_id'] = $user_id;
+
+                $logger->LogInfo("SENDING MESSAGE TO USERNAME: $user_name USER ID: $user_id");
+
+                try {
+                    $messages_sent[] = $this->do_db_save($values, $data);
+
+
+                } catch(Exception $e) {
+                    self::$Exception_Helper->server_error_exception("Unable to send message.". $e->getMessage());
+                }
+
+            }
+
+            return array(
+                strtolower( self::PRIMARY_KEY_FIELD .'s') => $messages_sent,
+                //'model_data' => $data
+            );
+
+        }
+
+
+
+
         try {
             $insert_id = $this->do_db_save($values, $data);
             return array(
