@@ -470,7 +470,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
 
 
-            $register_defalul_follows = function()
+            $register_default_follows = function()
             {
                 //follow default
                 $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
@@ -859,12 +859,12 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                         'username',
                         'viewer_user_id'
                     );
+
                     foreach ($where_params as $param) {
                         if (isset($_REQUEST[$param])) {
                             $params['where'][$param] = $_REQUEST[$param];
                         }
                     }
-
 
                     unset($posting);
                     new Posting();
