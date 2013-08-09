@@ -41,7 +41,12 @@ class Activity_Log extends _Model {
 	public function get_log($user_id, $api_website_id = NULL, $activity_id = NULL) {
 		// Get rows
 		$query = '
-			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+			SELECT  activity_log.activity_log_id,
+			        activity_log.created,
+			        activity_log.note,
+			        activity_log.entity,
+			        activity_log.entity_id,
+			        activity_log.read
 			FROM activity_log
 				LEFT JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
 			WHERE activity_log.entity IS NOT NULL
@@ -271,6 +276,57 @@ class Activity_Log extends _Model {
 		}
 	}
 
+	public function get_messages_log($user_id, $api_website_id, $activity_id=38, $unread_count = false, $unpreviewed_count = false) {
+		if (!$unread_count) {
+			$select_str = '
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read ,
+				user_username.user_id, user_username.username
+			';
+		}
+		else {
+			$select_str = 'COUNT(*) AS count';
+			if (!$unpreviewed_count) {
+				$where_str = 'AND activity_log.read IS NULL';
+			}
+			else {
+				$where_str = 'AND activity_log.previewed IS NULL';
+			}
+		}
+
+		// Get rows
+		$query = '
+			SELECT ' . $select_str . '
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+                INNER JOIN dahliawolf_v1_2013.user_username ON activity_log.user_id = user_username.user_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				' . (!empty($where_str) ? $where_str : '') . '
+			ORDER BY activity_log.created DESC
+		';
+		$values = array(
+			':user_id' => $user_id,
+			':api_website_id' => $api_website_id,
+			':activity_id' => $activity_id,
+			':entity' => 'message'
+		);
+
+        $logger = new Jk_Logger(APP_PATH.'logs/db_queries.log');
+
+        $logger->LogInfo( sprintf( "messages log query:\n %s: \nparams: %s", $query, var_export($values, true)) );
+
+
+		try {
+			$activities = self::$dbs[$this->db_host][$this->db_name]->exec($query, $values);
+			return $activities;
+
+		} catch(Exception $e) {
+			self::$Exception_Helper->server_error_exception('Unable to get activity log.');
+		}
+	}
+
 	public function get_like_winners_log_count($user_id, $api_website_id, $previewed = false) {
 		return $this->get_like_winners_log($user_id, $api_website_id, true, $previewed);
 	}
@@ -377,5 +433,78 @@ class Activity_Log extends _Model {
 			self::$Exception_Helper->server_error_exception('Unable to mark activity log as previewed.');
 		}
 	}
+
+
+    public static function logActivity($user_id, $activity_id, $note, $entity = NULL, $entity_id = NULL)
+    {
+    	$activity = array(
+            'user_id' => $user_id,
+            'activity_id' => $activity_id,
+            'note' => $note,
+            'api_website_id' => API_WEBSITE_ID,
+            'entity' => $entity,
+            'entity_id' => $entity_id,
+
+    	);
+    	$data = self::saveActivity($activity);
+
+    	return $data;
+    }
+
+
+    public static function saveActivity($params)
+    {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User ID'
+                , 'rules' => array(
+                    'is_set' => NULL
+                    , 'is_int' => NULL
+                )
+            )
+            , 'activity_id' => array(
+                'label' => 'Activity ID'
+                , 'rules' => array(
+                    'is_set' => NULL
+                    , 'is_int' => NULL
+                )
+            )
+            , 'note' => array(
+                'label' => 'Note'
+                , 'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+            , 'api_website_id' => array(
+                'label' => 'API Website ID'
+                , 'rules' => array(
+                    'is_int' => NULL
+                )
+            )
+        );
+
+        $logger = new Jk_Logger(APP_PATH.'logs/activity_log.log');
+        $logger->LogInfo("LOGGING ACTIVITY WITH params: ". var_export($params, true));
+
+        $validator = new Validate();
+        $validator->add_many($input_validations, $params, true);
+        $validator->run();
+
+        $activity_log = new Activity_Log();
+        $activity = array(
+            'user_id' => $params['user_id'],
+            'api_website_id' => !empty($params['api_website_id']) ? $params['api_website_id'] : NULL,
+            'activity_id' => $params['activity_id'],
+            'note' => $params['note'],
+            'entity' => !empty($params['entity']) ? $params['entity'] : NULL,
+        );
+
+        $logger->LogInfo("LOGGING ACTIVITY WITH activity data: ". var_export($activity, true));
+        $data = $activity_log->save($activity);
+
+        $logger->LogInfo("LOGGING ACTIVITY WITH activity response: ". var_export($data, true));
+    	return $data;
+    }
+
 }
 ?>

@@ -50,12 +50,30 @@ class User extends _Model {
 
 	public function getUserByUsername($username) {
 		$query = '
-			SELECT user_id.*
+			SELECT *
 			FROM user
 			WHERE username = :username
 		';
 		$params = array(
 			':username' => $username
+		);
+
+        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
+
+        $logger->LogInfo("FETCH USER INFO: -h:{$this->db_host} -db:$this->db_name");
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+		return $result;
+	}
+
+	public function getUserById($user_id) {
+		$query = '
+			SELECT *
+			FROM user
+			WHERE user_id = :user_id
+		';
+		$params = array(
+			':user_id' => $user_id
 		);
 
         $logger = new Jk_Logger(APP_PATH.'logs/user.log');
