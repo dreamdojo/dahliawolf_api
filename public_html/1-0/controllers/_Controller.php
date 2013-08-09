@@ -74,7 +74,7 @@ class _Controller {
 	}
 
 
-    protected function checkHMAC($calls)
+    protected function checkHMAC($calls, $request)
     {
         // Authentication
 		$api_key = !empty($request['api_key']) ? $request['api_key'] : NULL;
@@ -93,7 +93,6 @@ class _Controller {
         $Status_Code = new Status_Code();
 
         $server_hmac = $API->get_hmac($calls);
-
 
         // Authorization Failed
 		if (empty($api_credential) || $api_credential['active'] != '1' || ($client_hmac != $server_hmac)) { // Invalid API Key
@@ -116,7 +115,7 @@ class _Controller {
         {
             $hmac_ok = true;
         }else{
-            $hmac_ok = self::checkHMAC($calls);
+            $hmac_ok = self::checkHMAC($calls, $request);
         }
 
 
@@ -127,10 +126,6 @@ class _Controller {
             unset($request['function']);
         }
 
-        /*
-        var_dump($calls);
-        die();
-        */
 
         if(!$hmac_ok)
         {
@@ -149,11 +144,6 @@ class _Controller {
 					$results[$function] = static::wrap_result(false, NULL, $Status_Code->get_status_code_bad_request(), array('Invalid parameters.'));
 					continue;
 				}
-
-                /*
-                var_dump( method_exists($this, $function) ? get_class($this)."->$function() TRUE" : get_class($this)."->$function FALSE ");
-                die();
-				*/
 
 				//if (function_exists($function) || 1) {
 				if (method_exists($this, $function)) {

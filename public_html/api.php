@@ -2056,7 +2056,9 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 					, 'api_website_id' => API_WEBSITE_ID
 				)
 			);
+
 			$data = api_request('activity_log', $calls, true);
+
 
 			$activity_log = array();
 			if (!empty($data['success']) && !empty($data['data']['get_grouped_log']['success']) && !empty($data['data']['get_grouped_log']['data'])) {

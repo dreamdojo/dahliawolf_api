@@ -36,9 +36,11 @@ $endpoint = !empty($_GET['endpoint']) ? $_GET['endpoint'] : NULL;
 $controller_name = str_replace(' ', '_', ucwords(str_replace('_', ' ', $endpoint))) . '_Controller';
 
 
+/*
 if (empty($endpoint)) {
 	die('Endpoint is not set.');
 }
+*/
 
 
 try {

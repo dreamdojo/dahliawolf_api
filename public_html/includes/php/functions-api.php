@@ -1,5 +1,6 @@
 <?
-function api_request($service, $calls, $return_array = false) {
+function api_request($service, $calls, $return_array = false)
+{
 	if (!class_exists('API', false)) {
 		require $_SERVER['DOCUMENT_ROOT'] . '/lib/php/API.php';
 	}
@@ -23,12 +24,13 @@ function api_request($service, $calls, $return_array = false) {
 }
 
 function api_call($endpoint, $function, $parameters = NULL, $return_array = false) {
+
 	$query_string = empty($parameters) ? '' : http_build_query($parameters);
 
     $api_domain = strpos($_SERVER['SERVER_NAME'], 'dev')>-1? "dev.api.dahliawolf.com" : "api.dahliawolf.com";
 
 	$url = "http://{$api_domain}/api.php?api=" . $endpoint . '&function=' . $function . '&' . $query_string;
-	
+
 	$ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,$url);
     curl_setopt($ch, CURLOPT_POST, 1);

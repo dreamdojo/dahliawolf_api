@@ -486,6 +486,8 @@ class User extends db {
       			SELECT
                     user_username.user_username_id,
       			    user_username.user_id,
+      			    user_username.username,
+      			    user_username.avatar,
                     (
                         SELECT COUNT(*)
                         FROM user_username AS u
