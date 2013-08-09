@@ -26,6 +26,13 @@ require DR . '/lib/php/email.php';
 require_once 'models/Email.php';
 require_once 'includes/php/json_functions.php';
 
+define('APP_PATH', sprintf("%s/", realpath('./') ));
+$include_paths = explode(":", get_include_path());
+$include_paths[] = sprintf("%s/", realpath('./lib/jk07'));
+$include_paths[] = sprintf("%s/", realpath('./'));
+set_include_path(implode(":", $include_paths));
+
+
 
 if(isset($_GET['t'])){
     var_dump($_GET);
@@ -490,7 +497,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
                     $follow_user_response = api_request('user', $calls, true);
 
-                    $logger = new Jk_Logger('/var/gitrepos/dev_dahliawolf_api/public_html/logs/debug.log', Jk_Logger::DEBUG);
+                    $logger = new Jk_Logger(APP_PATH .'logs/debug.log', Jk_Logger::DEBUG);
                     $logger->LogDebug("user follow params: $user_id". json_encode($calls));
                     //$logger->LogDebug("user follow response: $user_id". json_encode($follow_user_response));
 
