@@ -1,9 +1,9 @@
 <?
 class Address_Controller extends _Controller {
-	
+
 	public function get_user_address($params = array()) {
 		$this->load('Address');
-		
+
 		// Validations
 		$input_validations = array(
 			'user_id' => array(
@@ -23,20 +23,20 @@ class Address_Controller extends _Controller {
 		);
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
-		
+
 		$data = $this->Address->get_row(
 			array(
 				'user_id' => $params['user_id']
 				, 'address_id' => $params['address_id']
 			)
 		);
-		
+
 		return static::wrap_result(true, $data);
 	}
-	
+
 	public function get_user_shipping_addresses($params = array()) {
 		$this->load('Address');
-		
+
 		// Validations
 		$input_validations = array(
 			'user_id' => array(
@@ -49,21 +49,21 @@ class Address_Controller extends _Controller {
 		);
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
-		
+
 		$data = $this->Address->get_rows(
 			array(
 				'user_id' => $params['user_id']
 				, 'type' => 'Shipping'
 			)
 		);
-		
+
 		return static::wrap_result(true, $data);
-		
+
 	}
-	
+
 	public function get_user_billing_addresses($params = array()) {
 		$this->load('Address');
-		
+
 		// Validations
 		$input_validations = array(
 			'user_id' => array(
@@ -76,29 +76,29 @@ class Address_Controller extends _Controller {
 		);
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
-		
+
 		$data = $this->Address->get_rows(
 			array(
 				'user_id' => $params['user_id']
 				, 'type' => 'Billing'
 			)
 		);
-		
+
 		return static::wrap_result(true, $data);
-		
+
 	}
-	
+
 	public function create_billing_address($params = array()) {
 		unset($params['address_id']);
 		$params['type'] = 'Billing';
-		
+
 		return $this->save_address($params);
 	}
-	
+
 	public function create_shipping_address($params = array()) {
 		unset($params['address_id']);
 		$params['type'] = 'Shipping';
-		
+
 		return $this->save_address($params);
 	}
 
@@ -106,17 +106,17 @@ class Address_Controller extends _Controller {
 		$this->load('Address');
 		$this->load('State');
 		$this->load('Country');
-		
+
 		// User authentication: check login_instance
 		$is_user_edit = array_key_exists('token', $params);
 		if ($is_user_edit) {
 			$this->validate_login_instance($params['user_id'], $params['token']);
 		}
-		
+
 		$data = array();
-		
+
 		$is_insert = !empty($params['address_id']) && is_numeric($params['address_id']) ? false : true;
-		
+
 		// Validations
 		$input_validations = array(
 			'user_id' => array(
@@ -171,7 +171,7 @@ class Address_Controller extends _Controller {
 		);
 		$this->Validate->add_many($input_validations, $params, $is_insert);
 		$this->Validate->run();
-		
+
 		// Validate state
 		if (!empty($params['state']) && !empty($params['country']) && $params['country'] == 'US') {
 			$state = $this->State->get_row(
@@ -179,24 +179,28 @@ class Address_Controller extends _Controller {
 					'code' => $params['state']
 				)
 			);
-			
+
 			if (empty($state)) {
 				_Model::$Exception_Helper->request_failed_exception('State not found.');
 			}
 		}
-		
+
 		if (!empty($params['country'])) {
 			$country = $this->Country->get_row(
 				array(
 					'code' => $params['country']
 				)
 			);
-			
+
 			if (empty($country)) {
 				_Model::$Exception_Helper->request_failed_exception('Country not found.');
 			}
 		}
-		
+
+		if ($params['state'] == 'N/A') {
+			$params['state'] = NULL;
+		}
+
 		// Addresses
 		$field_map = array(
 			'user_id' => 'user_id'
@@ -217,32 +221,32 @@ class Address_Controller extends _Controller {
 				$address[$field] = $params[$param] != '' ? $params[$param] : NULL;
 			}
 		}
-		
+
 		if (!$is_insert) {
 			$address['address_id'] = $params['address_id'];
 		}
-		
+
 		$data['address_id'] = $this->Address->save($address);
-		
+
 		return static::wrap_result(true, $data);
 	}
-	
+
 	public function get_countries() {
 		$this->load('Country');
-		
+
 		$data = $this->Country->get_countries();
-		
+
 		return static::wrap_result(true, $data);
 	}
-	
+
 	public function get_states() {
 		$this->load('State');
-		
+
 		$data = $this->State->get_states();
-		
+
 		return static::wrap_result(true, $data);
 	}
-	
+
 }
 
 ?>
