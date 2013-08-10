@@ -766,6 +766,17 @@ class User_Controller extends _Controller {
 		return static::wrap_result(true, NULL, _Model::$Status_Code->get_status_code_no_content());
 	}
 
+
+
+    public function follow($request_data)
+    {
+        $this->load('Follow', DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
+        $data  = $this->Follow->followUser($request_data);
+
+        return static::wrap_result( ($this->Follow->hasError()? false:true), $data, 200, $this->Follow->getErrors() );
+    }
+
+
 	/*
 	user resetpassword
 	*/

@@ -5,10 +5,10 @@ class Jk_Config
 	
     // Db connection
     public $host            = '10.48.113.8';
-    public $db             	= 'dev_dahliawolf_api';
-    public $user			= 'dev_dahliawolf_api';
-    public $pass           	= 'dev_dahliawolf_api';
-    public $env				= 'dev_dahliawolf_api';
+    public $db             	= 'dahliawolf_v1_2013';
+    public $user			= 'offlineadmin';
+    public $pass           	= '9w8^^^qFtwCD7N^N^';
+    public $env				= 'dev';
     
     // server web root
     const BASE_URI          = '/';

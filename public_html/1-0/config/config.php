@@ -22,6 +22,17 @@ define('DB_API_DATABASE', 'admin_offline_v1_2013');
 //define('DB_API_DATABASE', 'dahliawolf_v1_2013');
 
 
+define('ADMIN_API_HOST', '127.0.0.1');
+define('ADMIN_API_USER', 'off_admin');
+define('ADMIN_API_PASSWORD', 'EYCs5HhdwWbBKpvc');
+define('ADMIN_API_DATABASE', 'admin_offline_v1_2013');
+
+define('DW_API_HOST', '127.0.0.1');
+define('DW_API_USER', 'offlineadmin');
+define('DW_API_PASSWORD', '9w8^^^qFtwCD7N^N^');
+define('DW_API_DATABASE', 'dahliawolf_v1_2013');
+
+
 define('MYSQLHOST', DB_API_HOST);
 define('MYSQLUSER', DB_API_USER);
 define('MYSQLPASS', DB_API_PASSWORD);
@@ -49,13 +60,13 @@ define('ERROR_USER', 1024);
 function default_exception_handler($exception) {
 	if (method_exists($exception, 'get_errors')) {
 		$errors = $exception->get_errors();
-		log_error(print_r($errors, true), 'system');
+		if(method_exists($exception, 'log_error')) log_error(print_r($errors, true), 'system');
 		echo 'Default Exception Handler:' . "\n";
 		print_r($errors);
 	}
 	else {
 		$error = $exception->getMessage();
-		log_error($error, 'system');
+        if(method_exists($exception, 'log_error')) log_error($error, 'system');
 		echo 'Default Exception Handler: ' . $error;
 	}
 	die();

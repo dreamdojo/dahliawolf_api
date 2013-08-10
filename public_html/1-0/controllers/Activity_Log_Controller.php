@@ -49,26 +49,33 @@ class Activity_Log_Controller extends _Controller {
 		$this->Validate->run();
 
 		$this->load('Activity_Log');
+        $activity_log = new Activity_Log();
+        
+
 		$user_id = $params['user_id'];
 		$api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : NULL;
 
 		// Like winners
-		$posts = $this->Activity_Log->get_like_winners_log($user_id, $api_website_id);
+		$posts = $activity_log->get_like_winners_log($user_id, $api_website_id);
 
 		// Comments
-		$comments = $this->Activity_Log->get_commented_posts_log($user_id, $api_website_id);
+		$comments = $activity_log->get_commented_posts_log($user_id, $api_website_id);
 
 		// Likes
-		$likes = $this->Activity_Log->get_liked_posts_log($user_id, $api_website_id);
+		$likes = $activity_log->get_liked_posts_log($user_id, $api_website_id);
 
 		// Followers
-		$followers = $this->Activity_Log->get_followers_log($user_id, $api_website_id);
+		$followers = $activity_log->get_followers_log($user_id, $api_website_id);
+
+        // Messages
+        $messages = $activity_log->get_messages_log($user_id, $api_website_id, 39);
 
 		$data = array(
-			'posts' => $posts
-			, 'comments' => $comments
-			, 'likes' => $likes
-			, 'followers' => $followers
+			'posts' => $posts,
+			'comments' => $comments,
+			'likes' => $likes,
+			'followers' => $followers,
+			'messages' => $messages,
 		);
 
 		return static::wrap_result(true, $data);
@@ -273,50 +280,61 @@ class Activity_Log_Controller extends _Controller {
 		return static::wrap_result(true, $data);
 	}
 
+    /****** old activity func */
+    /*
+    public function log_activity($params = array()) {
+    		// Validations
+    		$input_validations = array(
+    			'user_id' => array(
+    				'label' => 'User ID'
+    				, 'rules' => array(
+    					'is_set' => NULL
+    					, 'is_int' => NULL
+    				)
+    			)
+    			, 'activity_id' => array(
+    				'label' => 'Activity ID'
+    				, 'rules' => array(
+    					'is_set' => NULL
+    					, 'is_int' => NULL
+    				)
+    			)
+    			, 'note' => array(
+    				'label' => 'Note'
+    				, 'rules' => array(
+    					'is_set' => NULL
+    				)
+    			)
+    			, 'api_website_id' => array(
+    				'label' => 'API Website ID'
+    				, 'rules' => array(
+    					'is_int' => NULL
+    				)
+    			)
+    		);
+    		$this->Validate->add_many($input_validations, $params, true);
+    		$this->Validate->run();
+
+    		$this->load('Activity_Log');
+    		$activity = array(
+    			'user_id' => $params['user_id']
+    			, 'api_website_id' => !empty($params['api_website_id']) ? $params['api_website_id'] : NULL
+    			, 'activity_id' => $params['activity_id']
+    			, 'note' => $params['note']
+    			, 'entity' => !empty($params['entity']) ? $params['entity'] : NULL
+    			, 'entity_id' => !empty($params['entity_id']) ? $params['entity_id'] : NULL
+    		);
+    		$data = $this->Activity_Log->save($activity);
+
+    		return static::wrap_result(true, $data);
+    	}
+
+    */
+
+
 	public function log_activity($params = array()) {
-		// Validations
-		$input_validations = array(
-			'user_id' => array(
-				'label' => 'User ID'
-				, 'rules' => array(
-					'is_set' => NULL
-					, 'is_int' => NULL
-				)
-			)
-			, 'activity_id' => array(
-				'label' => 'Activity ID'
-				, 'rules' => array(
-					'is_set' => NULL
-					, 'is_int' => NULL
-				)
-			)
-			, 'note' => array(
-				'label' => 'Note'
-				, 'rules' => array(
-					'is_set' => NULL
-				)
-			)
-			, 'api_website_id' => array(
-				'label' => 'API Website ID'
-				, 'rules' => array(
-					'is_int' => NULL
-				)
-			)
-		);
-		$this->Validate->add_many($input_validations, $params, true);
-		$this->Validate->run();
-
-		$this->load('Activity_Log');
-		$activity = array(
-			'user_id' => $params['user_id']
-			, 'api_website_id' => !empty($params['api_website_id']) ? $params['api_website_id'] : NULL
-			, 'activity_id' => $params['activity_id']
-			, 'note' => $params['note']
-			, 'entity' => !empty($params['entity']) ? $params['entity'] : NULL
-			, 'entity_id' => !empty($params['entity_id']) ? $params['entity_id'] : NULL
-		);
-		$data = $this->Activity_Log->save($activity);
-
+        $this->load('Activity_Log');
+        $data = Activity_Log::saveActivity($params);
 		return static::wrap_result(true, $data);
 	}
 }

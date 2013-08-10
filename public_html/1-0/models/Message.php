@@ -9,11 +9,15 @@ class Message extends _Model{
     const TABLE = 'message';
     const PRIMARY_KEY_FIELD = 'message_id';
 
+    CONST ACTIVITY_ID_SENT_MESSAGE = 38;
+    CONST ACTIVITY_ID_RECEIVED_MESSAGE = 39;
+
+
     private $table = self::TABLE;
 
-    public function __construct()
+    public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
     {
-        parent::__construct();
+        parent::__construct($db_host, $db_user, $db_password, $db_name );
     }
 
     public function sendMessage($data = array())
@@ -40,10 +44,55 @@ class Message extends _Model{
             }
         }
 
-        try {
-            $insert_id = $this->do_db_save($values, $data);
+        $logger = new Jk_Logger(APP_PATH.'logs/user_messages.log');
+        $logger->LogInfo("SENDING MESSAGE with data: ", var_export($data, true));
+
+        $activity_log = new Activity_Log();
+
+
+        $user_model = New User();
+        $sending_user_data = $user_model->getUserById(trim($values['from_user_id'], '@'));
+        $sending_user_username = $sending_user_data['username'];
+        $logger->LogInfo( sprintf( "FETCHED SENDING USER: %s: ", var_export($sending_user_data, true)) );
+
+
+        if(isset($data['to_user_name']))
+        {
+            $messages_sent = array();
+            $users = explode(',', $data['to_user_name']);
+            if(is_array($users) && count($users) > 0) foreach($users as $user_name)
+            {
+                $user_data = $user_model->getUserByUsername(trim($user_name, '@'));
+                $user_id = $user_data['user_id'];
+                /// replace with current user id
+                $values['to_user_id'] = $user_id;
+                if(!$user_id || $user_id=='') continue;
+
+                $logger->LogInfo("SENDING MESSAGE TO USERNAME: $user_name USER ID: $user_id");
+
+                try {
+                    $message_id =  $this->do_db_save($values, $data);
+                    $messages_sent[$user_id] = $message_id;
+                    if( intval($message_id ) > 0 ) self::logActivity($user_id, "{$sending_user_username} sent you a message",  $message_id, 'message', self::ACTIVITY_ID_RECEIVED_MESSAGE);
+
+
+                } catch(Exception $e) {
+                    self::$Exception_Helper->server_error_exception("Unable to send message.". $e->getMessage());
+                }
+            }
+
             return array(
-                    strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
+                strtolower( self::PRIMARY_KEY_FIELD .'s') => $messages_sent,
+                //'model_data' => $data
+            );
+
+        }
+
+        try {
+            $message_id = $this->do_db_save($values, $data);
+            if( intval($message_id) > 0 ) self::logActivity($values['to_user_id'], "{$sending_user_username} sent you a message",  $message_id, 'message', self::ACTIVITY_ID_RECEIVED_MESSAGE);
+            return array(
+                    strtolower( self::PRIMARY_KEY_FIELD) => $message_id,
                     //'model_data' => $data
                     );
 
@@ -124,14 +173,29 @@ class Message extends _Model{
             self::$Exception_Helper->server_error_exception("Unable to send message.". $e->getMessage());
         }
 
-
-        // Log activity
-        log_activity($post_user_id, 32, 'Received a comment on an image', 'comment', $comment['data']['comment_id']);
-
-        // Log activity
-        log_activity($_REQUEST['user_id'], 25, 'Commented on an image', 'comment', $comment['data']['comment_id']);
-
     }
+
+
+    private function logActivity($user_id, $note="@user sent you a message", $entity_id, $entity = 'message', $activity_id=self::ACTIVITY_ID_RECEIVED_MESSAGE )
+    {
+    	$activity = array(
+            'user_id' => $user_id,
+            'activity_id' => $activity_id,
+            'note' => $note,
+            'api_website_id' => 2,
+            'entity' => $entity,
+            'entity_id' => $entity_id,
+
+    	);
+
+        $activity_log = new Activity_Log();
+    	$data = $activity_log::saveActivity( $activity );
+
+    	return $data;
+    }
+
+
+
 
 }
 

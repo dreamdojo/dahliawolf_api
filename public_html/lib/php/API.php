@@ -3,7 +3,7 @@ class API {
 	private $api_key;
 	private $private_key;
 	private $api_domain = 'http://api.dahliawolf.com';
-	private $api_url = 'http://api.dahliawolf.com/1-0';
+    private $api_url = 'http://api.dahliawolf.com/1-0';
 	
 	private $SoapClients = array();
 	
@@ -12,18 +12,23 @@ class API {
 		$this->private_key = $private_key;
 	}
 	
-	public function rest_api_request($api_service, $calls = array(), $reponse_format = 'json') {
+	public function rest_api_request($api_service, $calls = array(), $reponse_format = 'json')
+    {
+        $api_domain = strpos($_SERVER['SERVER_NAME'], 'dev')>-1? "dev.api.dahliawolf.com" : "api.dahliawolf.com";
+
+        $this->api_domain = "http://$api_domain";
+        $this->api_url = "http://{$api_domain}/1-0";
 		$api_url = $this->api_url . '/' . $api_service . '.' . $reponse_format;
-		
+
 		// Initialize
 		$ch = curl_init();
 		$this->set_rest_api_request_options($ch, $api_url, $calls);
-		
+
 		// Attempt to connect up to 3 times
 		$attempts = 0;
 		do {
 			if ($attempts > 0) {
-				sleep(5); // sleep for 5 seconds between retrys
+				sleep(1); // sleep for 5 seconds between retrys
 			}
 	
 			$curlError = '';
@@ -118,54 +123,17 @@ class API {
 			
 			$active = NULL;
 			
-			/*
-			Mainly for creating connections. It does not wait for the full response
-			First do-while loop repeatedly calls curl_multi_exec.
-			This function is non blocking.
-			It executes as little as possible and returns a status value.
-			As long as the returned value is the constant CURLM_CALL_MULTI_PERFORM, 
-			it means that there is still more immediate work to do.
-			That's why we keep calling it until the return value is something else.
-			*/
-			/*
-			do { // Mainly for creating connections. It does not wait for the full response.
-				$mrc = curl_multi_exec($mh, $active);
-			} while($mrc == CURLM_CALL_MULTI_PERFORM);
-			*/
-			
+
 			do { // Mainly for creating connections. It does not wait for the full response.
 				$mrc = curl_multi_exec($mh, $active);
 			} while($mrc == CURLM_CALL_MULTI_PERFORM || $active);
 			
-			/* 
-			In the following while loop, we continue as long as $active
-			variable is true. It is set to true as long as there are
-			active connections within the multi handle. Next thing is to
-			call curl_multi_select. This function is blocking until there is
-			any connection activity, such as receiving a response. When that
-			happens, we go into yet another do-while loop to continue executing.
-			
-			*/
-			/*
-			while ($active && $mrc == CURLM_OK) { // runs as long as there is some activity in the multi handle
-				if (curl_multi_select($mh) != -1) { // waits the script until an activity happens with any of the requests
-					do { // fetching response data
-						$mrc = curl_multi_exec($mh, $active);
-					} while($mrc == CURLM_CALL_MULTI_PERFORM);
-					
-					if ($mh_info = curl_multi_info_read($mh)) {
-						$ch_info = curl_multi_getcontent($mh_info['handle']);
-						//echo $ch_info;
-					}
-					
-				}
-			}
-			*/
+
 			foreach ($api_requests as $api_service => $calls) {
 				$curl_error = curl_error($ch);
 				if ($curl_error != '') {
 					$result = array(
-						'errors' => 'Curl Error:' . $curlError
+						'errors' => 'Curl Error:' . $curl_error
 					);
 			
 					$responses[$api_service] = json_encode($result);
@@ -175,12 +143,7 @@ class API {
 				}
 				
 				curl_multi_remove_handle($mh, $handles[$api_service]);
-				/*
-				It is always a good idea to use curl_close on all individual 
-				curl handles after executing curl_multi_remove_handle. 
-				This will free up additional memory resources.
-				*/
-				// curl_close($handles[$api_service]); // handled with curl_multi_close
+
 			}
 			curl_multi_close($mh);
 		}

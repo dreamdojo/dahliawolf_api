@@ -21,7 +21,10 @@ class Facebook_Controller extends Social_Network_Controller {
 	
 	public function login() {
 		$user = $this->facebook->getUser();
-		
+
+        //$logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
+        //$logger->LogInfo("FB LOGIN INIT");
+
 		// If user isn't logged in through Facebook, redirect them to do so
 		if (!$user) {
 			$login_url = $this->facebook->getLoginUrl(
@@ -30,7 +33,8 @@ class Facebook_Controller extends Social_Network_Controller {
 					, 'redirect_uri' => 'http://' . $_SERVER['SERVER_NAME'] . '/social-login.php?social_network=facebook&logout_redirect_url=' . $_GET['logout_redirect_url']
 				)
 			);
-			
+
+            //$logger->LogInfo("FB LOGIN REDIRECT >> $login_url");
 			header('Location: ' . $login_url);
 			die();
 		}
@@ -66,9 +70,13 @@ class Facebook_Controller extends Social_Network_Controller {
 			, 'last_name' => $user_profile['last_name']
 			, 'username' => $user_profile['username']
 			, 'email' => $user_profile['email']
-			
+			, 'fb_uid' => $user_profile['uid']
+			, 'social_network_id' => $user_profile['uid']
 			, 'logout_url' => $logout_url
 		);
+
+        //$logger->LogInfo("FB USER DATA: " . var_export($user, true) );
+
 		// Gender
 		if (!empty($user_profile['sex'])) {
 			$user['gender'] = ucwords($user_profile['sex']);

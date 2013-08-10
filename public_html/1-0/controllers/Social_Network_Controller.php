@@ -44,7 +44,10 @@ class Social_Network_Controller extends _Controller {
 		}
 	}
 	
-	public function login($params = array()) {
+	public function login($params = array())
+    {
+        //$logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
+
 		require_once DR . '/includes/php/functions-api.php';
 		
 		if (!isset($params['social_network_id'])) {
@@ -120,19 +123,55 @@ class Social_Network_Controller extends _Controller {
 		// Check if email already exists
 		$this->load('User');
 		$existing_user = $this->User->check_social_network_email_exists($params['email'], $params['social_network_id']);
-		
+        //$logger->LogInfo("IS EXISTING check_social_network ?: " . var_export($existing_user, true));
+
 		$logout_url = !empty($params['logout_url']) ? $params['logout_url'] : '';
-		
+
 		// Get user info
 		$user = $this->User->get_user($params['email']);
-		
+
+        //$logger->LogInfo("LOCAL USER INFO: " . var_export($user, true));
+        //$logger->LogInfo("DO WE HAVE THIS ACTIVE EMAIL REGISTERED ?: " .  (strtolower(trim($user['email'])) == strtolower(trim($params['email'])) ? "TRUE" : "FALSE") );
+
+        /////////////////////////////
+        /////// PREPARE USER DATA //////
+        $user_params = array(
+            'user_id' => $user['user_id'],
+            'username' => $params['username'],
+            'email_address' => $params['email'],
+            'first_name' => $params['first_name'],
+            'last_name' => $params['last_name'],
+            'fb_uid' => $params['fb_uid'],
+        );
+
+        $optional_params = array(
+            'instagram_username',
+            'pinterest_username',
+            'gender',
+            'location',
+            'avatar',
+            'date_of_birth',
+            'fb_uid',
+        );
+
+        foreach ($optional_params as $param) {
+            if (isset($params[$param])) {
+                $user_params[$param] = $params[$param];
+            }
+        }
+        /////////////////////////////
+        //
+
 		// Check that dahliawolf user exists
-		if ($existing_user) {
+		if ($existing_user || strtolower(trim($user[email])) == strtolower(trim($user_params['email_address']))) {
 			// Scrape username
 			$dw_params = array(
 				'user_id' => $user['user_id']
 			);
 			$dw_user = api_call('user', 'get_user', $dw_params, true);
+
+            //$logger->LogInfo("dw_user ?: " . var_export($dw_user, true));
+
 			
 			if (!empty($dw_user['data']['pinterest_username'])) {
 				$dw_params = array(
@@ -144,19 +183,28 @@ class Social_Network_Controller extends _Controller {
 			if (!empty($dw_user['data']['instagram_username'])) {
 				if (empty($dw_user['data']['pinterest_username']) || $dw_user['data']['instagram_username'] != $dw_user['data']['pinterest_username']) {
 					$dw_params = array(
-						'user_id' => $dw_user['data']['user_id']
-						, 'username' => $dw_user['data']['instagram_username']
+						'user_id' => $dw_user['data']['user_id'],
+						'username' => $dw_user['data']['instagram_username']
 					);
 					$test = api_call('feed_image', 'scrape_username', $dw_params, true);
 				}
 			}
-			
+
+            if(!$dw_user['data']['fb_uid'] || trim($dw_user['data']['fb_uid']) == '')
+            {
+                //update fb_id
+                $update_data = api_call('user', 'update_user_optional', $user_params);
+                //$logger->LogInfo("updating user with fb_id:" . var_export($user_params, true));
+            }
+
 			// Generate token & insert login instance
-			return $this->authen($existing_user, $logout_url);
+			return $this->authen($user, $logout_url);
 		}
-		// Else register the user
-		// if username is taken, should redirect back to register page to choose
-		else {
+        else {
+            //$logger->LogInfo("register new user passed data:" . var_export($params, true));
+            // Else register the user
+            // if username is taken, should redirect back to register page to choose
+
 			$this->load('User_Social_Network_Link');
 			
 			// Username exists
@@ -177,7 +225,7 @@ class Social_Network_Controller extends _Controller {
 					//_Model::$Exception_Helper->request_failed_exception('This username already exists. Please choose another.');
 				}
 			}
-			
+
 			// Email exists
 			$existing_email = $this->User->get_row(
 				array(
@@ -189,27 +237,35 @@ class Social_Network_Controller extends _Controller {
 				
 				// Insert social_network_email_link
 				$link = array(
-					'user_id' => $user['user_id']
-					, 'social_network_id' => $this->social_network_id
+				    'user_id' => $user['user_id'],
+					'social_network_id' => $this->social_network_id
 				);
 				$this->User_Social_Network_Link->save($link);
+
+                $update_data = api_call('user', 'update_user_optional', $user_params);
 				
 				// Authen login the user
 				return $this->authen($user, $logout_url, true);
 				
 				//_Model::$Exception_Helper->request_failed_exception('This email already exists. Please use another.');
 			}
-			
+
+            ////////////// USER DOES NOT EXIST CONTINUE, CREATE NEW ////////////.
 			// first, last, username, email
 			// Add user
-			$user = array_merge($params,
-				array(
-					'active' => 1
-					, 'hash' => NULL
-					, 'api_website_id' => $params['api_website_id']
-				)
-			);
+            $user = array_merge($params,
+                array(
+                    'active' => 1,
+                    'hash' => NULL,
+                    'api_website_id' => $params['api_website_id'],
+                    'fb_uid' => $params['fb_uid'],
+                )
+            );
+
+
+            //offline_admin DB - save user
 			$user['user_id'] = $this->User->save($user);
+
 			
 			// Add user user_group link
 			$this->load('User_User_Group_Link');
@@ -219,47 +275,32 @@ class Social_Network_Controller extends _Controller {
 				, 'user_group_portal_id' => 2
 			);
 			$this->User_User_Group_Link->save($link);
-			
+
+
 			// Add user social network link
 			$link = array(
-				'user_id' => $user['user_id']
-				, 'social_network_id' => $this->social_network_id
+				'user_id' => $user['user_id'],
+				'social_network_id' => $this->social_network_id
 			);
 			$this->User_Social_Network_Link->save($link);
-			
-			// Add customer
-			$calls = array(
-				'save_customer' => array(
-					'user_id' => $user['user_id']
-					, 'firstname' => $params['first_name']
-					, 'lastname' => $params['last_name']
-					, 'email' => $params['email']
-					, 'username' => $params['username']
-				)
-			);
-			$data = commerce_api_request('customer', $calls, true);
-			
-			// Save on dahlia wolf end
-			$user_params = array(
-				'user_id' => $user['user_id']
-				, 'username' => $params['username']
-				, 'email_address' => $params['email']
-				, 'first_name' => $params['first_name']
-				, 'last_name' => $params['last_name']
-			);
-			$optional_params = array(
-				'instagram_username'
-				, 'pinterest_username'
-				, 'gender'
-				, 'location'
-				, 'avatar'
-				, 'date_of_birth'
-			);
-			foreach ($optional_params as $param) {
-				if (isset($params[$param])) {
-					$user_params[$param] = $params[$param];
-				}
-			}
+
+
+            // commerce - Add customer
+            $calls = array(
+                'save_customer' => array(
+                    'user_id' => $user['user_id'],
+                    'firstname' => $params['first_name'],
+                    'lastname' => $params['last_name'],
+                    'email' => $params['email'],
+                    'username' => $params['username'],
+                    'fb_uid' => $params['fb_uid'],
+                )
+            );
+            $data = commerce_api_request('customer', $calls, true);
+
+
+            // dahliawolf -- add user
+
 			$data = api_call('user', 'add_user', $user_params);
 			
 			return $this->authen($user, $logout_url, true);

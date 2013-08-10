@@ -1,5 +1,6 @@
 <?
+
 define('INTERVAL', 'Daily');
 
-require 'summary-emails.php';
+require_once('summary-emails.php');
 ?>

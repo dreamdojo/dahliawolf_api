@@ -39,7 +39,47 @@ class User extends _Model {
 		$params = array(
 			':email' => $email
 		);
-  
+
+        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
+
+        $logger->LogInfo("FETCH USER INFO: -h:{$this->db_host} -db:$this->db_name");
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+		return $result;
+	}
+
+	public function getUserByUsername($username) {
+		$query = '
+			SELECT *
+			FROM user
+			WHERE username = :username
+		';
+		$params = array(
+			':username' => $username
+		);
+
+        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
+
+        $logger->LogInfo("FETCH USER INFO: -h:{$this->db_host} -db:$this->db_name");
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+		return $result;
+	}
+
+	public function getUserById($user_id) {
+		$query = '
+			SELECT *
+			FROM user
+			WHERE user_id = :user_id
+		';
+		$params = array(
+			':user_id' => $user_id
+		);
+
+        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
+
+        $logger->LogInfo("FETCH USER INFO: -h:{$this->db_host} -db:$this->db_name");
+
         $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
 		return $result;
 	}
@@ -88,17 +128,19 @@ class User extends _Model {
 				AND user_social_network_link.social_network_id = :social_network_id
 		';
 		$values = array(
-			':email' => $email
-			, ':social_network_id' => $social_network_id
+			':email' => $email,
+			':social_network_id' => $social_network_id
 		);
 		
 		try {
 			$user = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $values);
-			
 			return $user;
 		} catch (Exception $e) {
 			self::$Exception_Helper->server_error_exception('Unable to check user social network email.');
+            return false;
 		}
+
+        return false;
 	}
 	
 	public function get_regexp_username($username) {
@@ -120,4 +162,7 @@ class User extends _Model {
 			self::$Exception_Helper->server_error_exception('Unable to get regexp usernames.');
 		}
 	}
+
+
+
 }

@@ -6,9 +6,10 @@
 
 class Error_Handler extends Jk_Base
 {
-
+    /** @var Jk_Logger $log */
     private static $log;
     private static $isregistered = false;
+    private static $log_notices = false;
 
     protected static function initLog()
     {
@@ -16,6 +17,12 @@ class Error_Handler extends Jk_Base
         {
             self::$log = new Jk_Logger( APP_PATH . 'logs/php_error.txt', Jk_Logger::INFO);
         }
+    }
+
+
+    public static function setNoticesLogging(Boolean $log=null)
+    {
+        self::$log_notices = (boolean) $log;
     }
 
     public static function registerShutdownHandler()
@@ -41,7 +48,7 @@ class Error_Handler extends Jk_Base
         $file = $errfile ? $errfile : str_replace(APP_PATH, '', $e['file']);
         $line = $errline ? $errline : $e['line'];
         
-        self::$log->LogInfo( Jk_Base::getCallee(4) . "=> \t\t$message file: $file line: $line"  );
+        self::$log->LogInfo( Jk_Base::getCallee(3) . "=> \t\t$message file: $file line: $line"  );
 
     }
 
@@ -51,11 +58,22 @@ class Error_Handler extends Jk_Base
         if ( error_get_last() )
         {
             self::trace("ON_SHUTDOWN");
-            self::$log->LogInfo( Jk_Base::getDebugStack() );
+
+            $classes = get_declared_classes();
+            if(count($classes) > 30) $short_classes = array_slice($classes, count($classes)-(30+1), 30);
+
+            self::$log->LogDebug( sprintf("INCLUDE PATHS: %s", var_export( explode(":", get_include_path()), true) ) );
+            self::$log->LogDebug( $short_classes ? sprintf("LAST 30 LOADED CLASSES \n %s", var_export($short_classes, true)) : sprintf("LOADED CLASSES: %s", var_export($classes, true)) );
+
+            $included_files =  get_required_files();
+
+            self::$log->LogDebug( sprintf("INCLUDED FILES: %s", var_export($included_files, true)) );
+
+            self::$log->LogDebug( Jk_Base::getDebugStack() );
         }
     }
 
-    public static  function user($m, $el = E_USER_NOTICE)
+    public static  function user($m, $el = E_WARNING)
     {
         if( is_object($m) || is_array($m))
         {
@@ -76,12 +94,14 @@ class Error_Handler extends Jk_Base
 
         $elevel = "Unknown error ($errno)";
 
+
         switch($errno)
         {
             case E_ERROR:               $elevel = "Error";                  break;
             case E_WARNING:             $elevel = "Warning";                break;
             case E_PARSE:               $elevel = "Parse Error";            break;
-            case E_NOTICE:              $elevel = "Notice";                 break;
+            case E_NOTICE:              $elevel = "Notice";
+                                        if(self::$log_notices) return null; break;
             case E_CORE_ERROR:          $elevel = "Core Error";             break;
             case E_CORE_WARNING:        $elevel = "Core Warning";           break;
             case E_COMPILE_ERROR:       $elevel = "Compile Error";          break;
@@ -94,7 +114,7 @@ class Error_Handler extends Jk_Base
             default:                    $elevel = "Unknown error ($errno)"; break;
         }
 
-        self::trace($elevel, $errstr, $errfile, $errline);
+        self::trace("$elevel:{$errno}", $errstr, $errfile, $errline);
 
     }
 
