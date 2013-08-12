@@ -482,7 +482,6 @@ class User extends db {
         */
 
         $following_query = '
-      			/*SELECT user_username.**/
       			SELECT
                     user_username.user_username_id,
       			    user_username.user_id,
@@ -500,7 +499,7 @@ class User extends db {
       				INNER JOIN user_username ON follow.user_id = user_username.user_id
       				' . $join_str . '
       			WHERE ' . $where_str . '
-      			ORDER BY rank DESC
+      			ORDER BY rank ASC
       			' . $this->generate_limit_offset_str($params) . '
       		';
 

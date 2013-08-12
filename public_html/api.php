@@ -867,11 +867,11 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                         'viewer_user_id'
                     );
 
-                    foreach ($where_params as $param) {
-                        if (isset($_REQUEST[$param])) {
-                            $params['where'][$param] = $_REQUEST[$param];
-                        }
-                    }
+                    $posts_params['where'] = $where_params;
+
+                    //$logger = new Jk_Logger( APP_PATH . 'logs/posting.log');
+                    //echo ( sprintf("get posts with data %s", var_export($posts_params,true) ));
+
 
                     unset($posting);
                     new Posting();
