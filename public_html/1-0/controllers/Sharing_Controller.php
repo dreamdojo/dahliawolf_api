@@ -45,6 +45,16 @@ class Sharing_Controller  extends  _Controller
         return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
     }
 
+    public function delete($request_data = array())
+    {
+        $this->load('Posting_Share');
+
+        $share = new Posting_Share();
+        $data = $share->deleteShare($request_data);
+
+        return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
+    }
+
 
     public function get_sharing_counts($request_data = array())
     {

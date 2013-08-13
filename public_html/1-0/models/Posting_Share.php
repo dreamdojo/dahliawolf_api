@@ -54,41 +54,38 @@ class Posting_Share extends _Model
     public function deleteShare($params = array())
     {
         $error = NULL;
-        if (empty($params['where'])) {
-            $error = 'Where conditions is required.';
-        } else if (!is_array($params['where'])) {
-            $error = 'Invalid where conditions.';
+        if (empty($params['posting_share_id'])) {
+
+            $error = 'Invalid posting sharing id';
+            return array('errors' => $error);
         }
 
-        if (!empty($error)) {
-            return resultArray(false, NULL, $error);
-        }
+        $params['where'] = array(
+            ':posting_share_id' =>  $params['posting_share_id']
+        );
 
-        $this->delete($this->table, $params['where']);
+        $this->db_delete($this->table, $params['where']);
 
-        $this->audit_post_likes($params['where']['posting_share_id']);
 
-        return resultArray(true, true);
+        return array('posting_share_id' => $params['where']['posting_share_id']);
     }
 
     public function deleteShareByPostingId($params = array())
     {
         $error = NULL;
-        if (empty($params['where'])) {
-            $error = 'Where conditions is required.';
-        } else if (!is_array($params['where'])) {
-            $error = 'Invalid where conditions.';
+
+        if (empty($params['posting_id'])) {
+            $error = 'Invalid posting id.';
+            return array('error' => $error );
         }
 
-        if (!empty($error)) {
-            return resultArray(false, NULL, $error);
-        }
+        $params['where'] = array(
+            ':posting_id' => $params['posting_id']
+        );
 
-        $this->delete($this->table, $params['where']);
+        $this->delete($this->table, $params['where'] );
 
-        $this->audit_post_likes($params['where']['posting_id']);
-
-        return resultArray(true, true);
+        return array(true, true);
     }
 
 
@@ -96,38 +93,28 @@ class Posting_Share extends _Model
     {
         $error = NULL;
 
-        if (empty($params['where'])) {
-            $error = 'Where conditions are required.';
-        } else if (!is_array($params['where'])) {
-            $error = 'Invalid where conditions.';
+        if (empty($params['posting_id'])) {
+            $error = 'Invalid posting id.';
+            return array('error' => $error );
         }
 
-        if (!empty($error)) {
-            return resultArray(false, NULL, $error);
-        }
-
-        $query = "
-            SELECT user_username.*, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
-            FROM posting_like
-                INNER JOIN posting ON posting_like.posting_id = posting.posting_id
-                INNER JOIN user_username ON posting_like.user_id = user_username.user_id
-                LEFT JOIN user_image_map ON user_username.user_id = user_image_map.user_id AND user_image_map.avatar = 'Yes'
-                LEFT JOIN image ON user_image_map.image_id = image.id
-            WHERE posting_like.posting_id = :posting_id
-            ORDER BY posting_like.created DESC
+        $query = " SELECT
+                    *
+                    FROM posting_share
+                    WHERE posting_id = :posting_id
         ";
+
         $values = array(
-            ':posting_id' => $params['where']['posting_id']
+            ':posting_id' => $params['posting_id']
         );
 
-        //$row = $this->get_row($this->table, $params['conditions']);
         $data = $this->fetch($query, $values);
-        $row = $data->fetchAll();
-        if ($row === false) {
-            return resultArray(false, NULL, 'Could not get post shares.');
+
+        if ($data === false) {
+            return array('error' => 'Could not get post shares.');
         }
 
-        return resultArray(true, $row);
+        return array('sharings' => $data);
     }
 
 
