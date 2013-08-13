@@ -184,7 +184,7 @@ class Message extends _Model{
             'note' => $note,
             'api_website_id' => 2,
             'entity' => $entity,
-            'entity_id' => $entity_id,
+            'entity_id' => $entity_id
 
     	);
 

@@ -141,7 +141,7 @@ class Activity_Log_Controller extends _Controller {
 		$this->Validate->run();
 
 		$this->load('Activity_Log');
-		$data = $this->Activity_Log->mark_read($params['activity_log_id'], $params['user_id'], _Model::$date_time);
+		$data = $this->Activity_Log->mark_read($params, _Model::$date_time);
 
 		return static::wrap_result(true, $data);
 	}

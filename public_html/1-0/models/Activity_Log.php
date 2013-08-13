@@ -115,6 +115,8 @@ class Activity_Log extends _Model {
 			, ':entity' => 'like_winner'
 		);
 
+        if(isset($_GET['t'])) echo $query;
+
 		try {
 			$activities = self::$dbs[$this->db_host][$this->db_name]->exec($query, $values);
 			return $activities;
@@ -280,7 +282,8 @@ class Activity_Log extends _Model {
 		if (!$unread_count) {
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read ,
-				user_username.user_id, user_username.username
+				user_username.user_id, user_username.username,
+				message.header, message.body
 			';
 		}
 		else {
@@ -299,6 +302,7 @@ class Activity_Log extends _Model {
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
                 INNER JOIN dahliawolf_v1_2013.user_username ON activity_log.user_id = user_username.user_id
+                INNER JOIN dahliawolf_v1_2013.message AS message ON message.to_user_id = activity_log.user_id AND message.message_id = activity_log.entity_id
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
 				AND activity_log.activity_id = :activity_id
@@ -371,20 +375,30 @@ class Activity_Log extends _Model {
 		}
 	}
 
-	public function mark_read($activity_log_id, $user_id, $datetime) {
+	public function mark_read($params, $datetime) {
 		$fields = array(
 			'read' => $datetime
 		);
 
 		$where_sql = 'activity_log_id = :activity_log_id AND user_id = :user_id';
 		$where_values = array(
-			':activity_log_id' => $activity_log_id
-			, ':user_id' => $user_id
+			':activity_log_id' => $params['activity_log_id'],
+			':user_id' => $params['user_id'],
 		);
+
+        if(isset($params['entity']) && strlen($params['entity'])> 2)
+        {
+            $where_values[":entity"] = $params['entity'];
+            $where_sql = 'entity = :entity AND user_id = :user_id';
+
+            unset($where_values[':activity_log_id']);
+        }
+
+        $logger = new Jk_Logger( APP_PATH . 'logs/activity_log.log');
+        $logger->LogInfo( sprintf("MARK MESSAGES AS READ\nwith params: %s \n\nwhere values: %s" , var_export($params, true), var_export($where_values, true) ) );
 
 		try {
 			$update = $this->db_update($fields, $where_sql, $where_values);
-
 			return $update;
 		} catch (Exception $e) {
 			self::$Exception_Helper->server_error_exception('Unable to mark activity log as read.');
@@ -484,7 +498,7 @@ class Activity_Log extends _Model {
         );
 
         $logger = new Jk_Logger(APP_PATH.'logs/activity_log.log');
-        $logger->LogInfo("LOGGING ACTIVITY WITH params: ". var_export($params, true));
+        //$logger->LogInfo("LOGGING ACTIVITY WITH params: ". var_export($params, true));
 
         $validator = new Validate();
         $validator->add_many($input_validations, $params, true);
@@ -497,6 +511,7 @@ class Activity_Log extends _Model {
             'activity_id' => $params['activity_id'],
             'note' => $params['note'],
             'entity' => !empty($params['entity']) ? $params['entity'] : NULL,
+            'entity_id' => !empty($params['entity']) ? (int)$params['entity_id'] : NULL,
         );
 
         $logger->LogInfo("LOGGING ACTIVITY WITH activity data: ". var_export($activity, true));

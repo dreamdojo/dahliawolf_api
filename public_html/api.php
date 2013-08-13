@@ -92,6 +92,7 @@ function check_required($keys) {
 
 
 function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id = NULL) {
+
 	$calls = array(
 		'log_activity' => array(
 			'user_id' => $user_id
@@ -102,7 +103,9 @@ function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id 
 			, 'entity_id' => $entity_id
 		)
 	);
-	$data = api_request('activity_log', $calls, true);
+
+
+    $data = api_request('activity_log', $calls, true);
 
 	return $data;
 }
