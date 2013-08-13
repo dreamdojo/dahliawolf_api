@@ -894,7 +894,84 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
             echo json_pretty(json_encode(($user_data)));
             return;
 
-		} else {
+		}
+        else if ($_REQUEST['function'] == 'get_top_followers')
+        {
+            $params = array(
+                'where' => array(
+                    'user_id' => !empty($_REQUEST['user_id']) ? $_REQUEST['user_id'] : NULL,
+                    'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
+                    'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL
+                )
+            );
+
+            $params['limit'] = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+
+            if (!empty($_REQUEST['offset'])) {
+                $params['offset'] = $_REQUEST['offset'];
+            }
+
+
+            $user_data = $user->getTopfollowers($params);
+
+            if($_REQUEST['t'])
+            {
+                //var_dump($user_data);
+            }
+
+            if(is_array($user_data['data']))
+            {
+                $fetch_posts = !( isset($_REQUEST['no_posts']) && (bool)$_REQUEST['no_posts'] === true );
+                //var_dump($user_data);
+                if( $fetch_posts ) {
+
+                    $posts_params = array();
+                    foreach($user_data['data'] as $udkey => $u_data)
+                    {
+                        //var_dump($u_data);
+
+                        $where_params = array(
+                            'user_id' =>  $u_data['user_id']
+                        );
+
+                        if (!empty($_REQUEST['posts_offset'])) $posts_params['offset'] = $_REQUEST['posts_offset'];
+
+                        //query limits
+                        if (!empty($_REQUEST['posts_limit']))  $posts_params['limit'] = $_REQUEST['posts_limit'];
+                        else $posts_params['limit'] = 5;
+
+                        $params['where'] = array(
+                            'user_id' ,
+                            'username',
+                            'viewer_user_id'
+                        );
+
+                        $posts_params['where'] = $where_params;
+
+                        //$logger = new Jk_Logger( APP_PATH . 'logs/posting.log');
+                        //echo ( sprintf("get posts with data %s", var_export($posts_params,true) ));
+
+
+                        unset($posting);
+                        new Posting();
+
+                        $posting  = new Posting();
+                        $user_posts =  $posting->allPosts($posts_params);
+
+                        if($user_posts['data']) $u_data['posts'] = $user_posts['data'];
+
+                        $user_data['data'][$udkey] =  $u_data;
+                        //var_dump($u_data['posts']);
+                    }
+                }
+
+            }
+
+
+            echo json_pretty(json_encode(($user_data)));
+            return;
+
+        }else {
 			resultArray(FALSE, "Function doesn't exist!");
 		}
 	}
