@@ -576,6 +576,7 @@ class Posting extends db {
 				, image.imagename, image.source
 				, user_username.username, user_username.location, user_username.avatar
 				, posting_product.product_id
+				, product_shop.position
 				, vote_period.vote_period_id
 				, IFNULL(COUNT(pv.posting_id), 0) AS votes
 				" . $select_str . "
@@ -599,15 +600,16 @@ class Posting extends db {
 				INNER JOIN user_username ON posting.user_id = user_username.user_id
 				INNER JOIN offline_commerce_v1_2013.product_lang AS product_lang ON (posting_product.product_id = product_lang.id_product AND product_lang.id_lang = 1)
 				INNER JOIN vote_period ON posting_product.vote_period_id = vote_period.vote_period_id
-				LEFT JOIN posting_vote AS pv ON posting.posting_id = pv.posting_id
-					AND pv.vote_period_id = :vote_period_id
+				LEFT JOIN posting_vote AS pv ON posting.posting_id = pv.posting_id AND pv.vote_period_id = :vote_period_id
+                LEFT JOIN offline_commerce_v1_2013.product_shop AS product_shop ON product_shop.id_product = posting_product.product_id
+
             " . $join_str . "
 
 				LEFT JOIN offline_commerce_v1_2013.favorite_product AS favorite_product ON favorite_product.id_product = product.id_product
 
 			WHERE vote_period.vote_period_id = :vote_period_id
 			GROUP BY posting.posting_id
-			ORDER BY posting_product.created DESC
+			ORDER BY product_shop.position ASC, posting_product.created DESC
 			" . $this->generate_limit_offset_str($params) . "
 		;";
 

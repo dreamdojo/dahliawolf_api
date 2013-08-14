@@ -60,13 +60,13 @@ define('ERROR_USER', 1024);
 function default_exception_handler($exception) {
 	if (method_exists($exception, 'get_errors')) {
 		$errors = $exception->get_errors();
-		log_error(print_r($errors, true), 'system');
+		if(method_exists($exception, 'log_error')) log_error(print_r($errors, true), 'system');
 		echo 'Default Exception Handler:' . "\n";
 		print_r($errors);
 	}
 	else {
 		$error = $exception->getMessage();
-		log_error($error, 'system');
+        if(method_exists($exception, 'log_error')) log_error($error, 'system');
 		echo 'Default Exception Handler: ' . $error;
 	}
 	die();

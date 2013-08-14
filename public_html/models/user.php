@@ -464,28 +464,12 @@ class User extends db {
             $values[':viewer_user_id'] = $params['where']['viewer_user_id'];
         }
 
-        /*
-        $ranking_query = '
-      			SELECT
-      			    user_username.user_username_id,
-      			    user_username.user_id,
-      				(
-      					SELECT COUNT(*)
-      					FROM user_username AS u
-      					WHERE
-      						u.points > user_username.points
-      				) + 1 AS rank
-      			FROM user_username
-      			ORDER BY points DESC, username ASC
-      			LIMIT ' . $params['limit'] . ' OFFSET ' . $params['offset'] . '
-      		';
-        */
-
         $following_query = '
-      			/*SELECT user_username.**/
       			SELECT
                     user_username.user_username_id,
       			    user_username.user_id,
+      			    user_username.username,
+      			    user_username.avatar,
                     (
                         SELECT COUNT(*)
                         FROM user_username AS u
@@ -498,7 +482,7 @@ class User extends db {
       				INNER JOIN user_username ON follow.user_id = user_username.user_id
       				' . $join_str . '
       			WHERE ' . $where_str . '
-      			ORDER BY rank DESC
+      			ORDER BY rank ASC
       			' . $this->generate_limit_offset_str($params) . '
       		';
 
@@ -565,6 +549,76 @@ class User extends db {
 				' . $join_str . '
 			WHERE ' . $where_str . '
 			ORDER BY follow.created DESC
+			' . $this->generate_limit_offset_str($params) . '
+		';
+
+        if(isset($_GET['t'])) echo sprintf('query: %s', $query);
+
+		$result = $this->run($query, $values);
+
+		if ($result === false) {
+			 return resultArray(false, NULL, 'Could not get followers.');
+		}
+
+		$rows = $result->fetchAll();
+
+		return resultArray(true, $rows);
+	}
+
+
+	public function getTopfollowers($params = array()) {
+		$error = NULL;
+
+		if (empty($params['where'])) {
+			$error = 'Where conditions are required.';
+		}
+		else if (!is_array($params['where'])) {
+			$error = 'Invalid where conditions.';
+		}
+
+		if (!empty($error)) {
+			return resultArray(false, NULL, $error);
+		}
+
+		$where_str = '';
+		$values = array();
+		// user_id or username
+		if (!empty($params['where']['user_id'])) {
+			$where_str = 'follow.user_id = :user_id';
+			$values[':user_id'] = $params['where']['user_id'];
+		}
+		else {
+			$where_str = 'user.username = :username';
+			$values[':username'] = !empty($params['where']['username']) ? $params['where']['username'] : '';
+		}
+
+		$select_str = '';
+		$join_str = '';
+		// Optional viewer_user_id
+		if (!empty($params['where']['viewer_user_id'])) {
+			$select_str = ', IF(f.user_id IS NULL, 0, 1) AS is_followed';
+			$join_str = 'LEFT JOIN follow AS f ON user_username.user_id = f.user_id AND f.follower_user_id = :viewer_user_id';
+			$values[':viewer_user_id'] = $params['where']['viewer_user_id'];
+		}
+
+		$query = '
+			SELECT DISTINCT
+			    user_username.*,
+			    (
+                        SELECT COUNT(*)
+                        FROM user_username AS u
+                        WHERE
+                            u.points > user_username.points
+                    ) + 1 AS rank
+                    ' . $select_str . '
+				' . $select_str . '
+			FROM follow
+				INNER JOIN user_username AS user ON follow.user_id = user.user_id
+				INNER JOIN user_username ON follow.follower_user_id = user_username.user_id
+				' . $join_str . '
+			WHERE ' . $where_str . '
+
+			ORDER BY rank ASC
 			' . $this->generate_limit_offset_str($params) . '
 		';
 

@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 //error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE|E_ALL);
-error_reporting(E_ALL|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE);
+error_reporting(E_ERROR| E_WARNING | E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE);
 ini_set('display_errors', '1');
 session_start();
 
@@ -26,23 +26,15 @@ require DR . '/lib/php/email.php';
 require_once 'models/Email.php';
 require_once 'includes/php/json_functions.php';
 
-
-define(APP_PATH, realpath('./')."/");
+define('APP_PATH', sprintf("%s/", realpath('./') ));
 $include_paths = explode(":", get_include_path());
-$include_paths[] = realpath('./lib/jk07');
+$include_paths[] = sprintf("%s/", realpath('./lib/jk07'));
+$include_paths[] = sprintf("%s/", realpath('./'));
 set_include_path(implode(":", $include_paths));
 
 
-require DR . '/lib/jk07/Jk_Root.php';
-require DR . '/lib/jk07/Jk_Base.php';
-require DR . '/lib/jk07/Jk_Logger.php';
-require DR . '/lib/jk07/utils/Error_Handler.php';
 
-$error_handler = new Error_Handler();
-$error_handler->registerShutdownHandler();
-$error_handler->registerErrorHandler();
-
-if($_GET['t']){
+if(isset($_GET['t'])){
     var_dump($_GET);
 }
 
@@ -100,6 +92,7 @@ function check_required($keys) {
 
 
 function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id = NULL) {
+
 	$calls = array(
 		'log_activity' => array(
 			'user_id' => $user_id
@@ -110,7 +103,9 @@ function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id 
 			, 'entity_id' => $entity_id
 		)
 	);
-	$data = api_request('activity_log', $calls, true);
+
+
+    $data = api_request('activity_log', $calls, true);
 
 	return $data;
 }
@@ -485,7 +480,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
 
 
-            $register_defalul_follows = function()
+            $register_default_follows = function()
             {
                 //follow default
                 $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
@@ -505,7 +500,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
                     $follow_user_response = api_request('user', $calls, true);
 
-                    $logger = new Jk_Logger('/var/gitrepos/dev_dahliawolf_api/public_html/logs/debug.log', Jk_Logger::DEBUG);
+                    $logger = new Jk_Logger(APP_PATH .'logs/debug.log', Jk_Logger::DEBUG);
                     $logger->LogDebug("user follow params: $user_id". json_encode($calls));
                     //$logger->LogDebug("user follow response: $user_id". json_encode($follow_user_response));
 
@@ -588,6 +583,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'location'
 				, 'website'
 				, 'facebook_post'
+                , 'fb_uid'
 				, 'instagram_username'
 				, 'pinterest_username'
 				//, 'comment_notifications'
@@ -834,12 +830,14 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                     'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL
                 )
             );
-            if (!empty($_REQUEST['limit'])) {
-                $params['limit'] = $_REQUEST['limit'];
-            }
+
+            $params['limit'] = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+
             if (!empty($_REQUEST['offset'])) {
                 $params['offset'] = $_REQUEST['offset'];
             }
+
+
             $user_data = $user->getTopFollowing($params);
 
             if($_REQUEST['t'])
@@ -871,11 +869,11 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                         'username',
                         'viewer_user_id'
                     );
-                    foreach ($where_params as $param) {
-                        if (isset($_REQUEST[$param])) {
-                            $params['where'][$param] = $_REQUEST[$param];
-                        }
-                    }
+
+                    $posts_params['where'] = $where_params;
+
+                    //$logger = new Jk_Logger( APP_PATH . 'logs/posting.log');
+                    //echo ( sprintf("get posts with data %s", var_export($posts_params,true) ));
 
 
                     unset($posting);
@@ -896,7 +894,84 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
             echo json_pretty(json_encode(($user_data)));
             return;
 
-		} else {
+		}
+        else if ($_REQUEST['function'] == 'get_top_followers')
+        {
+            $params = array(
+                'where' => array(
+                    'user_id' => !empty($_REQUEST['user_id']) ? $_REQUEST['user_id'] : NULL,
+                    'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
+                    'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL
+                )
+            );
+
+            $params['limit'] = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+
+            if (!empty($_REQUEST['offset'])) {
+                $params['offset'] = $_REQUEST['offset'];
+            }
+
+
+            $user_data = $user->getTopfollowers($params);
+
+            if($_REQUEST['t'])
+            {
+                //var_dump($user_data);
+            }
+
+            if(is_array($user_data['data']))
+            {
+                $fetch_posts = !( isset($_REQUEST['no_posts']) && (bool)$_REQUEST['no_posts'] === true );
+                //var_dump($user_data);
+                if( $fetch_posts ) {
+
+                    $posts_params = array();
+                    foreach($user_data['data'] as $udkey => $u_data)
+                    {
+                        //var_dump($u_data);
+
+                        $where_params = array(
+                            'user_id' =>  $u_data['user_id']
+                        );
+
+                        if (!empty($_REQUEST['posts_offset'])) $posts_params['offset'] = $_REQUEST['posts_offset'];
+
+                        //query limits
+                        if (!empty($_REQUEST['posts_limit']))  $posts_params['limit'] = $_REQUEST['posts_limit'];
+                        else $posts_params['limit'] = 5;
+
+                        $params['where'] = array(
+                            'user_id' ,
+                            'username',
+                            'viewer_user_id'
+                        );
+
+                        $posts_params['where'] = $where_params;
+
+                        //$logger = new Jk_Logger( APP_PATH . 'logs/posting.log');
+                        //echo ( sprintf("get posts with data %s", var_export($posts_params,true) ));
+
+
+                        unset($posting);
+                        new Posting();
+
+                        $posting  = new Posting();
+                        $user_posts =  $posting->allPosts($posts_params);
+
+                        if($user_posts['data']) $u_data['posts'] = $user_posts['data'];
+
+                        $user_data['data'][$udkey] =  $u_data;
+                        //var_dump($u_data['posts']);
+                    }
+                }
+
+            }
+
+
+            echo json_pretty(json_encode(($user_data)));
+            return;
+
+        }else {
 			resultArray(FALSE, "Function doesn't exist!");
 		}
 	}
@@ -2061,7 +2136,9 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'activity_log') {
 					, 'api_website_id' => API_WEBSITE_ID
 				)
 			);
+
 			$data = api_request('activity_log', $calls, true);
+
 
 			$activity_log = array();
 			if (!empty($data['success']) && !empty($data['data']['get_grouped_log']['success']) && !empty($data['data']['get_grouped_log']['data'])) {
