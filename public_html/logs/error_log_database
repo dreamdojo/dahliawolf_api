@@ -718,3 +718,2352 @@ MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error:
 
 UPDATE "activity_log" SET "previewed" = :val_previewed WHERE activity_log_id = :activity_log_id AND user_id = :user_id AND activity_id = :activity_id
 
+DATE: 2013-07-16 09:57:32
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-16 10:01:54
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-16 10:02:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-16 10:02:54
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-16 10:04:06
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-16 10:04:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-16 10:05:06
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-16 10:05:08
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:07:06
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:07:06
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:10:49
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:10:49
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:12:03
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:12:03
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:12:04
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:12:09
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:12:09
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:12:26
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:12:26
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[08004] [1040] Too many connections
+
+
+DATE: 2013-07-16 10:13:06
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-22 10:15:03
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.activity_log' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:15:15
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.activity_log' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:15:15
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.activity_log' doesn't exist
+
+			SELECT 
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read
+				, like_winner.posting_id, like_winner.likes
+				, CONCAT('http://www.dahliawolf.com/post/', like_winner.posting_id) AS post_url
+				, CONCAT(image.source, image.imagename) AS image_url
+			
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:15:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.activity_log' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:15:30
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.activity_log' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:15:36
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.activity_log' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:15:48
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.activity_log' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:17:45
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:17:47
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:17:52
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:18:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:18:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:18:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:18:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-22 10:19:10
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT COUNT(*) AS count
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
+				INNER JOIN dahliawolf_v1_2013.posting ON like_winner.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				AND activity_log.read IS NULL
+			ORDER BY activity_log.created DESC
+		
+
+DATE: 2013-07-24 11:52:19
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 5.10.83.25
+BROWSER: Mozilla/5.0 (compatible; AhrefsBot/5.0; +http://ahrefs.com/robot/)
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 12:12:41
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.177.48.113
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 12:15:45
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.177.48.113
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:09:14
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 92.3.243.92
+BROWSER: Mozilla/5.0 (iPad; CPU OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10B329 Safari/8536.25
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:22:27
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:22:56
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:22:59
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:23:02
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:23:12
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:23:25
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:23:40
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:23:41
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:24:05
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:24:11
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 13:24:19
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 67.100.38.102
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Table 'dahliawolf_v1_2013.api_website' doesn't exist
+
+			SELECT api_website.*
+			FROM api_website
+			WHERE api_website_id = :api_website_id  ORDER BY api_website_id ASC  LIMIT 1
+
+DATE: 2013-07-24 15:47:09
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 15:50:26
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 15:50:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 15:50:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 15:52:28
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+MySQL server has gone away
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 15:55:15
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 15:55:48
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 15:57:15
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 15:59:19
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 16:00:42
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 16:07:21
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 16:07:23
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Lost connection to MySQL server during query
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-07-24 16:09:04
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:09:10
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:09:32
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:09:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:09:36
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:09:45
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:09:47
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:10:54
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:10:56
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:10:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:10:58
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:11:59
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:13:03
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:13:04
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:13:04
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:13:04
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:13:05
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:13:07
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:13:09
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:13:10
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:14:54
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:14:57
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:30
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:30
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:30
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:30
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:30
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:32
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:32
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+Unknown command
+
+			SELECT api_credential.*
+			FROM api_credential
+			/*INNER JOIN api_website_domain ON api_credential.api_website_id = api_website_domain.api_website_id*/
+			WHERE api_credential.api_key = :api_key 
+		 LIMIT 1
+
+DATE: 2013-07-24 16:22:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:35
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:38
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:22:40
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:23:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:23:37
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:23:37
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:23:39
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-24 16:23:40
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/activity_log.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/activity_log.json\Database_Helper SQL Error: 
+SQLSTATE[HY000] [2013] Lost connection to MySQL server at 'reading initial communication packet', system error: 0
+
+
+DATE: 2013-07-30 16:42:01
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQBk3uM7CfGdCN0CxhRlUma_Vv3cOUFHF4-y35e1G6Mj00l5tjze7w709QSZYoKulkWpoP9XMNINuAw2SYdhK4JZbINrUSyZQX0IDQm1X42qhwqNhjaWxUGTgqndhc-5fBCz1feXUXZxcCs4kk3VWChcj2wpLImKJJxT2D_hXz0zr_2PzfqZyKBxu9BMsW0-1H32TtsR_kDiipP0-mBBGo_YoJTCs1cx-ynhtCB8s04G9Le3Ps04q7jTpkoGFQ8nOPAhae-OBpYzWeWEim6e2GXBFsh1UtY3ylZGQEyys14AWa7Z2K0zht-Ns9oWnneoZj4&state=d6cef3048976103420cbb635acb26ada
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 24.23.129.165
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0
+MESSAGE: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQBk3uM7CfGdCN0CxhRlUma_Vv3cOUFHF4-y35e1G6Mj00l5tjze7w709QSZYoKulkWpoP9XMNINuAw2SYdhK4JZbINrUSyZQX0IDQm1X42qhwqNhjaWxUGTgqndhc-5fBCz1feXUXZxcCs4kk3VWChcj2wpLImKJJxT2D_hXz0zr_2PzfqZyKBxu9BMsW0-1H32TtsR_kDiipP0-mBBGo_YoJTCs1cx-ynhtCB8s04G9Le3Ps04q7jTpkoGFQ8nOPAhae-OBpYzWeWEim6e2GXBFsh1UtY3ylZGQEyys14AWa7Z2K0zht-Ns9oWnneoZj4&state=d6cef3048976103420cbb635acb26ada\Database_Helper SQL Error: 
+Duplicate entry '' for key 'username'
+INSERT
+				 INTO "user" ("first_name", "last_name", "gender", "username", "email", "hash", "active", "api_website_id") 
+				 VALUES (:first_name, :last_name, :gender, :username, :email,  NULL , :active, :api_website_id)
+			
+
+DATE: 2013-07-30 16:42:12
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQAvFGah9WR_tDKz-RAgmpP8Uj9On3k267HdItJhxOXCAK2zNWVek30bag0hGROnqWwh15OgiYCT_IH2sFaeRHBiXCgxrXKQUNfAt6S1Yr0c_ILd0MIwuAOfuj03HPBKM75yvDoH23PUQ2sQZZ4F0XXWDYpM5IsLFRJbbM9-CwuvSvuSHGEermQZgo86RqegO439KYTPZ3_CPISc71BcPXtm229ip5BJOvQRpuyDzMtTS_9oxndOFtYC8S6RNnY-s8mdjoiw7XlXtWlXsZTROIaDsKOO8Gi8NQgOFx3K8Jz30YKj6aOAVnxw41Zr3_33LJk&state=d6cef3048976103420cbb635acb26ada
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 24.23.129.165
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0
+MESSAGE: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQAvFGah9WR_tDKz-RAgmpP8Uj9On3k267HdItJhxOXCAK2zNWVek30bag0hGROnqWwh15OgiYCT_IH2sFaeRHBiXCgxrXKQUNfAt6S1Yr0c_ILd0MIwuAOfuj03HPBKM75yvDoH23PUQ2sQZZ4F0XXWDYpM5IsLFRJbbM9-CwuvSvuSHGEermQZgo86RqegO439KYTPZ3_CPISc71BcPXtm229ip5BJOvQRpuyDzMtTS_9oxndOFtYC8S6RNnY-s8mdjoiw7XlXtWlXsZTROIaDsKOO8Gi8NQgOFx3K8Jz30YKj6aOAVnxw41Zr3_33LJk&state=d6cef3048976103420cbb635acb26ada\Database_Helper SQL Error: 
+Duplicate entry '' for key 'username'
+INSERT
+				 INTO "user" ("first_name", "last_name", "gender", "username", "email", "hash", "active", "api_website_id") 
+				 VALUES (:first_name, :last_name, :gender, :username, :email,  NULL , :active, :api_website_id)
+			
+
+DATE: 2013-07-30 16:42:14
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQB376lnC3wZ7m9T2xP6W1nx8JTdbRiKpi5sie55JawFDrlsu4Bcj8McmLy_roIcLnDVQ3iOc9wbYFTXAcvhntwoNwzwMTtHOMDwWajn914yx4nNFAehwLHbX1X-Y2zbTu27rLR5tl9t0eGTNJ4hV-xD329d6zOT37xHiOftvy-1l1Fh-Bpi_0MQFKBDcmajMIV9BgZoezyAzwAGhikX5yTH6jmJlZIoteWIvJvDLXb7OSUpylQxzdCwsmWRQ1NJM-pquG-D-0rXlzSKQfkrojRQdhAxrjmZMWFKO0ci7erVu55R6JK25ndCJhsh_z029dM&state=d6cef3048976103420cbb635acb26ada
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 24.23.129.165
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0
+MESSAGE: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQB376lnC3wZ7m9T2xP6W1nx8JTdbRiKpi5sie55JawFDrlsu4Bcj8McmLy_roIcLnDVQ3iOc9wbYFTXAcvhntwoNwzwMTtHOMDwWajn914yx4nNFAehwLHbX1X-Y2zbTu27rLR5tl9t0eGTNJ4hV-xD329d6zOT37xHiOftvy-1l1Fh-Bpi_0MQFKBDcmajMIV9BgZoezyAzwAGhikX5yTH6jmJlZIoteWIvJvDLXb7OSUpylQxzdCwsmWRQ1NJM-pquG-D-0rXlzSKQfkrojRQdhAxrjmZMWFKO0ci7erVu55R6JK25ndCJhsh_z029dM&state=d6cef3048976103420cbb635acb26ada\Database_Helper SQL Error: 
+Duplicate entry '' for key 'username'
+INSERT
+				 INTO "user" ("first_name", "last_name", "gender", "username", "email", "hash", "active", "api_website_id") 
+				 VALUES (:first_name, :last_name, :gender, :username, :email,  NULL , :active, :api_website_id)
+			
+
+DATE: 2013-07-30 16:42:15
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQCJMnlJnBZk52tXYc5-nKIyTEOD-RwsvHofR1bSZCfJGN0-R5voN2IHRWf0QKhnKOfDKJPBe6BlaTMmZ2jzeIHWYl2iyKvHUtTcr-WmjDBWzd22QzsgZlDM2wHq6kgGIpWS1XSN6DKbh0ckQicQBzAMCY-9YFUIiH0_7baTy4Xi26x-Re9pvy_6a8q-QHqL1xKDamXne9_xWByhDds-OfjAvzWkQgwmvWTnwiMvUPehVPZfR-brpmWsWa8OmfKsn1yZNi85Ktsn8rMOmJ21HwExmTjPppAAwMPxj_eMBaYew9-HaMDQ2VaLIAaQl67w_U4&state=d6cef3048976103420cbb635acb26ada
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 24.23.129.165
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0
+MESSAGE: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQCJMnlJnBZk52tXYc5-nKIyTEOD-RwsvHofR1bSZCfJGN0-R5voN2IHRWf0QKhnKOfDKJPBe6BlaTMmZ2jzeIHWYl2iyKvHUtTcr-WmjDBWzd22QzsgZlDM2wHq6kgGIpWS1XSN6DKbh0ckQicQBzAMCY-9YFUIiH0_7baTy4Xi26x-Re9pvy_6a8q-QHqL1xKDamXne9_xWByhDds-OfjAvzWkQgwmvWTnwiMvUPehVPZfR-brpmWsWa8OmfKsn1yZNi85Ktsn8rMOmJ21HwExmTjPppAAwMPxj_eMBaYew9-HaMDQ2VaLIAaQl67w_U4&state=d6cef3048976103420cbb635acb26ada\Database_Helper SQL Error: 
+Duplicate entry '' for key 'username'
+INSERT
+				 INTO "user" ("first_name", "last_name", "gender", "username", "email", "hash", "active", "api_website_id") 
+				 VALUES (:first_name, :last_name, :gender, :username, :email,  NULL , :active, :api_website_id)
+			
+
+DATE: 2013-07-30 16:42:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 24.23.129.165
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0
+MESSAGE: /social-login.php?redirect_url=http://www.dahliawolf.com/social-login.php&logout_redirect_url=http://www.dahliawolf.com&api_website_id=2&social_network=facebook\Database_Helper SQL Error: 
+Duplicate entry '' for key 'username'
+INSERT
+				 INTO "user" ("first_name", "last_name", "gender", "username", "email", "hash", "active", "api_website_id") 
+				 VALUES (:first_name, :last_name, :gender, :username, :email,  NULL , :active, :api_website_id)
+			
+
+DATE: 2013-08-01 22:29:54
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQDVcNpbAfvD7L3pHFsASmvcij7EiSwP25j8us_hJXV1h2jlvQTd8b0tx2MB85tqa6yXvKyjBqc5vuzrI4b1ssX3RJsr13kETNjufy2f2MjHserPSU_laWL9pJy5TOaUODB5BYW4nuz_vVLu0qcs5m5SN5e1zwFq4jUsAg2g3R00w3h-N2fy3C1FMj_achH0UuDKEtEruoQz2Efvm_pcSQWmt47ISdvmP61xnqfOtorHn7CLnTZZ91Nk_ZS2KmlyXQ3KWQVrqltiB6odkbFRQZpeMiDtxnkQjtBCTKAi9ZgWRWle_Bhpe3_2WhdJmnwaVBU&state=c9d37300edc2bd8168afd11ce2442818
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 24.23.195.18
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0
+MESSAGE: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQDVcNpbAfvD7L3pHFsASmvcij7EiSwP25j8us_hJXV1h2jlvQTd8b0tx2MB85tqa6yXvKyjBqc5vuzrI4b1ssX3RJsr13kETNjufy2f2MjHserPSU_laWL9pJy5TOaUODB5BYW4nuz_vVLu0qcs5m5SN5e1zwFq4jUsAg2g3R00w3h-N2fy3C1FMj_achH0UuDKEtEruoQz2Efvm_pcSQWmt47ISdvmP61xnqfOtorHn7CLnTZZ91Nk_ZS2KmlyXQ3KWQVrqltiB6odkbFRQZpeMiDtxnkQjtBCTKAi9ZgWRWle_Bhpe3_2WhdJmnwaVBU&state=c9d37300edc2bd8168afd11ce2442818\Database_Helper SQL Error: 
+Duplicate entry '' for key 'username'
+INSERT
+				 INTO "user" ("first_name", "last_name", "gender", "username", "email", "hash", "active", "api_website_id") 
+				 VALUES (:first_name, :last_name, :gender, :username, :email,  NULL , :active, :api_website_id)
+			
+
+DATE: 2013-08-02 11:45:04
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+MySQL server has gone away
+INSERT
+				 INTO "api_request_log" ("api_key", "ip_address", "endpoint", "protocol", "calls", "hmac", "status_codes") 
+				 VALUES (:api_key, :ip_address, :endpoint, :protocol, :calls, :hmac, :status_codes)
+			
+
+DATE: 2013-08-02 15:58:21
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:58:21
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:58:21
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:58:21
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:58:21
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:58:21
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:58:21
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:58:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:58:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:58:22
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 15:59:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:06:44
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Unknown column 'follower_user_id' in 'field list'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:33
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:34
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:52
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:52
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:52
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:52
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:52
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:52
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:52
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:52
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:53
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:07:53
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+UPDATE command denied to user 'off_admin'@'10.48.113.6' for table 'user'
+UPDATE "user" SET "user_id" = :val_user_id, "follower_user_id" = :val_follower_user_id WHERE user_id = :user_id
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-02 16:13:31
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.124
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+INSERT command denied to user 'off_admin'@'10.48.113.6' for table 'follow'
+INSERT
+				 INTO "follow" ("user_id", "follower_user_id") 
+				 VALUES (:user_id, :follower_user_id)
+			
+
+DATE: 2013-08-08 12:17:24
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /1-0/user.json
+SCRIPT_NAME: /1-0/api_request.php
+REMOTE_ADDR: 50.97.108.123
+BROWSER: 
+MESSAGE: /1-0/user.json\Database_Helper SQL Error: 
+Duplicate entry 'CASSANDRA.LIU' for key 'username'
+UPDATE "user" SET "user_id" = :val_user_id, "first_name" = :val_first_name, "last_name" = :val_last_name, "date_of_birth" = :val_date_of_birth, "gender" = :val_gender, "username" = :val_username, "email" = :val_email, "api_website_id" = :val_api_website_id WHERE user_id = :user_id
+
+DATE: 2013-08-13 21:04:38
+SERVER_NAME: api.dahliawolf.com
+REQUEST_URI: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQANaq4i2hpzDcRU02UUbArRH78Tpbiwlw_ROXGVOFGfUUu9KpKyBesMiyyjwQbhy43dsxs1ZzwEzHi88OoCJ8LuIzuXYqYLEuUu3CTvhe_Dde4MSZFs3j5ut6BlH4nKgMzbjE5aJifKsnfTa0k-4kM0Ekax1TSYEGWT1ShPXARer6rnMuE_FumU9Oq5abfkt8bBH-vH60Ri6Z0lQ9x0_Bc2KQ8POBAJkIOu_6u90kwv-kM1tkSafqdX329xwvcGJF2W0OmC7Ughgfd97JS7hCzwnY8PRoHhqvpreLlcSJpXg8Pc8P6KS_rWc9TATNa0zyA&state=1808e29e24e1192bb160d07dc0692c7b
+SCRIPT_NAME: /social-login.php
+REMOTE_ADDR: 101.167.20.152
+BROWSER: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.95 Safari/537.36
+MESSAGE: /social-login.php?social_network=facebook&logout_redirect_url=http%3A%2F%2Fwww.dahliawolf.com&code=AQANaq4i2hpzDcRU02UUbArRH78Tpbiwlw_ROXGVOFGfUUu9KpKyBesMiyyjwQbhy43dsxs1ZzwEzHi88OoCJ8LuIzuXYqYLEuUu3CTvhe_Dde4MSZFs3j5ut6BlH4nKgMzbjE5aJifKsnfTa0k-4kM0Ekax1TSYEGWT1ShPXARer6rnMuE_FumU9Oq5abfkt8bBH-vH60Ri6Z0lQ9x0_Bc2KQ8POBAJkIOu_6u90kwv-kM1tkSafqdX329xwvcGJF2W0OmC7Ughgfd97JS7hCzwnY8PRoHhqvpreLlcSJpXg8Pc8P6KS_rWc9TATNa0zyA&state=1808e29e24e1192bb160d07dc0692c7b\Database_Helper SQL Error: 
+Duplicate entry '' for key 'username'
+INSERT
+				 INTO "user" ("first_name", "last_name", "gender", "username", "email", "hash", "active", "api_website_id") 
+				 VALUES (:first_name, :last_name, :gender, :username, :email,  NULL , :active, :api_website_id)
+			
+
