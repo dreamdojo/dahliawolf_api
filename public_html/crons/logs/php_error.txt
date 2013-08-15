@@ -1,0 +1,65 @@
+2013-08-07 09:58:25 AM - INFO  --> config.php->require()=> 		Warning :require_once(/includes/php/functions.php): failed to open stream: No such file or directory file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 09:58:25 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 3 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 09:58:25 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 4 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 09:58:25 AM - INFO  --> ->()=> 		ON_SHUTDOWN :require_once(): Failed opening required '/includes/php/functions.php' (include_path='.:/usr/share/pear:/usr/share/php:/var/gitrepos/dahliawolf_api/public_html/lib/jk07:/var/gitrepos/dahliawolf_api/public_html') file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 09:58:25 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: file file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 193 
+2013-08-07 09:58:25 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: line file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 195 
+2013-08-07 09:58:25 AM - INFO  --> function stack 
+ - callShutdownHandler () 
+2013-08-07 09:58:32 AM - INFO  --> config.php->require()=> 		Warning :require_once(/includes/php/functions.php): failed to open stream: No such file or directory file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 09:58:32 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 3 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 09:58:32 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 4 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 09:58:32 AM - INFO  --> ->()=> 		ON_SHUTDOWN :require_once(): Failed opening required '/includes/php/functions.php' (include_path='.:/usr/share/pear:/usr/share/php:/var/gitrepos/dahliawolf_api/public_html/lib/jk07:/var/gitrepos/dahliawolf_api/public_html') file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 09:58:32 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: file file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 193 
+2013-08-07 09:58:32 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: line file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 195 
+2013-08-07 09:58:32 AM - INFO  --> function stack 
+ - callShutdownHandler () 
+2013-08-07 10:00:03 AM - INFO  --> config.php->require()=> 		Warning :require_once(/includes/php/functions.php): failed to open stream: No such file or directory file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:00:03 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 3 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:00:03 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 4 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:00:03 AM - INFO  --> ->()=> 		ON_SHUTDOWN :require_once(): Failed opening required '/includes/php/functions.php' (include_path='.:/usr/share/pear:/usr/share/php:/var/gitrepos/dahliawolf_api/public_html/lib/jk07:/var/gitrepos/dahliawolf_api/public_html/crons') file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:00:03 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: file file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 193 
+2013-08-07 10:00:03 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: line file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 195 
+2013-08-07 10:00:03 AM - INFO  --> function stack 
+ - callShutdownHandler () 
+2013-08-07 10:02:41 AM - INFO  --> config.php->require()=> 		Warning :session_start(): Cannot send session cookie - headers already sent by (output started at /var/gitrepos/dahliawolf_api/public_html/crons/summary-emails.php:24) file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 2 
+2013-08-07 10:02:41 AM - INFO  --> config.php->require()=> 		Warning :session_start(): Cannot send session cache limiter - headers already sent (output started at /var/gitrepos/dahliawolf_api/public_html/crons/summary-emails.php:24) file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 2 
+2013-08-07 10:02:41 AM - INFO  --> config.php->require()=> 		Warning :require_once(/includes/php/functions.php): failed to open stream: No such file or directory file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:02:41 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 3 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:02:41 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 4 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:02:41 AM - INFO  --> ->()=> 		ON_SHUTDOWN :require_once(): Failed opening required '/includes/php/functions.php' (include_path='.:/usr/share/pear:/usr/share/php:/var/gitrepos/dahliawolf_api/public_html/lib/jk07:/var/gitrepos/dahliawolf_api/public_html/crons') file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:02:41 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: file file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 193 
+2013-08-07 10:02:41 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: line file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 195 
+2013-08-07 10:02:41 AM - INFO  --> function stack 
+ - callShutdownHandler () 
+2013-08-07 10:03:17 AM - INFO  --> config.php->require()=> 		Warning :session_start(): Cannot send session cookie - headers already sent by (output started at /var/gitrepos/dahliawolf_api/public_html/crons/summary-emails.php:25) file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 2 
+2013-08-07 10:03:17 AM - INFO  --> config.php->require()=> 		Warning :session_start(): Cannot send session cache limiter - headers already sent (output started at /var/gitrepos/dahliawolf_api/public_html/crons/summary-emails.php:25) file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 2 
+2013-08-07 10:03:17 AM - INFO  --> config.php->require()=> 		Warning :require_once(/includes/php/functions.php): failed to open stream: No such file or directory file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:03:17 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 3 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:03:17 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 4 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:03:17 AM - INFO  --> ->()=> 		ON_SHUTDOWN :require_once(): Failed opening required '/includes/php/functions.php' (include_path='.:/usr/share/pear:/usr/share/php:/var/gitrepos/dahliawolf_api/public_html/lib/jk07:/var/gitrepos/dahliawolf_api/public_html/crons:/var/gitrepos/dahliawolf_api/public_html') file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:03:17 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: file file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 193 
+2013-08-07 10:03:17 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: line file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 195 
+2013-08-07 10:03:17 AM - INFO  --> function stack 
+ - callShutdownHandler () 
+2013-08-07 10:05:05 AM - INFO  --> config.php->require()=> 		Warning :session_start(): Cannot send session cookie - headers already sent by (output started at /var/gitrepos/dahliawolf_api/public_html/crons/summary-emails.php:25) file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 2 
+2013-08-07 10:05:05 AM - INFO  --> config.php->require()=> 		Warning :session_start(): Cannot send session cache limiter - headers already sent (output started at /var/gitrepos/dahliawolf_api/public_html/crons/summary-emails.php:25) file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 2 
+2013-08-07 10:05:05 AM - INFO  --> config.php->require()=> 		Warning :require_once(/includes/php/functions.php): failed to open stream: No such file or directory file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:05:05 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 3 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:05:05 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 4 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:05:05 AM - INFO  --> ->()=> 		ON_SHUTDOWN :require_once(): Failed opening required '/includes/php/functions.php' (include_path='.:/usr/share/pear:/usr/share/php:/var/gitrepos/dahliawolf_api/public_html/lib/jk07:/var/gitrepos/dahliawolf_api/public_html/crons:/var/gitrepos/dahliawolf_api/public_html') file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:05:05 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: file file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 193 
+2013-08-07 10:05:05 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: line file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 195 
+2013-08-07 10:05:05 AM - INFO  --> function stack 
+ - callShutdownHandler () 
+2013-08-07 10:06:19 AM - INFO  --> config.php->require()=> 		Warning :session_start(): Cannot send session cookie - headers already sent by (output started at /var/gitrepos/dahliawolf_api/public_html/crons/summary-emails.php:25) file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 2 
+2013-08-07 10:06:19 AM - INFO  --> config.php->require()=> 		Warning :session_start(): Cannot send session cache limiter - headers already sent (output started at /var/gitrepos/dahliawolf_api/public_html/crons/summary-emails.php:25) file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 2 
+2013-08-07 10:06:19 AM - INFO  --> config.php->require()=> 		Warning :require_once(/includes/php/functions.php): failed to open stream: No such file or directory file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:06:19 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 3 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:06:19 AM - INFO  --> Error_Handler.php->trace()=> 		Notice :Undefined offset: 4 file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 205 
+2013-08-07 10:06:19 AM - INFO  --> ->()=> 		ON_SHUTDOWN :require_once(): Failed opening required '/includes/php/functions.php' (include_path='.:/usr/share/pear:/usr/share/php:/var/gitrepos/dahliawolf_api/public_html/lib/jk07:/var/gitrepos/dahliawolf_api/public_html/crons:/var/gitrepos/dahliawolf_api/public_html/') file: /var/gitrepos/dahliawolf_api/public_html/1-0/config/config.php line: 119 
+2013-08-07 10:06:19 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: file file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 193 
+2013-08-07 10:06:19 AM - INFO  --> Error_Handler.php->callShutdownHandler()=> 		Notice :Undefined index: line file: /var/gitrepos/dahliawolf_api/public_html/lib/jk07/Jk_Base.php line: 195 
+2013-08-07 10:06:19 AM - INFO  --> function stack 
+ - callShutdownHandler () 
+
