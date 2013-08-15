@@ -480,7 +480,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
 
 
-            $register_default_follows = function()
+            function register_default_follows()
             {
                 //follow default
                 $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
@@ -509,7 +509,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
             };
 
-            $register_defalul_follows();
+            register_default_follows();
 
 			echo json_pretty(json_encode(($user)));
 			return;
