@@ -500,11 +500,6 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
                     $follow_user_response = api_request('user', $calls, true);
 
-                    $logger = new Jk_Logger(APP_PATH .'logs/debug.log', Jk_Logger::DEBUG);
-                    $logger->LogDebug("user follow params: $user_id". json_encode($calls));
-                    //$logger->LogDebug("user follow response: $user_id". json_encode($follow_user_response));
-
-                    $logger->LogDebug("user follow response: $ftk :\n" . json_encode($follow_user_response) );
                 }
 
             };

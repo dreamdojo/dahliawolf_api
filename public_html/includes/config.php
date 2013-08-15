@@ -63,34 +63,43 @@ $config = array(
  
  spl_autoload_register(function($class_name) {
 	$class_dirs = array(
-		$_SERVER['DOCUMENT_ROOT'] . '/models/'
+		$_SERVER['DOCUMENT_ROOT'] . '/models/',
+		$_SERVER['DOCUMENT_ROOT'] . '/lib/php',
+		$_SERVER['DOCUMENT_ROOT'] . '/lib/jk07,'
 	);
-	
-	foreach ($class_dirs as $class_dir) {
-		// Search through directories recursively
-		$Directory = new RecursiveDirectoryIterator($class_dir, RecursiveDirectoryIterator::SKIP_DOTS);
-		$Iterator = new RecursiveIteratorIterator($Directory, RecursiveIteratorIterator::SELF_FIRST);
-		$Regex = new RegexIterator($Iterator, '/' . preg_quote('\\' . $class_name) . '\.php/i');
-		$matches = iterator_to_array($Regex, false);
-		if (!empty($matches)) {
-			$file = $matches[0]->getPathname();
-			require $file;
-			return true;
-		}else
-        {
-            error_log("trying to load class file: no matches found, $class_name file doesnt exist");
+
+
+     try{
+        foreach ($class_dirs as $class_dir) {
+            // Search through directories recursively
+            $Directory = new RecursiveDirectoryIterator($class_dir, RecursiveDirectoryIterator::SKIP_DOTS);
+            $Iterator = new RecursiveIteratorIterator($Directory, RecursiveIteratorIterator::SELF_FIRST);
+            $Regex = new RegexIterator($Iterator, '/' . preg_quote('\\' . $class_name) . '\.php/i');
+            $matches = iterator_to_array($Regex, false);
+            if (!empty($matches)) {
+                $file = $matches[0]->getPathname();
+                require $file;
+                return true;
+            }else
+            {
+                error_log("trying to load class file: no matches found, $class_name file doesnt exist");
+
+            }
+
+            $file = $class_dir . '/' . $class_name . '.php';
+
+            if (file_exists($file)) {
+                require $file;
+                return true;
+            }else
+            error_log("trying to load file: $file, file doesnt exist");
 
         }
-		
-		$file = $class_dir . '/' . $class_name . '.php';
+    }catch(ErrorException $e)
+    {
+        error_log("spl_autoload_register exception: " . $e->getMessage());
+    }
 
-		if (file_exists($file)) {
-			require $file;
-			return true;
-		}else
-        error_log("trying to load file: $file, file doesnt exist");
-	}
-	
 	$result = resultArray(
 		false
 		, NULL
