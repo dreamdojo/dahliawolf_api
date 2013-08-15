@@ -76,14 +76,19 @@ $config = array(
 			$file = $matches[0]->getPathname();
 			require $file;
 			return true;
-		}
+		}else
+        {
+            error_log("trying to load class file: no matches found, $class_name file doesnt exist");
+
+        }
 		
 		$file = $class_dir . '/' . $class_name . '.php';
 
 		if (file_exists($file)) {
 			require $file;
 			return true;
-		}
+		}else
+        error_log("trying to load file: $file, file doesnt exist");
 	}
 	
 	$result = resultArray(
