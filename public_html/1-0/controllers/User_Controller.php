@@ -400,7 +400,6 @@ class User_Controller extends _Controller {
 				'label' => 'User Id'
 				, 'rules' => array(
 					'is_set' => NULL
-					, 'is_int' => NULL
 				)
 			)
 			, 'first_name' => array(

@@ -136,7 +136,7 @@ class Social_Network_Controller extends _Controller {
         /////////////////////////////
         /////// PREPARE USER DATA //////
         $user_params = array(
-            'user_id' => $user['user_id'],
+            'user_id' => (int) $user['user_id'],
             'username' => $params['username'],
             'email_address' => $params['email'],
             'first_name' => $params['first_name'],
@@ -263,6 +263,8 @@ class Social_Network_Controller extends _Controller {
             );
 
 
+            /////////////// REG INIT ///////////////
+
             //offline_admin DB - save user
 			$user['user_id'] = $this->User->save($user);
 
@@ -296,12 +298,16 @@ class Social_Network_Controller extends _Controller {
                     'fb_uid' => $params['fb_uid'],
                 )
             );
-            $data = commerce_api_request('customer', $calls, true);
+            $commerce_response = commerce_api_request('customer', $calls, true);
+
+            $logger->LogInfo("COMMERCE RESPONSE: \n" . var_export($commerce_response, true));
 
 
             // dahliawolf -- add user
 
-			$data = api_call('user', 'add_user', $user_params);
+			$dw_response = api_call('user', 'add_user', $user_params);
+
+            $logger->LogInfo("DAHLIAWOLF RESPONSE: \n" . var_export($dw_response, true));
 
             $logger->LogInfo("ALL USER REGISTRATION ACTIONS COMPLETED. LOGGING IN NEW REGISTERED USER:");
 
