@@ -132,7 +132,7 @@ class _Model extends Jk_Base{
 	}
 	
 	public function db_last_insert_id() {
-		return self::$dbs[$this->db_host][$this->db_name]->last_insert_id();
+        return self::$dbs[$this->db_host][$this->db_name]->last_insert_id();
 	}
 	
 	public function db_row_count() {

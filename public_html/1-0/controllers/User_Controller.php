@@ -72,6 +72,7 @@ class User_Controller extends _Controller {
 			//_Model::$Exception_Helper->request_failed_exception('This email already exists. Please use another.');
 			//check to see if this email is associated or linked to any existing EMAIL Account
 			//OR if the email has valid token and flagged social authority to be logged in
+            $login = new login(array(), array());
 
 			// Authentication
 			$authen = $login->authen($email_or_username, $password, 1, $error_code, $social_id);
@@ -195,6 +196,11 @@ class User_Controller extends _Controller {
 	}
 
 	public function save_user($params = array()) {
+
+        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
+
+        $logger->LogInfo("user save init params: " . var_export($params, true));
+
 		$this->load('User');
 		$this->load('User_Group');
 		$this->load('User_Group_Portal');
@@ -212,16 +218,14 @@ class User_Controller extends _Controller {
 		// Validations
 		$input_validations = array(
 			'first_name' => array(
-				'label' => 'First Name'
-				, 'rules' => array(
-					//'is_set' => NULL
-				)
+				'label' => 'First Name',
+				'rules' => array()
+
 			)
 			, 'last_name' => array(
-				'label' => 'Last Name'
-				, 'rules' => array(
-					//'is_set' => NULL
-				)
+				'label' => 'Last Name',
+				 'rules' => array()
+
 			)
 			, 'date_of_birth' => array(
 				'label' => 'Date of Birth'
@@ -267,8 +271,8 @@ class User_Controller extends _Controller {
 		if ($is_insert) {
 			$input_validations['username']['rules']['is_set'] = NULL;
 			$input_validations['password']['rules'] = array(
-				'is_set' => NULL
-				, 'is_len_min' => 4
+				'is_set' => NULL,
+				'is_len_min' => 4
 			);
 		}
 		$is_user_edit_password = !$is_insert && $is_user_edit && array_key_exists('password', $params);
@@ -280,6 +284,10 @@ class User_Controller extends _Controller {
 
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
+
+
+        $logger->LogInfo("user save validation passed");
+
 
 		if (isset($params['referrer'])) {
 			// Get referrer_user_id
@@ -321,17 +329,19 @@ class User_Controller extends _Controller {
 			}
 		}
 
+
 		// User
 		$field_map = array(
-			'first_name' => 'first_name'
-			, 'last_name' => 'last_name'
-			, 'date_of_birth' => 'date_of_birth'
-			, 'gender' => 'gender'
-			, 'username' => 'username'
-			, 'email' => 'email'
-			, 'newsletter' => 'newsletter'
-			, 'api_website_id' => 'api_website_id'
+			'first_name' => 'first_name',
+			'last_name' => 'last_name',
+			'date_of_birth' => 'date_of_birth',
+			'gender' => 'gender',
+			'username' => 'username',
+			'email' => 'email',
+			'newsletter' => 'newsletter',
+			'api_website_id' => 'api_website_id',
 		);
+
 		$user = array();
 		foreach ($field_map as $field => $param) {
 			if (array_key_exists($param, $params)) {
@@ -351,7 +361,13 @@ class User_Controller extends _Controller {
 				$user['referrer_user_id'] = $referrer_user_id;
 			}
 		}
+
+        $logger->LogInfo("user save insert data: \n" . var_export($user, true) );
+
 		$data['user_id'] = $this->User->save($user);
+
+
+        $logger->LogInfo("user save completed with return data: " . var_export($data, true));
 
 		// Create user group link
 		if ($is_insert) {

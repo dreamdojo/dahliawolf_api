@@ -22,8 +22,8 @@ class Facebook_Controller extends Social_Network_Controller {
 	public function login() {
 		$user = $this->facebook->getUser();
 
-        //$logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
-        //$logger->LogInfo("FB LOGIN INIT");
+        $logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
+        $logger->LogInfo("FB LOGIN INIT");
 
 		// If user isn't logged in through Facebook, redirect them to do so
 		if (!$user) {
@@ -66,16 +66,16 @@ class Facebook_Controller extends Social_Network_Controller {
 		}
 		
 		$user = array(
-			'first_name' => $user_profile['first_name']
-			, 'last_name' => $user_profile['last_name']
-			, 'username' => $user_profile['username']
-			, 'email' => $user_profile['email']
-			, 'fb_uid' => $user_profile['uid']
-			, 'social_network_id' => $user_profile['uid']
-			, 'logout_url' => $logout_url
+			'first_name' => $user_profile['first_name'],
+			'last_name' => $user_profile['last_name'],
+			'username' => trim((string) $user_profile['username']) !='' ? (string) $user_profile['username'] : strtolower("{$user_profile['first_name']}.{$user_profile['last_name']}"),
+			'email' => $user_profile['email'],
+			'fb_uid' => $user_profile['uid'],
+			'social_network_id' => $user_profile['uid'],
+			'logout_url' => $logout_url,
 		);
 
-        //$logger->LogInfo("FB USER DATA: " . var_export($user, true) );
+        $logger->LogInfo("FB USER DATA: " . var_export($user, true) );
 
 		// Gender
 		if (!empty($user_profile['sex'])) {

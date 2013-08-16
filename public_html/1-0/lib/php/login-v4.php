@@ -261,6 +261,10 @@ class login {
 	
 	// Authen without password
 	public function social_authen($user) {
+
+        $logger = new Jk_Logger(APP_PATH.'logs/login.log');
+        $logger->LogInfo( "login authen init: " . var_export($user,true));
+
 		global $_mysql;
 		
 		$query = '
@@ -313,7 +317,9 @@ class login {
 			':user_id' => $this->user['user_id']
 		);
 		$_mysql->update('user', $values, $wherestr, $wherevals);
-		
+
+        $logger->LogInfo( "login authen complete: {$user['user_id']} logged in successfully: \n" . var_export($user,true) );
+
 		/*if ($cookieType == 1 || $cookieType == 2) { // save login
 			$this->saveCookieLogin($login);
 		}

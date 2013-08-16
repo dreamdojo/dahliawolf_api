@@ -23,6 +23,7 @@ Example syntax for PDO transactions:
 
 class Database_Helper {
 
+    /** @var PDO $pdo */
 	private $pdo;
 	private $log_pdo;
 	private $sth;
