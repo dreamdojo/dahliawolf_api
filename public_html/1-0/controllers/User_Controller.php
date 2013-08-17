@@ -384,7 +384,8 @@ class User_Controller extends _Controller {
             //follow default
             $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
 
-            global $user_id, $logger;
+            global $user_id;
+            $logger = new Jk_Logger(APP_PATH.'logs/user.log');
 
             foreach($follow_these as $ftk => $fthisone)
             {
