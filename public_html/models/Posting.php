@@ -584,16 +584,14 @@ class Posting extends db {
 				, product.id_product, product.status, product.price, product.wholesale_price, product.commission, product.commission_from_date, product.commission_to_date
 				, CONCAT('http://content.dahliawolf.com/shop/product/image.php?file_id=', (SELECT product_file_id FROM offline_commerce_v1_2013.product_file WHERE product_id = product_lang.id_product ORDER BY product_file_id ASC LIMIT 1)) AS image_url
 				, CONCAT('http://content.dahliawolf.com/shop/product/inspirations/image.php?id_product=', product_lang.id_product) AS inspiration_image_url
-				, m.posting_ids
 
+				, (SELECT GROUP_CONCAT(pp.posting_id ORDER BY pp.is_primary DESC, pp.created ASC SEPARATOR '|') AS posting_ids
+					FROM posting_product AS pp
+					WHERE pp.product_id = posting_product.product_id
+					GROUP BY pp.product_id) AS posting_ids
 
-			FROM (
-					SELECT MIN(posting_product.created) AS pp_created, GROUP_CONCAT(posting_product.posting_id ORDER BY posting_product.created ASC SEPARATOR '|') AS posting_ids
-					FROM posting
-						INNER JOIN posting_product ON posting.posting_id = posting_product.posting_id
-					GROUP BY posting_product.product_id
-				) AS m
-				INNER JOIN posting_product ON posting_product.created = m.pp_created
+			FROM
+				posting_product
 				INNER JOIN posting ON posting_product.posting_id = posting.posting_id
 				LEFT JOIN offline_commerce_v1_2013.product AS product ON posting_product.product_id = product.id_product
 				INNER JOIN image ON posting.image_id = image.id
@@ -607,7 +605,7 @@ class Posting extends db {
 
 				LEFT JOIN offline_commerce_v1_2013.favorite_product AS favorite_product ON favorite_product.id_product = product.id_product
 
-			WHERE vote_period.vote_period_id = :vote_period_id
+			WHERE vote_period.vote_period_id = :vote_period_id AND posting_product.is_primary = 1
 			GROUP BY posting.posting_id
 			ORDER BY product_shop.position ASC, posting_product.created DESC
 			" . $this->generate_limit_offset_str($params) . "
