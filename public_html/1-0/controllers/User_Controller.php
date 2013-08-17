@@ -393,7 +393,7 @@ class User_Controller extends _Controller {
                     'user_id' => $fthisone,
                     'follower_user_id' => $user_id);
 
-                $follow_user = new self();
+                $follow_user = new User();
 
                 $follow_user->follow($follow);
 
