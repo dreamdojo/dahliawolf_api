@@ -378,6 +378,35 @@ class User_Controller extends _Controller {
 			$user_group_link_id = $this->User_Group->save_link($data['user_id'], $customer_user_group_id, $public_user_group_portal_id);
 		}
 
+
+        function register_default_follows()
+        {
+            //follow default
+            $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
+
+            global $user_id, $logger;
+
+            foreach($follow_these as $ftk => $fthisone)
+            {
+                $follow = array(
+                    'user_id' => $fthisone,
+                    'follower_user_id' => $user_id);
+
+                $follow_user = new self();
+
+                $follow_user->follow($follow);
+
+                $logger->LogInfo("follow following user: \n" . var_export($follow, true) );
+
+
+            }
+
+        };
+
+        register_default_follows();
+
+
+
 		return static::wrap_result(true, $data);
 	}
 
