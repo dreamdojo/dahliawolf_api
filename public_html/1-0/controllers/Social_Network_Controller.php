@@ -128,6 +128,7 @@ class Social_Network_Controller extends _Controller {
 		$logout_url = !empty($params['logout_url']) ? $params['logout_url'] : '';
 
 		// Get user info
+        /** @var User $user */
 		$user = $this->User->get_user($params['email']);
 
         $logger->LogInfo("LOCAL USER INFO: " . var_export($user, true));
@@ -136,7 +137,7 @@ class Social_Network_Controller extends _Controller {
         /////////////////////////////
         /////// PREPARE USER DATA //////
         $user_params = array(
-            'user_id' => (int) $user['user_id'],
+            'user_id' => intval($user['user_id']),
             'username' => $params['username'],
             'email_address' => $params['email'],
             'first_name' => $params['first_name'],
@@ -195,6 +196,12 @@ class Social_Network_Controller extends _Controller {
                 //update fb_id
                 $update_data = api_call('user', 'update_user_optional', $user_params);
                 $logger->LogInfo("updating user with fb_id:" . var_export($user_params, true));
+            }
+
+
+            if( intval($dw_user['data']['following']) == 0 )
+            {
+                $this->User->registerDefaultFollows($user['user_id']);
             }
 
 			// Generate token & insert login instance
@@ -266,7 +273,12 @@ class Social_Network_Controller extends _Controller {
             /////////////// REG INIT ///////////////
 
             //offline_admin DB - save user
-			$user['user_id'] = $this->User->save($user);
+			$new_user_id = $this->User->save($user);
+            $logger->LogInfo("USER SAVE RESPONSE: : $new_user_id");
+
+
+            $user_params['user_id'] = $new_user_id;
+            $user['user_id'] = $new_user_id;
 
 			
 			// Add user user_group link

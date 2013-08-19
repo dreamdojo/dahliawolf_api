@@ -29,6 +29,8 @@ function api_call($endpoint, $function, $parameters = NULL, $return_array = fals
 
     $api_domain = strpos($_SERVER['SERVER_NAME'], 'dev')>-1? "dev.api.dahliawolf.com" : "api.dahliawolf.com";
 
+    error_log( __FUNCTION__ . " api domain: $api_domain");
+
 	$url = "http://{$api_domain}/api.php?api=" . $endpoint . '&function=' . $function . '&' . $query_string;
 
 	$ch = curl_init();

@@ -142,8 +142,37 @@ class User extends _Model {
 
         return false;
 	}
-	
-	public function get_regexp_username($username) {
+
+    public function save($info)
+    {
+        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
+        $logger->LogInfo("SAVE NEW USER DATA: -h:{$this->db_host} -db:$this->db_name :\n ". var_export($info, true));
+
+        return parent::save($info);
+    }
+
+
+    public function registerDefaultFollows($user_id)
+    {
+        //follow default
+        $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
+
+        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
+
+        foreach($follow_these as $ftk => $fthisone)
+        {
+            $follow = array(
+                'user_id' => $fthisone,
+                'follower_user_id' => $user_id);
+
+            $follow_user = new User();
+            $follow_user->follow($follow);
+            $logger->LogInfo("follow following user: \n" . var_export($follow, true) );
+        }
+    }
+
+
+    public function get_regexp_username($username) {
 		$query = '
 			SELECT username
 			FROM user
