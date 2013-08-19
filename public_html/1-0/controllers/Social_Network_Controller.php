@@ -201,7 +201,10 @@ class Social_Network_Controller extends _Controller {
 
             if( intval($dw_user['data']['following']) == 0 )
             {
-                $this->User->registerDefaultFollows($user['user_id']);
+                /** @var User $user_model */
+                $user_model = $this->User;
+                $logger->LogInfo("user has no followers {user_id: {$user['user_id']}}.. register default :)");
+                $user_model->registerDefaultFollows($user['user_id']);
             }
 
 			// Generate token & insert login instance

@@ -166,9 +166,28 @@ class User extends _Model {
                 'follower_user_id' => $user_id);
 
             $follow_user = new User();
-            $follow_user->follow($follow);
-            $logger->LogInfo("follow following user: \n" . var_export($follow, true) );
+            $result_id = $follow_user->follow($follow);
+            $logger->LogInfo( sprintf( "follow following user: \n%s \nfollow_id:%s" . var_export($follow, true), $result_id ) );
         }
+    }
+
+
+    public function follow($data = array())
+    {
+        $error = NULL;
+        $follow = new Follow();
+
+        try {
+            $insert_id = $follow->followUser($data);
+            return array(
+                    strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
+                    //'model_data' => $data
+                    );
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception("Unable to follow user.". $e->getMessage());
+        }
+
     }
 
 
