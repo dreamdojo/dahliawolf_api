@@ -344,9 +344,7 @@ class Social_Network_Controller extends _Controller {
 		
 		$login = new login(array(), array());
 		$error_code = NULL;
-		
-		//print_r($user);
-		
+
 		$authen = $login->social_authen($user);
 			
 		// Success: return user info and token
