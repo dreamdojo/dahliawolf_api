@@ -378,10 +378,6 @@ class User_Controller extends _Controller {
 			$user_group_link_id = $this->User_Group->save_link($data['user_id'], $customer_user_group_id, $public_user_group_portal_id);
 		}
 
-        /** @var User $user_model */
-        $user_model = $this->User;
-
-        $user_model->registerDefaultFollows($data['user_id']);
 
 		return static::wrap_result(true, $data);
 	}
