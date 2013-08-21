@@ -526,11 +526,13 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$User = new User();
 			$user_params = array(
 				'data' => array(
-					'user_id' => intval($_REQUEST['user_id'])
-					, 'username' => $_REQUEST['username']
-					, 'email_address' => $_REQUEST['email_address']
-					, 'first_name' => $_REQUEST['first_name']
-					, 'last_name' => $_REQUEST['last_name']
+					'user_id' => intval($_REQUEST['user_id']),
+					'username' => $_REQUEST['username'],
+					'email_address' => $_REQUEST['email_address'],
+					'first_name' => $_REQUEST['first_name'],
+					'last_name' => $_REQUEST['last_name'],
+                    'created_at' => date("Y-m-d H:i:s")
+
 				)
 			);
 			$optional_params = array(
@@ -589,8 +591,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'member_id'
 			);
 			$user_params = array(
-				'data' => array()
-				, 'where' => array(
+				'data' => array(),
+				'where' => array(
 					'user_id' => $_REQUEST['user_id']
 				)
 			);
