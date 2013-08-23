@@ -286,7 +286,7 @@ class User extends db {
 			FROM user_username
 				' . $join_str . '
 			' . (!empty($where_str) ? 'WHERE ' . $where_str : '') . '
-			ORDER BY user_username.username ASC
+			ORDER BY rank ASC, user_username.username ASC
 			' . $this->generate_limit_offset_str($params) . '
 		';
 
@@ -353,7 +353,7 @@ class User extends db {
 						u.points > user_username.points
 				) + 1 AS rank
 			FROM user_username
-			ORDER BY points DESC, username ASC
+			ORDER BY rank ASC, username ASC
 			LIMIT ' . $params['limit'] . ' OFFSET ' . $params['offset'] . '
 		';
 
