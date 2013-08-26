@@ -443,29 +443,38 @@ class User extends db {
             return resultArray(false, NULL, $error);
         }
 
+        $select_str = '';
+        $join_str = '';
         $where_str = '';
+
         $values = array();
         // user_id or username
         if (!empty($params['where']['user_id'])) {
             $where_str = 'follow.follower_user_id = :user_id';
             $values[':user_id'] = $params['where']['user_id'];
         }
-        else {
+        if (!empty($params['where']['username'])) {
             $where_str = 'user.username = :username';
             $values[':username'] = !empty($params['where']['username']) ? $params['where']['username'] : '';
+        }else{
+            $where_str = '1';
+            $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id
+                                LEFT JOIN follow AS f ON user_username.user_id = f.user_id";
         }
 
-        $select_str = '';
-        $join_str = '';
         // Optional viewer_user_id
         if (!empty($params['where']['viewer_user_id'])) {
             $select_str = ', IF(f.user_id IS NULL, 0, 1) AS is_followed';
             $join_str = 'LEFT JOIN follow AS f ON user_username.user_id = f.user_id AND f.follower_user_id = :viewer_user_id';
             $values[':viewer_user_id'] = $params['where']['viewer_user_id'];
+
+            $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id";
+
         }
 
+
         $following_query = '
-      			SELECT
+      			SELECT distinct
                     user_username.user_username_id,
       			    user_username.user_id,
       			    user_username.username,
@@ -478,8 +487,7 @@ class User extends db {
                     ) + 1 AS rank
       				' . $select_str . '
       			FROM follow
-      				INNER JOIN user_username AS user ON follow.follower_user_id = user.user_id
-      				INNER JOIN user_username ON follow.user_id = user_username.user_id
+                    ' .$join_followers. '
       				' . $join_str . '
       			WHERE ' . $where_str . '
       			ORDER BY rank ASC
