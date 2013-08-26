@@ -14,6 +14,11 @@ class AuthNetAIM {
 	
 	
 	);
+	
+	private $shipping_address = array(
+	
+	
+	);
    
 	public function __construct($authnetApiId, $authnetTransKey, $useSandbox) {
         $this->api_id = $authnetApiId;
@@ -29,6 +34,19 @@ class AuthNetAIM {
 			"x_city" => $address['city'],
 			"x_state" => $address['state'],
 			"x_zip"	=> $address['zip'],
+			"x_country"	=> $address['country']
+		);
+	}
+	
+	public function setShippingAddress($address) {
+		$this->shipping_address = array(
+			"x_ship_to_first_name" => $address['first_name'],
+			"x_ship_to_last_name" => $address['last_name'],
+			"x_ship_to_address"	=> $address['address'],
+			"x_ship_to_city" => $address['city'],
+			"x_ship_to_state" => $address['state'],
+			"x_ship_to_zip"	=> $address['zip'],
+			"x_ship_to_country"	=> $address['country']
 		);
 	}
 	
@@ -48,6 +66,10 @@ class AuthNetAIM {
 			
 			if (!empty($this->billing_address)) {
 				$a->setCustomFields($this->billing_address);
+			}
+			
+			if (!empty($this->shipping_address)) {
+				$a->setCustomFields($this->shipping_address);
 			}
        
         switch ($transactionType) {
