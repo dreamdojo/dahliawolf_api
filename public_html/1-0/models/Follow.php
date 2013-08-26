@@ -8,6 +8,11 @@ class Follow extends _Model {
 	const TABLE = 'follow';
 	const PRIMARY_KEY_FIELD = 'follow_id';
 
+    public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
+    {
+        parent::__construct($db_host, $db_user, $db_password, $db_name );
+    }
+
 	protected $fields = array(
 		'created',
 		 'user_id',

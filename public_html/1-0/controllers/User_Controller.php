@@ -378,6 +378,7 @@ class User_Controller extends _Controller {
 			$user_group_link_id = $this->User_Group->save_link($data['user_id'], $customer_user_group_id, $public_user_group_portal_id);
 		}
 
+
 		return static::wrap_result(true, $data);
 	}
 
@@ -400,7 +401,6 @@ class User_Controller extends _Controller {
 				'label' => 'User Id'
 				, 'rules' => array(
 					'is_set' => NULL
-					, 'is_int' => NULL
 				)
 			)
 			, 'first_name' => array(

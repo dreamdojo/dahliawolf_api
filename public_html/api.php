@@ -193,6 +193,27 @@ function search_term_cron_curl($username, $domain_keyword = NULL) {
 	curl_close($ch);
 }
 
+
+function register_default_follows($user_id)
+{
+    //follow default
+    $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
+
+    foreach($follow_these as $ftk => $fthisone)
+    {
+        $calls = array(
+            'follow' => array(
+                'user_id' => $fthisone,
+                'follower_user_id' => $user_id
+            )
+        );
+
+        $follow_user_response = api_request('user', $calls, true);
+        return $follow_user_response;
+    }
+
+};
+
 if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 	if (isset($_REQUEST['function'])) {
 		$user = new User();
@@ -478,33 +499,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$Email = new Email();
 			$Email->email('signup', $user_id);
 
-
-
-            function register_default_follows()
-            {
-                //follow default
-                $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
-
-                global $user_id;
-
-                foreach($follow_these as $ftk => $fthisone)
-                {
-
-                    $calls = array(
-                        'follow' => array(
-                            'user_id' => $fthisone,
-                            'follower_user_id' => $user_id
-
-                        )
-                    );
-
-                    $follow_user_response = api_request('user', $calls, true);
-
-                }
-
-            };
-
-            register_default_follows();
+            //// follow default users
+            register_default_follows($user_id);
 
 			echo json_pretty(json_encode(($user)));
 			return;
@@ -512,11 +508,11 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 		else if ($_REQUEST['function'] == 'add_user') {
 			check_required(
 				array(
-					'user_id'
-					, 'first_name'
-					, 'last_name'
-					, 'email_address'
-					, 'username'
+					'user_id',
+					'first_name',
+					'last_name',
+					'email_address',
+					'username',
 				)
 			);
 
@@ -530,11 +526,13 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$User = new User();
 			$user_params = array(
 				'data' => array(
-					'user_id' => $_REQUEST['user_id']
-					, 'username' => $_REQUEST['username']
-					, 'email_address' => $_REQUEST['email_address']
-					, 'first_name' => $_REQUEST['first_name']
-					, 'last_name' => $_REQUEST['last_name']
+					'user_id' => intval($_REQUEST['user_id']),
+					'username' => $_REQUEST['username'],
+					'email_address' => $_REQUEST['email_address'],
+					'first_name' => $_REQUEST['first_name'],
+					'last_name' => $_REQUEST['last_name'],
+                    'created_at' => date("Y-m-d H:i:s")
+
 				)
 			);
 			$optional_params = array(
@@ -561,6 +559,10 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				)
 			);
 			$user['data']['points_earned'] = $points_earned;
+
+            ///register default follows
+            register_default_follows($user_id);
+
 
 			echo json_pretty(json_encode(($user)));
 			return;
@@ -589,8 +591,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'member_id'
 			);
 			$user_params = array(
-				'data' => array()
-				, 'where' => array(
+				'data' => array(),
+				'where' => array(
 					'user_id' => $_REQUEST['user_id']
 				)
 			);
@@ -668,9 +670,9 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 		else if ($_REQUEST['function'] == 'get_user') {
 			$params = array(
 				'where' => array(
-					'user_id' => !empty($_REQUEST['user_id']) ? $_REQUEST['user_id'] : NULL
-					, 'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL
-					, 'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL
+					'user_id' => !empty($_REQUEST['user_id']) ? $_REQUEST['user_id'] : NULL,
+					'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
+					'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL,
 				)
 			);
 			$user = $user->get_user($params);
