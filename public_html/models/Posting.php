@@ -277,6 +277,8 @@ class Posting extends db {
 				, site.domain_keyword
 				, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
                 , product.id_product AS product_id, product.status, product.price, product.wholesale_price
+                , (SELECT COUNT(*) FROM comment WHERE comment.posting_id = posting.posting_id) AS comments
+                , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS shares
 
 				" . $select_str . "
 			FROM " . $from_prefix . "
