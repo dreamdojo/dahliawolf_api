@@ -469,7 +469,6 @@ class User extends db {
             $values[':viewer_user_id'] = $params['where']['viewer_user_id'];
 
             $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id";
-
         }
 
 
