@@ -12,7 +12,15 @@ class Posting_Controller  extends  _Controller
     }
 
 
+    public function delete_post($request_data = array())
+    {
+        $this->load('Posting');
 
+        $message = new Posting();
+        $response = $message->deletePost($request_data);
+
+        return  $response;
+    }
 
 
 }
