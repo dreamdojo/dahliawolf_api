@@ -415,7 +415,7 @@ class Posting extends db {
 						INNER JOIN user_username ON posting.user_id = user_username.user_id
 						' . $join_str . '
 					WHERE image.imagename IS NOT NULL
-					    AND image.dimensionsX > 0 AND image.dimensionsY > 0
+					    ' . /*AND image.dimensionsX > 0 AND image.dimensionsY > 0*/ '
 						AND posting.deleted IS NULL
 						' . (!empty($where_str) ? $where_str : '') . '
 					' . (!empty($group_by_str) ? $group_by_str : '') . '
@@ -434,6 +434,7 @@ class Posting extends db {
 
 
         if (isset($_GET['t'])) {
+        	echo '<pre>';
 			echo $query;
 			print_r($values);
             //die();
