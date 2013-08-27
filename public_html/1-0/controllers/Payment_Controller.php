@@ -154,9 +154,24 @@ class Payment_Controller extends _Controller {
 			"city" => $params['address']['city'],
 			"state" => $params['address']['state'],
 			"zip" => $params['address']['zip'],
+			"country" => $params['address']['country']
 		);
 		
 		$auth->setBillingAddress($address);
+		
+		if (!empty($params['shipping_address'])) {
+			$address = array(
+				"first_name" => $params['shipping_address']['first_name'],
+				"last_name"	=> $params['shipping_address']['last_name'],
+				"address" => $params['shipping_address']['street'],
+				"city" => $params['shipping_address']['city'],
+				"state" => $params['shipping_address']['state'],
+				"zip" => $params['shipping_address']['zip'],
+				"country" => $params['shipping_address']['country']
+			);
+			
+			$auth->setShippingAddress($address);
+		}
 		
 		if ($authorizePayment) {
 			$data = $auth->authorizeOnly($payment_info);
