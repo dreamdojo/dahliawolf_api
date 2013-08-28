@@ -477,6 +477,7 @@ class User extends db {
                     user_username.user_username_id,
       			    user_username.user_id,
       			    user_username.username,
+      			    user_username.points,
       			    user_username.avatar,
                     (
                         SELECT COUNT(*)
