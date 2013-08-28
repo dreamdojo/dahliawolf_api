@@ -281,7 +281,7 @@ class Posting extends db {
                 , product.id_product AS product_id, product.status, product.price, product.wholesale_price
                 , (SELECT COUNT(*) FROM comment WHERE comment.posting_id = posting.posting_id) AS comments
                 , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS shares
-                , imageInfo.*, image.repo_image_id
+                , image.repo_image_id
 				" . $select_str . "
 			FROM " . $from_prefix . "
 				INNER JOIN image ON posting.image_id = image.id
