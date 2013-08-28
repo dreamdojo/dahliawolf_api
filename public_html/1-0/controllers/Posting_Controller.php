@@ -8,7 +8,7 @@ class Posting_Controller  extends  _Controller
 {
     public function __construct()
     {
-        //self::add_share($_GET);
+        //self::delete_post($_GET);
     }
 
 

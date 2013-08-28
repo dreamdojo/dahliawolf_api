@@ -127,7 +127,7 @@ class User extends db {
 		return resultArray(true, $rows);
 	}
 
-	public function get_user($params = array()) {
+	public function     get_user($params = array()) {
 		$error = NULL;
 
 		if (empty($params['where'])) {

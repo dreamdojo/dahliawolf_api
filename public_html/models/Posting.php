@@ -269,7 +269,9 @@ class Posting extends db {
 
 		$query = "
 			SELECT posting.*,
-			    image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height, image.attribution_url AS image_attribution_url, image.domain AS image_attribution_domain
+			    image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height,
+			    IFNULL(image.attribution_url, imageInfo.attribution_url) AS image_attribution_url,
+			    image.domain AS image_attribution_domain
 				, user_username.username, user_username.avatar, user_username.location
 				, CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
 				, IFNULL(COUNT(pl.posting_like_id), 0) AS likes
@@ -279,7 +281,7 @@ class Posting extends db {
                 , product.id_product AS product_id, product.status, product.price, product.wholesale_price
                 , (SELECT COUNT(*) FROM comment WHERE comment.posting_id = posting.posting_id) AS comments
                 , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS shares
-
+                , imageInfo.*, image.repo_image_id
 				" . $select_str . "
 			FROM " . $from_prefix . "
 				INNER JOIN image ON posting.image_id = image.id
