@@ -478,6 +478,8 @@ class User extends db {
       			    user_username.user_id,
       			    user_username.username,
       			    user_username.points,
+      			    user_username.location,
+      			    user_username.fb_uid,
       			    user_username.avatar,
                     (
                         SELECT COUNT(*)
