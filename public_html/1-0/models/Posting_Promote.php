@@ -6,8 +6,6 @@
 
 class Posting_Promote extends _Model
 {
-
-
     const TABLE = 'posting_promote';
     const PRIMARY_KEY_FIELD = 'posting_promote_id';
     const DAY_TIME = 86400;
