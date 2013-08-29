@@ -23,6 +23,17 @@ class Posting_Controller  extends  _Controller
     }
 
 
+    public function promote($request_data)
+    {
+        $this->load('Posting');
+
+        $message = new Posting();
+        $response = $message->promotePost($request_data);
+
+        return  $response;
+    }
+
+
 }
 
 ?>

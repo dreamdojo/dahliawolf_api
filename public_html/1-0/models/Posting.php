@@ -44,6 +44,14 @@ class Posting extends _Model
 
     }
 
+
+    public function Posting_Promote($request_data = array())
+    {
+        $promote = new Posting_Promote();
+        return $promote->create($request_data);
+    }
+
+
 }
 
 ?>
