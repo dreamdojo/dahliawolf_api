@@ -167,7 +167,7 @@ class User extends _Model {
 
             $follow_user = new User();
             $result_id = $follow_user->follow($follow);
-            $logger->LogInfo( sprintf( "follow following user: \n%s \nfollow_id:%s" . var_export($follow, true), $result_id ) );
+            $logger->LogInfo( sprintf( "follow following user: \n%s \nfollow_id:%s" , var_export($follow, true), $result_id ) );
         }
     }
 

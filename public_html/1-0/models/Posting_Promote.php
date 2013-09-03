@@ -121,15 +121,6 @@ class Posting_Promote extends _Model
     }
 
 
-    protected function trace($m)
-    {
-        $m = ( is_array($m) || is_object($m) ?  json_encode($m) : "$m");
-        if($this->logger==null) $this->logger = new Jk_Logger(APP_PATH . 'logs/posting_promote.log', Jk_Logger::DEBUG);
-
-        $this->logger->LogInfo($m);
-    }
-
-
 }
 
 ?>
