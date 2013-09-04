@@ -106,9 +106,9 @@ class Feed_Image extends db {
                     WHERE
                         imageURL IS NOT NULL AND imageURL != '' ".
                         (!empty($where_sql) ? $where_sql : '')
-                        #ORDER BY id DESC
                     ."
-                    LIMIT 1000 ) as images
+                    ORDER BY id DESC
+                    LIMIT 3000 ) as images
                 ORDER BY $order_by
                 $limit_sql
                 ";
