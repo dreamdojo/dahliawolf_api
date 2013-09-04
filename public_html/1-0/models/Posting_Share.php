@@ -89,7 +89,7 @@ class Posting_Share extends _Model
     }
 
 
-    public function getPostShares($params = array())
+    public function getShares($params = array())
     {
         $error = NULL;
 
@@ -118,7 +118,7 @@ class Posting_Share extends _Model
     }
 
 
-    public function getPostSharesCount($params = array())
+    public function getSharesCount($params = array())
     {
         $error = NULL;
         $query = "
@@ -138,7 +138,7 @@ class Posting_Share extends _Model
         $data = $this->fetch($query, $values);
 
         if($data) {
-            $totals = self::getTotalPostShares($params);
+            $totals = self::getTotalShares($params);
             return array(
                         'totals' => $data,
                         'total' => ($totals ? $totals['total'] : null)
@@ -149,7 +149,7 @@ class Posting_Share extends _Model
     }
 
 
-    public function getTotalPostShares($params = array())
+    public function getTotalShares($params = array())
     {
         $error = NULL;
         $query = "

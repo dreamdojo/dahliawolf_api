@@ -4,7 +4,7 @@
  * Date: 7/17/13
  */
  
-class Posting_Share extends _Model
+class Product_Share extends _Model
 {
     const TABLE = 'product_share';
    	const PRIMARY_KEY_FIELD = 'product_share_id';

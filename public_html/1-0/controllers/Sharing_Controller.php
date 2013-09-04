@@ -23,13 +23,18 @@ class Sharing_Controller  extends  _Controller
     }
 
 
+    protected function getModelInstance($type='posting')
+    {
+
+    }
+
 
     public function get_post_shares($request_data = array())
     {
         $this->load('Posting_Share');
 
         $share = new Posting_Share();
-        $data = $share->getPostShares($request_data);
+        $data = $share->getShares($request_data);
 
         return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
     }
@@ -39,8 +44,9 @@ class Sharing_Controller  extends  _Controller
     {
         $this->load('Posting_Share');
 
+        /** @var  Posting_Share $share */
         $share = new Posting_Share();
-        $data = $share->getTotalPostShares($request_data);
+        $data = $share->getTotalShares($request_data);
 
         return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
     }
@@ -61,7 +67,7 @@ class Sharing_Controller  extends  _Controller
         $this->load('Posting_Share');
 
         $share = new Posting_Share();
-        $data = $share->getPostSharesCount($request_data);
+        $data = $share->getSharesCount($request_data);
 
         return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
     }
