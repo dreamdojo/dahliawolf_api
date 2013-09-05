@@ -56,6 +56,11 @@ $config = array(
  define('DB_NAME', $dbname);
  define('DB_USER', $dbuser);
  define('DB_PASS', $dbpass);
+
+define('DW_API_HOST', '127.0.0.1');
+define('DW_API_USER', 'offlineadmin');
+define('DW_API_PASSWORD', '9w8^^^qFtwCD7N^N^');
+define('DW_API_DATABASE', 'dahliawolf_v1_2013');
  
  define('DB_NAME_REPOSITORY', 'dahliawolf_repository');
  
@@ -65,8 +70,12 @@ $config = array(
 	$class_dirs = array(
 		$_SERVER['DOCUMENT_ROOT'] . '/models/',
 		$_SERVER['DOCUMENT_ROOT'] . '/lib/php',
-		$_SERVER['DOCUMENT_ROOT'] . '/lib/jk07,'
+		$_SERVER['DOCUMENT_ROOT'] . '/lib/jk07',
+		$_SERVER['DOCUMENT_ROOT'] . '/1-0/models',
+		$_SERVER['DOCUMENT_ROOT'] . '/includes/php/classes',
 	);
+
+     error_log("spl_autoload_register info: trying to load file: $class_name" );
 
 
      try{
@@ -92,7 +101,7 @@ $config = array(
                 require $file;
                 return true;
             }else
-            error_log("trying to load file: $file, file doesnt exist");
+            error_log("spl_autoload_register warning: failed to load file: $file, file doesnt exist");
 
         }
     }catch(ErrorException $e)
