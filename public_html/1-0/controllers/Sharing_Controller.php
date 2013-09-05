@@ -9,17 +9,20 @@ class Sharing_Controller  extends  _Controller
     public function __construct()
     {
         //self::add_share($_GET);
+
     }
 
 
     public function add_share($request_data = array())
     {
-        $this->load('Posting_Share');
+        $type = $request_data['type'];
 
-        $share = new Posting_Share();
-        $data = $share->addShare($request_data);
+        /** @var Sharing_Abstract $model_instance */
+        $model_instance = self::getModelInstance($type);
 
-        return static::wrap_result( ($share->hasError()? false:true), $data, 200, $share->getErrors() );
+        $data = $model_instance->addShare($request_data);
+
+        return static::wrap_result( ($model_instance->hasError()? false:true), $data, 200, $model_instance->getErrors() );
     }
 
 
@@ -27,9 +30,8 @@ class Sharing_Controller  extends  _Controller
     {
         $model_instance_name = "{$type}_Share";
 
-        $this->load('Sharing_Abstract');
+        //$this->load('Sharing_Abstract');
         $this->load("$model_instance_name");
-
 
         $model_instance = new $model_instance_name();
         if( !is_null($model_instance) ) return $model_instance;

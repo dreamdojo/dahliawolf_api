@@ -100,9 +100,11 @@ class Product_Share extends Sharing_Abstract
 
         $query = " SELECT
                     *
-                    FROM posting_share
+                    FROM {$this->table}
                     WHERE product_id = :product_id
         ";
+
+        if(isset($params['t'])) echo $query;
 
         $values = array(
             ':product_id' => $params['product_id']
@@ -111,7 +113,7 @@ class Product_Share extends Sharing_Abstract
         $data = $this->fetch($query, $values);
 
         if ($data === false) {
-            return array('error' => 'Could not get post shares.');
+            return array('error' => 'Could not get product shares.');
         }
 
         return array('sharings' => $data);
@@ -125,7 +127,7 @@ class Product_Share extends Sharing_Abstract
             SELECT
               COUNT(*) AS 'count',
               network
-            FROM posting_share
+            FROM {$this->table}
             WHERE product_id = :product_id
             GROUP BY network
         ";
@@ -133,7 +135,7 @@ class Product_Share extends Sharing_Abstract
             ':product_id' => $params['product_id']
         );
 
-        if(!$params['product_id']) self::addError('invalid_product_id', 'posting id is invalid');
+        if(!$params['product_id']) self::addError('invalid_product_id', 'product id is invalid');
 
         $data = $this->fetch($query, $values);
 
@@ -155,7 +157,7 @@ class Product_Share extends Sharing_Abstract
         $query = "
             SELECT
               COUNT(*) AS 'total'
-            FROM posting_share
+            FROM {$this->table}
             WHERE product_id = :product_id
         ";
         $values = array(

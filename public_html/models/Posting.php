@@ -280,7 +280,7 @@ class Posting extends db {
 				, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
                 , product.id_product AS product_id, product.status, product.price, product.wholesale_price
                 , (SELECT COUNT(*) FROM comment WHERE comment.posting_id = posting.posting_id) AS comments
-                , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS shares
+                , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
                 , image.repo_image_id
 				" . $select_str . "
 			FROM " . $from_prefix . "
@@ -316,9 +316,9 @@ class Posting extends db {
 		$order_by_str = 'created DESC';
 
 		$order_by_columns = array(
-			'created'
-			, 'total_likes'
-			, 'total_votes'
+			'created',
+			'total_likes',
+			'total_votes',
 		);
 		if (!empty($params['order_by'])) {
 			if (in_array($params['order_by'], $order_by_columns)) {
@@ -404,7 +404,8 @@ class Posting extends db {
 				, IFNULL(COUNT(comment.comment_id), 0) AS comments
 				, imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
 				, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
-				' . (!empty($outer_select_str) ? $outer_select_str : '') . '
+				' . (!empty($outer_select_str) ? $outer_select_str : '') . ',
+				(SELECT count(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`
 			FROM (
 					SELECT posting.*
 						, image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height

@@ -100,7 +100,7 @@ class Posting_Share extends Sharing_Abstract
 
         $query = " SELECT
                     *
-                    FROM posting_share
+                    FROM {$this->table}
                     WHERE posting_id = :posting_id
         ";
 
@@ -125,7 +125,7 @@ class Posting_Share extends Sharing_Abstract
             SELECT
               COUNT(*) AS 'count',
               network
-            FROM posting_share
+            FROM {$this->table}
             WHERE posting_id = :posting_id
             GROUP BY network
         ";
@@ -155,7 +155,7 @@ class Posting_Share extends Sharing_Abstract
         $query = "
             SELECT
               COUNT(*) AS 'total'
-            FROM posting_share
+            FROM {$this->table}
             WHERE posting_id = :posting_id
         ";
         $values = array(
