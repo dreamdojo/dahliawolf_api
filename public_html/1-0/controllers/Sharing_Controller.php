@@ -55,11 +55,9 @@ class Sharing_Controller  extends  _Controller
         /** @var Sharing_Abstract $model_instance */
         $model_instance = self::getModelInstance($type);
 
-        /** @var  Posting_Share $share */
-        $share = new Posting_Share();
-        $data = $share->getTotalShares($request_data);
+        $data = $model_instance->getTotalShares($request_data);
 
-        return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
+        return static::wrap_result(($model_instance->hasError()? false:true), $data, 200, $model_instance->getErrors() );
     }
 
     public function delete($request_data = array())
