@@ -4,7 +4,7 @@
  * Date: 7/17/13
  */
  
-class Product_Share extends _Model
+class Product_Share extends Sharing_Abstract
 {
     const TABLE = 'product_share';
    	const PRIMARY_KEY_FIELD = 'product_share_id';
@@ -46,7 +46,7 @@ class Product_Share extends _Model
                     );
 
         } catch(Exception $e) {
-            self::$Exception_Helper->server_error_exception("Unable to save  product share.". $e->getMessage());
+            self::$Exception_Helper->server_error_exception("Unable to save  product share. ". $e->getMessage());
         }
 
     }
@@ -70,7 +70,7 @@ class Product_Share extends _Model
         return array('product_share_id' => $params['where']['product_share_id']);
     }
 
-    public function deleteShareByPostingId($params = array())
+    public function deleteSharesByParentId($params = array())
     {
         $error = NULL;
 
@@ -89,7 +89,7 @@ class Product_Share extends _Model
     }
 
 
-    public function getPostShares($params = array())
+    public function getShares($params = array())
     {
         $error = NULL;
 
@@ -118,7 +118,7 @@ class Product_Share extends _Model
     }
 
 
-    public function getPostSharesCount($params = array())
+    public function getSharesCount($params = array())
     {
         $error = NULL;
         $query = "
@@ -149,7 +149,7 @@ class Product_Share extends _Model
     }
 
 
-    public function getTotalPostShares($params = array())
+    public function getTotalShares($params = array())
     {
         $error = NULL;
         $query = "

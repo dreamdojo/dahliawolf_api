@@ -70,7 +70,7 @@ class Posting_Share extends Sharing_Abstract
         return array('posting_share_id' => $params['where']['posting_share_id']);
     }
 
-    public function deleteShareByPostingId($params = array())
+    public function deleteSharesByParentId($params = array())
     {
         $error = NULL;
 

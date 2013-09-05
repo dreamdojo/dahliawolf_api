@@ -12,7 +12,9 @@ abstract class Sharing_Abstract extends _Model
     public abstract function getShares($params = array());
     public abstract function getSharesCount($params = array());
     public abstract function getTotalShares($params = array());
+    public abstract function deleteSharesByParentId($params = array());
 
 }
+
 
 ?>

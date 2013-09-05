@@ -26,7 +26,10 @@ class Sharing_Controller  extends  _Controller
     protected function getModelInstance($type='posting')
     {
         $model_instance_name = "{$type}_Share";
+
+        $this->load('Sharing_Abstract');
         $this->load("$model_instance_name");
+
 
         $model_instance = new $model_instance_name();
         if( !is_null($model_instance) ) return $model_instance;
@@ -35,7 +38,7 @@ class Sharing_Controller  extends  _Controller
     }
 
 
-    public function get_post_shares($request_data = array())
+    public function get_shares($request_data = array())
     {
         $type = $request_data['type'];
 
@@ -66,7 +69,6 @@ class Sharing_Controller  extends  _Controller
 
         /** @var Sharing_Abstract $model_instance */
         $model_instance = self::getModelInstance($type);
-
 
         $data = $model_instance->deleteShare($request_data);
 
