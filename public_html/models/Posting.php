@@ -358,10 +358,6 @@ class Posting extends db {
 			}
 		}
 
-        if (empty($result)) {
-             return resultArray(false, NULL, 'Could not get posts.');
-        }
-
 		$select_str = '';
 		$join_str = '';
 		$values = array();
@@ -498,7 +494,7 @@ class Posting extends db {
         if (isset($_GET['t'])) {
 			echo "$query\n";
 			print_r($values);
-            //die();
+            die();
 		}
 
 		//$rows = $this->get_all($this->table);
