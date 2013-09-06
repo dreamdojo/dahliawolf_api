@@ -4,12 +4,12 @@
  * Date: 7/17/13
  */
  
-class Posting_Share extends Sharing_Abstract
+class Product_Share extends Sharing_Abstract
 {
-    const TABLE = 'posting_share';
-   	const PRIMARY_KEY_FIELD = 'posting_share_id';
+    const TABLE = 'product_share';
+   	const PRIMARY_KEY_FIELD = 'product_share_id';
 
-    private $table = 'posting_share';
+    private $table = 'product_share';
 
     public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
     {
@@ -23,7 +23,7 @@ class Posting_Share extends Sharing_Abstract
         $values = array();
 
         $fields = array(
-            'posting_id',
+            'product_id',
             'sharing_user_id',
             'network',
             'posting_owner_user_id',
@@ -46,7 +46,7 @@ class Posting_Share extends Sharing_Abstract
                     );
 
         } catch(Exception $e) {
-            self::$Exception_Helper->server_error_exception("Unable to save  posting share.". $e->getMessage());
+            self::$Exception_Helper->server_error_exception("Unable to save  product share. ". $e->getMessage());
         }
 
     }
@@ -54,33 +54,33 @@ class Posting_Share extends Sharing_Abstract
     public function deleteShare($params = array())
     {
         $error = NULL;
-        if (empty($params['posting_share_id'])) {
+        if (empty($params['product_share_id'])) {
 
             $error = 'Invalid posting sharing id';
             return array('errors' => $error);
         }
 
         $params['where'] = array(
-            ':posting_share_id' =>  $params['posting_share_id']
+            ':product_share_id' =>  $params['product_share_id']
         );
 
         $this->db_delete($this->table, $params['where']);
 
 
-        return array('posting_share_id' => $params['where']['posting_share_id']);
+        return array('product_share_id' => $params['where']['product_share_id']);
     }
 
     public function deleteSharesByParentId($params = array())
     {
         $error = NULL;
 
-        if (empty($params['posting_id'])) {
+        if (empty($params['product_id'])) {
             $error = 'Invalid posting id.';
             return array('error' => $error );
         }
 
         $params['where'] = array(
-            ':posting_id' => $params['posting_id']
+            ':product_id' => $params['product_id']
         );
 
         $this->delete($this->table, $params['where'] );
@@ -93,7 +93,7 @@ class Posting_Share extends Sharing_Abstract
     {
         $error = NULL;
 
-        if (empty($params['posting_id'])) {
+        if (empty($params['product_id'])) {
             $error = 'Invalid posting id.';
             return array('error' => $error );
         }
@@ -101,19 +101,19 @@ class Posting_Share extends Sharing_Abstract
         $query = " SELECT
                     *
                     FROM {$this->table}
-                    WHERE posting_id = :posting_id
+                    WHERE product_id = :product_id
         ";
 
+        if(isset($params['t'])) echo $query;
+
         $values = array(
-            ':posting_id' => $params['posting_id']
+            ':product_id' => $params['product_id']
         );
 
         $data = $this->fetch($query, $values);
 
-        if(isset($params['t'])) echo $query;
-
         if ($data === false) {
-            return array('error' => 'Could not get post shares.');
+            return array('error' => 'Could not get product shares.');
         }
 
         return array('sharings' => $data);
@@ -128,19 +128,19 @@ class Posting_Share extends Sharing_Abstract
               COUNT(*) AS 'count',
               network
             FROM {$this->table}
-            WHERE posting_id = :posting_id
+            WHERE product_id = :product_id
             GROUP BY network
         ";
         $values = array(
-            ':posting_id' => $params['posting_id']
+            ':product_id' => $params['product_id']
         );
 
-        if(!$params['posting_id']) self::addError('invalid_posting_id', 'posting id is invalid');
+        if(!$params['product_id']) self::addError('invalid_product_id', 'product id is invalid');
 
         $data = $this->fetch($query, $values);
 
         if($data) {
-            $totals = self::getTotalShares($params);
+            $totals = self::getTotalPostShares($params);
             return array(
                         'totals' => $data,
                         'total' => ($totals ? $totals['total'] : null)
@@ -158,13 +158,13 @@ class Posting_Share extends Sharing_Abstract
             SELECT
               COUNT(*) AS 'total'
             FROM {$this->table}
-            WHERE posting_id = :posting_id
+            WHERE product_id = :product_id
         ";
         $values = array(
-            ':posting_id' => $params['posting_id']
+            ':product_id' => $params['product_id']
         );
 
-        if(!$params['posting_id']) self::addError('invalid_posting_id', 'posting id is invalid');
+        if(!$params['product_id']) self::addError('invalid_product_id', 'posting id is invalid');
 
         $data = $this->fetch($query, $values);
 
@@ -177,8 +177,5 @@ class Posting_Share extends Sharing_Abstract
     }
 
 }
-
-
-
 
 ?>

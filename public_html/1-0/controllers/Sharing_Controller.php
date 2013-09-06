@@ -9,61 +9,85 @@ class Sharing_Controller  extends  _Controller
     public function __construct()
     {
         //self::add_share($_GET);
+
     }
 
 
     public function add_share($request_data = array())
     {
-        $this->load('Posting_Share');
+        $type = $request_data['type'];
 
-        $share = new Posting_Share();
-        $data = $share->addShare($request_data);
+        /** @var Sharing_Abstract $model_instance */
+        $model_instance = self::getModelInstance($type);
 
-        return static::wrap_result( ($share->hasError()? false:true), $data, 200, $share->getErrors() );
+        $data = $model_instance->addShare($request_data);
+
+        return static::wrap_result( ($model_instance->hasError()? false:true), $data, 200, $model_instance->getErrors() );
     }
 
 
-
-    public function get_post_shares($request_data = array())
+    protected function getModelInstance($type='posting')
     {
-        $this->load('Posting_Share');
+        $model_instance_name = "{$type}_Share";
 
-        $share = new Posting_Share();
-        $data = $share->getPostShares($request_data);
+        //$this->load('Sharing_Abstract');
+        $this->load("$model_instance_name");
 
-        return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
+        $model_instance = new $model_instance_name();
+        if( !is_null($model_instance) ) return $model_instance;
+
+        return null;
+    }
+
+
+    public function get_shares($request_data = array())
+    {
+        $type = $request_data['type'];
+
+        /** @var Sharing_Abstract $model_instance */
+        $model_instance = self::getModelInstance($type);
+
+        $data = $model_instance->getShares($request_data);
+
+        return static::wrap_result(($model_instance->hasError()? false:true), $data, 200, $model_instance->getErrors() );
     }
 
 
     public function get_total($request_data = array())
     {
-        $this->load('Posting_Share');
+        $type = $request_data['type'];
 
-        $share = new Posting_Share();
-        $data = $share->getTotalPostShares($request_data);
+        /** @var Sharing_Abstract $model_instance */
+        $model_instance = self::getModelInstance($type);
 
-        return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
+        $data = $model_instance->getTotalShares($request_data);
+
+        return static::wrap_result(($model_instance->hasError()? false:true), $data, 200, $model_instance->getErrors() );
     }
 
     public function delete($request_data = array())
     {
-        $this->load('Posting_Share');
+        $type = $request_data['type'];
 
-        $share = new Posting_Share();
-        $data = $share->deleteShare($request_data);
+        /** @var Sharing_Abstract $model_instance */
+        $model_instance = self::getModelInstance($type);
 
-        return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
+        $data = $model_instance->deleteShare($request_data);
+
+        return static::wrap_result(($model_instance->hasError()? false:true), $data, 200, $model_instance->getErrors() );
     }
 
 
     public function get_sharing_counts($request_data = array())
     {
-        $this->load('Posting_Share');
+        $type = $request_data['type'];
 
-        $share = new Posting_Share();
-        $data = $share->getPostSharesCount($request_data);
+        /** @var Sharing_Abstract $model_instance */
+        $model_instance = self::getModelInstance($type);
 
-        return static::wrap_result(($share->hasError()? false:true), $data, 200, $share->getErrors() );
+        $data = $model_instance ->getSharesCount($request_data);
+
+        return static::wrap_result(($model_instance->hasError()? false:true), $data, 200, $model_instance->getErrors() );
     }
 
 

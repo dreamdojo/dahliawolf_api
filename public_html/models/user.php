@@ -127,7 +127,7 @@ class User extends db {
 		return resultArray(true, $rows);
 	}
 
-	public function get_user($params = array()) {
+	public function     get_user($params = array()) {
 		$error = NULL;
 
 		if (empty($params['where'])) {
@@ -454,7 +454,7 @@ class User extends db {
             $where_str = 'follow.follower_user_id = :user_id';
             $values[':user_id'] = $params['where']['user_id'];
         }
-        if (!empty($params['where']['username'])) {
+        elseif (!empty($params['where']['username'])) {
             $where_str = 'user.username = :username';
             $values[':username'] = !empty($params['where']['username']) ? $params['where']['username'] : '';
         }else{
@@ -478,6 +478,9 @@ class User extends db {
                     user_username.user_username_id,
       			    user_username.user_id,
       			    user_username.username,
+      			    user_username.points,
+      			    user_username.location,
+      			    user_username.fb_uid,
       			    user_username.avatar,
                     (
                         SELECT COUNT(*)
@@ -494,12 +497,13 @@ class User extends db {
       			' . $this->generate_limit_offset_str($params) . '
       		';
 
-        if(isset($_GET['t'])) echo sprintf('query: %s', $following_query);
+        if(isset($_GET['t'])) echo sprintf("query: \n%s \nparams: %s\n", $following_query, var_export($values, true));
 
 
         $result = $this->run($following_query, $values);
 
         if ($result === false) {
+             if(isset($_GET['t'])) echo $this->error;
              return resultArray(false, NULL, 'Could not get top following.');
         }
 

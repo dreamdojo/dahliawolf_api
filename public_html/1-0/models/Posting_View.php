@@ -1,13 +1,14 @@
 <?php
 /**
  * User: JDorado
- * Date: 7/17/13
+ * Date: 08/05/13
  */
  
-class Posting_Share extends Sharing_Abstract
+class Posting_View extends _Model
 {
-    const TABLE = 'posting_share';
-   	const PRIMARY_KEY_FIELD = 'posting_share_id';
+    const TABLE = 'posting_view';
+   	const PRIMARY_KEY_FIELD = 'posting_view_id';
+   	const LINK_PARENT_FIELD = 'posting_id';
 
     private $table = 'posting_share';
 
@@ -16,17 +17,15 @@ class Posting_Share extends Sharing_Abstract
         parent::__construct($db_host, $db_user, $db_password, $db_name );
     }
 
-    public function addShare($data = array())
+    public function addView($data = array())
     {
         $error = NULL;
-
+        $link_parent_field = self::LINK_PARENT_FIELD;
         $values = array();
 
         $fields = array(
-            'posting_id',
-            'sharing_user_id',
-            'network',
-            'posting_owner_user_id',
+            "$link_parent_field",
+            'viewer_user_id',
             'created_at',
         );
 
@@ -46,41 +45,43 @@ class Posting_Share extends Sharing_Abstract
                     );
 
         } catch(Exception $e) {
-            self::$Exception_Helper->server_error_exception("Unable to save  posting share.". $e->getMessage());
+            self::$Exception_Helper->server_error_exception("Unable to save posting view.". $e->getMessage());
         }
 
     }
 
-    public function deleteShare($params = array())
+    public function deleteView($params = array())
     {
         $error = NULL;
-        if (empty($params['posting_share_id'])) {
+        $key_field = self::PRIMARY_KEY_FIELD;
+        if (empty($params["$key_field"])) {
 
-            $error = 'Invalid posting sharing id';
+            $error = 'Invalid posting view id';
             return array('errors' => $error);
         }
 
         $params['where'] = array(
-            ':posting_share_id' =>  $params['posting_share_id']
+            ":{$key_field}" =>  $params["$key_field"]
         );
 
         $this->db_delete($this->table, $params['where']);
 
 
-        return array('posting_share_id' => $params['where']['posting_share_id']);
+        return array( "$key_field" => $params['where'][ "$key_field" ]);
     }
 
-    public function deleteSharesByParentId($params = array())
+    public function deleteViewsByParentId($params = array())
     {
         $error = NULL;
+        $link_parent_field = self::PRIMARY_KEY_FIELD;
 
-        if (empty($params['posting_id'])) {
+        if (empty($params[ "$link_parent_field" ])) {
             $error = 'Invalid posting id.';
             return array('error' => $error );
         }
 
         $params['where'] = array(
-            ':posting_id' => $params['posting_id']
+            ":{$link_parent_field}" => $params[$link_parent_field]
         );
 
         $this->delete($this->table, $params['where'] );
@@ -89,11 +90,14 @@ class Posting_Share extends Sharing_Abstract
     }
 
 
-    public function getShares($params = array())
+    public function getViews($params = array())
     {
         $error = NULL;
+        $link_parent_field = self::LINK_PARENT_FIELD;
+        $key_field = self::PRIMARY_KEY_FIELD;
 
-        if (empty($params['posting_id'])) {
+
+        if (empty($params["$link_parent_field"])) {
             $error = 'Invalid posting id.';
             return array('error' => $error );
         }
@@ -101,46 +105,45 @@ class Posting_Share extends Sharing_Abstract
         $query = " SELECT
                     *
                     FROM {$this->table}
-                    WHERE posting_id = :posting_id
+                    WHERE {$link_parent_field} = :{$link_parent_field}
         ";
 
         $values = array(
-            ':posting_id' => $params['posting_id']
+            ":{$link_parent_field}" => $params["$link_parent_field"]
         );
 
         $data = $this->fetch($query, $values);
-
-        if(isset($params['t'])) echo $query;
 
         if ($data === false) {
             return array('error' => 'Could not get post shares.');
         }
 
-        return array('sharings' => $data);
+        return array( "{$key_field}s" => $data);
     }
 
 
-    public function getSharesCount($params = array())
+    public function getCount($params = array())
     {
+        $link_parent_field = self::LINK_PARENT_FIELD;
         $error = NULL;
         $query = "
             SELECT
               COUNT(*) AS 'count',
               network
             FROM {$this->table}
-            WHERE posting_id = :posting_id
+            WHERE {$link_parent_field} = :$link_parent_field
             GROUP BY network
         ";
         $values = array(
-            ':posting_id' => $params['posting_id']
+            ":{$link_parent_field}" => $params["$link_parent_field"]
         );
 
-        if(!$params['posting_id']) self::addError('invalid_posting_id', 'posting id is invalid');
+        if(!$params[ "$link_parent_field" ]) self::addError('invalid_posting_id', 'posting id is invalid');
 
         $data = $this->fetch($query, $values);
 
         if($data) {
-            $totals = self::getTotalShares($params);
+            $totals = self::getTotal($params);
             return array(
                         'totals' => $data,
                         'total' => ($totals ? $totals['total'] : null)
@@ -151,20 +154,22 @@ class Posting_Share extends Sharing_Abstract
     }
 
 
-    public function getTotalShares($params = array())
+    public function getTotal($params = array())
     {
+        $link_parent_field = self::LINK_PARENT_FIELD;
         $error = NULL;
         $query = "
             SELECT
               COUNT(*) AS 'total'
             FROM {$this->table}
-            WHERE posting_id = :posting_id
+            WHERE {$link_parent_field} = :{$link_parent_field}
         ";
+
         $values = array(
-            ':posting_id' => $params['posting_id']
+            ":{$link_parent_field}" => $params[ "$link_parent_field" ]
         );
 
-        if(!$params['posting_id']) self::addError('invalid_posting_id', 'posting id is invalid');
+        if(!$params[ $link_parent_field ]) self::addError('invalid_posting_id', 'posting id is invalid');
 
         $data = $this->fetch($query, $values);
 
@@ -177,8 +182,5 @@ class Posting_Share extends Sharing_Abstract
     }
 
 }
-
-
-
 
 ?>

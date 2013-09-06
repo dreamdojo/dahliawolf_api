@@ -8,7 +8,7 @@ class Posting_Controller  extends  _Controller
 {
     public function __construct()
     {
-        //self::add_share($_GET);
+        //self::delete_post($_GET);
     }
 
 
@@ -18,6 +18,17 @@ class Posting_Controller  extends  _Controller
 
         $message = new Posting();
         $response = $message->deletePost($request_data);
+
+        return  $response;
+    }
+
+
+    public function promote($request_data)
+    {
+        $this->load('Posting');
+
+        $message = new Posting();
+        $response = $message->promotePost($request_data);
 
         return  $response;
     }

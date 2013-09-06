@@ -1000,13 +1000,16 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			if (!empty($_REQUEST['timestamp'])) {
 				$params['timestamp'] = $_REQUEST['timestamp'];
 			}
+            if (!empty($_REQUEST['filter'])) {
+				$params['filter'] = $_REQUEST['filter'];
+			}
 
 			$where_params = array(
-				'user_id'
-				, 'username'
-				, 'viewer_user_id'
-				, 'q'
-				, 'since_posting_id'
+				'user_id',
+				'username',
+				'viewer_user_id',
+				'q',
+				'since_posting_id',
 			);
 			foreach ($where_params as $param) {
 				if (isset($_REQUEST[$param])) {
