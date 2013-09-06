@@ -98,15 +98,35 @@ class Posting_Share extends Sharing_Abstract
             return array('error' => $error );
         }
 
-        $query = " SELECT
-                    *
-                    FROM {$this->table}
-                    WHERE posting_id = :posting_id
-        ";
 
         $values = array(
             ':posting_id' => $params['posting_id']
         );
+
+        $select_str ='';
+        $user_id = $params['user_id'];
+        if ( $user_id && !empty($user_id))
+        {
+            $select_str .= ',IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            //$select_str .= ',posting.*';
+            $select_str .= ',user.username,user.avatar,user.location ';
+            $join_str = '
+                LEFT JOIN posting ON posting.posting_id = main.posting_id
+                LEFT JOIN user_username user ON user.user_id = posting.user_id
+                LEFT JOIN follow ON (posting.user_id = follow.user_id
+                    AND follow.follower_user_id = :viewer_user_id)
+            ';
+            $values[':viewer_user_id'] = $user_id;
+
+        }
+
+        $query = " SELECT main.*
+                    {$select_str}
+                    FROM {$this->table} main
+                    {$join_str}
+                    WHERE main.posting_id = :posting_id
+        ";
+
 
         $data = $this->fetch($query, $values);
 
