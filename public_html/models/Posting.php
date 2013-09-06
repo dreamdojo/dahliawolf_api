@@ -476,6 +476,7 @@ class Posting extends db {
       						" . (!empty($sub_where_str) ? $sub_where_str : '') . "
       					" . (!empty($group_by_str) ? $group_by_str : '') . "
       					ORDER BY created DESC
+      					" . $this->generate_limit_offset_str($params) . "
 
       				) AS posting
 
@@ -499,9 +500,6 @@ class Posting extends db {
             die();
 		}
 
-        if (empty($result)) {
-        			 return resultArray(false, NULL, 'Could not get posts.');
-        		}
 
 		//$rows = $this->get_all($this->table);
 		$result = $this->run($query, $values);
