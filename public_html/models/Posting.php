@@ -358,7 +358,9 @@ class Posting extends db {
 			}
 		}
 
-
+        if (empty($result)) {
+             return resultArray(false, NULL, 'Could not get posts.');
+        }
 
 		$select_str = '';
 		$join_str = '';
