@@ -475,7 +475,7 @@ class Posting extends db {
       						" . (!empty($sub_where_str) ? $sub_where_str : '') . "
       					" . (!empty($group_by_str) ? $group_by_str : '') . "
       					ORDER BY created DESC
-                        " . $this->generate_limit_offset_str($params) . "
+                        LIMIT 999
       				) AS posting
 
       				LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
