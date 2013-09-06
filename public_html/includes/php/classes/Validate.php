@@ -247,11 +247,11 @@ class Validate {
 	}
 
 	public function is_int($str) {
-		if(is_numeric($str) || intval($str) > 0) {
-            return true;
+		if ($str != '' && (!is_numeric($str) || strstr($str, '.'))) {
+			return 'must be a whole number';
 		}
 
-        return 'must be a whole number';
+		return true;
 	}
 
 	public function is_array($str) {

@@ -213,13 +213,14 @@ class User extends db {
             echo sprintf("result: %s\n", var_export($rows, true));
         }
 
-        $followers = self::get_followers($params);
-        if(@count($followers['data'])>0) $rows[0]['followers'] = count($followers['data']);
-        else $rows[0]['followers'] = 0;
-
         if (empty($rows)) {
             return resultArray(false, NULL, 'Could not get user.');
         }
+		else {
+	        $followers = self::get_followers($params);
+	        if(@count($followers['data'])>0) $rows[0]['followers'] = count($followers['data']);
+	        else $rows[0]['followers'] = 0;
+		}
 
 		return resultArray(true, $rows[0]);
 	}
