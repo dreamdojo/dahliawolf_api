@@ -449,7 +449,6 @@ class Posting extends db {
 
 
 
-
         $query = "
       			SELECT posting.*
       				, IFNULL(COUNT(comment.comment_id), 0) AS comments
@@ -459,7 +458,7 @@ class Posting extends db {
       				(SELECT count(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`,
                       (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`,
                       IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active,
-                      DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit), '%c/%e/%Y') AS 'expiration_date'
+                      DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit), '') AS 'expiration_date'
       			FROM (
       					SELECT posting.*
       						, image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
@@ -476,8 +475,7 @@ class Posting extends db {
       						" . (!empty($sub_where_str) ? $sub_where_str : '') . "
       					" . (!empty($group_by_str) ? $group_by_str : '') . "
       					ORDER BY created DESC
-      					" . $this->generate_limit_offset_str($params) . "
-
+                        " . $this->generate_limit_offset_str($params) . "
       				) AS posting
 
       				LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
@@ -491,8 +489,6 @@ class Posting extends db {
       			ORDER BY " . (!empty($hot_order_by_str) ? $hot_order_by_str : $order_by_str) . "
       			" . $this->generate_limit_offset_str($params) . '
       			';
-
-
 
         if (isset($_GET['t'])) {
 			echo "$query\n";
