@@ -358,17 +358,19 @@ class Posting extends db {
 			}
 		}
 
+
+
 		$select_str = '';
 		$join_str = '';
 		$values = array();
-		$where_str = '';
+		$sub_where_str = '';
 		if (!empty($params['where'])) {
 			if (!empty($params['where']['user_id'])) {
-				$where_str .= ' AND posting.user_id = :user_id';
+				$sub_where_str .= ' AND posting.user_id = :user_id';
 				$values[':user_id'] = $params['where']['user_id'];
 			}
 			if (!empty($params['where']['username'])) {
-				$where_str .= ' AND user_username.username = :username';
+				$sub_where_str .= ' AND user_username.username = :username';
 				$values[':username'] = $params['where']['username'];
 			}
 			// Viewer (show if posts are liked/voted in relation)
@@ -386,17 +388,17 @@ class Posting extends db {
 					LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
 						AND posting_dislike.user_id = :viewer_user_id
 				';
-				$where_str .= ' AND posting_dislike.posting_id IS NULL';
+				$sub_where_str .= ' AND posting_dislike.posting_id IS NULL';
 			}
 			// Search
 			if (!empty($params['where']['q'])) {
-				$where_str .= ' AND (posting.description LIKE :q OR user_username.username LIKE :q)';
+				$sub_where_str .= ' AND (posting.description LIKE :q OR user_username.username LIKE :q)';
 				$values[':q'] = '%' . $params['where']['q'] . '%';
 			}
 
 			// Since posting_id
 			if (!empty($params['where']['since_posting_id'])) {
-				$where_str .= 'AND posting.posting_id > :since_posting_id';
+				$sub_where_str .= 'AND posting.posting_id > :since_posting_id';
 				$values[':since_posting_id'] = $params['where']['since_posting_id'];
 			}
 		}
@@ -412,7 +414,7 @@ class Posting extends db {
 			$values[':like_day_threshold'] = $params['like_day_threshold'];
 
 			// Only show posts within threshold
-			$where_str .= ' AND posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()';
+			$sub_where_str .= ' AND posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()';
 			$group_by_str = 'GROUP BY posting.posting_id';
 		}
 
@@ -421,43 +423,60 @@ class Posting extends db {
 			$join_str .= '
 				INNER JOIN follow ON user_username.user_id = follow.user_id
 			';
-			$where_str .= ' AND follow.follower_user_id = :follower_user_id';
+			$sub_where_str .= ' AND follow.follower_user_id = :follower_user_id';
 			$values[':follower_user_id'] = $params['follower_user_id'];
 		}
 
 		// Timestamp
 		if (!empty($params['timestamp'])) {
-			$where_str .= ' AND posting.created <= :timestamp';
+			$sub_where_str .= ' AND posting.created <= :timestamp';
 			$values[':timestamp'] = $params['timestamp'];
 		}
 
-		$query = '
+        $outer_where_str = '';
+        $active_limit = (60*60*24)*30;
+        // filters
+        $valid_filters = array(
+            'is_winner' => 'IF(like_winner.like_winner_id IS NOT NULL, 1, 0) = 1',
+            'is_not_winner' => 'IF(like_winner.like_winner_id IS NOT NULL, 1, 0) = 0',
+            'is_active' => "IF(UNIX_TIMESTAMP(posting.created)+{$active_limit} > UNIX_TIMESTAMP(), 1, 0 ) = 1",
+            'is_expired'=> "IF(UNIX_TIMESTAMP(posting.created)+{$active_limit} > UNIX_TIMESTAMP(), 1, 0 ) = 0",
+        );
+
+
+		if (!empty($params['filter']) && isset( $valid_filters[$params['filter']] )) {
+            $filter = $valid_filters[$params['filter']];
+            $outer_where_str .= "WHERE  {$filter}";
+		}
+
+
+		$query = "
 			SELECT posting.*
 				, IFNULL(COUNT(comment.comment_id), 0) AS comments
 				, imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
 				, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
-				' . (!empty($outer_select_str) ? $outer_select_str : '') . ',
+				" . (!empty($outer_select_str) ? $outer_select_str : '') . ",
 				(SELECT count(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`,
-                (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`
-
+                (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`,
+                IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active,
+                DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit), '%c/%e/%Y') AS 'expiration_date'
 			FROM (
 					SELECT posting.*
 						, image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
 						, user_username.username, user_username.location, user_username.avatar
-						, CONCAT(image.source, "image.php?imagename=", image.imagename) AS image_url
-						' . $select_str . '
-						' . (!empty($hot_select_str) ? $hot_select_str : '') . '
+						, CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
+						{$select_str}
+						" . (!empty($hot_select_str) ? $hot_select_str : '') . "
 					FROM posting
 						INNER JOIN image ON posting.image_id = image.id
 						INNER JOIN user_username ON posting.user_id = user_username.user_id
-						' . $join_str . '
+						{$join_str}
 					WHERE image.imagename IS NOT NULL
-					    ' . /*AND image.dimensionsX > 0 AND image.dimensionsY > 0*/ '
 						AND posting.deleted IS NULL
-						' . (!empty($where_str) ? $where_str : '') . '
-					' . (!empty($group_by_str) ? $group_by_str : '') . '
-					ORDER BY ' . $order_by_str . '
-					' . $this->generate_limit_offset_str($params) . '
+						" . (!empty($sub_where_str) ? $sub_where_str : '') . "
+					" . (!empty($group_by_str) ? $group_by_str : '') . "
+					ORDER BY created DESC
+
 				) AS posting
 
 				LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
@@ -465,14 +484,17 @@ class Posting extends db {
 				LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
 				LEFT JOIN dahliawolf_repository.site AS site ON search_site_link.site_id = site.site_id
 				LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
+
+            {$outer_where_str}
 			GROUP BY posting.posting_id
-			ORDER BY ' . (!empty($hot_order_by_str) ? $hot_order_by_str : $order_by_str) . '
-		';
+			ORDER BY " . (!empty($hot_order_by_str) ? $hot_order_by_str : $order_by_str) . "
+			" . $this->generate_limit_offset_str($params) . '
+			';
+
 
 
         if (isset($_GET['t'])) {
-        	echo '<pre>';
-			echo $query;
+			echo "$query\n";
 			print_r($values);
             //die();
 		}

@@ -110,6 +110,8 @@ class Posting_Share extends Sharing_Abstract
 
         $data = $this->fetch($query, $values);
 
+        if(isset($params['t'])) echo $query;
+
         if ($data === false) {
             return array('error' => 'Could not get post shares.');
         }
@@ -175,5 +177,8 @@ class Posting_Share extends Sharing_Abstract
     }
 
 }
+
+
+
 
 ?>
