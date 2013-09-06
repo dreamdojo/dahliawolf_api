@@ -448,46 +448,46 @@ class Posting extends db {
 		}
 
 
-		$query = "
-                SELECT posting.*
-                    , IFNULL(COUNT(comment.comment_id), 0) AS comments
-                    , imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
-                    , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
-                    " . (!empty($outer_select_str) ? $outer_select_str : '') . ",
-                    (SELECT count(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`,
-                    (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`,
-                    IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active,
-                    FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
-                FROM (
-                        SELECT posting.*
-                            , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
-                            , user_username.username, user_username.location, user_username.avatar
-                            , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
-                            {$select_str}
-                            " . (!empty($hot_select_str) ? $hot_select_str : '') . "
-                        FROM posting
-                            INNER JOIN image ON posting.image_id = image.id
-                            INNER JOIN user_username ON posting.user_id = user_username.user_id
-                            {$join_str}
-                        WHERE image.imagename IS NOT NULL
-                            AND posting.deleted IS NULL
-                            " . (!empty($sub_where_str) ? $sub_where_str : '') . "
-                        " . (!empty($group_by_str) ? $group_by_str : '') . "
-                        ORDER BY created DESC
+        $query = "
+      			SELECT posting.*
+      				, IFNULL(COUNT(comment.comment_id), 0) AS comments
+      				, imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
+      				, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
+      				" . (!empty($outer_select_str) ? $outer_select_str : '') . ",
+      				(SELECT count(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`,
+                      (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`,
+                      IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active,
+                      DATE_FORMAT(FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit), '%c/%e/%Y') AS 'expiration_date'
+      			FROM (
+      					SELECT posting.*
+      						, image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
+      						, user_username.username, user_username.location, user_username.avatar
+      						, CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
+      						{$select_str}
+      						" . (!empty($hot_select_str) ? $hot_select_str : '') . "
+      					FROM posting
+      						INNER JOIN image ON posting.image_id = image.id
+      						INNER JOIN user_username ON posting.user_id = user_username.user_id
+      						{$join_str}
+      					WHERE image.imagename IS NOT NULL
+      						AND posting.deleted IS NULL
+      						" . (!empty($sub_where_str) ? $sub_where_str : '') . "
+      					" . (!empty($group_by_str) ? $group_by_str : '') . "
+      					ORDER BY created DESC
 
-                ) AS posting
+      				) AS posting
 
-                LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
-                LEFT JOIN dahliawolf_repository.imageInfo AS imageInfo ON posting.repo_image_id = imageInfo.id
-                LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
-                LEFT JOIN dahliawolf_repository.site AS site ON search_site_link.site_id = site.site_id
-                LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
+      				LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
+      				LEFT JOIN dahliawolf_repository.imageInfo AS imageInfo ON posting.repo_image_id = imageInfo.id
+      				LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
+      				LEFT JOIN dahliawolf_repository.site AS site ON search_site_link.site_id = site.site_id
+      				LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
 
-                {$outer_where_str}
-                GROUP BY posting.posting_id
-                ORDER BY " . (!empty($hot_order_by_str) ? $hot_order_by_str : $order_by_str) . "
-                " . $this->generate_limit_offset_str($params) . '
-			';
+                  {$outer_where_str}
+      			GROUP BY posting.posting_id
+      			ORDER BY " . (!empty($hot_order_by_str) ? $hot_order_by_str : $order_by_str) . "
+      			" . $this->generate_limit_offset_str($params) . '
+      			';
 
 
 
