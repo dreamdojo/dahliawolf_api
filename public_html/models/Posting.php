@@ -448,6 +448,8 @@ class Posting extends db {
 		}
 
 
+
+
         $query = "
       			SELECT posting.*
       				, IFNULL(COUNT(comment.comment_id), 0) AS comments
@@ -496,6 +498,10 @@ class Posting extends db {
 			print_r($values);
             die();
 		}
+
+        if (empty($result)) {
+        			 return resultArray(false, NULL, 'Could not get posts.');
+        		}
 
 		//$rows = $this->get_all($this->table);
 		$result = $this->run($query, $values);
