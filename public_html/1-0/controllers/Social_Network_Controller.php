@@ -1,10 +1,10 @@
 <?
 class Social_Network_Controller extends _Controller {
 	protected $social_network_id;
-	
+
 	public function __construct($params = array()) {
 		parent::__construct();
-		
+
 		// Validations
 		$input_validations = array(
 			'api_website_id' => array(
@@ -17,10 +17,10 @@ class Social_Network_Controller extends _Controller {
 		);
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
-		
+
 		if (!empty($params['api_website_id'])) {
 			$api_website_id = $params['api_website_id'];
-			
+
 			// Check that api_website_id is valid
 			$this->load('API_Website');
 			$api_website = $this->API_Website->get_row(
@@ -32,36 +32,36 @@ class Social_Network_Controller extends _Controller {
 				_Model::$Exception_Helper->request_failed_exception('Invalid API website ID.');
 			}
 		}
-		
+
 		$called_class = get_called_class();
 		if (defined("$called_class::NAME")) {
 			$this->load('Social_Network');
-			
+
 			$this->social_network_id = $this->Social_Network->get_primary_key_id_by_field_value('name', $called_class::NAME);
 			if (empty($this->social_network_id)) {
 				_Model::$Exception_Helper->request_failed_exception('Social network does not exist.');
 			}
 		}
 	}
-	
+
 	public function login($params = array())
     {
         $logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
 
 		require_once DR . '/includes/php/functions-api.php';
-		
+
 		if (!isset($params['social_network_id'])) {
 			if (isset($params['social_network'])) {
 				$this->load('Social_Network');
 				$this->social_network_id = $this->Social_Network->get_primary_key_id_by_field_value('name', $params['social_network']);
 			}
-			
+
 			$params['social_network_id'] = $this->social_network_id;
 		}
 		if (!isset($params['api_website_id'])) {
 			$params['api_website_id'] = $_SESSION['api_website_id'];
 		}
-		
+
 		// Validations
 		$input_validations = array(
 			'first_name' => array(
@@ -119,7 +119,7 @@ class Social_Network_Controller extends _Controller {
 		);
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
-		
+
 		// Check if email already exists
 		$this->load('User');
 		$existing_user = $this->User->check_social_network_email_exists($params['email'], $params['social_network_id']);
@@ -173,7 +173,7 @@ class Social_Network_Controller extends _Controller {
 
             $logger->LogInfo("dw_user ?: " . var_export($dw_user, true));
 
-			
+
 			if (!empty($dw_user['data']['pinterest_username'])) {
 				$dw_params = array(
 					'user_id' => $dw_user['data']['user_id']
@@ -216,7 +216,7 @@ class Social_Network_Controller extends _Controller {
             // if username is taken, should redirect back to register page to choose
 
 			$this->load('User_Social_Network_Link');
-			
+
 			// Username exists
 			if (!empty($params['username'])) {
 				$existing_username = $this->User->get_row(
@@ -224,14 +224,14 @@ class Social_Network_Controller extends _Controller {
 						'username' => $params['username']
 					)
 				);
-				
+
 				if (!empty($existing_username)) {
 					// Get longest matched username
 					$longest_match = $this->User->get_regexp_username($params['username']);
-					
+
 					// Generate new username
 					$params['username'] = $longest_match['username'] . rand(0, 9);
-					
+
 					//_Model::$Exception_Helper->request_failed_exception('This username already exists. Please choose another.');
 				}
 			}
@@ -244,7 +244,7 @@ class Social_Network_Controller extends _Controller {
 			);
 			// If existing email, then merge
 			if (!empty($existing_email)) {
-				
+
 				// Insert social_network_email_link
 				$link = array(
 				    'user_id' => $user['user_id'],
@@ -253,10 +253,10 @@ class Social_Network_Controller extends _Controller {
 				$this->User_Social_Network_Link->save($link);
 
                 $update_data = api_call('user', 'update_user_optional', $user_params);
-				
+
 				// Authen login the user
 				return $this->authen($user, $logout_url, true);
-				
+
 				//_Model::$Exception_Helper->request_failed_exception('This email already exists. Please use another.');
 			}
 
@@ -283,7 +283,7 @@ class Social_Network_Controller extends _Controller {
             $user_params['user_id'] = $new_user_id;
             $user['user_id'] = $new_user_id;
 
-			
+
 			// Add user user_group link
 			$this->load('User_User_Group_Link');
 			$link = array(
@@ -328,7 +328,7 @@ class Social_Network_Controller extends _Controller {
 
             $logger->LogInfo("ALL USER REGISTRATION ACTIONS COMPLETED. LOGGING IN NEW REGISTERED USER:");
 
-			
+
 			return $this->authen($user, $logout_url, true);
 		}
 	}
@@ -338,15 +338,15 @@ class Social_Network_Controller extends _Controller {
 		require_once DR . '/1-0/lib/php/functions.php';
 		require_once DR . '/1-0/lib/php/mysql-v8.php';
 		require_once DR . '/1-0/lib/php/login-v4.php';
-		
+
 		global $_mysql;
 		$_mysql = new mysql();
-		
+
 		$login = new login(array(), array());
 		$error_code = NULL;
 
 		$authen = $login->social_authen($user);
-			
+
 		// Success: return user info and token
 		if (!$authen) {
 			$error_code_map = array(
@@ -358,19 +358,19 @@ class Social_Network_Controller extends _Controller {
 				$error_code = 0;
 			}
 			$error = $error_code_map[$error_code];
-			
+
 			return static::wrap_result(true, NULL, $error);
 		}
 		else {
 			// Unset hash
 			unset($user['hash']);
-			
+
 			$data['user'] = $user;
 			$data['token'] = $authen;
 			$data['logout_url'] = $logout_url;
-			
+
 			$data_str = http_build_query($data);
-			
+
 			if (isset($_SESSION['redirect_url'])) {
 				header('Location: ' . $_SESSION['redirect_url'] . '?authen=1' . ($is_register ? '&register=1' : '') . '&' . $data_str);
 				die();

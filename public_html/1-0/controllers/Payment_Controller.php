@@ -646,6 +646,67 @@ class Payment_Controller extends _Controller {
 		
 		return static::wrap_result(true, $data);
 	}
+	
+	public function return_partial_paypal_payment($params = array()) {
+		$this->load('Config');
+		$this->load('Payment_Method');
+		$data = array();
+		
+		$validate_names = array(
+			'amount' => NULL
+			, 'transaction_id' => NULL
+		);
+		
+		$validate_params = array_merge($validate_names, $params);
+		
+		// Validations
+		$input_validations = array(
+			'amount' => array(
+				'label' => 'Amount'
+				, 'rules' => array(
+					'is_set' => NULL
+					, 'is_decimal' => 2
+					, 'is_positive' => NULL
+				)
+			)
+			, 'transaction_id' => array(
+				'label' => 'Transaction ID'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
+		);
+		
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+		
+		$username = $this->Config->get_value('PayPal API Username');
+		$password = $this->Config->get_value('PayPal API Password');
+		$signature = $this->Config->get_value('PayPal API Signature');
+		$use_sandbox_config = $this->Config->get_value('PayPal API Use Sandbox');
+		$use_sandbox = $use_sandbox_config == '1' ? true : false;
+		
+		if (empty($username) || empty($password) || empty($signature) || !is_numeric($use_sandbox_config)) {
+			_Model::$Exception_Helper->request_failed_exception('PayPal configurations are not set.');
+		}
+		
+		$p = new PayPalExpressCheckout($use_sandbox, $username, $password, $signature);
+		
+		$results = $p->issuePartialRefund(
+			array(
+				'transaction_id' => $params['transaction_id']
+				, 'amount' => $params['amount']
+			)
+		);
+		
+		if (!$results['success']) { // failed
+			return static::wrap_result(false, NULL, _Model::$Status_Code->get_status_code_request_failed(), $results['errors']);
+		}
+		
+		$data = $results['data'];
+		
+		return static::wrap_result(true, $data);
+	}
 }
 
 ?>

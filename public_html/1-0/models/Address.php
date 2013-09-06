@@ -15,6 +15,7 @@ class Address extends _Model {
 		, 'zip'
 		, 'country'
 		, 'company'
+		, 'phone'
 	);
 }
 ?>

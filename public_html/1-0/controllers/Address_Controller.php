@@ -168,6 +168,12 @@ class Address_Controller extends _Controller {
 					'is_set' => NULL
 				)
 			)
+			, 'phone' => array(
+				'label' => 'Phone'
+				, 'rules' => array(
+					'is_set' => NULL
+				)
+			)
 		);
 		$this->Validate->add_many($input_validations, $params, $is_insert);
 		$this->Validate->run();
@@ -214,6 +220,7 @@ class Address_Controller extends _Controller {
 			, 'state' => 'state'
 			, 'country' => 'country'
 			, 'company' => 'company'
+			, 'phone' => 'phone'
 		);
 		$address = array();
 		foreach ($field_map as $field => $param) {

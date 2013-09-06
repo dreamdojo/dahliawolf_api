@@ -4,17 +4,17 @@ function api_request($service, $calls, $return_array = false)
 	if (!class_exists('API', false)) {
 		require $_SERVER['DOCUMENT_ROOT'] . '/lib/php/API.php';
 	}
-	
+
 	// Instantiate library helper
 	$api = new API(API_KEY_DEVELOPER, PRIVATE_KEY_DEVELOPER);
-	
+
 	// Make request
 	$result = $api->rest_api_request($service, $calls);
-	
+
 	if (!$return_array) {
 		return $result;
 	}
-	
+
 	$decoded = json_decode($result, true);
 	if ($decoded) {
 		return $decoded;
@@ -39,11 +39,11 @@ function api_call($endpoint, $function, $parameters = NULL, $return_array = fals
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $result = curl_exec ($ch);
     curl_close ($ch);
-	
+
 	if (!$return_array) {
 		return $result;
 	}
-	
+
 	$decoded = json_decode($result, true);
 	if ($decoded) {
 		return $decoded;
@@ -54,7 +54,7 @@ function api_call($endpoint, $function, $parameters = NULL, $return_array = fals
 
 function api_errors_to_array($result, $api_call) {
 	$errors = array();
-	
+
 	if (!empty($result['errors'])) {
 		$errors = $result['errors'];
 	}
@@ -73,22 +73,22 @@ function api_errors_to_array($result, $api_call) {
 	return $errors;
 }
 
-function commerce_api_request($service, $calls, $return_array = false) { 
+function commerce_api_request($service, $calls, $return_array = false) {
 	if (!class_exists('Commerce_API', false)) {
 		require $_SERVER['DOCUMENT_ROOT'] . '/lib/php/Commerce_API.php';
 	}
-	
+
 	// Instantiate library helper
 	$api = new Commerce_API(API_KEY_DEVELOPER, PRIVATE_KEY_DEVELOPER);
-	
+
 	// Make request
-	
+
 	$result = $api->rest_api_request($service, $calls);
-	
+
 	if (!$return_array) {
 		return $result;
 	}
-	
+
 	$decoded = json_decode($result, true);
 	if ($decoded) {
 		return $decoded;

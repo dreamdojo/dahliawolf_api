@@ -2329,6 +2329,41 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'daily_summary') {
 		die();
 	}
 }
+else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'sharing') {
+	if (isset($_REQUEST['function'])) {
+		if ($_REQUEST['function'] == 'add_share') {
+			require $_SERVER['DOCUMENT_ROOT'] . '/lib/php/API.php';
+
+			// Admin API call
+			$calls = array(
+				'add_share' => array(
+					'posting_id' => $_REQUEST['posting_id']
+					, 'sharing_user_id' => $_REQUEST['sharing_user_id']
+					, 'network' => $_REQUEST['network']
+					, 'posting_owner_user_id' => $_REQUEST['posting_owner_user_id']
+					, 'created_at' => $_REQUEST['created_at']
+				)
+			);
+			$data = api_request('sharing', $calls, true);
+
+			if (!empty($data['errors'])) {
+				$errors = $data['errors'];
+			}
+			else if (!empty($data['data']['add_share']['errors'])) {
+				$errors = $data['data']['add_share']['errors'];
+			}
+
+			if (!empty($errors)) {
+				echo json_encode(resultArray(false, NULL, $errors));
+			}
+			else {
+				echo json_encode(resultArray(true, $data['data']['add_share']['data']));
+			}
+
+			die();
+		}
+	}
+}
 else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'test') {
 	die();
 	if (isset($_REQUEST['function'])) {

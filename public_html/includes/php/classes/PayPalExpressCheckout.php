@@ -149,6 +149,18 @@ class PayPalExpressCheckout
        // $nvpString .= "&NOTE=" . $nvpArray['note'];
         return $nvpString;
         }
+		
+	private function buildPartialRefundNvpString($nvpArray)
+        {
+        $nvpString = "&TRANSACTIONID=" . $nvpArray['transaction_id'];
+        $nvpString .= "&REFUNDTYPE=Partial"; // Full, Partial, ExternalDispute, Other (Note: If RefundType is Full, do not set the amount.)
+       // $nvpString .= "&PAYMENTREQUEST_0_CURRENCYCODE=" . $nvpArray['currency'];
+        $nvpString .=  "&AMT=" . $nvpArray['amount'];
+       // $nvpString .= "&NOTE=" . $nvpArray['note'];
+	  
+        return $nvpString;
+        }
+		
     private function buildBeginSubscriptionNvpString($nvpArray)
         {
         $nvpString = "&PAYMENTREQUEST_0_AMT=" . $nvpArray['amount'];
@@ -339,6 +351,31 @@ class PayPalExpressCheckout
 		);
 		
         }  
+	 public function issuePartialRefund($refundArray)
+        {
+        $this->method_name = "RefundTransaction";
+        $nvpString = $this->buildPartialRefundNvpString($refundArray);
+        $responseArray = $this->doExpress($nvpString);
+		
+		if ($responseArray['ACK'] != 'Success'){
+			return array(
+				'success' => false
+				, 'errors' => array(
+					$responseArray['L_LONGMESSAGE0']
+				)
+				, 'data' => NULL
+			);
+			
+		} 
+		
+		return array(
+			'success' => true
+			, 'errors' => NULL
+			, 'data' => $responseArray
+		);
+		
+        }  
+		
     public function completePurchase($token, $amount, $action = 'Sale')
         {
         

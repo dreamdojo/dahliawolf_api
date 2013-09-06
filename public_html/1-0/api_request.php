@@ -50,15 +50,15 @@ try {
 	$request = !empty($_POST) ? $_POST : $_GET;
 	$response_format = !empty($_GET['response_format']) ? $_GET['response_format'] : NULL;
 	$request_methods = get_request_methods();
-	
+
 	// Validate Response Format
 	if (empty($response_format) || empty($request_methods[$response_format])) {
 		die('Invalid response format.');
 	}
-	
+
 	// Do Request
 	$request_method = !empty($request_methods[$response_format]) ? $request_methods[$response_format] : NULL;
-	
+
 	// SOAP Call
 	if ($request_method == 'SOAP') {
 		$SoapServer = new SoapServer(
@@ -71,14 +71,14 @@ try {
 		$SoapServer->handle();
 		die();
 	}
-	
+
 	// REST Call
 	else if ($request_method == 'REST' )
     {
 		$result = $controller->process_request($request);
 
         header( sprintf("Content-Type: application/%s", $response_format));
-		
+
 		// JSON
 		if ($response_format == 'json') {
 			echo json_pretty($result);
@@ -87,7 +87,7 @@ try {
 		else if ($response_format == 'jsonp') {
 			echo '?(' . json_encode($result) . ')';
 		}
-		
+
 		die();
 	}
 
@@ -98,9 +98,9 @@ try {
               "errors"=>'no api method'
     ));
 
-	
+
 } catch (Exception $e) {
-	die($e->getMessage());	
+	die($e->getMessage());
 }
 
 
