@@ -360,8 +360,10 @@ class Posting extends db {
 
         $outer_order_by_columns = array(
 			'created',
+            'total_likes',
+            'total_votes',
             'total_shares',
-            'total_views'
+            'total_views',
 		);
 
         if (!empty($params['order_by'])) {
