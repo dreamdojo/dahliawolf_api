@@ -343,18 +343,30 @@ class Posting extends db {
 
 	// ?api=category&function=allcategory
 	public function allPosts($params = array()) {
-		$order_by_str = 'created DESC';
+		$inner_order_by_str = 'created DESC';
+        $outer_order_by_str = 'created DESC';
 
-		$order_by_columns = array(
+        $inner_order_by_columns = array(
 			'created',
 			'total_likes',
 			'total_votes',
+		);
+
+        if (!empty($params['order_by'])) {
+            if (in_array($params['order_by'], $inner_order_by_columns)) {
+                $inner_order_by_str = "{$params['order_by']} DESC";
+            }
+        }
+
+        $outer_order_by_columns = array(
+			'created',
             'total_shares',
             'total_views'
 		);
-		if (!empty($params['order_by'])) {
-			if (in_array($params['order_by'], $order_by_columns)) {
-				$order_by_str = $params['order_by'] . ' DESC';
+
+        if (!empty($params['order_by'])) {
+			if (in_array($params['order_by'], $outer_order_by_columns)) {
+				$outer_order_by_str = "{$params['order_by']} DESC";
 			}
 		}
 
@@ -412,7 +424,8 @@ class Posting extends db {
 			$join_str .= '
 				INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
 			';
-			$hot_order_by_str = 'day_threshold_likes DESC';
+            $inner_order_by_str = 'day_threshold_likes DESC';
+
 			$values[':like_day_threshold'] = $params['like_day_threshold'];
 
 			// Only show posts within threshold
@@ -455,7 +468,7 @@ class Posting extends db {
         }
 
         //// limit the restult set to failsafe 300,
-        if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 300';
+        if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 999';
 
         //// run the limits on the outer query, since already filtered by userid_id
         if(!empty($user_id)) {
@@ -469,7 +482,7 @@ class Posting extends db {
                     , IFNULL(COUNT(comment.comment_id), 0) AS comments
                     , imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
                     {$outer_select_str},
-                    (SELECT count(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`,
+                    (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`,
                     (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`
       			FROM (
       					SELECT posting.*
@@ -491,7 +504,7 @@ class Posting extends db {
       						AND posting.deleted IS NULL
       						{$sub_where_str}
       					{$group_by_str}
-      					ORDER BY created DESC
+                        ORDER BY {$inner_order_by_str}
                         {$inner_offset_limit}
       				) AS posting
 
@@ -500,10 +513,10 @@ class Posting extends db {
       				LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
       				LEFT JOIN dahliawolf_repository.site AS site ON search_site_link.site_id = site.site_id
 
-                  {$outer_where_str}
-      			GROUP BY posting.posting_id
-      			ORDER BY " . (!empty($hot_order_by_str) ? $hot_order_by_str : $order_by_str) . "
-      			{$offset_limit}
+                {$outer_where_str}
+                GROUP BY posting.posting_id
+                ORDER BY {$outer_order_by_str}
+                {$offset_limit}
       			";
 
         if (isset($_GET['t'])) {
