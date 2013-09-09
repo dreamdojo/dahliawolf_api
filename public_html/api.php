@@ -659,12 +659,26 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				$user_data = $user->updateUser($user_params);
 			}
 
-			unset($user);
+			//unset($user);
 
 			// Add repo search term for instagram/pinterest username
 			add_repo_search_term($_REQUEST);
 
-			echo json_pretty(json_encode(($user_data)));
+			//echo json_pretty(json_encode(($user_data)));
+            /***** */
+            $params = array(
+                'where' => array(
+                    'user_id' => !empty($_REQUEST['user_id']) ? $_REQUEST['user_id'] : NULL,
+                    'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
+                    'viewer_user_id' => !empty($_REQUEST['viewer_user_id']) ? $_REQUEST['viewer_user_id'] : NULL,
+                )
+            );
+            $user_data = $user->get_user($params);
+
+
+            echo json_pretty(json_encode(($user_data)));
+            return;
+
 			return;
 		}
 		else if ($_REQUEST['function'] == 'get_user') {

@@ -127,7 +127,7 @@ class User extends db {
 		return resultArray(true, $rows);
 	}
 
-	public function     get_user($params = array()) {
+	public function get_user($params = array()) {
 		$error = NULL;
 
 		if (empty($params['where'])) {
@@ -163,7 +163,7 @@ class User extends db {
 		}
 
 
-		$query = '
+		$query = "
 			SELECT user_username.*
 				, (
 					SELECT COUNT(*)
@@ -197,21 +197,33 @@ class User extends db {
 						INNER JOIN posting ON posting_like.posting_id = posting.posting_id
 					WHERE posting.user_id = user_username.user_id
 				) AS likes
-				' . $select_str . '
-			FROM user_username
-				' . $join_str . '
-			WHERE ' . $where_str . '
-			LIMIT 1
-		';
+                ,
+                (
+                  SELECT
+                  ml.name
+                  FROM membership_level ml, user_username user
+                  WHERE user.user_id = user_username.user_id
+                  AND ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) ) / ml.points < 1
+                  order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) +1) ASC
+                  LIMIT 1
+                  ) AS membership_level
 
-        $result = $this->run($query, $values);
-		$rows = $result->fetchAll();
+				  {$select_str}
+			FROM user_username
+		        {$join_str}
+			WHERE {$where_str}
+			LIMIT 1
+		";
+
+
 
         if(isset($_GET['t']))
         {
             echo sprintf("query: %s\n", $query);
-            echo sprintf("result: %s\n", var_export($rows, true));
         }
+
+        $result = $this->run($query, $values);
+        $rows = $result->fetchAll();
 
         if (empty($rows)) {
             return resultArray(false, NULL, 'Could not get user.');
