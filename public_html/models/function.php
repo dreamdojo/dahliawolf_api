@@ -10,9 +10,9 @@ function resultArray($success, $result, $errors = NULL) {
 
 function outputResult($success, $result, $errors = NULL) {
 	$resultArray = resultArray(
-		$success
-		, $result
-		, $errors
+		$success,
+		$result,
+		$errors
 	);
 	
 	outputResultArray($resultArray);
