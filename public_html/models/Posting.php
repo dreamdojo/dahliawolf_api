@@ -545,11 +545,7 @@ class Posting extends db {
 			//print_r($value);
 			$temp = array();
 			foreach($value AS $key2 => $value2) {
-				if($params['host'] == "api.zyonnetworks.com") {
-					$new_val = preg_replace("/dev.dahliawolf.com/","dev.zyonnetworks.com", $value2);
-					$temp[$key2] = $new_val;
-				}
-				else $temp[$key2] = $value2;
+                $temp[$key2] = $value2;
 			}
 			$new_row[$key] = $temp;
 		}
@@ -557,24 +553,6 @@ class Posting extends db {
 		return resultArray(true, $new_row);
 	}
 
-	/*public function add_product($params = array()) {
-		$error = NULL;
-		if (empty($params['data'])) {
-			$error = 'Data is required.';
-		}
-		else if (!is_array($params['data'])) {
-			$error = 'Invalid data.';
-		}
-
-		if (!empty($error)) {
-			return resultArray(false, NULL, $error);
-		}
-
-		// Commerce API call to add inactive product
-		$product_id = 1;
-
-		return resultArray(true, $product_id);
-	}*/
 
 	public function activate_product($params = array()) {
 		$error = NULL;
@@ -720,11 +698,7 @@ class Posting extends db {
 			//print_r($value);
 			$temp = array();
 			foreach($value AS $key2 => $value2) {
-				if($params['host'] == "api.zyonnetworks.com") {
-					$new_val = preg_replace("/dev.dahliawolf.com/","dev.zyonnetworks.com", $value2);
-					$temp[$key2] = $new_val;
-				}
-				else $temp[$key2] = $value2;
+                $temp[$key2] = $value2;
 			}
 			$new_row[$key] = $temp;
 			$rows = $new_row;

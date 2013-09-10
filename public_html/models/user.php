@@ -200,12 +200,12 @@ class User extends db {
                 ,
                 (
                   SELECT
-                  ml.name
-                  FROM membership_level ml, user_username user
-                  WHERE user.user_id = user_username.user_id
-                  AND ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) ) / ml.points < 1
-                  order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) +1) ASC
-                  LIMIT 1
+                      ml.name
+                      FROM membership_level ml, user_username user
+                      WHERE user.user_id = user_username.user_id
+                      AND ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) ) / ml.points < 1
+                      order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) +1) ASC
+                      LIMIT 1
                   ) AS membership_level
 
 				  {$select_str}
@@ -214,7 +214,6 @@ class User extends db {
 			WHERE {$where_str}
 			LIMIT 1
 		";
-
 
 
         if(isset($_GET['t']))
