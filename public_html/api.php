@@ -305,8 +305,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 		else if ($_REQUEST['function'] == 'token_login') {
 			check_required(
 				array(
-					'user_id'
-					, 'token'
+					/*'user_id'*/
+					'token'
 				)
 			);
 

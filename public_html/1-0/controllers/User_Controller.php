@@ -14,15 +14,17 @@ class User_Controller extends _Controller {
 
 	public function token_login($params = array()) {
 		// Validations
+        /*
+        'user_id' => array(
+            'label' => 'User ID'
+            , 'rules' => array(
+                'is_set' => NULL
+                , 'is_int' => NULL
+            )
+        )*/
 		$input_validations = array(
-			'user_id' => array(
-				'label' => 'User ID'
-				, 'rules' => array(
-					'is_set' => NULL
-					, 'is_int' => NULL
-				)
-			)
-			, 'token' => array(
+
+			'token' => array(
 				'label' => 'Token'
 				, 'rules' => array(
 					'is_set' => NULL
