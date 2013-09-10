@@ -722,7 +722,11 @@ class Posting extends db {
 		}
 
 		$query = '
-			SELECT posting.*, IFNULL(COUNT(posting_like.posting_like_id), 0) AS likes, IF(like_winner.like_winner_id IS NOT NULL, true, false) AS is_past_like_winner, IF(vote_winner.vote_winner_id IS NOT NULL, true, false) AS is_past_vote_winner
+			SELECT
+			    posting.*,
+			    IFNULL(COUNT(posting_like.posting_like_id), 0) AS likes,
+                IF(like_winner.like_winner_id IS NOT NULL, true, false) AS is_past_like_winner,
+                IF(vote_winner.vote_winner_id IS NOT NULL, true, false) AS is_past_vote_winner
 			FROM posting
 				LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id
 				LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
