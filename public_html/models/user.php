@@ -162,63 +162,81 @@ class User extends db {
 			$values[':viewer_user_id'] = $params['where']['viewer_user_id'];
 		}
 
+        $active_limit = (60*60*24)*30;
 
-		$query = "
-			SELECT user_username.*
-				, (
-					SELECT COUNT(*)
-					FROM user_username AS u
-					WHERE
-						u.points > user_username.points
-				) + 1 AS rank
-				, (
-					SELECT COUNT(*)
-					FROM follow
-					WHERE follow.follower_user_id = user_username.user_id
-				) AS following
-				, (
-					SELECT COUNT(*)
-					FROM follow
-					WHERE follow.user_id = user_username.user_id
-				) AS followers
-				, (
-					SELECT COUNT(*)
-					FROM posting
-					WHERE posting.user_id = user_username.user_id
-				) AS posts
-				, (
-					SELECT COUNT(*)
-					FROM comment
-					WHERE comment.user_id = user_username.user_id
-				) AS comments
-				, (
-					SELECT COUNT(*)
-					FROM posting_like
-						INNER JOIN posting ON posting_like.posting_id = posting.posting_id
-					WHERE posting.user_id = user_username.user_id
-				) AS likes
-                ,
-                (
+		$query = "SELECT
+          user_username.*
+            , (
+                SELECT COUNT(*)
+                FROM user_username AS u
+                WHERE
+                    u.points > user_username.points
+            ) + 1 AS rank
+            , (
+                SELECT COUNT(*)
+                FROM follow
+                WHERE follow.follower_user_id = user_username.user_id
+            ) AS following
+            , (
+                SELECT COUNT(*)
+                FROM follow
+                WHERE follow.user_id = user_username.user_id
+            ) AS followers
+            , (
+                SELECT COUNT(*)
+                FROM posting
+                WHERE posting.user_id = user_username.user_id
+            ) AS posts
+            , (
+                SELECT COUNT(*)
+                FROM comment
+                WHERE comment.user_id = user_username.user_id
+            ) AS comments
+            , (
+                SELECT COUNT(*)
+                FROM posting_like
+                    INNER JOIN posting ON posting_like.posting_id = posting.posting_id
+                WHERE posting.user_id = user_username.user_id
+            ) AS likes
+            ,(
                   SELECT
-                      ml.name
-                      FROM membership_level ml, user_username user
-                      WHERE user.user_id = user_username.user_id
-                      AND ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) ) / ml.points < 1
-                      order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) +1) ASC
-                      LIMIT 1
-                  ) AS membership_level
+                  ml.name
+                  FROM membership_level ml, user_username user
+                  WHERE user.user_id = user_username.user_id
+                  AND ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) ) / ml.points < 1
+                  order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED) +1) ASC
+                  LIMIT 1
+              ) AS membership_level
+              ,(
+                  SELECT COUNT(*)
+                  FROM posting
+                  WHERE posting.user_id = user_username.user_id
+                    AND UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP() = 1
 
-				  {$select_str}
-			FROM user_username
-		        {$join_str}
-			WHERE {$where_str}
-			LIMIT 1
-		";
+              )AS posts_expired
+              ,(
+                  SELECT COUNT(*)
+                  FROM posting
+                  WHERE posting.user_id = user_username.user_id
+                    AND UNIX_TIMESTAMP(posting.created)+2592000 < UNIX_TIMESTAMP()
+
+              ) AS posts_active
+              ,(
+                  SELECT COUNT(*)
+                  FROM posting
+                   LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
+                  WHERE posting.user_id = user_username.user_id  AND like_winner.like_winner_id IS NOT NULL
+
+              ) AS winner_posts
+
+        FROM user_username
+        WHERE {$where_str}
+        LIMIT 1";
 
 
         if(isset($_GET['t']))
         {
-            echo sprintf("query: %s\n", $query);
+            echo sprintf("query: \n%s\n", $query);
         }
 
         $result = $this->run($query, $values);
