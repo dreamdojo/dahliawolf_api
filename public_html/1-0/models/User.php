@@ -5,6 +5,7 @@ class User extends _Model
     const PRIMARY_KEY_FIELD = 'user_id';
 
     protected $fields = array(
+        'user_id',
         'first_name',
         'last_name',
         'date_of_birth',
@@ -81,7 +82,6 @@ class User extends _Model
 
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
 
-        $logger->LogInfo("FETCH USER INFO: -h:{$this->db_host} -db:$this->db_name");
 
         $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
         return $result;
@@ -89,18 +89,29 @@ class User extends _Model
 
     public function get_user_by_token($user_id, $token)
     {
+        $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
+
         $query = '
 			SELECT user.user_id, user.first_name, user.last_name, user.username, user.email
-			FROM login_instance, user
+			FROM login_instance
 				/*INNER JOIN login_instance ON user.user_id = login_instance.user_id*/
 				INNER JOIN user ON user.user_id = login_instance.user_id
 			WHERE login_instance.token = :token
 				AND login_instance.logout IS NULL
 		';
         $values = array(
-            ':user_id' => $user_id
-        , 'token' => $token
+            'token' => $token
         );
+
+        if(isset($_GET['t']))
+        {
+            echo "QUERY: \n$query\n";
+            echo "BIND VALUES: " . var_export($values,true);
+            echo "DB INFO: -h:{$this->db_host} -db:$this->db_name";
+        }
+
+
+        $logger->LogInfo("FETCH USER INFO BY TOKEN : -token:$token");
 
         try {
             $user = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $values);
