@@ -455,10 +455,10 @@ class Posting extends db {
 
         // filters
         $valid_filters = array(
-            'is_winner' => 'is_winner = 1',
-            'is_not_winner' => 'is_winner = 0',
-            'is_active' => "is_active = 1",
-            'is_expired'=> "is_active = 0",
+            'is_winner'     => '(IF(like_winner.like_winner_id IS NOT NULL, 1, 0)) = 1',
+            'is_not_winner' => '(IF(like_winner.like_winner_id IS NOT NULL, 1, 0)) = 0',
+            'is_active'     => "(IF(UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP(), 1, 0 )) = 1",
+            'is_expired'    => "(IF(UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP(), 1, 0 )) = 0",
         );
 
 
@@ -467,19 +467,18 @@ class Posting extends db {
 
 		if (!empty($params['filter']) && isset( $valid_filters[$params['filter']] )) {
             $filter = $valid_filters[$params['filter']];
-            $outer_where_str .= "WHERE  {$filter}";
+            $sub_where_str .= "\n\t\t\t\t\t AND  {$filter}";
 
-            $inner_offset_limit = '';
+            if($inner_order_by_str != 'created DESC') $inner_offset_limit = '';
         }
 
         //// limit the restult set to failsafe 300,
         if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 999';
 
         //// run the limits on the outer query, since already filtered by userid_id
-        if($outer_order_by_columns == 'created DESC' && !empty($user_id)) {
+        if(empty($user_id)) {
             //$inner_offset_limit = 'LIMIT 999';
-        }else{
-            $offset_limit = '';
+            $offset_limit = 'LIMIT 999';
         }
 
         $query = "
@@ -507,7 +506,7 @@ class Posting extends db {
       						{$join_str}
       					WHERE image.imagename IS NOT NULL
       						AND posting.deleted IS NULL
-      						{$sub_where_str}
+      						 {$sub_where_str}
       					{$group_by_str}
                         ORDER BY {$inner_order_by_str}
                         {$inner_offset_limit}

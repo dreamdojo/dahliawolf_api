@@ -211,14 +211,16 @@ class User extends db {
                   SELECT COUNT(*)
                   FROM posting
                   WHERE posting.user_id = user_username.user_id
-                    AND UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP() = 1
+                    AND posting.deleted IS NULL
+                    AND UNIX_TIMESTAMP(posting.created)+2592000 < UNIX_TIMESTAMP()
 
               )AS posts_expired
               ,(
                   SELECT COUNT(*)
                   FROM posting
                   WHERE posting.user_id = user_username.user_id
-                    AND UNIX_TIMESTAMP(posting.created)+2592000 < UNIX_TIMESTAMP()
+                    AND posting.deleted IS NULL
+                    AND UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP()
 
               ) AS posts_active
               ,(
@@ -227,6 +229,13 @@ class User extends db {
                    LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
                   WHERE posting.user_id = user_username.user_id  AND like_winner.like_winner_id IS NOT NULL
               ) AS winner_posts
+              ,(
+                SELECT COUNT(*)
+                FROM posting
+                WHERE posting.user_id = user_username.user_id
+                    AND posting.deleted IS NULL
+            ) AS posts_total
+
                 {$select_str}
 			FROM user_username
 		        {$join_str}
