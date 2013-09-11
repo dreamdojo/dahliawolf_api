@@ -34,6 +34,19 @@ class Posting_Controller  extends  _Controller
     }
 
 
+    public function get_lovers( $request_data = array() )
+    {
+
+        $posting = new Posting();
+        $response = $posting->getLovers($request_data);
+
+        return  $response;
+
+    }
+
+
+
+
 }
 
 ?>

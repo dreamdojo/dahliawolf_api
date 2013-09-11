@@ -226,12 +226,12 @@ class User extends db {
                   FROM posting
                    LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
                   WHERE posting.user_id = user_username.user_id  AND like_winner.like_winner_id IS NOT NULL
-
               ) AS winner_posts
-
-        FROM user_username
-        WHERE {$where_str}
-        LIMIT 1";
+                {$select_str}
+			FROM user_username
+		        {$join_str}
+			WHERE {$where_str}
+			LIMIT 1";
 
 
         if(isset($_GET['t']))

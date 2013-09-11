@@ -12,6 +12,12 @@ class Posting_Promote extends _Model
 
     private $table = self::TABLE;
 
+    public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
+    {
+        parent::__construct($db_host, $db_user, $db_password, $db_name );
+    }
+
+
     public function create($request_data = array())
     {
 
@@ -28,13 +34,17 @@ class Posting_Promote extends _Model
         $fields = array(
             'posting_id',
             'user_id',
-            'lifespan',
-            'created_at'
+            'created_at',
+            'start_date',
+            'end_date'
         );
 
         //static vars
+        $lifespan = self::DAY_TIME*30;
         $values['created_at'] = date('Y-m-d h:i:s');
-        $values['lifespan'] = self::DAY_TIME*30;
+        $values['start_date'] = date('Y-m-d h:i:s');
+        $values['end_date'] = date('Y-m-d h:i:s', time()+$lifespan);
+
 
         foreach ($fields as $field) {
             if (array_key_exists($field, $request_data)) {
@@ -48,6 +58,15 @@ class Posting_Promote extends _Model
 
         try {
             $insert_id = $this->do_db_save($values, NULL);
+
+
+            if($insert_id)
+            {
+                $posting  = new Posting();
+                $posting->update_post();
+
+            }
+
             return array(
                 strtolower(self::PRIMARY_KEY_FIELD) => $insert_id,
             );
@@ -104,7 +123,7 @@ class Posting_Promote extends _Model
             FROM {$this->table} as mt
             WHERE mt.user_id = :user_id
             AND mt.posting_id =  :posting_id
-            AND mt.lifespan BETWEEN DATE_ADD(NOW(), INTERVAL -{$interval} DAY) and NOW()
+            AND NOW() BETWEEN mt.start_date and mt.end_date
             {$where_sql}
         ";
 

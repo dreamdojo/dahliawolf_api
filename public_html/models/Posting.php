@@ -473,8 +473,8 @@ class Posting extends db {
         if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 999';
 
         //// run the limits on the outer query, since already filtered by userid_id
-        if(!empty($user_id)) {
-            $inner_offset_limit = '';
+        if($outer_order_by_columns == 'created DESC' && !empty($user_id)) {
+            //$inner_offset_limit = 'LIMIT 999';
         }else{
             $offset_limit = '';
         }
