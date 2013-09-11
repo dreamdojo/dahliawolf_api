@@ -452,6 +452,7 @@ class Posting extends db {
 
         $outer_where_str = '';
         $active_limit = (60*60*24)*30;
+
         // filters
         $valid_filters = array(
             'is_winner' => 'is_winner = 1',
@@ -467,6 +468,8 @@ class Posting extends db {
 		if (!empty($params['filter']) && isset( $valid_filters[$params['filter']] )) {
             $filter = $valid_filters[$params['filter']];
             $outer_where_str .= "WHERE  {$filter}";
+
+            $inner_offset_limit = '';
         }
 
         //// limit the restult set to failsafe 300,
