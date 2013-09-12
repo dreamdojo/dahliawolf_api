@@ -343,34 +343,22 @@ class Posting extends db {
 
 	// ?api=category&function=allcategory
 	public function allPosts($params = array()) {
-		$inner_order_by_str = 'created DESC';
+		$order_by_str = 'created DESC';
         $outer_order_by_str = 'created DESC';
 
         $inner_order_by_columns = array(
 			'created',
 			'total_likes',
 			'total_votes',
-		);
-
-        if (!empty($params['order_by'])) {
-            if (in_array($params['order_by'], $inner_order_by_columns)) {
-                $inner_order_by_str = "{$params['order_by']} DESC";
-            }
-        }
-
-        $outer_order_by_columns = array(
-			'created',
-            'total_likes',
-            'total_votes',
             'total_shares',
             'total_views',
 		);
 
         if (!empty($params['order_by'])) {
-			if (in_array($params['order_by'], $outer_order_by_columns)) {
-				$outer_order_by_str = "{$params['order_by']} DESC";
-			}
-		}
+            if (in_array($params['order_by'], $inner_order_by_columns)) {
+                $order_by_str = "{$params['order_by']} DESC";
+            }
+        }
 
         $outer_select_str = "";
 		$select_str = '';
@@ -426,7 +414,7 @@ class Posting extends db {
 			$join_str .= '
 				INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
 			';
-            $inner_order_by_str = 'day_threshold_likes DESC';
+            $order_by_str = 'day_threshold_likes DESC';
 
 			$values[':like_day_threshold'] = $params['like_day_threshold'];
 
@@ -462,14 +450,13 @@ class Posting extends db {
         );
 
 
-        $inner_offset_limit = $this->generate_limit_offset_str($params);
-        $offset_limit = $this->generate_limit_offset_str($params);
+        $inner_offset_limit = $this->generate_limit_offset_str($params, true);
 
 		if (!empty($params['filter']) && isset( $valid_filters[$params['filter']] )) {
             $filter = $valid_filters[$params['filter']];
             $sub_where_str .= "\n\t\t\t\t\t AND  {$filter}";
 
-            if($inner_order_by_str != 'created DESC') $inner_offset_limit = '';
+            //if($inner_order_by_str != 'created DESC') $inner_offset_limit = '';
         }
 
         //// limit the restult set to failsafe 300,
@@ -478,16 +465,14 @@ class Posting extends db {
         //// run the limits on the outer query, since already filtered by userid_id
         if(empty($user_id)) {
             //$inner_offset_limit = 'LIMIT 999';
-            $offset_limit = 'LIMIT 999';
+            $outer_offset_limit = 'LIMIT 999';
         }
 
         $query = "
                 SELECT posting.*
                     , IFNULL(COUNT(comment.comment_id), 0) AS comments
                     , imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
-                    {$outer_select_str},
-                    (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`,
-                    (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`
+                    {$outer_select_str}
       			FROM (
       					SELECT posting.*
       						, image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
@@ -495,7 +480,9 @@ class Posting extends db {
       						, CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
                             , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner,
                             IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active,
-                            FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
+                            FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date',
+                            (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`,
+                            (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`
       						{$select_str}
       						{$hot_select_str}
       					FROM posting
@@ -508,20 +495,19 @@ class Posting extends db {
       						AND posting.deleted IS NULL
       						 {$sub_where_str}
       					{$group_by_str}
-                        ORDER BY {$inner_order_by_str}
+                        ORDER BY {$order_by_str}
                         {$inner_offset_limit}
-      				) AS posting
+                ) AS posting
 
-      				LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
-      				LEFT JOIN dahliawolf_repository.imageInfo AS imageInfo ON posting.repo_image_id = imageInfo.id
-      				LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
-      				LEFT JOIN dahliawolf_repository.site AS site ON search_site_link.site_id = site.site_id
+                LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
+                LEFT JOIN dahliawolf_repository.imageInfo AS imageInfo ON posting.repo_image_id = imageInfo.id
+                LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
+                LEFT JOIN dahliawolf_repository.site AS site ON search_site_link.site_id = site.site_id
 
                 {$outer_where_str}
                 GROUP BY posting.posting_id
-                ORDER BY {$outer_order_by_str}
-                {$offset_limit}
-      			";
+                ORDER BY {$order_by_str}
+                ";
 
         if (isset($_GET['t'])) {
 			echo "$query\n";

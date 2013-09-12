@@ -59,7 +59,8 @@ class Posting extends _Model
 
         if($params['viewer_user_id'])
         {
-            $select_str = ',IF(follow.user_id IS NULL, 0, 1) AS is_followed';
+            $select_str = ", IF(follow.user_id IS NULL, 0, 1) AS is_followed
+                           , DATE_FORMAT(follow.created, '%c/%e/%Y') AS loved_date ";
             $join_str = 'LEFT JOIN follow ON (user_username.user_id = follow.user_id
                                                     AND follow.follower_user_id = :viewer_user_id)';
 

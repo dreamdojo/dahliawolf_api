@@ -570,12 +570,12 @@ class db extends PDO {
 		$this->num_rows=0;	
 	}
 	
-	protected function generate_limit_offset_str($params) {
+	protected function generate_limit_offset_str($params, $offset=true) {
 		$limit_offset_str = '';
 		if (!empty($params['limit'])) {
 			$limit_offset_str .= ' LIMIT ' . (int)$params['limit'];
 		}
-		if (!empty($params['offset'])) {
+		if ($offset && !empty($params['offset'])) {
 			$limit_offset_str .= ' OFFSET ' . (int)$params['offset'];
 		}
 		
