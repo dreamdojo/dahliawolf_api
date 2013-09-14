@@ -1123,6 +1123,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				)
 			);
 			$post['data']['points_earned'] = $points_earned;
+			$post['data']['new_image_url'] = sprintf("%s/%s", trim($_REQUEST['source'], '/'), trim($_REQUEST['imagename'], '/'));
 
 			// Update feed image (set status to 'Posted')
 			if (!empty($_REQUEST['repo_image_id'])) {
@@ -2541,3 +2542,4 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'test') {
 }
 die();
 ?>
+
