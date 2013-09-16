@@ -228,7 +228,7 @@ private $functions = array('NOW()');
 		if (strpos($whereSql, ':') === false) {
 			trigger_error('Mysql->delete():  2nd argument should use prepared statements.', E_USER_ERROR);
 		}
-		
+
 		$sql =  'DELETE FROM `' . $table . '` WHERE ' . $whereSql;
 		
 		return $this->prepareExec($sql, $prepValues);

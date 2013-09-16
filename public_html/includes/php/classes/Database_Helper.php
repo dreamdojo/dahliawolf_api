@@ -1526,8 +1526,8 @@ class Database_Helper {
 	 *
 	 * @return bool True on success.
 	 */
-	public function delete($table, $where_sql = '', $parameters = array()) {
-		
+	public function delete($table, $where_sql = '', $parameters = array())
+    {
 		$sql = 'DELETE FROM "' . $table . '"';
 		if (!empty($where_sql)) {
 			$sql .= ' WHERE ' . $where_sql;
