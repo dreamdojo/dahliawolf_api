@@ -124,18 +124,13 @@ class Activity_Log_Controller extends _Controller {
 		// Validations
 		$input_validations = array(
 			'user_id' => array(
-				'label' => 'User ID'
-				, 'rules' => array(
-					'is_set' => NULL
-					, 'is_int' => NULL
-				)
-			)
-			, 'activity_log_id' => array(
-				'label' => 'Activity Log ID'
-				, 'rules' => array(
+				'label' => 'User ID',
+				'rules' => array(
+					'is_set' => NULL,
 					'is_int' => NULL
 				)
 			)
+
 		);
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
@@ -150,15 +145,9 @@ class Activity_Log_Controller extends _Controller {
 		// Validations
 		$input_validations = array(
 			'user_id' => array(
-				'label' => 'User ID'
-				, 'rules' => array(
-					'is_set' => NULL
-					, 'is_int' => NULL
-				)
-			)
-			, 'activity_log_id' => array(
-				'label' => 'Activity Log ID'
-				, 'rules' => array(
+				'label' => 'User ID',
+				'rules' => array(
+					'is_set' => NULL,
 					'is_int' => NULL
 				)
 			)
