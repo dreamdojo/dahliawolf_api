@@ -3,6 +3,14 @@ class Activity_Log extends _Model {
 	const TABLE = 'activity_log';
 	const PRIMARY_KEY_FIELD = 'activity_log_id';
 
+
+
+    public function __construct($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE)
+    {
+        parent::__construct($db_host, $db_user, $db_password, $db_name );
+    }
+
+
 	protected $fields = array(
 		'user_id'
 		, 'api_website_id'
@@ -12,31 +20,6 @@ class Activity_Log extends _Model {
 		, 'entity_id'
 	);
 
-	/*
-	// Get api website db, so we know where to join
-
-		// Get possible entities for api website id
-		$query = '
-			SELECT DISTINCT entity
-			FROM activity_log
-			WHERE entity IS NOT NULL
-				AND api_website_id = :api_website_id
-		';
-		$values = array(
-			'api_website_id' => $api_website_id
-		);
-		try {
-			$entities = self::$dbs[$this->db_host][$this->db_name]->exec($query, $values);
-		} catch (Exception $e) {
-			self::$Exception_Helper->server_error_exception('Unable to get activity log entities.');
-		}
-		print_r($entities);die();
-
-		$left_join_str = '';
-		if (!empty($entities)) {
-
-		}
-	*/
 
 	public function get_log($user_id, $api_website_id = NULL, $activity_id = NULL) {
 		// Get rows
@@ -520,6 +503,32 @@ class Activity_Log extends _Model {
         $logger->LogInfo("LOGGING ACTIVITY WITH activity response: ". var_export($data, true));
     	return $data;
     }
+
+    /*
+	// Get api website db, so we know where to join
+
+		// Get possible entities for api website id
+		$query = '
+			SELECT DISTINCT entity
+			FROM activity_log
+			WHERE entity IS NOT NULL
+				AND api_website_id = :api_website_id
+		';
+		$values = array(
+			'api_website_id' => $api_website_id
+		);
+		try {
+			$entities = self::$dbs[$this->db_host][$this->db_name]->exec($query, $values);
+		} catch (Exception $e) {
+			self::$Exception_Helper->server_error_exception('Unable to get activity log entities.');
+		}
+		print_r($entities);die();
+
+		$left_join_str = '';
+		if (!empty($entities)) {
+
+		}
+	*/
 
 }
 ?>
