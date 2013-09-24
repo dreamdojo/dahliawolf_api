@@ -12,6 +12,27 @@ class Posting_Controller  extends  _Controller
     }
 
 
+    public function get_all($request_data = array())
+    {
+        $this->load('Posting');
+
+        $message = new Posting();
+        $response = $message->getAll($request_data);
+
+        return  $response;
+    }
+
+
+    public function get_by_user($request_data = array())
+    {
+        $this->load('Posting');
+
+        $message = new Posting();
+        $response = $message->getByUser($request_data);
+
+        return  $response;
+    }
+
     public function delete_post($request_data = array())
     {
         $this->load('Posting');
@@ -49,10 +70,10 @@ class Posting_Controller  extends  _Controller
     {
         $this->load('Posting_Like');
 
-         $message = new Posting_Like();
-         $data = $message->addLike($request_data);
+         $posting_like = new Posting_Like();
+         $data = $posting_like->addLike($request_data);
 
-         return static::wrap_result(($message->hasError()? false:true), $data, 200, $message->getErrors() );
+         return static::wrap_result(($posting_like->hasError()? false:true), $data, 200, $posting_like->getErrors() );
     }
 
 

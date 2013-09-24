@@ -332,7 +332,7 @@ class Posting extends db {
         //// adding post view
         $request_data = array(
             'posting_id' => $posting_id,
-            'viewer_user_id' => $viewer_user_id
+            'user_id' => $viewer_user_id
         );
 
         self::addPostView($request_data);
@@ -472,17 +472,18 @@ class Posting extends db {
                 SELECT posting.*
                     , IFNULL(COUNT(comment.comment_id), 0) AS comments
                     , imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
+                    , (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`
+                    , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`
+
                     {$outer_select_str}
       			FROM (
       					SELECT posting.*
       						, image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
       						, user_username.username, user_username.location, user_username.avatar
       						, CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
-                            , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner,
-                            IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active,
-                            FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date',
-                            (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`,
-                            (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`
+                            , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
+                            , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
+                            , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
       						{$select_str}
       						{$hot_select_str}
       					FROM posting
@@ -512,7 +513,7 @@ class Posting extends db {
         if (isset($_GET['t'])) {
 			echo "$query\n";
 			print_r($values);
-            //die();
+            if(isset($_GET['die']))die();
 		}
 
 

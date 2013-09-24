@@ -26,7 +26,7 @@ class Posting_Like extends _Model
         $fields = array(
             "$link_parent_field",
             "user_id",
-            'viewer_user_id',
+            'user_id',
             'like_type_id',
             'created',
         );
