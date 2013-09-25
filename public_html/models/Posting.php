@@ -328,17 +328,19 @@ class Posting extends db {
 			 return resultArray(false, NULL, 'Could not get posting.');
 		}
 
+        $post = $row[0];
 
         //// adding post view
         $request_data = array(
             'posting_id' => $posting_id,
-            'user_id' => $viewer_user_id
+            'user_id' => $post["user_id"],
+            'viewer_user_id' => $viewer_user_id
         );
 
         self::addPostView($request_data);
 
 		return
-            resultArray(true, $row[0]);
+            resultArray(true, $post);
 	}
 
 	// ?api=category&function=allcategory

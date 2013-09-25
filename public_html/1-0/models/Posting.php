@@ -341,7 +341,9 @@ class Posting extends _Model
             //// slow sorts
             $slow_count_select = "";
             $fast_count_select ="
-                           , (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`
+                           , (SELECT COUNT(*) FROM
+                                        (SELECT * FROM posting_view WHERE posting_view.user_id = :user_id) AS posting_view_tmp
+                                WHERE posting_view_tmp.posting_id = posting.posting_id) AS `total_views`
                            , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
                            , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`";
             $slow_sorts = array(
@@ -360,6 +362,8 @@ class Posting extends _Model
                 if (in_array($params['order_by'], $order_by_columns)) {
                     if($slow_sort) $order_by_str = "{$params['order_by']} DESC";
                     else  $outer_order_by_str = "{$params['order_by']} DESC";
+
+                    $outer_order_by_str = $order_by_str;
                 }
             }
         }

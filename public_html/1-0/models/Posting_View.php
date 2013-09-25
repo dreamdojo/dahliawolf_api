@@ -25,6 +25,7 @@ class Posting_View extends _Model
 
         $fields = array(
             "$link_parent_field",
+            'user_id',
             'viewer_user_id',
             'created_at',
         );
