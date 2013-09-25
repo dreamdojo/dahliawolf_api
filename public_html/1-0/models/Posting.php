@@ -167,7 +167,7 @@ class Posting extends _Model
 
         //valid filters
         $valid_filters = array(
-            'following'     => 'AND follow.follower_user_id = :follower_user_id'
+            'following'     => ' AND follow.follower_user_id = :follower_user_id'
         );
 
 
