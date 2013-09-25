@@ -164,12 +164,21 @@ class Posting extends _Model
             $group_by_str = 'GROUP BY posting.posting_id';
         }
 
+
+        //valid filters
+        $valid_filters = array(
+            'following'     => 'AND follow.follower_user_id = :follower_user_id'
+        );
+
+
         // Filter by following
-        if (!empty($params['filter_by']) && !empty($params['follower_user_id'])) {
+        if ( !empty($params['filter_by']) && isset( $valid_filters[$params['filter_by']]) && !empty($params['follower_user_id'])) {
             $sub_join_str .= '
                 INNER JOIN follow ON user_username.user_id = follow.user_id
             ';
-            $sub_where_str .= ' AND follow.follower_user_id = :follower_user_id';
+
+            $filter = $valid_filters[$params['filter_by']];
+            $sub_where_str .= "$filter";
             $values[':follower_user_id'] = $params['follower_user_id'];
         }
 
