@@ -10,12 +10,15 @@ class _Controller {
 	public function __construct() {	
 		
 		$this->load('_Model', DB_API_HOST, DB_API_USER, DB_API_PASSWORD, DB_API_DATABASE);
-		$this->Model->set_static_vars(
-			array(
-				'domain' => DOMAIN
-				, 'site_name' => SITE_NAME
-			)
-		);
+
+        if($this->Model){
+            $this->Model->set_static_vars(
+                array(
+                    'domain' => DOMAIN,
+                    'site_name' => SITE_NAME
+                )
+            );
+        }
 		
 		$this->load('API_Request_Log', DB_API_HOST, DB_API_USER, DB_API_PASSWORD, DB_API_DATABASE);
 		

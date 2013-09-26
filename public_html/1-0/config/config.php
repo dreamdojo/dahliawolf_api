@@ -32,6 +32,11 @@ define('DW_API_USER', 'offlineadmin');
 define('DW_API_PASSWORD', '9w8^^^qFtwCD7N^N^');
 define('DW_API_DATABASE', 'dahliawolf_v1_2013');
 
+define('REPO_API_HOST', '127.0.0.1');
+define('REPO_API_USER', 'offlineadmin');
+define('REPO_API_PASSWORD', '9w8^^^qFtwCD7N^N^');
+define('REPO_API_DATABASE', 'dahliawolf_repository');
+
 
 define('MYSQLHOST', DB_API_HOST);
 define('MYSQLUSER', DB_API_USER);
