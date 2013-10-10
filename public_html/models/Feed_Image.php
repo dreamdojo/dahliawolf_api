@@ -112,7 +112,7 @@ class Feed_Image extends db {
                 ORDER BY $order_by
                 $limit_sql
                 ";
-		/*
+		 /*
 		 * LEFT JOIN search ON imageInfo.search_id = search.search_id
 				LEFT JOIN search_site_link ON search.search_id = search_site_link.search_id
 				LEFT JOIN site ON search_site_link.site_id = site.site_id

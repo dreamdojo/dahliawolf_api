@@ -134,4 +134,6 @@ require_once DR . '/includes/php/functions-format.php';
 // Commerce
 define('API_KEY_DEVELOPER', 'b968a167feba0990b283f0cd65757a60');
 define('PRIVATE_KEY_DEVELOPER', '796323f65ce5f0178dc15e8181c17247');
+
+
 ?>
