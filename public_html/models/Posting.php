@@ -330,6 +330,11 @@ class Posting extends db {
 
         $post = $row[0];
 
+        if ( $post['total_shares'] == '0')
+        {
+            $post['total_shares'] = 'share';
+        }
+
         //// adding post view
         $request_data = array(
             'posting_id' => $posting_id,
