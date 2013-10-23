@@ -332,7 +332,7 @@ class Posting extends db {
 
         if ( $post['total_shares'] == '0')
         {
-            $post['total_shares'] = 'share';
+            $post['total_shares'] = '6666';
         }
 
         //// adding post view
