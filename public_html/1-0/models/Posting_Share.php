@@ -136,7 +136,12 @@ class Posting_Share extends Sharing_Abstract
             return array('error' => 'Could not get post shares.');
         }
 
-        return array('sharings' => $data);
+        if(count($data) > 0)
+        {
+            return array('sharings' => $data);
+        }
+
+        return array('sharings' => 'share');
     }
 
 

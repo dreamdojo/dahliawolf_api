@@ -31,6 +31,11 @@ class Follow extends _Model {
         );
 
 
+        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
+
+        $logger->LogInfo("user follow init params: " . var_export($data, true));
+
+
         foreach ($fields as $field) {
             if (array_key_exists($field, $data)) {
                 $values[$field] = $data[$field];
@@ -39,6 +44,7 @@ class Follow extends _Model {
 
         try {
             $insert_id = $this->do_db_save($values, $data);
+            $logger->LogInfo("user follow id $insert_id");
             return array(
                     strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
                     //'model_data' => $data

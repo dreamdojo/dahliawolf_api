@@ -208,7 +208,11 @@ function register_default_follows($user_id)
             )
         );
 
-        $follow_user_response = api_request('user', $calls, true);
+        try{
+            $follow_user_response = api_request('user', $calls, true);
+        }catch (Exception $e ) {
+
+        }
         return $follow_user_response;
     }
 
@@ -500,7 +504,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$Email->email('signup', $user_id);
 
             //// follow default users
-            register_default_follows($user_id);
+            @register_default_follows($user_id);
 
 			echo json_pretty(json_encode(($user)));
 			return;
