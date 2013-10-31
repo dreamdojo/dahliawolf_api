@@ -563,7 +563,7 @@ class User_Controller extends _Controller {
 	}
 
 	public function get_user($params = array()) {
-		$this->load('User');
+		//$this->load('User');
 
 		// User authentication: check login_instance
 		$is_user_edit = array_key_exists('token', $params);
@@ -571,31 +571,59 @@ class User_Controller extends _Controller {
 			$this->validate_login_instance($params['user_id'], $params['token']);
 		}
 
+        /*
 		// Validations
 		$input_validations = array(
 			'user_id' => array(
-				'label' => 'User Id'
-				, 'rules' => array(
-					'is_set' => NULL
-					, 'is_int' => NULL
+				'label' => 'User Id',
+				 'rules' => array(
+					'is_set' => NULL,
+					'is_int' => NULL
 				)
 			)
 		);
+
+
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
+        */
 
-		$where_params = array(
-			'user_id' => $params['user_id']
-		);
+        if(isset($params['username']))
+        {
+            //$where_params = array();
+            $where_params = array(
+                'username' => $params['username']
+            );
+        }else{
+            $where_params = array(
+                'user_id' => $params['user_id']
+            );
+        }
 
 		// User
-		$data = $this->User->get_public_fields($where_params, array('single' => true));
+        $user = new User();
+
+		//$data = $user->get_public_fields($where_params, array('single' => true));
+		$data = $user->getUserDetails($where_params );
+
 		if (empty($data)) {
 			_Model::$Exception_Helper->request_failed_exception('User could not be found.');
 		}
 
+        $commer_user = new User($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE);
+
+        $total_sales = $commer_user->get_commissions( $data['user_id'] );
+
+        $data['sales_total'] =  $total_sales['sales_total'];
+
+		return $data;
 		return static::wrap_result(true, $data);
 	}
+
+    public function get_user_details()
+    {
+
+    }
 
 	public function get_addresses($params = array()) {
 		$this->load('Address');
@@ -858,5 +886,46 @@ class User_Controller extends _Controller {
 		return static::wrap_result(true, NULL, _Model::$Status_Code->get_status_code_no_content());
 
 	}
+
+
+    public function get_comissions($params = array())
+    {
+        $logger = new Jk_Logger(APP_PATH . 'logs/product.log');
+        $logger->LogInfo("request params: " . var_export($params,true));
+
+
+		//$this->load('Product');
+		//$this->load('User');
+
+		$validate_names = array(
+			'id_shop' => NULL,
+			'id_lang' => NULL,
+			'user_id' => NULL,
+		);
+
+		$validate_params = array_merge($validate_names, $params);
+
+		// Validations
+		$input_validations = array(
+            'user_id' => array(
+				'label' => 'User Id',
+				'rules' => array(
+					'is_int' => NULL
+				)
+			)
+		);
+
+		$this->Validate->add_many($input_validations, $validate_params, true);
+		$this->Validate->run();
+
+		$user_id = !empty($params['user_id']) ? $params['user_id'] : NULL;
+
+        $commer_user = new User($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE);
+
+		$data = $commer_user->get_commissions($user_id);
+
+		return $data;
+	}
+
 }
 ?>
