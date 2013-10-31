@@ -33,7 +33,6 @@ $include_paths[] = sprintf("%s/", realpath('./'));
 set_include_path(implode(":", $include_paths));
 
 
-
 if(isset($_GET['t'])){
     var_dump($_GET);
 }
