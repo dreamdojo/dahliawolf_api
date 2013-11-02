@@ -64,7 +64,7 @@ class User extends _Model
     );
 
 
-    public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
+    public function __construct($db_host = DB_HOST, $db_user = DB_USER, $db_password = DB_PASSWORD, $db_name = DB_DATABASE)
     {
         parent::__construct($db_host, $db_user, $db_password, $db_name );
     }

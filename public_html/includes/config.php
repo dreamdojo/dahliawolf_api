@@ -57,9 +57,28 @@ $config = array(
  define('DB_USER', $dbuser);
  define('DB_PASS', $dbpass);
 
+/*
 define('DW_API_HOST', '127.0.0.1');
 define('DW_API_USER', 'offlineadmin');
 define('DW_API_PASSWORD', '9w8^^^qFtwCD7N^N^');
+define('DW_API_DATABASE', 'dahliawolf_v1_2013');
+*/
+
+// API db
+//define('DB_API_HOST', '10.48.113.8');
+define('DB_API_HOST', '127.0.0.1');
+define('DB_API_USER', 'off_admin');
+define('DB_API_PASSWORD', 'EYCs5HhdwWbBKpvc');
+define('DB_API_DATABASE', 'offline_commerce_v1_2013');
+
+define('ADMIN_API_HOST', '127.0.0.1');
+define('ADMIN_API_USER', 'off_admin');
+define('ADMIN_API_PASSWORD', 'EYCs5HhdwWbBKpvc');
+define('ADMIN_API_DATABASE', 'admin_offline_v1_2013');
+
+define('DW_API_HOST', '127.0.0.1');
+define('DW_API_USER', 'off_admin');
+define('DW_API_PASSWORD', 'EYCs5HhdwWbBKpvc');
 define('DW_API_DATABASE', 'dahliawolf_v1_2013');
  
  define('DB_NAME_REPOSITORY', 'dahliawolf_repository');
