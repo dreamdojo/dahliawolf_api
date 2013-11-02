@@ -922,7 +922,8 @@ class User_Controller extends _Controller {
 
         $commer_user = new User($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE);
 
-		$data = $commer_user->get_commissions($user_id);
+        $summary =  isset($params['summary']) && (int)$params['summary'] == 1 ? true : false;
+        $data = $commer_user->get_commissions($user_id, $summary);
 
 		return $data;
 	}

@@ -269,7 +269,7 @@ class User extends _Model
 
 
 
-    public function get_commissions($user_id, $id_shop=3, $id_lang=1 )
+    public function get_commissions($user_id, $summary=false, $id_shop=3, $id_lang=1 )
     {
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
 
@@ -280,8 +280,21 @@ class User extends _Model
             //':active' => '1',
         );
 
+
+        $select_sql = "SUM(order_detail.product_price) as sales_total";
+        $group_sql = "";
+
+
+        if( $summary )
+        {
+            $select_sql = "order_detail.product_id,
+                        SUM(order_detail.product_price) as sales_total";
+
+            $group_sql = "GROUP BY order_detail.product_id";
+        }
+
         $sql = "
-        SELECT SUM(order_detail.product_price) as sales_total
+        SELECT {$select_sql}
         FROM offline_commerce_v1_2013.order_detail
         WHERE order_detail.product_id IN
             (
@@ -326,6 +339,8 @@ class User extends _Model
 
                 )
 
+            {$group_sql}
+
 
         ";
 
@@ -337,7 +352,8 @@ class User extends _Model
         try {
             $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $params);
 
-            return ($data && isset($data[0]) ? $data[0] : null  );
+            if( $summary ) return $data;
+            else return ($data && isset($data[0]) ? $data[0] : null  );
         } catch (Exception $e) {
             self::$Exception_Helper->server_error_exception('Unable to get user comissions.');
         }
