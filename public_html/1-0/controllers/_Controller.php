@@ -20,7 +20,7 @@ class _Controller {
             );
         }
 		
-		$this->load('API_Request_Log', DB_API_HOST, DB_API_USER, DB_API_PASSWORD, DB_API_DATABASE);
+		$this->load('API_Request_Log', ADMIN_API_HOST, ADMIN_API_USER, ADMIN_API_PASSWORD, ADMIN_API_DATABASE);
 		
 		$this->Validate = new Validate();
 	}
@@ -189,18 +189,22 @@ class _Controller {
 		
 			$result = static::wrap_result(true, $results);
 		}
-		
+
+
+        ///// do we really need this now???
+        /*
 		// Log API Request
 		$response_format = !empty($_GET['response_format']) ? $_GET['response_format'] : NULL;
 		$request_methods = get_request_methods();
 		$protocol = !empty($request_methods[$response_format]) ? $request_methods[$response_format] : NULL;
 		$this->log_api_request($_SERVER['REMOTE_ADDR'], $_GET['endpoint'], $protocol, $request, $result);
-		
+		*/
 		// Done
 		return $result;
 	}
 	
-	private function log_api_request($ip_address, $endpoint, $protocol, $request, $result) {
+	private function log_api_request($ip_address, $endpoint, $protocol, $request, $result)
+    {
 		
 		
 		$api_key = $request['api_key'];

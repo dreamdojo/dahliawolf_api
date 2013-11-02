@@ -203,9 +203,12 @@ class User_Controller extends _Controller {
 
         $logger->LogInfo("user save init params: " . var_export($params, true));
 
-		$this->load('User');
-		$this->load('User_Group');
-		$this->load('User_Group_Portal');
+        //dahliawolf user
+		$this->load('User', $db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
+
+
+        $this->load('User_Group', $db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+		$this->load('User_Group_Portal', $db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
 
 		// User authentication: check login_instance
 		$is_user_edit = array_key_exists('token', $params);
@@ -322,7 +325,7 @@ class User_Controller extends _Controller {
 
 			$existing_email = $this->User->get_row(
 				array(
-					'email' => $params['email']
+					'email_address' => $params['email']
 				)
 			);
 
@@ -366,7 +369,15 @@ class User_Controller extends _Controller {
 
         $logger->LogInfo("user save insert data: \n" . var_export($user, true) );
 
-		$data['user_id'] = $this->User->save($user);
+
+        ///// create offline user.. geeeezzzes, arghhhhhhhhh, wtF....
+
+        $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+        //gotta set this for the damm user table in admin db
+        $offline_user::setDataTable('user');
+
+
+		$data['user_id'] = $offline_user->save($user);
 
 
         $logger->LogInfo("user save completed with return data: " . var_export($data, true));
@@ -378,9 +389,12 @@ class User_Controller extends _Controller {
 			$public_user_group_portal_id = $this->User_Group_Portal->get_public_user_group_portal_id();
 
 			$user_group_link_id = $this->User_Group->save_link($data['user_id'], $customer_user_group_id, $public_user_group_portal_id);
+
+            $logger->LogInfo("// Created user group link: $user_group_link_id" );
 		}
 
 
+        $logger->LogInfo("user created successfully user_id: {$data['user_id']}" );
 		return static::wrap_result(true, $data);
 	}
 

@@ -18,6 +18,18 @@ class _Model extends Jk_Base{
 	protected $db_name = '';
 
     protected $errors =null;
+
+    static protected $data_table;
+
+    public static function setDataTable($table)
+    {
+        self::$data_table = $table;
+    }
+
+    public static function getDataTable()
+    {
+        return self::$data_table;
+    }
 	
 	public function __construct($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE) {
 		
@@ -115,20 +127,23 @@ class _Model extends Jk_Base{
 	
 	public function db_insert($fields, $replace = false) {		
 		$called_class = get_called_class();
+        $data_table = ( self::getDataTable() ? self::getDataTable() : $called_class::TABLE);
 		
-		return self::$dbs[$this->db_host][$this->db_name]->insert($called_class::TABLE, $fields, $replace);
+		return self::$dbs[$this->db_host][$this->db_name]->insert($data_table, $fields, $replace);
 	}
 	
 	public function db_insert_many($value_lists) {		
 		$called_class = get_called_class();
+        $data_table = ( self::getDataTable() ? self::getDataTable() : $called_class::TABLE);
 		
-		return self::$dbs[$this->db_host][$this->db_name]->insert_many($called_class::TABLE, $value_lists);
+		return self::$dbs[$this->db_host][$this->db_name]->insert_many($data_table, $value_lists);
 	}
 	
 	public function db_delete($where_sql, $parameters) {
 		$called_class = get_called_class();
-		
-		return self::$dbs[$this->db_host][$this->db_name]->delete($called_class::TABLE, $where_sql, $parameters);
+        $data_table = ( self::getDataTable() ? self::getDataTable() : $called_class::TABLE);
+
+		return self::$dbs[$this->db_host][$this->db_name]->delete($data_table, $where_sql, $parameters);
 	}
 	
 	public function db_last_insert_id() {
@@ -192,10 +207,12 @@ class _Model extends Jk_Base{
 			}
 		}
 		$where_str = implode(' AND ', $wheres);
+
+        $data_table = ( self::getDataTable() ? self::getDataTable() : $called_class::TABLE);
 		
 		$sql = '
 			SELECT ' . $select_str . '
-			FROM ' . $called_class::TABLE . '
+			FROM ' . $data_table . '
 			WHERE ' . (!empty($where_str) ? $where_str : '1') . ' ';
 			
 		if (!empty($options['order_by_field'])) {

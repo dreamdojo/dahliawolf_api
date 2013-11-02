@@ -36,6 +36,8 @@ class User extends _Model
      */
 
 
+
+
     protected $fields = array(
         'user_id',
         'first_name',
@@ -64,7 +66,7 @@ class User extends _Model
     );
 
 
-    public function __construct($db_host = DB_HOST, $db_user = DB_USER, $db_password = DB_PASSWORD, $db_name = DB_DATABASE)
+    public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
     {
         parent::__construct($db_host, $db_user, $db_password, $db_name );
     }
@@ -75,7 +77,7 @@ class User extends _Model
         $query = '
 			SELECT user.*
 			FROM user
-			WHERE email = :email
+			WHERE email_address = :email
 		';
         $params = array(
             ':email' => $email
