@@ -75,7 +75,7 @@ class Facebook_Controller extends Social_Network_Controller {
 			'logout_url' => $logout_url,
 		);
 
-        $logger->LogInfo("FB USER DATA: " . var_export($user, true) );
+        //$logger->LogInfo("FB USER DATA: " . var_export($user, true) );
 
 		// Gender
 		if (!empty($user_profile['sex'])) {
@@ -93,6 +93,8 @@ class Facebook_Controller extends Social_Network_Controller {
 		if (!empty($user_profile['birthday_date'])) {
 			$user['date_of_birth'] = date('Y-m-d', strtotime($user_profile['birthday_date']));
 		}
+
+        $logger->LogInfo("FB USER DATA: " . var_export($user, true) );
 
 		parent::login($user);
 	}

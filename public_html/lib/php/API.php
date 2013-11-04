@@ -20,6 +20,8 @@ class API {
         $this->api_url = "http://{$api_domain}/1-0";
 		$api_url = $this->api_url . '/' . $api_service . '.' . $reponse_format;
 
+        //error_log( __FUNCTION__ . "rest_api_request: $api_url");
+
 		// Initialize
 		$ch = curl_init();
 		$this->set_rest_api_request_options($ch, $api_url, $calls);

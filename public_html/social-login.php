@@ -1,6 +1,6 @@
 <?
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+error_reporting(E_WARNING| E_ERROR | E_COMPILE_WARNING | E_COMPILE_ERROR | E_STRICT);
+ini_set('display_errors', '0');
 require '1-0/config/config.php';
 
 
@@ -37,9 +37,9 @@ if (isset($_GET['logout']) && isset($_GET['logout_redirect_url'])) {
 $social_network = !empty($_GET['social_network']) ? strtolower($_GET['social_network']) : NULL;
 
 $social_networks = array(
-	'facebook'
-	, 'twitter'
-	, 'instagram'
+	'facebook',
+	'twitter',
+	'instagram',
 );
 
 // If valid social network

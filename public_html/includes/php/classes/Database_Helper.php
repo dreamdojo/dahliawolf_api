@@ -1366,6 +1366,7 @@ class Database_Helper {
 			if ($return_data) {
 				// if no rows have been return, fetchAll returns an empty array
 				$data = $this->sth->fetchAll(PDO::FETCH_ASSOC);
+                //print_r($data);
 				return $data;
 			}
 			

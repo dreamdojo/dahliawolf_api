@@ -38,10 +38,10 @@ define('REPO_API_PASSWORD', '9w8^^^qFtwCD7N^N^');
 define('REPO_API_DATABASE', 'dahliawolf_repository');
 
 
-define('MYSQLHOST', DW_API_HOST);
-define('MYSQLUSER', DW_API_USER);
-define('MYSQLPASS', DW_API_PASSWORD);
-define('MYSQLDB', DW_API_DATABASE);
+define('MYSQLHOST', DB_API_HOST);
+define('MYSQLUSER', DB_API_USER);
+define('MYSQLPASS', DB_API_PASSWORD);
+define('MYSQLDB', DB_API_DATABASE);
 
 // App db
 /*define('DB_APP_HOST', 'localhost');

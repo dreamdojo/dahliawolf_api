@@ -46,7 +46,7 @@ class User extends _Model
         'gender',
         'referrer_user_id',
         'username',
-        'email_address',
+        'email',
         'hash',
         'active',
         'newsletter',
@@ -60,7 +60,7 @@ class User extends _Model
         'date_of_birth',
         'gender',
         'username',
-        'email_address',
+        'email',
         'newsletter',
         'api_website_id'
     );
@@ -68,17 +68,61 @@ class User extends _Model
 
     public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
     {
+
+        if($db_name == DW_API_DATABASE)
+        {
+            $this->fields = array(
+                   'user_id',
+                   'first_name',
+                   'last_name',
+                   'date_of_birth',
+                   'gender',
+                   'referrer_user_id',
+                   'username',
+                   'email_address',
+                   'hash',
+                   'active',
+                   'newsletter',
+                   'api_website_id'
+               );
+
+            $this->public_fields = array(
+               'user_id',
+               'first_name',
+               'last_name',
+               'date_of_birth',
+               'gender',
+               'username',
+               'email_address',
+               'newsletter',
+               'api_website_id'
+           );
+        }
+
         parent::__construct($db_host, $db_user, $db_password, $db_name );
+
     }
 
 
     public function get_user($email)
     {
+
         $query = '
-			SELECT user.*
-			FROM user
-			WHERE email_address = :email
-		';
+            SELECT user.*
+            FROM user
+            WHERE email = :email
+        ';
+
+        if($this->db_name == DW_API_DATABASE)
+        {
+            $query = '
+            			SELECT user.*
+            			FROM user
+            			WHERE email_address = :email
+            		';
+        }
+
+
         $params = array(
             ':email' => $email
         );
@@ -190,11 +234,16 @@ class User extends _Model
             ':social_network_id' => $social_network_id
         );
 
+        //$logger = new Jk_Logger(APP_PATH . 'logs/facebook.log');
+        //$logger->LogInfo( __FUNCTION__ . " DB: -h:{$this->db_host} -db:$this->db_name :\n " . var_export($values, true));;
+
         try {
             $user = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $values);
+            //$logger->LogInfo( " USER:\n " . var_export($user, true));;
             return $user;
         } catch (Exception $e) {
             self::$Exception_Helper->server_error_exception('Unable to check user social network email.');
+            //$logger->LogInfo( " Exception: " . $e->getMessage());
             return false;
         }
 

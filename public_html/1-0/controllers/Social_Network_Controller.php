@@ -120,16 +120,19 @@ class Social_Network_Controller extends _Controller {
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
 
+        //$logger->LogInfo("SOCIAL USER DATA: " . var_export($params, true) );
 		// Check if email already exists
-		$this->load('User');
-		$existing_user = $this->User->check_social_network_email_exists($params['email'], $params['social_network_id']);
+		$this->load('User', $db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+
+        $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+		$existing_user = $offline_user->check_social_network_email_exists($params['email'], $params['social_network_id']);
         $logger->LogInfo("IS EXISTING check_social_network ?: " . var_export($existing_user, true));
 
 		$logout_url = !empty($params['logout_url']) ? $params['logout_url'] : '';
 
 		// Get user info
         /** @var User $user */
-		$user = $this->User->get_user($params['email']);
+		$user = $offline_user->get_user($params['email']);
 
         $logger->LogInfo("LOCAL USER INFO: " . var_export($user, true));
         $logger->LogInfo("DO WE HAVE THIS ACTIVE EMAIL REGISTERED ?: " .  (strtolower(trim($user['email'])) == strtolower(trim($params['email'])) ? "TRUE" : "FALSE") );
@@ -164,7 +167,7 @@ class Social_Network_Controller extends _Controller {
         //
 
 		// Check that dahliawolf user exists
-		if ($existing_user || strtolower(trim($user[email])) == strtolower(trim($user_params['email_address']))) {
+		if ($existing_user || strtolower(trim($user['email'])) == strtolower(trim($user_params['email_address']))) {
 			// Scrape username
 			$dw_params = array(
 				'user_id' => $user['user_id']
@@ -202,7 +205,8 @@ class Social_Network_Controller extends _Controller {
             if( intval($dw_user['data']['following']) == 0 )
             {
                 /** @var User $user_model */
-                $user_model = $this->User;
+                //$user_model = $this->User;
+                $user_model = $offline_user;
                 $logger->LogInfo("user has no followers {user_id: {$user['user_id']}}.. register default :)");
                 $user_model->registerDefaultFollows($user['user_id']);
             }
