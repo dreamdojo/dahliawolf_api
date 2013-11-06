@@ -557,7 +557,17 @@ class User extends db {
                 			ORDER BY u.points DESC
                 			limit 999999999999999  ) as uranks
                 		where uranks.user_id = user_username.user_id
-                ) as rank
+                ) as rank,
+
+                (
+                    SELECT
+                    ml.name
+                    FROM membership_level ml, user_username user
+                    WHERE user.user_id = user_username.user_id
+                        AND CAST(user.points AS SIGNED)  / ml.points > 1
+                    order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
+                    LIMIT 1
+                ) AS membership_level
 
                 {$select_str}
 
