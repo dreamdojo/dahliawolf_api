@@ -510,7 +510,7 @@ class User extends db {
             $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id";
         }
 
-
+        /*
         $following_query = '
       			SELECT distinct
                     user_username.user_username_id,
@@ -535,8 +535,8 @@ class User extends db {
       			' . $this->generate_limit_offset_str($params) . '
       		';
 
+    */
 
-        /*
         $following_query = "
             SELECT distinct
                 user_username.user_username_id,
@@ -545,8 +545,7 @@ class User extends db {
                 user_username.points,
                 user_username.location,
                 user_username.fb_uid,
-                user_username.avatar ,
-                @row:=@row+1 as  rank
+                user_username.avatar
 
                 ,( select rank
                 		from
@@ -565,12 +564,11 @@ class User extends db {
             FROM follow
                 {$join_followers}
                 {$join_str}
-                join (SELECT @row:=0) pos
             WHERE {$where_str}
             ORDER BY rank ASC
          " .$this->generate_limit_offset_str($params). ";
          ";
-        */
+
 
 
         if(isset($_GET['t'])) echo sprintf("query: \n%s \nparams: %s\n", $following_query, var_export($values, true));
