@@ -404,7 +404,7 @@ class User_Controller extends _Controller {
 		}
 
 
-        $logger->LogInfo("user created successfully user_id: {$data['user_id']}" );
+        $logger->LogInfo("user saved successfully user_id: {$data['user_id']}" );
 
 		return static::wrap_result(true, $data);
 	}
