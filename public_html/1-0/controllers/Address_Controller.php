@@ -89,14 +89,14 @@ class Address_Controller extends _Controller {
 	}
 
 	public function create_billing_address($params = array()) {
-		unset($params['address_id']);
+		//unset($params['address_id']);
 		$params['type'] = 'Billing';
 
 		return $this->save_address($params);
 	}
 
 	public function create_shipping_address($params = array()) {
-		unset($params['address_id']);
+		//unset($params['address_id']);
 		$params['type'] = 'Shipping';
 
 		return $this->save_address($params);
