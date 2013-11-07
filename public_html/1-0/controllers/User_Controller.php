@@ -367,8 +367,6 @@ class User_Controller extends _Controller {
 			}
 		}
 
-        $logger->LogInfo("user save insert data: \n" . var_export($user, true) );
-
 
         ///// create offline user.. geeeezzzes, arghhhhhhhhh, wtF....
 
@@ -376,8 +374,20 @@ class User_Controller extends _Controller {
         //gotta set this for the damm user table in admin db
         $offline_user::setDataTable('user');
 
+        // Insert data
+        $logger->LogInfo( sprintf("is new user ?? (%s)", ($is_insert?"TRUE":"FALSE") ));
 
-		$data['user_id'] = $offline_user->save($user);
+
+
+        if($is_insert){
+		    $data['user_id'] = $offline_user->save($user);
+            $logger->LogInfo("save new user insert data: \n" . var_export($user, true) );
+        }else{
+            //user id comes from post data
+            $offline_user->updateUser($user);
+            $data['user_id'] = $params['user_id'];
+            $logger->LogInfo("user update data: \n" . var_export($user, true) );
+        }
 
 
         $logger->LogInfo("user save completed with return data: " . var_export($data, true));
