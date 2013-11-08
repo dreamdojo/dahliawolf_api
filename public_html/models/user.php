@@ -510,32 +510,6 @@ class User extends db {
             $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id";
         }
 
-        /*
-        $following_query = '
-      			SELECT distinct
-                    user_username.user_username_id,
-      			    user_username.user_id,
-      			    user_username.username,
-      			    user_username.points,
-      			    user_username.location,
-      			    user_username.fb_uid,
-      			    user_username.avatar,
-                    (
-                        SELECT COUNT(*)
-                        FROM user_username AS u
-                        WHERE
-                            u.points > user_username.points
-                    ) + 1 AS rank
-      				' . $select_str . '
-      			FROM follow
-                    ' .$join_followers. '
-      				' . $join_str . '
-      			WHERE ' . $where_str . '
-      			ORDER BY rank ASC
-      			' . $this->generate_limit_offset_str($params) . '
-      		';
-
-        */
 
         $following_query = "
             SELECT distinct
