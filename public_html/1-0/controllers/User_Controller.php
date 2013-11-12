@@ -865,6 +865,10 @@ class User_Controller extends _Controller {
         $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
         //gotta set this for the damm user table in admin db
         $offline_user::setDataTable('user');
+        $offline_user::setPrimaryField('user_id');
+
+        $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
+        $logger->LogInfo("reset_password params: " . var_export($params,true));
 
 		// Validations
 		$input_validations = array(
@@ -908,8 +912,9 @@ class User_Controller extends _Controller {
 		}
 
 
-		// Update Password
+        $logger->LogInfo("request secret key: " . $secretKey);
 
+		// Update Password
 		global $_mysql;
 		$_mysql = new mysql();
 

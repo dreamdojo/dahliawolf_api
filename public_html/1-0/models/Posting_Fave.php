@@ -4,10 +4,10 @@
  * Date: 8/28/13
  */
 
-class Posting_Promote extends _Model
+class Posting_Fave extends _Model
 {
-    const TABLE = 'posting_promote';
-    const PRIMARY_KEY_FIELD = 'posting_promote_id';
+    const TABLE = 'posting_fave';
+    const PRIMARY_KEY_FIELD = 'posting_fave_id';
     const DAY_TIME = 86400;
 
     private $table = self::TABLE;
@@ -20,10 +20,9 @@ class Posting_Promote extends _Model
 
     public function create($request_data = array())
     {
-
-        if( self::validatePromotion($request_data) == false )
+        if( self::validateFaveAdd($request_data) == false )
         {
-            self::$Exception_Helper->server_error_exception("Unable to promote posting. user has reached max promotes or has active promotes");
+            self::$Exception_Helper->server_error_exception("Unable to fave posting. user has reached max faves or has active faves");
             return null;
         }
 
@@ -45,40 +44,39 @@ class Posting_Promote extends _Model
         $values['start_date'] = date('Y-m-d h:i:s');
         $values['end_date'] = date('Y-m-d h:i:s', time()+$lifespan);
 
-
         foreach ($fields as $field) {
             if (array_key_exists($field, $request_data)) {
                 $values[$field] = $request_data[$field];
             }
         }
 
-        $logger = new Jk_Logger(APP_PATH . 'logs/posting_promote.log');
-        $logger->LogInfo("ADDING POSTING PROMOTE with data: ", var_export($request_data, true));
+        $logger = new Jk_Logger(APP_PATH . 'logs/posting_faves.log');
+        $logger->LogInfo("ADDING POSTING FAVE with data: ", var_export($request_data, true));
 
 
         try {
             $insert_id = $this->do_db_save($values, NULL);
 
-
+            /*
             if($insert_id)
             {
                 $posting  = new Posting();
                 $posting->update_post();
-
             }
+            */
 
             return array(
                 strtolower(self::PRIMARY_KEY_FIELD) => $insert_id,
             );
 
         } catch (Exception $e) {
-            self::$Exception_Helper->server_error_exception("Unable to promote posting." . $e->getMessage());
+            self::$Exception_Helper->server_error_exception("Unable to fave posting." . $e->getMessage());
             return null;
         }
     }
 
 
-    public function getPostingPromotes($request_data)
+    public function getUserFaves($request_data)
     {
         $where_sql = "";
 
@@ -88,7 +86,7 @@ class Posting_Promote extends _Model
         }
 
         $values['user_id'] = $request_data['user_id'];
-        $values['posting_id'] = $request_data['posting_id'];
+        #$values['posting_id'] = $request_data['posting_id'];
 
         $query = "
             SELECT mt.*
@@ -105,36 +103,7 @@ class Posting_Promote extends _Model
     }
 
 
-    public function getUserPromotes($request_data)
-    {
-        $where_sql = "";
-
-        if(array_key_exists('from_user_id', $request_data))
-        {
-            $where_sql = 'AND mt.from_user_id = :from_user_id';
-        }
-
-        $values['user_id'] = $request_data['user_id'];
-
-        $query = "
-            SELECT mt.*
-            FROM {$this->table} as mt
-            WHERE mt.user_id = :user_id
-            #AND mt.posting_id =  :posting_id
-            {$where_sql}
-        ";
-
-        $data = $this->fetch($query, $values);
-        self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($data) ) );
-
-        return $data;
-    }
-
-
-
-
-
-    private function validatePromotion($request_data)
+    private function validateFaveAdd($request_data)
     {
         $where_sql = "";
 
@@ -158,12 +127,12 @@ class Posting_Promote extends _Model
         ";
 
         $active_promotes  = $this->fetch($query, $values);
-        self::trace( sprintf("$query\n ACTIVE PROMOTES ?: %s", ($active_promotes && count($active_promotes) > 0? var_dump($active_promotes) : "NULL" ) ) );
+        self::trace( sprintf("$query\n ACTIVE FAVE ?: %s", ($active_promotes && count($active_promotes) > 0? var_dump($active_promotes) : "NULL" ) ) );
 
         if($active_promotes && count($active_promotes) > 0) return false;
 
-        $total_promotes = self::getPostingPromotes($request_data);
-        $max_promotes = 2;
+        $total_promotes = self::getUserFaves($request_data);
+        $max_promotes = 3;
         if($active_promotes && count($total_promotes) > $max_promotes) return false;
 
         return true;
