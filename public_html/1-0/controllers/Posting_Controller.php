@@ -48,8 +48,40 @@ class Posting_Controller  extends  _Controller
     {
         $this->load('Posting');
 
-        $message = new Posting();
-        $response = $message->promotePost($request_data);
+        $posting = new Posting();
+        $response = $posting->promotePost($request_data);
+
+        return  $response;
+    }
+
+
+    public function fave($request_data)
+    {
+        $this->load('Posting');
+
+        $posting = new Posting();
+        $response = $posting->favePost($request_data);
+
+        return  $response;
+    }
+
+    public function remove_fave($request_data)
+    {
+        $this->load('Posting');
+
+        $posting = new Posting();
+        $response = $posting->removeFave($request_data);
+
+        return  $response;
+    }
+
+
+    public function get_user_faves($request_data)
+    {
+        $this->load('Posting');
+
+        $posting = new Posting();
+        $response = $posting->getUserFaves($request_data);
 
         return  $response;
     }

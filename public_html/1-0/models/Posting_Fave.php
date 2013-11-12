@@ -20,6 +20,7 @@ class Posting_Fave extends _Model
 
     public function create($request_data = array())
     {
+
         if( self::validateFaveAdd($request_data) == false )
         {
             self::$Exception_Helper->server_error_exception("Unable to fave posting. user has reached max faves or has active faves");
@@ -34,15 +35,16 @@ class Posting_Fave extends _Model
             'posting_id',
             'user_id',
             'created_at',
-            'start_date',
-            'end_date'
         );
 
         //static vars
         $lifespan = self::DAY_TIME*30;
         $values['created_at'] = date('Y-m-d h:i:s');
+
+        /*
         $values['start_date'] = date('Y-m-d h:i:s');
         $values['end_date'] = date('Y-m-d h:i:s', time()+$lifespan);
+        */
 
         foreach ($fields as $field) {
             if (array_key_exists($field, $request_data)) {
@@ -57,26 +59,99 @@ class Posting_Fave extends _Model
         try {
             $insert_id = $this->do_db_save($values, NULL);
 
-            /*
-            if($insert_id)
-            {
-                $posting  = new Posting();
-                $posting->update_post();
-            }
-            */
-
             return array(
                 strtolower(self::PRIMARY_KEY_FIELD) => $insert_id,
             );
 
         } catch (Exception $e) {
-            self::$Exception_Helper->server_error_exception("Unable to fave posting." . $e->getMessage());
+            if( stripos($e->getMessage(), 'Duplicate') > -1 )
+            {
+                self::$Exception_Helper->server_error_exception("This Posting is already in your faves");
+            }else{
+                self::$Exception_Helper->server_error_exception("Unable to fave posting.");
+            }
+
             return null;
         }
     }
 
 
-    public function getUserFaves($request_data)
+    public function getUserFaves($request_data, $with_details=false)
+    {
+        $where_sql = "";
+
+        $values['user_id'] = $request_data['user_id'];
+        #$values['posting_id'] = $request_data['posting_id'];
+
+        $query = "
+            SELECT mt.*
+            FROM {$this->table} as mt
+            WHERE mt.user_id = :user_id
+        ";
+
+        $user_faves = $this->fetch($query, $values);
+
+        $this->load('Posting');
+
+        $posting_ids= array();
+        if($user_faves && $with_details)foreach($user_faves as &$fave_data)
+        {
+            $posting_ids[] = $fave_data['posting_id'];
+        }
+
+        $params = array(
+
+            'posting_ids' =>   $posting_ids,
+            'user_id' => $request_data['user_id']
+        );
+
+        if($user_faves && $with_details) {
+            $posting = new Posting();
+            $posting_datas = $posting->getByIdsArray($params);
+
+            if($posting_datas && $posting_datas['posts'])
+            {
+                foreach($user_faves as &$fave_data)
+                {
+                    foreach($posting_datas['posts'] as $posting_data)
+                    {
+
+                        if($posting_data['posting_id'] == $fave_data['posting_id'])
+                        {
+                            $fave_data['posting_data'] = $posting_data;
+                            break;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($user_faves) ) );
+
+        return $user_faves;
+    }
+
+
+    public function remove($request_data)
+    {
+        $values['user_id'] = $request_data['user_id'];
+        $values['posting_id'] = $request_data['posting_id'];
+
+        $query = "
+            DELETE mt.*
+            FROM {$this->table} as mt
+            WHERE mt.posting_id = :posting_id
+              AND mt.user_id = :user_id
+        ";
+
+        $data = $this->query($query, $values);
+        self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($data) ) );
+
+        return $data;
+    }
+
+    public function removeFave($request_data)
     {
         $where_sql = "";
 
@@ -105,35 +180,9 @@ class Posting_Fave extends _Model
 
     private function validateFaveAdd($request_data)
     {
-        $where_sql = "";
-
-        if(array_key_exists('from_user_id', $request_data))
-        {
-            $where_sql = 'AND mt.from_user_id = :from_user_id';
-        }
-
-        $values['user_id'] = $request_data['user_id'];
-        $values['posting_id'] = $request_data['posting_id'];
-
-        $interval = 30*self::DAY_TIME;
-
-        $query = "
-            SELECT mt.*
-            FROM {$this->table} as mt
-            WHERE mt.user_id = :user_id
-            AND mt.posting_id =  :posting_id
-            AND NOW() BETWEEN mt.start_date and mt.end_date
-            {$where_sql}
-        ";
-
-        $active_promotes  = $this->fetch($query, $values);
-        self::trace( sprintf("$query\n ACTIVE FAVE ?: %s", ($active_promotes && count($active_promotes) > 0? var_dump($active_promotes) : "NULL" ) ) );
-
-        if($active_promotes && count($active_promotes) > 0) return false;
-
-        $total_promotes = self::getUserFaves($request_data);
+        $total_faves = self::getUserFaves($request_data);
         $max_promotes = 3;
-        if($active_promotes && count($total_promotes) > $max_promotes) return false;
+        if($total_faves && count($total_faves) >= $max_promotes) return false;
 
         return true;
     }
