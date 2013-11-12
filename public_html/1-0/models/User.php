@@ -320,7 +320,7 @@ class User extends _Model
 
 
 
-    public function get_commissions($user_id, $summary=false, $id_shop=3, $id_lang=1 )
+    public function get_sales($user_id, $summary=false, $id_shop=3, $id_lang=1 )
     {
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
 

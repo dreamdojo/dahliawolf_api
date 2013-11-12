@@ -637,7 +637,7 @@ class User_Controller extends _Controller {
 
         $commer_user = new User($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE);
 
-        $total_sales = $commer_user->get_commissions( $data['user_id'] );
+        $total_sales = $commer_user->get_sales( $data['user_id'] );
 
         $data['sales_total'] =  $total_sales['sales_total'];
 
@@ -779,8 +779,13 @@ class User_Controller extends _Controller {
 	/*
 	send reset password email
 	*/
-	public function reset_password_link($params = array()) {
-		$this->load('User');
+	public function reset_password_link($params = array())
+    {
+        $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+        //gotta set this for the damm user table in admin db
+        $offline_user::setDataTable('user');
+
+        //$this->load('User');
 		$this->load('Config');
 
 		if (empty($params['email'])) {
@@ -797,7 +802,7 @@ class User_Controller extends _Controller {
 			_Model::$Exception_Helper->request_failed_exception('Email not found.');
 		}
 
-		$user = $this->User->get_row(
+		$user = $offline_user->get_row(
 			array(
 				'email' => $params['email']
 			)
@@ -852,7 +857,10 @@ class User_Controller extends _Controller {
 	user resetpassword
 	*/
 	public function reset_password($params = array()) {
-		$this->load('User');
+		$this->load('User', $db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+        $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+        //gotta set this for the damm user table in admin db
+        $offline_user::setDataTable('user');
 
 		// Validations
 		$input_validations = array(
@@ -885,7 +893,7 @@ class User_Controller extends _Controller {
 			_Model::$Exception_Helper->request_failed_exception('Invalid key.');
 		}
 
-		$user = $this->User->get_row(
+		$user = $offline_user->get_row(
 			array(
 				'email' => $params['email']
 			)
@@ -913,7 +921,7 @@ class User_Controller extends _Controller {
 	}
 
 
-    public function get_comissions($params = array())
+    public function get_sales($params = array())
     {
         $logger = new Jk_Logger(APP_PATH . 'logs/product.log');
         $logger->LogInfo("request params: " . var_export($params,true));
@@ -948,7 +956,7 @@ class User_Controller extends _Controller {
         $commer_user = new User($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE);
 
         $summary =  isset($params['summary']) && (int)$params['summary'] == 1 ? true : false;
-        $data = $commer_user->get_commissions($user_id, $summary);
+        $data = $commer_user->get_sales($user_id, $summary);
 
 		return $data;
 	}

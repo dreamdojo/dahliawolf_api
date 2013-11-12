@@ -54,6 +54,17 @@ class Posting_Controller  extends  _Controller
         return  $response;
     }
 
+    public function getPromote($request_data)
+    {
+        $this->load('Posting_Promote');
+
+        /** @var Posting_Promote $promotes */
+        $promotes = new Posting();
+        $response = $promotes->getPromotes($request_data);
+
+        return  $response;
+    }
+
 
     public function get_lovers( $request_data = array() )
     {

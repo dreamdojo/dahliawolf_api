@@ -88,13 +88,13 @@ class Posting_Promote extends _Model
         }
 
         $values['user_id'] = $request_data['user_id'];
-        $values['posting_id'] = $request_data['posting_id'];
+        #$values['posting_id'] = $request_data['posting_id'];
 
         $query = "
             SELECT mt.*
             FROM {$this->table} as mt
             WHERE mt.user_id = :user_id
-            AND mt.posting_id =  :posting_id
+            #AND mt.posting_id =  :posting_id
             {$where_sql}
         ";
 
