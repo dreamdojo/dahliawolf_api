@@ -782,8 +782,11 @@ class User_Controller extends _Controller {
 	public function reset_password_link($params = array())
     {
         $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+        $dahlia_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
         //gotta set this for the damm user table in admin db
+
         $offline_user::setDataTable('user');
+        $offline_user::setPrimaryField('user_id');
 
         //$this->load('User');
 		$this->load('Config');
@@ -801,6 +804,7 @@ class User_Controller extends _Controller {
 		if (!$login->exists($params['email'], false, 'email')) {
 			_Model::$Exception_Helper->request_failed_exception('Email not found.');
 		}
+
 
 		$user = $offline_user->get_row(
 			array(

@@ -20,6 +20,7 @@ class _Model extends Jk_Base{
     protected $errors =null;
 
     static protected $data_table;
+    static protected $primary_field;
 
     public static function setDataTable($table)
     {
@@ -29,6 +30,17 @@ class _Model extends Jk_Base{
     public static function getDataTable()
     {
         return self::$data_table;
+    }
+
+
+    public static function setPrimaryField($pf)
+    {
+        self::$primary_field = $pf;
+    }
+
+    public static function getPrimaryField()
+    {
+        return self::$primary_field;
     }
 	
 	public function __construct($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE) {
@@ -189,8 +201,11 @@ class _Model extends Jk_Base{
 		$called_class = get_called_class();
 		
 		// Default options
-		$single = !empty($options['single']) ? $options['single'] : false;
-		$select_fields = !empty($options['select_fields']) ? $options['select_fields'] : array($called_class::TABLE . '.*');
+        $data_table = ( self::getDataTable() ? self::getDataTable() : $called_class::TABLE);
+        $primary_field = ( self::getPrimaryField() ? self::getPrimaryField() : $called_class::PRIMARY_KEY_FIELD);
+
+        $single = !empty($options['single']) ? $options['single'] : false;
+		$select_fields = !empty($options['select_fields']) ? $options['select_fields'] : array($data_table . '.*');
 		
 		// Format select
 		$select_str = implode(', ', $select_fields);
@@ -208,7 +223,7 @@ class _Model extends Jk_Base{
 		}
 		$where_str = implode(' AND ', $wheres);
 
-        $data_table = ( self::getDataTable() ? self::getDataTable() : $called_class::TABLE);
+
 		
 		$sql = '
 			SELECT ' . $select_str . '
@@ -225,7 +240,7 @@ class _Model extends Jk_Base{
 			}
 		}
 		else {
-			$sql .= ' ORDER BY ' . $called_class::PRIMARY_KEY_FIELD . ' ASC ';
+			$sql .= ' ORDER BY ' . $primary_field . ' ASC ';
 		}
 		
 		$sql .=  $single ? ' LIMIT 1' : '';
