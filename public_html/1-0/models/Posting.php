@@ -314,6 +314,8 @@ class Posting extends _Model
         $values = array();
         $sub_where_str = sprintf('AND posting.posting_id IN (%s)', implode(",", $ids_array ));
 
+
+
         // Also don't show dislikes
         if (!empty($params['viewer_user_id'])) {
             $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked';
@@ -331,52 +333,6 @@ class Posting extends _Model
             $sub_where_str .= ' AND posting_dislike.posting_id IS NULL';
         }
 
-        // Search
-        if (!empty($params['q'])) {
-            $sub_where_str .= ' AND (posting.description LIKE :q OR user_username.username LIKE :q)';
-            $values[':q'] = '%' . $params['q'] . '%';
-        }
-
-        // Since posting_id
-        if (!empty($params['since_posting_id'])) {
-            $sub_where_str .= 'AND posting.posting_id > :since_posting_id';
-            $values[':since_posting_id'] = $params['where']['since_posting_id'];
-        }
-
-
-        // Hot (sort by likes within x days)
-        if (!empty($params['like_day_threshold'])) {
-            $outer_select_str = ', posting.day_threshold_likes';
-            $hot_select_str = ', IFNULL(COUNT(posting_like_hot.posting_id), 0) AS day_threshold_likes';
-            $sub_join_str .= '
-                INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
-            ';
-            $order_by_str = 'day_threshold_likes DESC';
-
-            $values[':like_day_threshold'] = $params['like_day_threshold'];
-
-            // Only show posts within threshold
-            $sub_where_str .= ' AND posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()';
-            $group_by_str = 'GROUP BY posting.posting_id';
-        }
-
-
-        //valid filters
-        $valid_filters = array(
-            'following'     => ' AND follow.follower_user_id = :follower_user_id'
-        );
-
-
-        // Filter by following
-        if ( !empty($params['filter_by']) && isset( $valid_filters[$params['filter_by']]) && !empty($params['follower_user_id'])) {
-            $sub_join_str .= '
-                INNER JOIN follow ON user_username.user_id = follow.user_id
-            ';
-
-            $filter = $valid_filters[$params['filter_by']];
-            $sub_where_str .= "$filter";
-            $values[':follower_user_id'] = $params['follower_user_id'];
-        }
 
         // Timestamp
         if (!empty($params['timestamp'])) {

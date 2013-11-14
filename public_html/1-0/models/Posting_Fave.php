@@ -105,6 +105,8 @@ class Posting_Fave extends _Model
             'user_id' => $request_data['user_id']
         );
 
+        if($request_data['viewer_user_id']) $params['viewer_user_id'] = $request_data['viewer_user_id'];
+
         if($user_faves && $with_details) {
             $posting = new Posting();
             $posting_datas = $posting->getByIdsArray($params);
