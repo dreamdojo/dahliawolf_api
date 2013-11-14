@@ -85,8 +85,8 @@ class Posting_Fave extends _Model
 
         $query = "
             SELECT mt.*
-            FROM {$this->table} as mt
-            WHERE mt.user_id = :user_id
+            FROM   {$this->table} as mt
+            WHERE  mt.user_id = :user_id
         ";
 
         $user_faves = $this->fetch($query, $values);
@@ -99,9 +99,9 @@ class Posting_Fave extends _Model
             $posting_ids[] = $fave_data['posting_id'];
         }
 
-        $params = array(
-
-            'posting_ids' =>   $posting_ids,
+        $params = array
+        (
+            'posting_ids' => $posting_ids,
             'user_id' => $request_data['user_id']
         );
 

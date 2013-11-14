@@ -131,7 +131,7 @@ class Payment_Controller extends _Controller {
 			'card_num' => $params['number']
 			, 'card_code' => $params['cvv']
 			, 'exp_date' => $params['exp_month'] . '/' . $params['exp_year']
-			, 'amount' => $params['amount']
+			, 'amount' => $params['amount'] <= 0 ? .01 : $params['amount']
 			, 'description' => !empty($params['description']) ? $params['description'] : '' 
 		);
 		
