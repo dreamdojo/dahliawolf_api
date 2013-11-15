@@ -90,7 +90,7 @@ class User_Controller extends _Controller {
 					$error_code = 0;
 				}
 				$error = $error_code_map[$error_code];
-	}
+            }
 			else {
 				$data['user'] = $this->User->filter_columns($login->user);
 				$data['token'] = $authen;

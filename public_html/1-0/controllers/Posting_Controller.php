@@ -12,6 +12,16 @@ class Posting_Controller  extends  _Controller
     }
 
 
+    public function get_posting($request_data)
+    {
+        $this->load('Posting');
+
+        $message = new Posting();
+        $response = $message->getPostDetails($request_data);
+
+        return  $response;
+    }
+
     public function get_all($request_data = array())
     {
         $this->load('Posting');
@@ -74,6 +84,50 @@ class Posting_Controller  extends  _Controller
 
         return  $response;
     }
+
+
+    public function add_tag($request_data)
+    {
+        $this->load('Posting_Tag');
+
+        $posting = new Posting_Tag();
+        $response = $posting->create($request_data);
+
+        return  $response;
+    }
+
+    public function remove_tag($request_data)
+    {
+        $this->load('Posting_Tag');
+
+        $posting = new Posting_Tag();
+        $response = $posting->remove($request_data);
+
+        return  $response;
+    }
+
+
+    public function edit_tag($request_data)
+    {
+        $this->load('Posting_Tag');
+
+        $posting = new Posting_Tag();
+        $response = $posting->edit($request_data);
+
+        return  $response;
+    }
+
+
+    public function get_tags($request_data)
+    {
+        $this->load('Posting_Tag');
+
+        $posting = new Posting_Tag();
+        $response = $posting->getPostingTags($request_data);
+
+        return  $response;
+    }
+
 
 
     public function get_user_faves($request_data)
