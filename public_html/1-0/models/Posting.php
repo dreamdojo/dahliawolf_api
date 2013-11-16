@@ -719,6 +719,25 @@ class Posting extends _Model
     }
 
 
+    public function getPostingBankImages($request_data)
+    {
+        $where_sql = "";
+        $values['user_id'] = $request_data['user_id'];
+
+        $query = "
+            SELECT mt.*
+            FROM {$this->table} as mt
+            #AND mt.user_id =  :user_id
+            {$where_sql}
+        ";
+
+        $data = $this->fetch($query, $values);
+        self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($data) ) );
+
+        return $data;
+    }
+
+
     public function promotePost($request_data = array())
     {
         $promote = new Posting_Promote();

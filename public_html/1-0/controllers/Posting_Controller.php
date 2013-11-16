@@ -186,6 +186,16 @@ class Posting_Controller  extends  _Controller
 
 
 
+    public function get_bank_images($request_data = array())
+    {
+        $this->load('Posting');
+
+        $posting = new Posting();
+        $data = $posting->getPostingBankImages($request_data);
+
+        return static::wrap_result(($posting->hasError()? false:true), $data, 200, $posting->getErrors() );
+    }
+
 
 }
 
