@@ -494,8 +494,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$user['data']['user'] = $data['data']['login']['data']['user'];
 			$user['data']['token'] = $data['data']['login']['data']['token'];
 
-			// Log activity
-			log_activity($user_id, 4, 'Registered', 'user_username', $user_id);
+
 
 			// Send email
 			unset($User);
@@ -503,7 +502,10 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$Email->email('signup', $user_id);
 
             //// follow default users
-            @register_default_follows($user_id);
+            register_default_follows($user_id);
+
+            // Log activity
+            log_activity($user_id, 4, 'Registered', 'user_username', $user_id);
 
 			echo json_pretty(json_encode(($user)));
 			return;

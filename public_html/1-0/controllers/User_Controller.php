@@ -401,6 +401,12 @@ class User_Controller extends _Controller {
 			$user_group_link_id = $this->User_Group->save_link($data['user_id'], $customer_user_group_id, $public_user_group_portal_id);
 
             $logger->LogInfo("// Created user group link: $user_group_link_id" );
+
+
+            $user_model = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE );
+            $user_model->setDataTable('user_username');
+            $user_model->setPrimaryField('user_username_id');
+            $user_model->registerDefaultFollows($data['user_id']);
 		}
 
 

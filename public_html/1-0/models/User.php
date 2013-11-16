@@ -269,11 +269,11 @@ class User extends _Model
         foreach ($follow_these as $ftk => $fthisone) {
             $follow = array(
                 'user_id' => $fthisone,
-                'follower_user_id' => $user_id);
+                'follower_user_id' => $user_id
+            );
+            $logger->LogInfo(sprintf("registration autofollow following user: \n%s ", var_export($follow, true)));
 
-            $follow_user = new User();
-            $result_id = $follow_user->follow($follow);
-            $logger->LogInfo(sprintf("follow following user: \n%s \nfollow_id:%s", var_export($follow, true), $result_id));
+            $result_id = $this->follow($follow);
         }
     }
 
@@ -281,6 +281,7 @@ class User extends _Model
     public function follow($data = array())
     {
         $error = NULL;
+        $this->load('Follow');
         $follow = new Follow();
 
         try {
@@ -291,7 +292,7 @@ class User extends _Model
             );
 
         } catch (Exception $e) {
-            self::$Exception_Helper->server_error_exception("Unable to follow user." . $e->getMessage());
+            self::$Exception_Helper->server_error_exception("Unable to follow user.  " . $e->getMessage());
         }
 
     }
@@ -391,8 +392,6 @@ class User extends _Model
                 )
 
             {$group_sql}
-
-
         ";
 
         $logger->LogInfo("query params: " . var_export($params,true));

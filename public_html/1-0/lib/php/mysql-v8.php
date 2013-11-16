@@ -107,7 +107,7 @@ private $functions = array('NOW()');
 		return empty($data) ? false : $data;
 	}
 	
-	public function insert($table, $fields, $replace = false) {
+	public function insert($table, $fields, $replace = false, $ignore=true) {
 		
 		$values = array();
 		$prepValues = array();
@@ -123,9 +123,12 @@ private $functions = array('NOW()');
 				$prepValues[':' . $field] = $value;
 			}
 		}
-		
-		$sql = ($replace == false ? 'INSERT' : 'REPLACE') . ' INTO `' . $table . '`  (`' . implode('`, `', array_keys($fields)) . '`) VALUES (' . implode(', ', $values) . ')';
-		
+
+        $logger = new Jk_Logger(APP_PATH.'logs/pdo_adapter.log');
+
+		$sql = ($ignore? 'INSERT IGNORE' : ($replace == false ? 'INSERT' : 'REPLACE') ) . ' INTO `' . $table . '`  (`' . implode('`, `', array_keys($fields)) . '`) VALUES (' . implode(', ', $values) . ')';
+
+        $logger->LogInfo( sprintf("db insert\n table: %s\n insert values: %s\n final query: %s", $table , var_export($fields, true), $sql)  );
 		$this->prepareExec($sql, $prepValues);
 		
 		return true;

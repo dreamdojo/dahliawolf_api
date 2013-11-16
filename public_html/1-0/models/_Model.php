@@ -14,39 +14,66 @@ class _Model extends Jk_Base{
 	
 	protected static $dbs = array();
     protected $logger;
+
     protected $db_host = '';
 	protected $db_name = '';
+    protected $db_user = '';
+    protected $db_password = '';
+
 
     protected $errors =null;
 
-    static protected $data_table;
-    static protected $primary_field;
+    static protected $data_tables;
+    static protected $primary_fields;
 
     public static function setDataTable($table)
     {
-        self::$data_table = $table;
+        if(!is_array(self::$data_tables)) self::$data_tables = array();
+        $called_class = get_called_class();
+        self::$data_tables[$called_class] = $table;
     }
 
     public static function getDataTable()
     {
-        return self::$data_table;
+        if(!is_array(self::$data_tables)) self::$data_tables = array();
+        $called_class = get_called_class();
+        return self::$data_tables[$called_class];
     }
 
 
     public static function setPrimaryField($pf)
     {
-        self::$primary_field = $pf;
+        if(!is_array(self::$primary_fields)) self::$primary_fields = array();
+        $called_class = get_called_class();
+        self::$primary_fields[$called_class] = $pf;
     }
 
     public static function getPrimaryField()
     {
-        return self::$primary_field;
+        if(!is_array(self::$primary_fields)) self::$primary_fields = array();
+        $called_class = get_called_class();
+        self::$primary_fields[$called_class];
+    }
+
+
+    protected function getDbCredentials()
+    {
+        $settings = array(
+            'host' => $this->db_host,
+            'user' => $this->db_user,
+            'password' => $this->db_password,
+            'db_name' => $this->db_name,
+        );
+
+        return $settings;
     }
 	
-	public function __construct($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE) {
-		
-		$this->db_host = $db_host;
-		$this->db_name = $db_name;
+	public function __construct($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE)
+    {
+        $this->db_host = $db_host;
+        $this->db_user = $db_user;
+        $this->db_password = $db_password;
+        $this->db_name = $db_name;
 		
 		if (class_exists('Database_Helper') 
 			&& (empty(self::$dbs[$db_host]) 
@@ -137,11 +164,11 @@ class _Model extends Jk_Base{
 		return self::$dbs[$this->db_host][$this->db_name]->update($called_class::TABLE, $fields, $where_sql, $where_values, $operators);
 	}
 	
-	public function db_insert($fields, $replace = false) {		
+	public function db_insert($fields, $replace = false, $ignore=true) {
 		$called_class = get_called_class();
         $data_table = ( self::getDataTable() ? self::getDataTable() : $called_class::TABLE);
-		
-		return self::$dbs[$this->db_host][$this->db_name]->insert($data_table, $fields, $replace);
+
+		return self::$dbs[$this->db_host][$this->db_name]->insert($data_table, $fields, $replace, $ignore);
 	}
 	
 	public function db_insert_many($value_lists) {		
@@ -166,22 +193,28 @@ class _Model extends Jk_Base{
 		return self::$dbs[$this->db_host][$this->db_name]->row_count();
 	}
 	
-	protected function do_db_save($values, $info, $has_date_modified = true) {
+	protected function do_db_save($values, $info, $has_date_modified = true, $ignore=true)
+    {
 		$called_class = get_called_class();
-		$key_field = $called_class::PRIMARY_KEY_FIELD;
-		
+		$key_field = self::getPrimaryField() ? self::getPrimaryField() : $called_class::PRIMARY_KEY_FIELD;
+        $logger = new Jk_Logger(APP_PATH.'logs/db_inserts.log');
+
 		// Update
 		if (!empty($info[$key_field]) && is_numeric($info[$key_field])) {
 			$where_values = array(
 				':' . $key_field => $info[$key_field]
 			);
 			$this->db_update($values, $key_field . ' = :' . $key_field, $where_values);
+
+            $logger->LogInfo("do_db_save: update");
 			
 			return $this->db_row_count() ? $info[$key_field] : NULL;
 		}
 		// Insert
 		else {
-			$this->db_insert($values);
+            $logger->LogInfo("do_db_save: insert");
+
+			$this->db_insert($values, false, $ignore);
 			$insert_id = $this->db_last_insert_id();
 			
 			return $insert_id;

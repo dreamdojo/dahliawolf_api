@@ -8,16 +8,21 @@ class Follow extends _Model {
 	const TABLE = 'follow';
 	const PRIMARY_KEY_FIELD = 'follow_id';
 
+    protected $fields = array(
+   		'created',
+   		 'user_id',
+   		 'follower_user_id'
+   	);
+
     public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
     {
         parent::__construct($db_host, $db_user, $db_password, $db_name );
+
+        self::setDataTable('follow');
+        self::setPrimaryField('follow_id');
     }
 
-	protected $fields = array(
-		'created',
-		 'user_id',
-		 'follower_user_id'
-	);
+
 
     public function followUser($data = array())
     {
@@ -30,11 +35,9 @@ class Follow extends _Model {
             'follower_user_id',
         );
 
+        $logger = new Jk_Logger(APP_PATH.'logs/follow.log');
 
-        $logger = new Jk_Logger(APP_PATH.'logs/user.log');
-
-        $logger->LogInfo("user follow init params: " . var_export($data, true));
-
+        //$logger->LogInfo( sprintf("user follow init params: %s\ndb settings %s\n bind values: %s ", var_export($data, true), var_export(self::getDbCredentials(), true), var_export($values,true)  ));
 
         foreach ($fields as $field) {
             if (array_key_exists($field, $data)) {
@@ -43,15 +46,16 @@ class Follow extends _Model {
         }
 
         try {
+            $logger->LogInfo("save user follow;");
             $insert_id = $this->do_db_save($values, $data);
-            $logger->LogInfo("user follow id $insert_id");
             return array(
-                    strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
-                    //'model_data' => $data
-                    );
+                strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
+                //'model_data' => $data
+                );
 
         } catch(Exception $e) {
-            self::$Exception_Helper->server_error_exception("Unable to follow users.". $e->getMessage());
+            $logger->LogInfo("Unable to follow users.". $e->getMessage());
+            //self::$Exception_Helper->server_error_exception("Unable to follow users.". $e->getMessage());
         }
 
     }
