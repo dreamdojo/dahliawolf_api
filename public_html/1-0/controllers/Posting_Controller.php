@@ -26,8 +26,8 @@ class Posting_Controller  extends  _Controller
     {
         $this->load('Posting');
 
-        $message = new Posting();
-        $response = $message->getAll($request_data);
+        $posting = new Posting();
+        $response = $posting->getAll($request_data);
 
         return  $response;
     }
