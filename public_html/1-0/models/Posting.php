@@ -741,8 +741,6 @@ class Posting extends _Model
               {$extra_where_sql}
         ";
 
-        if( isset($GET['t']) ) echo "$query";
-
         $data = $this->fetch($query, $values);
         self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($data) ) );
 
