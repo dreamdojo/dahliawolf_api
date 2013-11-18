@@ -721,15 +721,27 @@ class Posting extends _Model
 
     public function getPostingBankImages($request_data)
     {
-        $where_sql = "";
         $values['user_id'] = $request_data['user_id'];
+        $extra_where_sql= "";
+
+        if( (int) $request_data['limit_per_day'] == 1)
+        {
+            $extra_where_sql = "AND DATE(mt.created) = DATE(NOW())";
+        }
 
         $query = "
             SELECT mt.*
+              , imageInfo.baseurl, imageInfo.attribution_url
+              , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
             FROM {$this->table} as mt
-            #AND mt.user_id =  :user_id
-            {$where_sql}
+              INNER JOIN image ON mt.image_id = image.id
+              LEFT JOIN dahliawolf_repository.imageInfo AS imageInfo ON image.repo_image_id = imageInfo.id
+            WHERE mt.user_id = :user_id
+              AND image.repo_image_id IS NOT NULL
+              {$extra_where_sql}
         ";
+
+        if( isset($GET['t']) ) echo "$query";
 
         $data = $this->fetch($query, $values);
         self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($data) ) );
