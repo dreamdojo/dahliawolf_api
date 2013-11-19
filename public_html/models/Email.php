@@ -3,6 +3,8 @@
 class Email extends db {
 	private $from;
 	private $from_email;
+    private $content;
+    private $content_vars = array();
 
 	public function __construct() {
 		parent::__construct();
@@ -11,7 +13,34 @@ class Email extends db {
 		$this->from_email = FROM_EMAIL;
 	}
 
-	private function get_user($user_id) {
+
+    public function setVar($var, $value)
+    {
+        $this->content_vars[$var] = $value;
+    }
+
+    protected function renderContentVar($var = 'cvar', $content = '')
+    {
+        $this->content = str_replace("<!--$var-->",  $content, $this->content);
+    }
+
+    protected function renderContentVars()
+    {
+        foreach($this->content_vars as $var => $value)
+        {
+            self::renderContentVar($var, $value);
+        }
+    }
+
+    protected function getFinalContent()
+    {
+        self::renderContentVars();
+
+        return $this->content;
+    }
+
+	private function get_user($user_id)
+    {
 		// Already have user array
 		if (is_array($user_id)) {
 			$user_id['name'] = $user_id['first_name'] . ' ' . $user_id['last_name'];
@@ -32,7 +61,6 @@ class Email extends db {
 				, 'first_name' => $user[0]['first_name']
 				, 'last_name' => $user[0]['last_name']
 				, 'email' => $user[0]['email_address']
-
 				, 'comment_notifications' => $user[0]['comment_notifications']
 				, 'like_notifications' => $user[0]['like_notifications']
 			);
@@ -64,19 +92,20 @@ class Email extends db {
 
 			$html_body = $to . ',
 
-You have been invited to join Dahlia Wolf
-Simply click on the link below to check it out:
-<a href="http://www.dahliawolf.com">http://www.dahliawolf.com</a>
+            You have been invited to join Dahlia Wolf
+            Simply click on the link below to check it out:
+            <a href="http://www.dahliawolf.com">http://www.dahliawolf.com</a>
 
-' .
-(!empty($message)
-	? 'Your friend also included this message for you:
-' . $message . '
-'
-: ''
-)
-. $this->get_email_footer() . '
-';
+            ' .
+            (!empty($message)
+                ? 'Your friend also included this message for you:
+            ' . $message . '
+            '
+            : ''
+            )
+            . $this->get_email_footer() . '
+            ';
+
 			$html_body = nl2br($html_body);
 
 			$result = email($from, $from_email, $to, $to_email, $subject, $html_body);
@@ -92,9 +121,11 @@ Simply click on the link below to check it out:
 		$function = 'get_' . $type . '_params';
 		$params = $this->$function($user, $optional_params);
 
+        $email_content = self::getFinalContent();
+
 		$data = array();
 		if (!empty($params)) {
-			$result = email($this->from, $this->from_email, $user['name'], $user['email'], $params['subject'], $params['html_body']);
+			$result = email($this->from, $this->from_email, $user['name'], $user['email'], $params['subject'], $email_content );
 			$data[$user['email']] = $result;
 		}
 		return json_encode(resultArray(true, $data));
@@ -103,27 +134,18 @@ Simply click on the link below to check it out:
 	public function get_signup_params($user) {
 		$subject = 'Welcome to Dahlia Wolf';
 
-		/*$html_body = 'Dear ' . $user['first_name'] . ',
 
-Welcome to Dahlia Wolf.
-' . $this->get_email_footer() . '
-';
-		$html_body = nl2br($html_body);*/
-		$html_body = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/emails/custom/welcome.html');
+        $this->content = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/emails/custom/welcome.html');
 
 		return array(
-			'subject' => $subject
-			, 'html_body' => $html_body
+			'subject' => $subject,
+			'html_body' => $this->content
 		);
 	}
 
-	public function get_add_product_params($user, $params = array()) {
-		/*$html_body = 'Dear ' . $user['first_name'] . ',
+	public function get_add_product_params($user, $params = array())
+    {
 
-Your item received the most likes and is eligible to be voted on.
-' . $this->get_email_footer() . '
-';
-		$html_body = nl2br($html_body);*/
 		if (!empty($params['is_primary'])) {
 			$subject = 'Your inspiration has post has WON! Your item will be created! You are one step away from having you stuff sold in our shop and  earning you money!';
 			ob_start();

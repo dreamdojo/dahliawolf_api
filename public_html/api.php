@@ -498,8 +498,9 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
 			// Send email
 			unset($User);
-			$Email = new Email();
-			$Email->email('signup', $user_id);
+			$email_template = new Email();
+            $email_template->setVar('user_name', "{$_REQUEST['username']}" );
+			$email_template->email('signup', $user_id);
 
             //// follow default users
             register_default_follows($user_id);
@@ -1590,8 +1591,8 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			unset($User);
 
 			// Send email
-			$Email = new Email();
-			$Email->email('add_vote_winner', $post['data']['user_id'], array(
+			$email_template = new Email();
+			$email_template->email('add_vote_winner', $post['data']['user_id'], array(
 					'rank' => $user['rank']
 					, 'points' => $user['points']
 					, 'comments' => $user['comments']
@@ -1652,8 +1653,8 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 
 			// Send email
 			unset($Posting);
-			$Email = new Email();
-			$Email->email('add_product', $post_user_id, array(
+			$email_template = new Email();
+			$email_template->email('add_product', $post_user_id, array(
 					'is_primary' => $is_primary
 					, 'posting_id' => $_REQUEST['posting_id']
 				)
@@ -2038,10 +2039,10 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'social') {
 				)
 			);
 
-			$Email = new Email();
+			$email_template = new Email();
 
 			$message = !empty($_REQUEST['message']) ? $_REQUEST['message'] : NULL;
-			echo $Email->invite_emails($_REQUEST['user_id'], $_REQUEST['emails'], $message);
+			echo $email_template->invite_emails($_REQUEST['user_id'], $_REQUEST['emails'], $message);
 
 			die();
 		}
@@ -2105,8 +2106,8 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'email') {
 				)
 			);
 
-			$Email = new Email();
-			echo $Email->email($_REQUEST['function'], $_REQUEST['user_id']);
+			$email_template = new Email();
+			echo $email_template->email($_REQUEST['function'], $_REQUEST['user_id']);
 			die();
 		}
 	}
@@ -2404,16 +2405,16 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'test') {
 				unset($User);
 
 				if (!empty($users)) {
-					$Email = new Email();
+					$email_template = new Email();
 					foreach ($users['data'] as $i => $user) {
-						$Email->email('tagged_in_post', $user, array('posting_id' => 102));
+						$email_template->email('tagged_in_post', $user, array('posting_id' => 102));
 					}
 				}
 			}
 
 			die();
-			$Email = new Email();
-			echo $Email->email('add_vote_winner', 669);
+			$email_template = new Email();
+			echo $email_template->email('add_vote_winner', 669);
 			die();
 		}
 		// User import (add pinterest usernames)
@@ -2516,13 +2517,13 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'test') {
 			);
 			$user = $user['data'];
 			unset($User);
-			$Email = new Email();
+			$email_template = new Email();
 			/*$Email->email('add_product', $post_user_id, array(
 					'is_primary' => $is_primary
 					, 'posting_id' => $_REQUEST['posting_id']
 				)
 			);*/
-			$Email->email('add_vote_winner', $post_user_id, array(
+			$email_template->email('add_vote_winner', $post_user_id, array(
 					'rank' => $user['rank']
 					, 'points' => $user['points']
 					, 'comments' => $user['comments']
