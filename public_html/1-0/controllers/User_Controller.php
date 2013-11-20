@@ -641,7 +641,7 @@ class User_Controller extends _Controller {
 			_Model::$Exception_Helper->request_failed_exception('User could not be found.');
 		}
 
-        $commer_user = new User($db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE);
+        $commer_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
 
         $total_sales = $commer_user->get_sales( $data['user_id'] );
 
