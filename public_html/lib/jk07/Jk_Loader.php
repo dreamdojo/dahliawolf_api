@@ -14,9 +14,15 @@ class Jk_Loader
                             'controllers',
                         );
 
-
     public function __construct()
     {
+        self::$include_dirs = array(
+                        realpath(__DIR__) . '/core',
+                        realpath(__DIR__) . '/models',
+                        realpath(__DIR__) . '/modules',
+                        realpath(__DIR__) . '/controllers',
+                    );
+
         self::setAppRoot(APP_PATH);
     }
 
