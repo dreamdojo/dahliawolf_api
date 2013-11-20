@@ -6,6 +6,8 @@ function email($from, $fromEmail, $to, $toEmail, $subject, $htmlBody, $plainBody
 	#$mail->IsSendmail(); // telling the class to use SendMail transport
 	$mail->IsMail();
 
+    $logger = new Jk_Logger(APP_PATH . 'logs/mail.log');
+
 	try {
 		
 		// Set To
@@ -56,16 +58,27 @@ function email($from, $fromEmail, $to, $toEmail, $subject, $htmlBody, $plainBody
 				}
 			}
 		}
-		
+
+
+        $mail->IsSMTP();
+        $mail->SMTPAuth   = true; // enable SMTP authentication
+        $mail->Port       = 587;   // set the SMTP server port
+        $mail->Host       = "smtp.mandrillapp.com"; // SMTP server
+        $mail->Username   = "admin@offlineinc.net";     // SMTP server username
+        $mail->Password   = "pDcuwfUPxKb7lEoEjX1ybw";
+
+
 		// Send Email
 		$mail->Send();
-		
+
+
 		//echo "Message Sent OK</p>\n";
 		return array('sent' => true, 'error' => NULL);
 		//return true;
 	} 
 	catch (phpmailerException $e) {
 		$errorMsg = $e->errorMessage();
+        $logger->LogInfo("phpmailerException: message:" . $e->errorMessage());
 	  	return array('sent' => false, 'error' => $errorMsg);
 	  	//return false;
 		//echo $e->errorMessage(); //Pretty error messages from PHPMailer
@@ -73,6 +86,7 @@ function email($from, $fromEmail, $to, $toEmail, $subject, $htmlBody, $plainBody
 	} 
 	catch (Exception $e) {
 		$errorMsg = $e->getMessage();
+        $logger->LogInfo("Mail Exception: message:" . $e->errorMessage());
 		return array('sent' => false, 'error' => $errorMsg);
 	  	//return false;
 		//echo $e->getMessage(); //Boring error messages from anything else!

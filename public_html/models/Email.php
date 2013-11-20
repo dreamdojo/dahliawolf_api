@@ -167,14 +167,8 @@ class Email extends db {
 		);
 	}
 
-	public function get_add_vote_winner_params($user, $params) {
-		/*$subject = 'Your item has been voted into the shop';
-		$html_body = 'Dear ' . $user['first_name'] . ',
-
-Your item has been voted into the shop.
-' . $this->get_email_footer() . '
-';
-		$html_body = nl2br($html_body);*/
+	public function get_add_vote_winner_params($user, $params)
+    {
 		$subject = 'The people have spoken and they love you style! Your items has been chosen to be produced and will be listed in the shop.';
 		ob_start();
 		require $_SERVER['DOCUMENT_ROOT'] . '/emails/custom/vote-winner-email.php';
@@ -191,9 +185,9 @@ Your item has been voted into the shop.
 		$subject = 'An order has been placed on your item';
 		$html_body = 'Dear ' . $user['first_name'] . ',
 
-An order has been placed on your item.
-' . $this->get_email_footer() . '
-';
+        An order has been placed on your item.
+        ' . $this->get_email_footer() . '
+        ';
 		$html_body = nl2br($html_body);
 
 		return array(
@@ -206,11 +200,11 @@ An order has been placed on your item.
 		$subject = 'You\'ve been tagged in a post';
 		$html_body = 'Dear ' . $user['first_name'] . ',
 
-You\'ve been tagged in a post.
+        You\'ve been tagged in a post.
 
-<a href="' . WEBSITE_URL . '/post-details?posting_id=' . $params['posting_id'] . '">Click here to view the post.</a>
-' . $this->get_email_footer() . '
-';
+        <a href="' . WEBSITE_URL . '/post-details?posting_id=' . $params['posting_id'] . '">Click here to view the post.</a>
+        ' . $this->get_email_footer() . '
+        ';
 		$html_body = nl2br($html_body);
 
 		return array(
@@ -224,11 +218,11 @@ You\'ve been tagged in a post.
 			$subject = 'You\'re post has been liked';
 			$html_body = 'Dear ' . $user['first_name'] . ',
 
-You\'re post has been liked.
+            You\'re post has been liked.
 
-<a href="' . WEBSITE_URL . '/post-details?posting_id=' . $params['posting_id'] . '">Click here to view the post.</a>
-' . $this->get_email_footer() . '
-';
+            <a href="' . WEBSITE_URL . '/post-details?posting_id=' . $params['posting_id'] . '">Click here to view the post.</a>
+            ' . $this->get_email_footer() . '
+            ';
 			$html_body = nl2br($html_body);
 
 			return array(
@@ -244,11 +238,11 @@ You\'re post has been liked.
 			$subject = 'You\'re post has been commented on';
 			$html_body = 'Dear ' . $user['first_name'] . ',
 
-You\'re post has been commented on.
+            You\'re post has been commented on.
 
-<a href="' . WEBSITE_URL . '/post-details?posting_id=' . $params['posting_id'] . '">Click here to view the post.</a>
-' . $this->get_email_footer() . '
-';
+            <a href="' . WEBSITE_URL . '/post-details?posting_id=' . $params['posting_id'] . '">Click here to view the post.</a>
+            ' . $this->get_email_footer() . '
+            ';
 			$html_body = nl2br($html_body);
 
 			return array(
@@ -291,8 +285,8 @@ You\'re post has been commented on.
 
 	private function get_email_footer() {
 		return '
-Thanks,
-Dahlia
+        Thanks,
+        Dahlia
 		';
 	}
 }
