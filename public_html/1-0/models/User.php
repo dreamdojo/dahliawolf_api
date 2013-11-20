@@ -444,7 +444,7 @@ class User extends _Model
         $active_limit = (60*60*24)*30;
 
         $sql = "SELECT
-      user_username.*
+        user_username.*
         , (
             SELECT COUNT(*)
             FROM user_username AS u
