@@ -253,7 +253,7 @@ function email($from, $fromEmail, $to, $toEmail, $subject, $htmlBody, $plainBody
 
 function json_pretty($json, $indent='  ')
 {
-    is_array($json ) || is_object($json )? $json = json_encode($json) : null;
+    is_array($json ) || is_object($json )? $json = json_encode($json, JSON_NUMERIC_CHECK ) : null;
     $result      = '';
     $pos         = 0;
     $strLen      = strlen($json);
