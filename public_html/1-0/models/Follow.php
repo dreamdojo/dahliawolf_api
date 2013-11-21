@@ -58,8 +58,6 @@ class Follow extends _Model {
         ));
         */
 
-
-
         try {
             $logger->LogInfo(sprintf("save user follow... \nfields: %s", json_pretty($fields) ));
             $insert_id = $this->do_db_save($values, $data);

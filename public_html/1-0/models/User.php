@@ -36,8 +36,6 @@ class User extends _Model
      */
 
 
-
-
     protected $fields = array(
         'user_id',
         'first_name',
