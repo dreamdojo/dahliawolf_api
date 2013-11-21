@@ -13,6 +13,40 @@ class Email extends db {
 		$this->from_email = FROM_EMAIL;
 	}
 
+    public function email($type, $user_id, $optional_params = NULL, $send_at=null)
+    {
+        $schedule = false;
+        if( strtotime($send_at) > 0 )
+        {
+            $schedule=true;
+        }else{
+            $send_at = null;
+        }
+
+        $user = $this->get_user($user_id);
+
+        $function = 'get_' . $type . '_params';
+        $params = $this->$function($user, $optional_params);
+
+        $email_content = self::getFinalContent();
+
+        $data = array();
+        if (!empty($params)) {
+
+            if($schedule){
+                $mandril = new Mandrill_Email();
+                //////////send($from,       $fromEmail,        $to,                                                       $toEmail,       $subject,           $htmlBody,      $plainBody = '', $send_at)
+                $mandril->send($this->from, $this->from_email, strlen($user['name'])>5?$user['name'] : $user['username'], $user['email'], $params['subject'], $email_content, '',              $send_at);
+            }
+            else{
+                $result = email($this->from, $this->from_email, $user['name'], $user['email'], $params['subject'], $email_content );
+            }
+            $data[$user['email']] = $result;
+        }
+
+        return json_encode(resultArray(true, $data));
+    }
+
 
     public function setVar($var, $value)
     {
@@ -39,35 +73,31 @@ class Email extends db {
         return $this->content;
     }
 
-	private function get_user($user_id)
-    {
-		// Already have user array
-		if (is_array($user_id)) {
-			$user_id['name'] = $user_id['first_name'] . ' ' . $user_id['last_name'];
-			$user_id['email'] = $user_id['email_address'];
 
-			return $user_id;
-		}
-		// Look up user based on user_id
-		else if (is_numeric($user_id)) {
-			$user = $this->get_row('user_username', array('user_id' => $user_id));
+    protected function get_signup_params($user)
+       {
+   		$subject = 'Welcome to Dahlia Wolf';
 
-			if (empty($user)) {
-				return false;
-			}
+           $this->content = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/emails/custom/welcome.html');
 
-			return array(
-				'name' => $user[0]['first_name'] . ' ' . $user[0]['last_name']
-				, 'first_name' => $user[0]['first_name']
-				, 'last_name' => $user[0]['last_name']
-				, 'email' => $user[0]['email_address']
-				, 'comment_notifications' => $user[0]['comment_notifications']
-				, 'like_notifications' => $user[0]['like_notifications']
-			);
-		}
+   		return array(
+   			'subject' => $subject,
+   			'html_body' => $this->content
+   		);
+   	}
 
-		return false;
-	}
+    protected function get_signup_scheduled_params($user)
+       {
+   		$subject = 'Welcome to Dahlia Wolf - scheduled';
+
+           $this->content = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/emails/custom/welcome.html');
+
+   		return array(
+   			'subject' => $subject,
+   			'html_body' => $this->content
+   		);
+   	}
+
 
 	public function invite_emails($user_id, $emails, $message) {
 		$user = $this->get_user($user_id);
@@ -97,14 +127,8 @@ class Email extends db {
             <a href="http://www.dahliawolf.com">http://www.dahliawolf.com</a>
 
             ' .
-            (!empty($message)
-                ? 'Your friend also included this message for you:
-            ' . $message . '
-            '
-            : ''
-            )
-            . $this->get_email_footer() . '
-            ';
+            ( !empty($message) ? "Your friend also included this message for you:\n $message" : '' )
+            . $this->get_email_footer();
 
 			$html_body = nl2br($html_body);
 
@@ -115,35 +139,8 @@ class Email extends db {
 		return json_encode(resultArray(true, $data));
 	}
 
-	public function email($type, $user_id, $optional_params = NULL) {
-		$user = $this->get_user($user_id);
 
-		$function = 'get_' . $type . '_params';
-		$params = $this->$function($user, $optional_params);
-
-        $email_content = self::getFinalContent();
-
-		$data = array();
-		if (!empty($params)) {
-			$result = email($this->from, $this->from_email, $user['name'], $user['email'], $params['subject'], $email_content );
-			$data[$user['email']] = $result;
-		}
-		return json_encode(resultArray(true, $data));
-	}
-
-	public function get_signup_params($user) {
-		$subject = 'Welcome to Dahlia Wolf';
-
-
-        $this->content = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/emails/custom/welcome.html');
-
-		return array(
-			'subject' => $subject,
-			'html_body' => $this->content
-		);
-	}
-
-	public function get_add_product_params($user, $params = array())
+    protected function get_add_product_params($user, $params = array())
     {
 
 		if (!empty($params['is_primary'])) {
@@ -167,7 +164,7 @@ class Email extends db {
 		);
 	}
 
-	public function get_add_vote_winner_params($user, $params)
+    protected function get_add_vote_winner_params($user, $params)
     {
 		$subject = 'The people have spoken and they love you style! Your items has been chosen to be produced and will be listed in the shop.';
 		ob_start();
@@ -181,7 +178,7 @@ class Email extends db {
 		);
 	}
 
-	public function get_order_user_product_params($user) {
+    protected function get_order_user_product_params($user) {
 		$subject = 'An order has been placed on your item';
 		$html_body = 'Dear ' . $user['first_name'] . ',
 
@@ -196,7 +193,7 @@ class Email extends db {
 		);
 	}
 
-	public function get_tagged_in_post_params($user, $params = NULL) {
+    protected function get_tagged_in_post_params($user, $params = NULL) {
 		$subject = 'You\'ve been tagged in a post';
 		$html_body = 'Dear ' . $user['first_name'] . ',
 
@@ -213,7 +210,7 @@ class Email extends db {
 		);
 	}
 
-	public function get_liked_params($user, $params = NULL) {
+    protected function get_liked_params($user, $params = NULL) {
 		if (!empty($user['like_notifications'])) {
 			$subject = 'You\'re post has been liked';
 			$html_body = 'Dear ' . $user['first_name'] . ',
@@ -233,7 +230,7 @@ class Email extends db {
 		return NULL;
 	}
 
-	public function get_commented_params($user, $params = NULL) {
+    protected function get_commented_params($user, $params = NULL) {
 		if (!empty($user['comment_notifications'])) {
 			$subject = 'You\'re post has been commented on';
 			$html_body = 'Dear ' . $user['first_name'] . ',
@@ -253,37 +250,39 @@ class Email extends db {
 		return NULL;
 	}
 
-	/*public function get_order_placed_params($user) {
-		$subject = 'Your order has been placed';
-		$html_body = 'Dear ' . $user['first_name'] . ',
 
-			Your order has been placed.
-			' . $this->get_email_footer() . '
-		';
-		$html_body = nl2br($html_body);
+    protected function get_user($user_id)
+    {
+   		// Already have user array
+   		if (is_array($user_id)) {
+   			$user_id['name'] = $user_id['first_name'] . ' ' . $user_id['last_name'];
+   			$user_id['email'] = $user_id['email_address'];
 
-		return array(
-			'subject' => $subject
-			, 'html_body' => $html_body
-		);
-	}
+   			return $user_id;
+   		}
+   		// Look up user based on user_id
+   		else if (is_numeric($user_id)) {
+   			$user = $this->get_row('user_username', array('user_id' => $user_id));
 
-	public function get_order_shipped_params($user) {
-		$subject = 'Your order has shipped';
-		$html_body = 'Dear ' . $user['first_name'] . ',
+   			if (empty($user)) {
+   				return false;
+   			}
 
-			Your order has shipped.
-			' . $this->get_email_footer() . '
-		';
-		$html_body = nl2br($html_body);
+   			return array(
+   				'name' => $user[0]['first_name'] . ' ' . $user[0]['last_name'],
+   				'first_name' => $user[0]['first_name'],
+   				'last_name' => $user[0]['last_name'],
+   				'username' => $user[0]['username'],
+   				'email' => $user[0]['email_address'],
+   				'comment_notifications' => $user[0]['comment_notifications'],
+   				'like_notifications' => $user[0]['like_notifications'],
+   			);
+   		}
 
-		return array(
-			'subject' => $subject
-			, 'html_body' => $html_body
-		);
-	}*/
+   		return false;
+   	}
 
-	private function get_email_footer() {
+    protected function get_email_footer() {
 		return '
         Thanks,
         Dahlia
