@@ -30,23 +30,38 @@ class Follow extends _Model {
 
         $values = array();
 
+        (int) $data['user_follow_id'] > 0 ? $data['follower_user_id'] = $data['user_follow_id'] : '';
+
+        $user_id =  $data['follower_user_id'];
+
+        $data['follower_user_id'] = $data['user_id'];
+        $data['user_id'] =  $user_id;
+
         $fields = array(
             'user_id',
             'follower_user_id',
         );
-
-        $logger = new Jk_Logger(APP_PATH.'logs/follow.log');
-
-        //$logger->LogInfo( sprintf("user follow init params: %s\ndb settings %s\n bind values: %s ", var_export($data, true), var_export(self::getDbCredentials(), true), var_export($values,true)  ));
-
         foreach ($fields as $field) {
             if (array_key_exists($field, $data)) {
                 $values[$field] = $data[$field];
             }
         }
 
+        $logger = new Jk_Logger(APP_PATH.'logs/follow.log');
+
+        /*
+        $logger->LogInfo(
+                sprintf("user follow init...\n params: %s\nbind values: %s \ndb settings %s ",
+                var_export($data, true),
+                var_export($values,true),
+                var_export(self::getDbCredentials(), true)
+        ));
+        */
+
+
+
         try {
-            $logger->LogInfo("save user follow;");
+            $logger->LogInfo(sprintf("save user follow... \nfields: %s", json_pretty($fields) ));
             $insert_id = $this->do_db_save($values, $data);
             return array(
                 strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,

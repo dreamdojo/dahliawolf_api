@@ -416,7 +416,7 @@ class User extends _Model
     {
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
         
-        $logger->LogInfo("getUserDetails USER INFO: -h:{$this->db_host} -db:$this->db_name");
+        //$logger->LogInfo("getUserDetails USER INFO: -h:{$this->db_host} -db:$this->db_name");
         
         $error = NULL;
 
@@ -444,7 +444,7 @@ class User extends _Model
         $active_limit = (60*60*24)*30;
 
         $sql = "SELECT
-        user_username.*
+          user_username.*
         , (
             SELECT COUNT(*)
             FROM user_username AS u
@@ -516,6 +516,7 @@ class User extends _Model
         ) AS posts_total
 
             {$select_str}
+
         FROM user_username
             {$join_str}
         WHERE {$where_str}
@@ -525,15 +526,17 @@ class User extends _Model
         if(isset($_GET['t']))
         {
             echo sprintf("query: \n%s\n", $sql);
+            echo sprintf("sql binds: \n%s\n", var_export($values, true) );
             echo sprintf("params: \n%s\n", var_export($params, true));
         }
 
         try {
-           $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $params);
+           $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $values);
 
            return ($data && isset($data[0]) ? $data[0] : null  );
        } catch (Exception $e) {
-           self::$Exception_Helper->server_error_exception('Unable to get user details.');
+            $logger->LogInfo("can not get user info: " . $e->getMessage() );
+            self::$Exception_Helper->server_error_exception('Unable to get user details.');
        }
     }
 
