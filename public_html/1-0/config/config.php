@@ -89,9 +89,13 @@ spl_autoload_register(function($class_name) {
 		, DR . '/' . API_VERSION . '/models/'
 		, DR . '/includes/php/classes/'
 		, DR . '/' . API_VERSION . '/lib/php/'
+		, DR . '/' . API_VERSION . '/lib/php/'
 		, DR . '/lib/jk07/'
+		, DR . '/lib/mailchimp/'
+		, DR . '/lib/mandrill/'
 	);
 
+    //error_log("1-0 API - spl_autoload_register info: trying to load file: $class_name" );
 
     try{
         foreach ($class_dirs as $class_dir) {

@@ -16,6 +16,8 @@ require_once 'config/config.php';
 define('APP_PATH', realpath('./')."/");
 $include_paths = explode(":", get_include_path());
 $include_paths[] = realpath('../lib/jk07');
+$include_paths[] = realpath("../lib/mandrill");
+$include_paths[] = realpath("../lib/mailchimp");
 $include_paths[] = realpath('../');
 set_include_path(implode(":", $include_paths));
 

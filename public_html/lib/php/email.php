@@ -69,8 +69,10 @@ function email($from, $fromEmail, $to, $toEmail, $subject, $htmlBody, $plainBody
 
 
 		// Send Email
-		$mail->Send();
+		$ok = $mail->Send();
 
+
+        if($ok) $logger->LogInfo("mail sent.. message: " . $htmlBody );
 
 		//echo "Message Sent OK</p>\n";
 		return array('sent' => true, 'error' => NULL);

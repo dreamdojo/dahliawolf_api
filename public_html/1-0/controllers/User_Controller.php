@@ -3,6 +3,9 @@ require 'lib/php/login-v4.php';
 require 'lib/php/mysql-v8.php';
 require 'lib/php/functions.php';
 
+/**
+ * @property Follow Follow
+ */
 class User_Controller extends _Controller {
 	private $PasswordHash;
 
@@ -635,7 +638,7 @@ class User_Controller extends _Controller {
         $user = new User();
 
 		//$data = $user->get_public_fields($where_params, array('single' => true));
-		$data = $user->getUserDetails($where_params );
+		$data = $user->getUserDetails($params );
 
 		if (empty($data)) {
 			_Model::$Exception_Helper->request_failed_exception('User could not be found.');

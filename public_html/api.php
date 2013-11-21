@@ -29,6 +29,8 @@ require_once 'includes/php/json_functions.php';
 define('APP_PATH', sprintf("%s/", realpath('./') ));
 $include_paths = explode(":", get_include_path());
 $include_paths[] = sprintf("%s/", realpath('./lib/jk07'));
+$include_paths[] = sprintf("%s/", realpath('./lib/mandrill'));
+$include_paths[] = sprintf("%s/", realpath('./lib/mailchimp'));
 $include_paths[] = sprintf("%s/", realpath('./'));
 set_include_path(implode(":", $include_paths));
 
@@ -500,7 +502,13 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			unset($User);
 			$email_template = new Email();
             $email_template->setVar('user_name', "{$_REQUEST['username']}" );
-			$email_template->email('signup', $user_id);
+            $email_template->email('signup', $user_id );
+
+            /*
+            //schedule :)
+            $send_time = gmdate('Y-m-d H:i:s', time()+ (60*5));
+			$email_template->email('signup_scheduled', $user_id, null, $send_time );
+            */
 
             //// follow default users
             register_default_follows($user_id);

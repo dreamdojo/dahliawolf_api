@@ -85,16 +85,19 @@ define('DW_API_DATABASE', 'dahliawolf_v1_2013');
  
  include_once $_SERVER['DOCUMENT_ROOT'] . '/models/function.php';
  
- spl_autoload_register(function($class_name) {
+spl_autoload_register(function($class_name)
+{
 	$class_dirs = array(
 		$_SERVER['DOCUMENT_ROOT'] . '/models/',
 		$_SERVER['DOCUMENT_ROOT'] . '/lib/php',
 		$_SERVER['DOCUMENT_ROOT'] . '/lib/jk07',
+		$_SERVER['DOCUMENT_ROOT'] . '/lib/mailchimp',
+		$_SERVER['DOCUMENT_ROOT'] . '/lib/mandrill',
 		$_SERVER['DOCUMENT_ROOT'] . '/1-0/models',
 		$_SERVER['DOCUMENT_ROOT'] . '/includes/php/classes',
 	);
 
-     error_log("spl_autoload_register info: trying to load file: $class_name" );
+     error_log("OLD Fke API.php - spl_autoload_register info: trying to load file: $class_name" );
 
 
      try{
@@ -120,12 +123,12 @@ define('DW_API_DATABASE', 'dahliawolf_v1_2013');
                 require $file;
                 return true;
             }else
-            error_log("spl_autoload_register warning: failed to load file: $file, file doesnt exist");
+            error_log("OLD Fke API.php - spl_autoload_register warning: failed to load file: $file, file doesnt exist");
 
         }
     }catch(ErrorException $e)
     {
-        error_log("spl_autoload_register exception: " . $e->getMessage());
+        error_log("OLD Fke API.php - spl_autoload_register exception: " . $e->getMessage());
     }
 
 	$result = resultArray(
