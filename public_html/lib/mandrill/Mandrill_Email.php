@@ -8,6 +8,7 @@ class Mandrill_Email {
 
     protected $global_merge_vars = null;
     protected $email_type = 'transactional';
+    protected static $api_key = "5U1DlZOtZMM6LbKDdse-JA";
 
 
     function setMergeVars($vars_arr)
@@ -29,7 +30,7 @@ class Mandrill_Email {
         $send_at = strtotime($send_at) > 0 ? $send_at :  null;
 
         try {
-            $mandrill = new Mandrill("5U1DlZOtZMM6LbKDdse-JA");
+            $mandrill = new Mandrill(self::$api_key);
             $message = array(
                 'html' => $htmlBody,
                 'text' => $plainBody,
