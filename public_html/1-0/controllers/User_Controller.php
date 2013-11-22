@@ -410,6 +410,11 @@ class User_Controller extends _Controller {
             $user_model->setDataTable('user_username');
             $user_model->setPrimaryField('user_username_id');
             $user_model->registerDefaultFollows($data['user_id']);
+
+
+            //// subscribe to mailchimp
+            $mc_result = MailChimp_Helper::addSubscriber($user);
+
 		}
 
 
