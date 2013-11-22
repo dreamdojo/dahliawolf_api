@@ -10,19 +10,21 @@ class Activity_Log_Controller extends _Controller {
 					, 'is_int' => NULL
 				)
 			)
+
 			, 'api_website_id' => array(
 				'label' => 'API Website ID'
 				, 'rules' => array(
 					'is_int' => NULL
 				)
 			)
+
 		);
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
 
 		$this->load('Activity_Log');
 		$user_id = $params['user_id'];
-		$api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : NULL;
+		$api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : 2;
 		$data = $this->Activity_Log->get_log($user_id, $api_website_id);
 
 		return static::wrap_result(true, $data);
@@ -53,7 +55,7 @@ class Activity_Log_Controller extends _Controller {
         
 
 		$user_id = $params['user_id'];
-		$api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : NULL;
+		$api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : 2;
 
 		// Like winners
 		$posts = $activity_log->get_like_winners_log($user_id, $api_website_id);

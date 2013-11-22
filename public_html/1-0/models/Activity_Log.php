@@ -111,6 +111,9 @@ class Activity_Log extends _Model {
 	}
 
 	public function get_commented_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false) {
+
+        $where_str = 'AND activity_log.read IS NULL';
+
 		if (!$unread_count) {
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read

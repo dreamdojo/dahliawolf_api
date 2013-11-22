@@ -130,6 +130,50 @@ class Posting_Controller  extends  _Controller
 
 
 
+    public function add_comment($request_data)
+    {
+        $this->load('Posting_Comment');
+
+        $posting = new Posting_Comment();
+        $response = $posting->create($request_data);
+
+        return  $response;
+    }
+
+    public function remove_comment($request_data)
+    {
+        $this->load('Posting_Comment');
+
+        $posting = new Posting_Comment();
+        $response = $posting->remove($request_data);
+
+        return  $response;
+    }
+
+
+    public function edit_comment($request_data)
+    {
+        $this->load('Posting_Comment');
+
+        $posting = new Posting_Comment();
+        $response = $posting->edit($request_data);
+
+        return  $response;
+    }
+
+
+    public function get_comments($request_data)
+    {
+        $this->load('Posting_Comment');
+
+        $posting = new Posting_Comment();
+        $response = $posting->getPostingComments($request_data);
+
+        return  $response;
+    }
+
+
+
     public function get_user_faves($request_data)
     {
         $this->load('Posting');
