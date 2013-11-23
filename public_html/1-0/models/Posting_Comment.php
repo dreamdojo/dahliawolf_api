@@ -23,15 +23,13 @@ class Posting_Comment extends _Model {
 
     public function create($request_data = array())
     {
+
        $error = NULL;
        $values = array();
        $fields = array(
-           'posting_id',
            'user_id',
-           'created_at',
-           'x',
-           'y',
-           'message'
+           'posting_id',
+           'comment',
        );
 
        $values['created_at'] = date('Y-m-d h:i:s');
@@ -64,9 +62,9 @@ class Posting_Comment extends _Model {
         $values = array();
         /**/
         $fields = array(
-            'x',
-            'y',
-            'message'
+            'user_id',
+            'posting_id',
+            'comment',
         );
 
         foreach ($fields as $field) {
@@ -76,15 +74,15 @@ class Posting_Comment extends _Model {
         }
 
 
-        self::trace("ADDING POSTING TAG with data: ", var_export($request_data, true));
+        self::trace("EDIT POSTING COMMENT with data: ", var_export($request_data, true));
 
 
         $where_sql = "
-            WHERE  posting_tag_id = :posting_tag_id
+            WHERE  comment_id = :comment_id
         ";
 
         $where_values = array();
-        $where_values['posting_tag_id'] = $request_data['posting_tag_id'];
+        $where_values['comment_id'] = $request_data['comment_id'];
 
         try {
             $update = $this->db_update($fields, $where_sql, $where_values);
@@ -94,7 +92,7 @@ class Posting_Comment extends _Model {
            );
 
         } catch (Exception $e) {
-           self::$Exception_Helper->server_error_exception("Unable to edit posting tag.");
+           self::$Exception_Helper->server_error_exception("Unable to edit posting comment.");
            return null;
         }
     }
@@ -105,38 +103,32 @@ class Posting_Comment extends _Model {
         $where_sql = "";
 
         $values['posting_id'] = $request_data['posting_id'];
+        $values['user_id'] = $request_data['user_id'];
 
         $query = "
             SELECT mt.*
             FROM   {$this->table} as mt
-            WHERE  mt.posting_id = :posting_id
+            WHERE mt.posting_id = :posting_id
+              AND mt.user_id = :user_id
         ";
 
-        $posting_tags = $this->fetch($query, $values);
+        $comments = $this->fetch($query, $values);
 
-        $this->load('Posting');
+        self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($comments) ) );
 
-        $posting_ids= array();
-        if($posting_tags && $with_details)foreach($posting_tags as &$fave_data)
-        {
-            $posting_ids[] = $fave_data['posting_id'];
-        }
-
-        self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($posting_tags) ) );
-
-        return $posting_tags;
+        return $comments;
     }
 
 
     public function remove($request_data)
     {
-        $values['posting_tag_id'] = $request_data['posting_tag_id'];
+        $values['comment_id'] = $request_data['comment_id'];
         $values['posting_id'] = $request_data['posting_id'];
 
         $query = "
             DELETE mt.*
             FROM {$this->table} as mt
-            WHERE mt.posting_tag_id = :posting_tag_id
+            WHERE mt.comment_id = :comment_id
               AND mt.posting_id = :posting_id
         ";
 

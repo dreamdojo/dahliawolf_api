@@ -114,14 +114,6 @@ class Posting_Tag extends _Model {
 
         $posting_tags = $this->fetch($query, $values);
 
-        $this->load('Posting');
-
-        $posting_ids= array();
-        if($posting_tags && $with_details)foreach($posting_tags as &$fave_data)
-        {
-            $posting_ids[] = $fave_data['posting_id'];
-        }
-
         self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($posting_tags) ) );
 
         return $posting_tags;
