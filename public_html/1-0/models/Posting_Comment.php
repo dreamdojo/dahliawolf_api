@@ -106,8 +106,11 @@ class Posting_Comment extends _Model {
         #$values['user_id'] = $request_data['user_id'];
 
         $query = "
-            SELECT mt.*
+            SELECT  mt.*,
+                    user.username,
+                    user.avatar
             FROM   {$this->table} as mt
+              JOIN user_username user ON user.user_id = mt.user_id
             WHERE mt.posting_id = :posting_id
         ";
         /* AND mt.user_id = :user_id */
