@@ -103,14 +103,15 @@ class Posting_Comment extends _Model {
         $where_sql = "";
 
         $values['posting_id'] = $request_data['posting_id'];
-        $values['user_id'] = $request_data['user_id'];
+        #$values['user_id'] = $request_data['user_id'];
 
         $query = "
             SELECT mt.*
             FROM   {$this->table} as mt
             WHERE mt.posting_id = :posting_id
-              AND mt.user_id = :user_id
         ";
+        /* AND mt.user_id = :user_id */
+        //echo ($query);
 
         $comments = $this->fetch($query, $values);
 
