@@ -26,7 +26,7 @@ class Search_Controller extends _Controller
 
         return array(
             'products'  => $products,
-            'postings'  => $postings,
+            'posts'  => $postings,
             'users'     => $users
 
         );
