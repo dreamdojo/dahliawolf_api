@@ -665,7 +665,7 @@ class User extends _Model
         try {
            $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $values);
 
-           return ($data && isset($data[0]) ? $data[0] : null  );
+           return ( $data !== false ? $data : null );
        } catch (Exception $e) {
             $logger->LogInfo("can not get user info: " . $e->getMessage() );
             self::$Exception_Helper->server_error_exception('Unable to get user details.');

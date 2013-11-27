@@ -12,8 +12,13 @@ class Commerce_API {
 		$this->private_key = $private_key;
 	}
 	
-	public function rest_api_request($api_service, $calls = array(), $reponse_format = 'json') {
-		$api_url = $this->api_url . '/' . $api_service . '.' . $reponse_format;
+	public function rest_api_request($api_service, $calls = array(), $reponse_format = 'json')
+    {
+		//$api_url = $this->api_url . '/' . $api_service . '.' . $reponse_format;
+
+        $api_domain = strpos($_SERVER['SERVER_NAME'], 'dev')>-1? "dev.commerce.offlinela.com" : "commerce.offlinela.com";
+
+        $api_url = "http://{$api_domain}/1-0/{$api_service}.{$reponse_format}";
 		
 		// Initialize
 		$ch = curl_init();
