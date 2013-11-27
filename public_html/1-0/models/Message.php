@@ -50,7 +50,7 @@ class Message extends _Model{
         $activity_log = new Activity_Log();
 
 
-        $user_model = New User();
+        $user_model = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
         $sending_user_data = $user_model->getUserById(trim($values['from_user_id'], '@'));
         $sending_user_username = $sending_user_data['username'];
         $logger->LogInfo( sprintf( "FETCHED SENDING USER: %s: ", var_export($sending_user_data, true)) );
@@ -193,7 +193,6 @@ class Message extends _Model{
 
     	return $data;
     }
-
 
 
 

@@ -1,4 +1,7 @@
 <?
+/**
+ * @property Activity_Log Activity_Log
+ */
 class Activity_Log_Controller extends _Controller {
 	public function get_log($params = array()) {
 		// Validations
@@ -30,6 +33,25 @@ class Activity_Log_Controller extends _Controller {
 		return static::wrap_result(true, $data);
 	}
 
+
+    public function get_last_activity($params = array())
+    {
+        $params['new_only'] = true;
+
+        $last_log = self::get_grouped_log($params);
+
+        self::addUserLastTime($params);
+
+        return $last_log;
+    }
+
+
+    protected function addUserLastTime($params)
+    {
+        $user_last_log_time = new Activity_Log_User_Last();
+        $user_last_log_time->addLast($params);
+    }
+
 	public function get_grouped_log($params = array()) {
 		// Validations
 		$input_validations = array(
@@ -58,19 +80,20 @@ class Activity_Log_Controller extends _Controller {
 		$api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : 2;
 
 		// Like winners
-		$posts = $activity_log->get_like_winners_log($user_id, $api_website_id);
+		$posts = $activity_log->get_like_winners_log($user_id, $api_website_id, false, false, $params);
 
 		// Comments
-		$comments = $activity_log->get_commented_posts_log($user_id, $api_website_id);
+		$comments = $activity_log->get_commented_posts_log($user_id, $api_website_id, false, false, $params);
 
 		// Likes
-		$likes = $activity_log->get_liked_posts_log($user_id, $api_website_id);
+		$likes = $activity_log->get_liked_posts_log($user_id, $api_website_id, false, false, $params);
 
 		// Followers
-		$followers = $activity_log->get_followers_log($user_id, $api_website_id);
+		$followers = $activity_log->get_followers_log($user_id, $api_website_id, false, false, $params);
 
         // Messages
-        $messages = $activity_log->get_messages_log($user_id, $api_website_id, 39);
+        $messages = $activity_log->get_messages_log($user_id, $api_website_id, 33, false, false, $params);
+
 
 		$data = array(
 			'posts' => $posts,
@@ -83,6 +106,48 @@ class Activity_Log_Controller extends _Controller {
 		return static::wrap_result(true, $data);
 
 	}
+
+
+    public function get_by_type($params)
+    {
+
+        $user_id = $params['user_id'];
+        $activity_log = new Activity_Log();
+
+        $api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : 2;
+        $type = $params['type'];
+
+        switch($type)
+        {
+            case 'like_winners':
+                // Like winners
+                $activities = $activity_log->get_like_winners_log($user_id, $api_website_id, false, false, $params);
+                break;
+
+            case "comments" :
+                // Comments
+                $activities = $activity_log->get_commented_posts_log($user_id, $api_website_id, false, false, $params);
+                break;
+
+            case  'likes':
+                // Likes
+                $activities = $activity_log->get_liked_posts_log($user_id, $api_website_id, false, false, $params);
+                break;
+
+            case "followers":
+                // Followers
+                $activities = $activity_log->get_followers_log($user_id, $api_website_id, false, false, $params);
+                break;
+
+            case 'messages':
+                // Messages
+                $activities = $activity_log->get_messages_log($user_id, $api_website_id, 33, false, false, $params);
+                break;
+
+        }
+
+        return  $activities;
+    }
 
 	public function mark_previewed($params = array()) {
 		$activity_id_map = array(

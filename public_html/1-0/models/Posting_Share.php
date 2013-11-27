@@ -46,7 +46,7 @@ class Posting_Share extends Sharing_Abstract
                     );
 
         } catch(Exception $e) {
-            self::$Exception_Helper->server_error_exception("Unable to save  posting share.". $e->getMessage());
+            self::$Exception_Helper->server_error_exception("Unable to save posting share.". $e->getMessage());
         }
 
     }

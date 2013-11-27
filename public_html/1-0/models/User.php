@@ -539,4 +539,148 @@ class User extends _Model
     }
 
 
+
+    public function getUsersWithDetails($params = array())
+    {
+        $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
+
+        //$logger->LogInfo("getUserDetails USER INFO: -h:{$this->db_host} -db:$this->db_name");
+
+        $error = NULL;
+
+        $where_str = '';
+        $values = array();
+        // user_id or username
+        /*
+        if (!empty($params['user_id'])) {
+            $where_str = 'user_username.user_id = :user_id';
+            $values[':user_id'] = $params['user_id'];
+        }
+        */
+
+        if (!empty($params['q']))
+        {
+            $where_str = 'user_username.username like :q';
+            $values[':q'] = "%{$params['q']}%";
+        }
+
+        $select_str = '';
+        $join_str = '';
+        // Optional viewer_user_id
+        if (!empty($params['viewer_user_id'])) {
+            $select_str = ', IF(f.user_id IS NULL, 0, 1) AS is_followed';
+            $join_str = 'LEFT JOIN follow AS f ON user_username.user_id = f.user_id AND f.follower_user_id = :viewer_user_id';
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
+
+        $active_limit = (60*60*24)*30;
+
+        $sql = "SELECT
+          user_username.*
+        , (
+            SELECT COUNT(*)
+            FROM user_username AS u
+            WHERE
+                u.points > user_username.points
+        ) + 1 AS rank
+        , (
+            SELECT COUNT(*)
+            FROM follow
+            WHERE follow.follower_user_id = user_username.user_id
+        ) AS following
+        , (
+            SELECT COUNT(*)
+            FROM follow
+            WHERE follow.user_id = user_username.user_id
+        ) AS followers
+        , (
+            SELECT COUNT(*)
+            FROM posting
+            WHERE posting.user_id = user_username.user_id
+        ) AS posts
+        , (
+            SELECT COUNT(*)
+            FROM comment
+            WHERE comment.user_id = user_username.user_id
+        ) AS comments
+        , (
+            SELECT COUNT(*)
+            FROM posting_like
+                INNER JOIN posting ON posting_like.posting_id = posting.posting_id
+            WHERE posting.user_id = user_username.user_id
+        ) AS likes
+        ,(
+              SELECT
+              ml.name
+              FROM membership_level ml, user_username user
+              WHERE user.user_id = user_username.user_id
+                AND CAST(user.points AS SIGNED)  / ml.points > 1
+              order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
+              LIMIT 1
+          ) AS membership_level
+          ,(
+              SELECT COUNT(*)
+              FROM posting
+              WHERE posting.user_id = user_username.user_id
+                AND posting.deleted IS NULL
+                AND UNIX_TIMESTAMP(posting.created)+2592000 < UNIX_TIMESTAMP()
+
+          )AS posts_expired
+          ,(
+              SELECT COUNT(*)
+              FROM posting
+              WHERE posting.user_id = user_username.user_id
+                AND posting.deleted IS NULL
+                AND UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP()
+
+          ) AS posts_active
+          ,(
+              SELECT COUNT(*)
+              FROM posting
+               LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
+              WHERE posting.user_id = user_username.user_id  AND like_winner.like_winner_id IS NOT NULL
+          ) AS winner_posts
+          ,(
+            SELECT COUNT(*)
+            FROM posting
+            WHERE posting.user_id = user_username.user_id
+                AND posting.deleted IS NULL
+        ) AS posts_total
+
+            {$select_str}
+
+        FROM user_username
+            {$join_str}
+        WHERE {$where_str}
+        /* LIMIT 1 */";
+
+
+        if(isset($_GET['t']))
+        {
+            echo sprintf("query: \n%s\n", $sql);
+            echo sprintf("sql binds: \n%s\n", var_export($values, true) );
+            echo sprintf("params: \n%s\n", var_export($params, true));
+        }
+
+        try {
+           $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $values);
+
+           return ($data && isset($data[0]) ? $data[0] : null  );
+       } catch (Exception $e) {
+            $logger->LogInfo("can not get user info: " . $e->getMessage() );
+            self::$Exception_Helper->server_error_exception('Unable to get user details.');
+       }
+    }
+
+
+
+
+
+
+
 }
+
+
+
+
+
