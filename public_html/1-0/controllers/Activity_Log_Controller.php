@@ -62,19 +62,15 @@ class Activity_Log_Controller extends _Controller {
 					, 'is_int' => NULL
 				)
 			)
-			, 'api_website_id' => array(
-				'label' => 'API Website ID'
-				, 'rules' => array(
-					'is_int' => NULL
-				)
-			)
 		);
 		$this->Validate->add_many($input_validations, $params, true);
 		$this->Validate->run();
 
 		$this->load('Activity_Log');
         $activity_log = new Activity_Log();
-        
+
+        $unread_count       = !empty($params['unread_count ']) && (int) $params['unread_count '] == 1 ? true : false;
+        $unpreviewed_count  = !empty($params['unpreviewed_count']) && (int) $params['unpreviewed_count'] ==1  ? true : false;
 
 		$user_id = $params['user_id'];
 		$api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : 2;
@@ -107,6 +103,65 @@ class Activity_Log_Controller extends _Controller {
 
 	}
 
+	public function get_grouped_log_count($params = array()) {
+		// Validations
+		$input_validations = array(
+			'user_id' => array(
+				'label' => 'User ID',
+				'rules' => array(
+					'is_set' => NULL,
+					'is_int' => NULL
+				)
+			)
+		);
+		$this->Validate->add_many($input_validations, $params, true);
+		$this->Validate->run();
+
+		$this->load('Activity_Log');
+        $activity_log = new Activity_Log();
+
+        $unread_count       = true;
+        $unpreviewed_count  = false;
+
+		$user_id = $params['user_id'];
+		$api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : 2;
+
+		// Like winners
+		$posts = $activity_log->get_like_winners_log($user_id, $api_website_id, $unread_count, $unpreviewed_count, $params);
+
+		// Comments
+		$comments = $activity_log->get_commented_posts_log($user_id, $api_website_id, $unread_count, $unpreviewed_count, $params);
+
+		// Likes
+		$likes = $activity_log->get_liked_posts_log($user_id, $api_website_id, $unread_count, $unpreviewed_count, $params);
+
+		// Followers
+		$followers = $activity_log->get_followers_log($user_id, $api_website_id, $unread_count, $unpreviewed_count, $params);
+
+        // Messages
+        $messages = $activity_log->get_messages_log($user_id, $api_website_id, 39, $unread_count, $unpreviewed_count, $params);
+
+
+		$data = array(
+			'posts' => $posts,
+			'comments' => $comments,
+			'likes' => $likes,
+			'followers' => $followers,
+			'messages' => $messages,
+		);
+
+        //var_dump($data);
+
+        $total_count = 0;
+        foreach($data as $type_count) {
+            //var_dump($type_count);
+            $total_count += intval($type_count);
+        }
+
+		return array('activity_count' => $total_count);
+
+	}
+
 
     public function get_by_type($params)
     {
@@ -117,31 +172,35 @@ class Activity_Log_Controller extends _Controller {
         $api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : 2;
         $type = $params['type'];
 
+
+        $unread_count       = !empty($params['unread_count ']) && (int) $params['unread_count '] == 1 ? true : false;
+        $unpreviewed_count  = !empty($params['unpreviewed_count']) && (int) $params['unpreviewed_count'] ==1  ? true : false;
+
         switch($type)
         {
             case 'like_winners':
                 // Like winners
-                $activities = $activity_log->get_like_winners_log($user_id, $api_website_id, false, false, $params);
+                $activities = $activity_log->get_like_winners_log($user_id, $api_website_id, $unread_count, $unpreviewed_count, $params);
                 break;
 
             case "comments" :
                 // Comments
-                $activities = $activity_log->get_commented_posts_log($user_id, $api_website_id, false, false, $params);
+                $activities = $activity_log->get_commented_posts_log($user_id, $api_website_id, $unread_count, $unpreviewed_count, $params);
                 break;
 
             case  'likes':
                 // Likes
-                $activities = $activity_log->get_liked_posts_log($user_id, $api_website_id, false, false, $params);
+                $activities = $activity_log->get_liked_posts_log($user_id, $api_website_id, $unread_count, $unpreviewed_count, $params);
                 break;
 
             case "followers":
                 // Followers
-                $activities = $activity_log->get_followers_log($user_id, $api_website_id, false, false, $params);
+                $activities = $activity_log->get_followers_log($user_id, $api_website_id, $unread_count, $unpreviewed_count, $params);
                 break;
 
             case 'messages':
                 // Messages
-                $activities = $activity_log->get_messages_log($user_id, $api_website_id, 39, false, false, $params);
+                $activities = $activity_log->get_messages_log($user_id, $api_website_id, 39, $unread_count, $unpreviewed_count, $params);
                 break;
 
         }
