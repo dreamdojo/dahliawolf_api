@@ -92,7 +92,7 @@ class Activity_Log_Controller extends _Controller {
 		$followers = $activity_log->get_followers_log($user_id, $api_website_id, false, false, $params);
 
         // Messages
-        $messages = $activity_log->get_messages_log($user_id, $api_website_id, 33, false, false, $params);
+        $messages = $activity_log->get_messages_log($user_id, $api_website_id, 39, false, false, $params);
 
 
 		$data = array(
@@ -141,10 +141,11 @@ class Activity_Log_Controller extends _Controller {
 
             case 'messages':
                 // Messages
-                $activities = $activity_log->get_messages_log($user_id, $api_website_id, 33, false, false, $params);
+                $activities = $activity_log->get_messages_log($user_id, $api_website_id, 39, false, false, $params);
                 break;
 
         }
+
 
         return  $activities;
     }

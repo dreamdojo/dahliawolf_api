@@ -104,20 +104,20 @@ class User extends _Model
 
     public function get_user($email)
     {
-
-        $query = '
+        $data_table  = self::getDataTable();
+        $query = "
             SELECT user.*
-            FROM user
-            WHERE email = :email
-        ';
+            FROM {$data_table} user
+            WHERE user.email = :email
+        ";
 
         if($this->db_name == DW_API_DATABASE)
         {
-            $query = '
+            $query = "
             			SELECT user.*
-            			FROM user
-            			WHERE email_address = :email
-            		';
+            			FROM {$data_table} user
+            			WHERE user.email_address = :email
+            		";
         }
 
 
@@ -135,11 +135,13 @@ class User extends _Model
 
     public function getUserByUsername($username)
     {
-        $query = '
+        $data_table  = self::getDataTable();
+
+        $query = "
 			SELECT *
-			FROM user
-			WHERE username = :username
-		';
+			FROM {$data_table} user
+			WHERE user.username = :username
+		";
         $params = array(
             ':username' => $username
         );
@@ -154,11 +156,13 @@ class User extends _Model
 
     public function getUserById($user_id)
     {
-        $query = '
-			SELECT *
-			FROM user
-			WHERE user_id = :user_id
-		';
+        $data_table  = self::getDataTable();
+
+        $query = "
+			SELECT user.*
+			FROM  {$data_table} user
+			WHERE user.user_id = :user_id
+		";
         $params = array(
             ':user_id' => $user_id
         );
@@ -174,14 +178,14 @@ class User extends _Model
     {
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
 
-        $query = '
+        $query = "
 			SELECT user.user_id, user.first_name, user.last_name, user.username, user.email
 			FROM login_instance
 				/*INNER JOIN login_instance ON user.user_id = login_instance.user_id*/
 				INNER JOIN user ON user.user_id = login_instance.user_id
 			WHERE login_instance.token = :token
 				AND login_instance.logout IS NULL
-		';
+		";
         $values = array(
             'token' => $token
         );

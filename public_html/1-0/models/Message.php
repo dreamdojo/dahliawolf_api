@@ -50,8 +50,8 @@ class Message extends _Model{
         $activity_log = new Activity_Log();
 
 
+        User::setDataTable("user_username");
         $user_model = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
-        $user_model->setDataTable("user_username");
 
         $sending_user_data = $user_model->getUserById(trim($values['from_user_id'], '@'));
 

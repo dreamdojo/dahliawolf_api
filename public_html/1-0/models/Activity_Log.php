@@ -318,7 +318,7 @@ class Activity_Log extends _Model {
 		}
 	}
 
-	public function get_messages_log($user_id, $api_website_id, $activity_id=38, $unread_count = false, $unpreviewed_count = false, $request_params = array()) {
+	public function get_messages_log($user_id, $api_website_id, $activity_id=39, $unread_count = false, $unpreviewed_count = false, $request_params = array()) {
 		if (!$unread_count) {
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time,
@@ -344,7 +344,8 @@ class Activity_Log extends _Model {
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
                 INNER JOIN dahliawolf_v1_2013.user_username ON activity_log.user_id = user_username.user_id
-                INNER JOIN dahliawolf_v1_2013.message AS message ON message.to_user_id = activity_log.user_id AND message.message_id = activity_log.entity_id
+                INNER JOIN dahliawolf_v1_2013.message AS message ON message.to_user_id = activity_log.user_id
+                                                                 AND message.message_id = activity_log.entity_id
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
 				AND activity_log.activity_id = :activity_id
@@ -358,6 +359,14 @@ class Activity_Log extends _Model {
 			':activity_id' => $activity_id,
 			':entity' => 'message'
 		);
+
+
+        if(isset($_GET['t'])){
+            echo "\n".__FUNCTION__ ."\n";
+           echo $query;
+           var_dump($values);
+        }
+
 
         $logger = new Jk_Logger(APP_PATH.'logs/db_queries.log');
 
