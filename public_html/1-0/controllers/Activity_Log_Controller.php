@@ -150,12 +150,9 @@ class Activity_Log_Controller extends _Controller {
 			'messages' => $messages,
 		);
 
-        //var_dump($data);
-
         $total_count = 0;
         foreach($data as $type_count) {
-            //var_dump($type_count);
-            $total_count += intval($type_count);
+            $total_count += intval($type_count[0]['count']);
         }
 
 		return array('activity_count' => $total_count);
