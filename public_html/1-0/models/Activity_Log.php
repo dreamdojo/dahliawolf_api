@@ -84,22 +84,23 @@ class Activity_Log extends _Model {
     {
         $where_str = '';
 
-        if (!$unread_count) {
-			$select_str = '
-				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
-				, like_winner.posting_id, like_winner.likes
-				, CONCAT(\'http://www.dahliawolf.com/post/\', posting.posting_id) AS post_url
-				, CONCAT(image.source, image.imagename) AS image_url
-			';
+        if ($unread_count) {
+            $select_str = 'COUNT(*) AS count';
+            if ($unpreviewed_count==false) {
+                $where_str = " AND activity_log.read IS NULL \n";
+            }
+            else {
+                $where_str = ' AND activity_log.previewed IS NULL';
+            }
+
 		}
 		else {
-			$select_str = 'COUNT(*) AS count';
-			if (!$unpreviewed_count) {
-				$where_str = " AND activity_log.read IS NULL \n";
-			}
-			else {
-				$where_str = ' AND activity_log.previewed IS NULL';
-			}
+            $select_str = '
+                activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
+                , like_winner.posting_id, like_winner.likes
+                , CONCAT(\'http://www.dahliawolf.com/post/\', posting.posting_id) AS post_url
+                , CONCAT(image.source, image.imagename) AS image_url
+            ';
 		}
 
 
@@ -145,9 +146,19 @@ class Activity_Log extends _Model {
 
 	public function get_commented_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array()) {
 
-        $where_str = 'AND activity_log.read IS NULL';
+        $where_str = '';
 
-		if (!$unread_count) {
+        if ($unread_count) {
+            $select_str = 'COUNT(*) AS count';
+            if ($unpreviewed_count==false) {
+                $where_str = " AND activity_log.read IS NULL \n";
+            }
+            else {
+                $where_str = ' AND activity_log.previewed IS NULL';
+            }
+
+        }
+		else{
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
 				, comment.posting_id, comment.comment
@@ -155,15 +166,6 @@ class Activity_Log extends _Model {
 				, CONCAT(\'http://www.dahliawolf.com/post/\', comment.posting_id) AS post_url
 				, CONCAT(image.source, image.imagename) AS image_url
 			';
-		}
-		else {
-			$select_str = 'COUNT(*) AS count';
-			if (!$unpreviewed_count) {
-				$where_str = 'AND activity_log.read IS NULL';
-			}
-			else {
-				$where_str = 'AND activity_log.previewed IS NULL';
-			}
 		}
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
@@ -208,9 +210,19 @@ class Activity_Log extends _Model {
 
 	public function get_liked_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
     {
-        $where_str = 'AND activity_log.read IS NULL';
+        $where_str = '';
 
-		if (!$unread_count) {
+        if ($unread_count) {
+            $select_str = 'COUNT(*) AS count';
+            if ($unpreviewed_count==false) {
+                $where_str = " AND activity_log.read IS NULL \n";
+            }
+            else {
+                $where_str = ' AND activity_log.previewed IS NULL';
+            }
+
+        }
+		else{
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
 				, posting_like.posting_id
@@ -219,15 +231,7 @@ class Activity_Log extends _Model {
 				, CONCAT(image.source, image.imagename) AS image_url
 			';
 		}
-		else {
-			$select_str = 'COUNT(*) AS count';
-			if (!$unpreviewed_count) {
-				$where_str = 'AND activity_log.read IS NULL';
-			}
-			else {
-				$where_str = 'AND activity_log.previewed IS NULL';
-			}
-		}
+
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
 
@@ -271,23 +275,25 @@ class Activity_Log extends _Model {
 
 	public function get_followers_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
     {
-        $where_str = 'AND activity_log.read IS NULL';
+        if ($unread_count)
+        {
+            $select_str = 'COUNT(*) AS count';
+            if ($unpreviewed_count==false) {
+                $where_str = " AND activity_log.read IS NULL \n";
+            }
+            else {
+                $where_str = ' AND activity_log.previewed IS NULL';
+            }
 
-		if (!$unread_count) {
+        }
+		else {
+
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
 				, user_username.user_id, user_username.username, user_username.avatar
 			';
 		}
-		else {
-			$select_str = 'COUNT(*) AS count';
-			if (!$unpreviewed_count) {
-				$where_str = 'AND activity_log.read IS NULL';
-			}
-			else {
-				$where_str = 'AND activity_log.previewed IS NULL';
-			}
-		}
+
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
 
@@ -329,23 +335,24 @@ class Activity_Log extends _Model {
 
 	public function get_messages_log($user_id, $api_website_id, $activity_id=39, $unread_count = false, $unpreviewed_count = false, $request_params = array())
     {
-        $where_str = 'AND activity_log.read IS NULL';
+        $where_str = '';
 
-		if (!$unread_count) {
+        if ($unread_count)
+        {
+            $select_str = 'COUNT(*) AS count';
+            if ($unpreviewed_count==false) {
+                $where_str = " AND activity_log.read IS NULL \n";
+            }
+            else {
+                $where_str = ' AND activity_log.previewed IS NULL';
+            }
+        }
+		else{
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time,
 				user_username.user_id, user_username.username, user_username.avatar,
 				message.header, message.body
 			';
-		}
-		else {
-			$select_str = 'COUNT(*) AS count';
-			if (!$unpreviewed_count) {
-				$where_str = 'AND activity_log.read IS NULL';
-			}
-			else {
-				$where_str = 'AND activity_log.previewed IS NULL';
-			}
 		}
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
