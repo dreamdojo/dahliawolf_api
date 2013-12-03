@@ -3,6 +3,9 @@ class Activity_Log extends _Model {
 	const TABLE = 'activity_log';
 	const PRIMARY_KEY_FIELD = 'activity_log_id';
 
+
+
+
     protected $user_last_log_time = null;
 
     public function __construct($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE)
@@ -120,7 +123,7 @@ class Activity_Log extends _Model {
 		$values = array(
 			':user_id' => $user_id
 			, ':api_website_id' => $api_website_id
-			, ':activity_id' => 19
+			, ':activity_id' => Posting_Like::ACTIVITY_ID_POST_LIKED
 			, ':entity' => 'like_winner'
 		);
 
@@ -203,7 +206,10 @@ class Activity_Log extends _Model {
 		}
 	}
 
-	public function get_liked_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array()) {
+	public function get_liked_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+    {
+        $where_str = 'AND activity_log.read IS NULL';
+
 		if (!$unread_count) {
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
@@ -263,7 +269,10 @@ class Activity_Log extends _Model {
 		}
 	}
 
-	public function get_followers_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array()) {
+	public function get_followers_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+    {
+        $where_str = 'AND activity_log.read IS NULL';
+
 		if (!$unread_count) {
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
@@ -318,7 +327,10 @@ class Activity_Log extends _Model {
 		}
 	}
 
-	public function get_messages_log($user_id, $api_website_id, $activity_id=39, $unread_count = false, $unpreviewed_count = false, $request_params = array()) {
+	public function get_messages_log($user_id, $api_website_id, $activity_id=39, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+    {
+        $where_str = 'AND activity_log.read IS NULL';
+
 		if (!$unread_count) {
 			$select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time,
@@ -570,6 +582,34 @@ class Activity_Log extends _Model {
 
         $logger->LogInfo("LOGGING ACTIVITY WITH activity response: ". var_export($data, true));
     	return $data;
+    }
+
+    public function markReadByType($params)
+    {
+        $datetime = date('Y-m-d H:i:s');
+        $fields = array(
+            'read' => $datetime
+        );
+
+        $where_sql = 'activity_id = :activity_id
+                        AND user_id = :user_id';
+
+        $where_values = array(
+            ':activity_id'  => $params['activity_id'],
+            ':user_id'      => $params['user_id'],
+        );
+
+
+        $logger = new Jk_Logger( APP_PATH . 'logs/activity_log.log');
+        $logger->LogInfo( sprintf("MARK MESSAGES AS READ\nwith params: %s \n\nwhere values: %s\nfields: %s" , var_export($params, true), var_export($where_values, true), var_export($fields, true) ) );
+
+        try {
+            $update = $this->db_update($fields, $where_sql, $where_values);
+            return $update;
+        } catch (Exception $e) {
+            self::$Exception_Helper->server_error_exception('Unable to mark activity log as read.');
+        }
+
     }
 
     /*

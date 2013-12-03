@@ -10,6 +10,8 @@ class Posting_Like extends _Model
    	const PRIMARY_KEY_FIELD = 'posting_like_id';
    	const LINK_PARENT_FIELD = 'posting_id';
 
+    CONST ACTIVITY_ID_POST_VOTE = 19;
+    CONST ACTIVITY_ID_POST_LIKED = 9;
     private $table = self::TABLE;
 
     public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)

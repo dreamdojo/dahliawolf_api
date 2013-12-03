@@ -8,6 +8,8 @@ class Follow extends _Model {
 	const TABLE = 'follow';
 	const PRIMARY_KEY_FIELD = 'follow_id';
 
+    const ACTIVITY_ID_USER_FOLLOW = 34;
+
     protected $fields = array(
    		'created',
    		 'user_id',

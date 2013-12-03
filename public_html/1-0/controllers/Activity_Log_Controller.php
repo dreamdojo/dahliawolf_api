@@ -77,18 +77,27 @@ class Activity_Log_Controller extends _Controller {
 
 		// Like winners
 		$posts = $activity_log->get_like_winners_log($user_id, $api_website_id, false, false, $params);
+        $activity_log->markReadByType(array('activity_id' => Posting_Like::ACTIVITY_ID_POST_VOTE, 'user_id' => $user_id));
 
 		// Comments
 		$comments = $activity_log->get_commented_posts_log($user_id, $api_website_id, false, false, $params);
+        $activity_log->markReadByType(array('activity_id' => Posting_Comment::ACTIVITY_ID_RECEIVED_COMMENT, 'user_id' => $user_id));
+
 
 		// Likes
 		$likes = $activity_log->get_liked_posts_log($user_id, $api_website_id, false, false, $params);
+        $activity_log->markReadByType(array('activity_id' => Posting_Like::ACTIVITY_ID_POST_LIKED, 'user_id' => $user_id));
+
 
 		// Followers
 		$followers = $activity_log->get_followers_log($user_id, $api_website_id, false, false, $params);
+        $activity_log->markReadByType(array('activity_id' => Follow::ACTIVITY_ID_USER_FOLLOW, 'user_id' => $user_id));
+
 
         // Messages
         $messages = $activity_log->get_messages_log($user_id, $api_website_id, 39, false, false, $params);
+        $activity_log->markReadByType(array('activity_id' => Message::ACTIVITY_ID_RECEIVED_MESSAGE, 'user_id' => $user_id));
+
 
 
 		$data = array(
