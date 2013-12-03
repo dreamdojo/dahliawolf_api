@@ -7,7 +7,8 @@
 
 function json_pretty($json, $indent='  ')
 {
-    is_array($json ) || is_object($json )? $json = json_encode($json,  JSON_NUMERIC_CHECK) : null;
+//    is_array($json ) || is_object($json )? $json = json_encode($json,  JSON_NUMERIC_CHECK) : null;
+    is_array($json ) || is_object($json )? $json = json_encode($json) : null;
     $result      = '';
     $pos         = 0;
     $strLen      = strlen($json);
