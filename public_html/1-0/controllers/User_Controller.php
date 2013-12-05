@@ -985,9 +985,16 @@ class User_Controller extends _Controller {
 	}
 
 
-
     public function get_top_following( $params = array() )
     {
+        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
+
+        if($cached_content = self::getCachedContent($cache_key_params) )
+        {
+            return $cached_content;
+        }
+
+
         /** @var User $dw_user */
         $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
 
@@ -1024,8 +1031,14 @@ class User_Controller extends _Controller {
 
                 $user_data[$udkey] =  $u_data;
             }
-
         }
+
+
+        if(self::isUsingCache())
+        {
+            self::cacheContent($cache_key_params, json_encode($user_data));
+        }
+
 
         return $user_data;
 

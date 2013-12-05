@@ -6,6 +6,7 @@ class _Controller {
 	public $data;
 	
 	protected $Validate;
+    protected $use_cache = false;
 	
 	public function __construct() {	
 		
@@ -24,12 +25,86 @@ class _Controller {
 		
 		$this->Validate = new Validate();
 	}
-	
-	public function __destruct() {
+
+    protected function isUsingCache()
+    {
+        return ($this->use_cache === true);
+    }
+
+
+    protected function getCachedContent($key_params)
+    {
+        $cache_key = self::getCacheKey($key_params);
+
+        $redis = new RedisCache;
+
+        var_dump($cache_key);
+
+        $cached_content = $redis::get($cache_key);
+
+        if($cached_content)
+        {
+            echo ("cached content with key: \n$cache_key: \n$cached_content");
+        }else{
+            echo ("nothihg cached content with key: $cache_key");
+        }
+
+        return $cached_content ? $cached_content : null;
+
+    }
+
+    protected function getCacheKey($key_params)
+    {
+        $cache_key = "";
+        foreach ($key_params as $k => $v) $cache_key .= "$k/$v/";
+
+        return trim($cache_key, '/');
+    }
+
+
+    protected function cacheContent($cache_key_params, $content )
+    {
+        $cache_key = self::getCacheKey($cache_key_params);
+        is_array($content ) || is_object($content )? $content = json_encode($content) : null;
+
+        if($content)
+        {
+            echo ("caching content with key: $cache_key");
+            $redis = new RedisCache;
+            return $redis::save($cache_key, $content);
+        }
+
+        return false;
+    }
+
+
+    protected function getCacheParams($params, $action)
+    {
+        $cache_key_params = array();
+
+        //remove useless params
+        unset($params['endpoint']);
+        unset($params['response_format']);
+        unset($params['use_hmac_check']);
+        unset($params['function']);
+
+        $cache_key_params['object'] = strtolower(str_ireplace('_controller', '', get_class($this)));
+        $cache_key_params['action'] = $action;
+        foreach ($params as $k => $v) $cache_key_params[$k] = $v;
+
+        return $cache_key_params;
+    }
+
+
+
+    public function __destruct() {
 		unset($this->Model);
 	}
 	
-	
+	protected function setUseCache( boolean $use_cache )
+    {
+        $this->use_cache = $use_cache;
+    }
 	
 	protected function load($model, $db_host = DB_API_HOST, $db_user = DB_API_USER, $db_password = DB_API_PASSWORD, $db_name = DB_API_DATABASE) {
 		$className = ltrim($model, '_');
@@ -158,6 +233,26 @@ class _Controller {
 						try {
 							array_walk_recursive($params, array($this, 'convert_null_value'));
 							$results[$function] = $this->$function($params);
+
+
+                            //params for cache
+                            $cache_key_params =  self::getCacheParams($params, $function);
+
+                            if(self::isUsingCache() && ($cached_content = self::getCachedContent($cache_key_params)) )
+                            {
+                                $results[$function] = $cached_content;
+                            }else
+                            {
+                                $sub_results = $this->$function($params);
+                                $results[$function] = $sub_results;
+
+                                if(self::isUsingCache() )
+                                {
+                                    self::cacheContent($cache_key_params, $sub_results);
+                                }
+                            }
+
+
 						} catch (Exception $e) {
 							$errors = method_exists($e, 'get_errors') ? $e->get_errors() : $e->getMessage();
 							$status_code = method_exists($e, 'get_status_code') ? $e->get_status_code() : NULL;
@@ -170,7 +265,20 @@ class _Controller {
 						foreach ($params as $sub_params) {
 							try {
 								array_walk_recursive($sub_params, array($this, 'convert_null_value'));
-								$sub_results = $this->$function($sub_params);
+
+
+                                //params for cache
+                                $cache_key_params =  self::getCacheParams($sub_params, $function);
+
+                                if(self::isUsingCache() && ($cached_content = self::getCachedContent($cache_key_params)) )
+                                {
+                                    $results[$function] = $cached_content;
+                                }
+                                else
+                                {
+                                    $sub_results = $this->$function($sub_params);
+                                }
+
 							} catch (Exception $e) {
 								$errors = method_exists($e, 'get_errors') ? $e->get_errors() : $e->getMessage();
 								$status_code = method_exists($e, 'get_status_code') ? $e->get_status_code() : NULL;
@@ -178,6 +286,11 @@ class _Controller {
 							}
 							
 							array_push($results[$function], $sub_results);
+
+                            if(self::isUsingCache() )
+                            {
+                                self::cacheContent($cache_key_params, json_encode($sub_results));
+                            }
 						}
 					}
 				}
