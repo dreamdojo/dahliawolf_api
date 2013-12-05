@@ -1035,10 +1035,8 @@ class User_Controller extends _Controller {
         }
 
 
-        if(self::isUsingCache())
-        {
-            self::cacheContent($cache_key_params, json_encode($user_data));
-        }
+        //cache content
+        if(self::isUsingCache()) self::cacheContent($cache_key_params, json_encode($user_data),  RedisCache::TTL_HOUR*3);
 
 
         return $user_data;

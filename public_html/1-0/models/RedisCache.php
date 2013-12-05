@@ -7,6 +7,8 @@
 class RedisCache extends Jk_Base{
 
     const DEFAULT_TTL = 86400;
+    const TTL_HOUR = 3600;
+    const TTL_DAY = 86400;
 
     protected static $is_init = false;
 
@@ -65,6 +67,12 @@ class RedisCache extends Jk_Base{
     public static function get($key)
     {
         return self::getRedis()->get($key);
+    }
+
+
+    public static function delete($key)
+    {
+        return self::getRedis()->delete($key);
     }
 
 

@@ -26,9 +26,19 @@ class _Controller {
 		$this->Validate = new Validate();
 	}
 
+    protected function invalidateCache()
+    {
+        return ($this->use_cache === true);
+    }
+
     protected function isUsingCache()
     {
         return ($this->use_cache === true);
+    }
+
+    protected function setInvalidateCache(boolean $inv)
+    {
+        $this->use_cache = $inv;
     }
 
 
@@ -38,19 +48,16 @@ class _Controller {
 
         $redis = new RedisCache;
 
-        //var_dump($cache_key);
-
-        $cached_content = $redis::get($cache_key);
-
-        if($cached_content)
+        if( self::invalidateCache() )
         {
-            //echo ("cached content with key: \n$cache_key: \n$cached_content");
+            $cached_content = null;
+            $redis::delete($cache_key);
+
         }else{
-            //echo ("nothing cached content with key: $cache_key");
+            $cached_content = $redis::get($cache_key);
         }
 
         return $cached_content ? $cached_content : null;
-
     }
 
     protected function getCacheKey($key_params)
@@ -62,7 +69,7 @@ class _Controller {
     }
 
 
-    protected function cacheContent($cache_key_params, $content )
+    protected function cacheContent($cache_key_params, $content, $cache_ttl = RedisCache::TTL_HOUR )
     {
         $cache_key = self::getCacheKey($cache_key_params);
         is_array($content ) || is_object($content )? $content = json_encode($content) : null;
@@ -71,9 +78,9 @@ class _Controller {
 
         if($content)
         {
-            echo ("caching content with key: $cache_key");
+            //echo ("caching content with key: $cache_key");
             $redis = new RedisCache;
-            return $redis::save($cache_key, $content);
+            return $redis::save($cache_key, $content, $cache_ttl);
         }
 
         return false;
@@ -89,6 +96,13 @@ class _Controller {
         unset($params['response_format']);
         unset($params['use_hmac_check']);
         unset($params['function']);
+        unset($params['t']);
+
+        if( isset( $params['invalidate_cache']) && (int) $params['invalidate_cache'] == 1 )
+        {
+            self::setInvalidateCache(true);
+            unset($params['invalidate_cache']);
+        }
 
         $cache_key_params['object'] = strtolower(str_ireplace('_controller', '', get_class($this)));
         $cache_key_params['action'] = $action;

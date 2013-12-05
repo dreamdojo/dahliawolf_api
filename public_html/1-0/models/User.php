@@ -705,13 +705,10 @@ class User extends _Model
             $where_str = 'follow.follower_user_id = :user_id';
             $values[':user_id'] = $params['user_id'];
         }
-        elseif (!empty($params['username'])) {
-            $where_str = 'user.username = :username';
-            $values[':username'] = !empty($params['username']) ? $params['username'] : '';
-        }else{
+        else{
             $where_str = '1';
-            $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id
-                                LEFT JOIN follow AS f ON user_username.user_id = f.user_id";
+            $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id";
+                                //LEFT JOIN follow AS f ON user_username.user_id = f.user_id";
         }
 
         // Optional viewer_user_id
@@ -721,6 +718,8 @@ class User extends _Model
             $values[':viewer_user_id'] = $params['viewer_user_id'];
 
             $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id";
+
+            $is_followed =", IF(f.user_id IS NULL, 0, 1) AS is_followed";
         }
 
 
@@ -750,7 +749,7 @@ class User extends _Model
         		LIMIT 1
         	) AS membership_level
 
-        	, IF(f.user_id IS NULL, 0, 1) AS is_followed
+        	{$is_followed}
 
             FROM follow
                 {$join_followers}
@@ -773,6 +772,7 @@ class User extends _Model
 
         if(isset($_GET['t'])) {
             echo sprintf("query: \n%s \nparams: %s\n: params: %s", $following_query, var_export($values, true), var_export($params, true));
+            return null;
         }
 
 
