@@ -649,9 +649,9 @@ class User_Controller extends _Controller {
 			_Model::$Exception_Helper->request_failed_exception('User could not be found.');
 		}
 
-        $commer_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
+        $dahlia_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
 
-        $total_sales = $commer_user->get_sales( $data['user_id'] );
+        $total_sales = $dahlia_user->get_sales( $data['user_id'] );
 
         $data['sales_total'] =  $total_sales['sales_total'];
 
@@ -983,6 +983,53 @@ class User_Controller extends _Controller {
 
 		return $data;
 	}
+
+
+
+    public function get_top_following( $params = array() )
+    {
+        /** @var User $dw_user */
+        $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
+
+        $params['limit'] = isset($params['limit']) ? $params['limit'] : 5;
+
+        if (!empty($params['offset'])) {
+            $params['offset'] = $params['offset'];
+        }
+
+        $user_data = $dw_user->getTopFollowing($params);
+
+        if(is_array($user_data))
+        {
+            $posts_params = array();
+            foreach( $user_data as $udkey => $u_data)
+            {
+                $posting_params = array(
+                    'user_id' =>  $u_data['user_id']
+                );
+
+                if (!empty($params['posts_offset'])) $posting_params['offset'] = $params['posts_offset'];
+
+                //query limits
+                if (!empty($params['posts_limit']))  $posting_params['limit'] = $params['posts_limit'];
+                else $posting_params['limit'] = 5;
+
+                //$logger = new Jk_Logger( APP_PATH . 'logs/posting.log');
+                //echo ( sprintf("get posts with data %s", var_export($posts_params,true) ));
+
+                $posting  = new Posting();
+                $user_posts =  $posting->getByUser($posting_params);
+
+                if($user_posts['posts']) $u_data['posts'] = $user_posts['posts'];
+
+                $user_data[$udkey] =  $u_data;
+            }
+
+        }
+
+        return $user_data;
+
+    }
 
 }
 ?>

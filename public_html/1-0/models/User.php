@@ -679,6 +679,132 @@ class User extends _Model
 
 
 
+    public function getTopFollowing( $params = array() )
+    {
+        $error = NULL;
+        /*
+        if (empty($params['where'])) {
+            $error = 'Where conditions are required.';
+        }
+        else if (!is_array($params['where'])) {
+            $error = 'Invalid where conditions.';
+        }
+
+        if (!empty($error)) {
+            return resultArray(false, NULL, $error);
+        }
+        */
+
+        $select_str = '';
+        $join_str = '';
+        $where_str = '';
+
+        $values = array();
+        // user_id or username
+        if (!empty($params['user_id'])) {
+            $where_str = 'follow.follower_user_id = :user_id';
+            $values[':user_id'] = $params['user_id'];
+        }
+        elseif (!empty($params['username'])) {
+            $where_str = 'user.username = :username';
+            $values[':username'] = !empty($params['username']) ? $params['username'] : '';
+        }else{
+            $where_str = '1';
+            $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id
+                                LEFT JOIN follow AS f ON user_username.user_id = f.user_id";
+        }
+
+        // Optional viewer_user_id
+        if (!empty($params['viewer_user_id'])) {
+            $select_str = ', IF(f.user_id IS NULL, 0, 1) AS is_followed';
+            $join_str = 'LEFT JOIN follow AS f ON user_username.user_id = f.user_id AND f.follower_user_id = :viewer_user_id';
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+
+            $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id";
+        }
+
+
+        $offset_string = $this->generate_limit_offset_str($params);
+
+
+        $following_query = "SELECT distinct
+        	user_username.user_username_id,
+        	user_username.user_id,
+        	user_username.username,
+        	user_username.points,
+        	user_username.location,
+        	user_username.fb_uid,
+        	user_username.avatar,
+
+        	rank.rank
+
+        	{$select_str}
+
+        	,(
+        		SELECT
+        		ml.name
+        		FROM membership_level ml, user_username user
+        		WHERE user.user_id = user_username.user_id
+        			AND CAST(user.points AS SIGNED)  / ml.points > 1
+        		order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
+        		LIMIT 1
+        	) AS membership_level
+
+        	, IF(f.user_id IS NULL, 0, 1) AS is_followed
+
+            FROM follow
+                {$join_followers}
+                {$join_str}
+
+                INNER JOIN
+                        ( SELECT
+                            u.user_id,
+                            @row:=@row+1 as rank
+                            FROM user_username AS u
+                            join (SELECT @row:=0) pos
+                            ORDER BY u.points DESC
+                        limit 999999999999999  )
+                  AS rank ON rank.user_id = user_username.user_id
+
+            WHERE {$where_str}
+            ORDER BY rank.rank ASC
+            {$offset_string};";
+
+
+        if(isset($_GET['t'])) {
+            echo sprintf("query: \n%s \nparams: %s\n: params: %s", $following_query, var_export($values, true), var_export($params, true));
+        }
+
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->exec($following_query, $values);
+
+        //$result = $this->run($following_query, $values);
+
+        if ($result === false) {
+             if(isset($_GET['t'])) echo $this->error;
+             return resultArray(false, NULL, 'Could not get top following.');
+        }
+
+        //$rows = $result->fetchAll();
+
+        //if(isset($_GET['t'])) var_dump($rows);
+
+        return $result;
+
+    }
+
+
+    protected function generate_limit_offset_str($params, $offset=true) {
+   		$limit_offset_str = '';
+   		if (!empty($params['limit'])) {
+   			$limit_offset_str .= ' LIMIT ' . (int)$params['limit'];
+   		}
+   		if ($offset && !empty($params['offset'])) {
+   			$limit_offset_str .= ' OFFSET ' . (int)$params['offset'];
+   		}
+
+   		return $limit_offset_str;
+   	}
 
 
 
