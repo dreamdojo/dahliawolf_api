@@ -991,9 +991,10 @@ class User_Controller extends _Controller {
 
         if($cached_content = self::getCachedContent($cache_key_params) )
         {
-            return $cached_content;
+            return json_decode($cached_content);
         }
 
+        self::setUseCache(true);
 
         /** @var User $dw_user */
         $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);

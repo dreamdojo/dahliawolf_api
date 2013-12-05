@@ -38,15 +38,15 @@ class _Controller {
 
         $redis = new RedisCache;
 
-        var_dump($cache_key);
+        //var_dump($cache_key);
 
         $cached_content = $redis::get($cache_key);
 
         if($cached_content)
         {
-            echo ("cached content with key: \n$cache_key: \n$cached_content");
+            //echo ("cached content with key: \n$cache_key: \n$cached_content");
         }else{
-            echo ("nothihg cached content with key: $cache_key");
+            //echo ("nothing cached content with key: $cache_key");
         }
 
         return $cached_content ? $cached_content : null;
@@ -66,6 +66,8 @@ class _Controller {
     {
         $cache_key = self::getCacheKey($cache_key_params);
         is_array($content ) || is_object($content )? $content = json_encode($content) : null;
+
+        //echo ("caching content with key: $cache_key: $content");
 
         if($content)
         {
