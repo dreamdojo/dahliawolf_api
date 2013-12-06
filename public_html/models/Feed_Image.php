@@ -104,9 +104,8 @@ class Feed_Image extends db {
                     LEFT JOIN site ON search_site_link.site_id = site.site_id
                     $join_str
                     WHERE
-                        imageURL IS NOT NULL AND imageURL != '' ".
-                        (!empty($where_sql) ? $where_sql : '')
-                    ."
+                        imageURL IS NOT NULL AND imageURL != ''
+                        {$where_sql}
                     ORDER BY id DESC
                     LIMIT 3000 ) as images
                 ORDER BY $order_by
@@ -132,6 +131,14 @@ class Feed_Image extends db {
             }
             $rows = $result->fetchAll();
         }catch (Exception $e ) {$rows = array();}
+
+        foreach($rows as &$image)
+        {
+            if( strpos($image['imageURL'], '?') > -1 )
+            {
+                $image['imageURL'] = "image.php?imagename={$image['imageURL']}";
+            }
+        }
 
 		return resultArray(true, $rows);
 	}
