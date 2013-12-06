@@ -66,7 +66,8 @@ class Boosted extends _Model
                         'big_baseurl' => $source,
                         'imageURL' => $imagename,
                         'status' => "Approved",
-                        'attribution_url' => $src_domain,
+                        'attribution_url' => $image_url,
+                        'domain' => $src_domain,
                     );
 
                     //echo " image source: $source \n";
