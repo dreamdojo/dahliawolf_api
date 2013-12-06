@@ -28,8 +28,10 @@ class Boosted extends _Model
        	//get contents of remote file & save
        	$imagename = sprintf("%s_%s", time(), str_replace('?','_', basename(urldecode($image_url))) );
 
+        /*
         $replace_arr = explode('', '~!@#$%^&*()-+=' );
         foreach($replace_arr as $replace ) $imagename = str_replace("$replace", '_', $imagename);
+        */
 
         $repo_root = "/mnt/repodata/{$upload_dir}";
         $image_repo_loc = $repo_root . $imagename;
