@@ -26,10 +26,9 @@ class Activity_Log_User_Last extends _Model
         );
 
         $values = array(
-            'last_activity_time' => time(),
+            'last_activity_time' => time()-50,
             'user_id' => $params['user_id']
         );
-
 
         try {
             $insert_id = $this->do_db_save($values, $data);

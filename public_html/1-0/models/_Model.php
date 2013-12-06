@@ -206,13 +206,13 @@ class _Model extends Jk_Base{
 			);
 			$this->db_update($values, $key_field . ' = :' . $key_field, $where_values);
 
-            $logger->LogInfo("do_db_save: update");
+            //$logger->LogInfo( sprintf("do_db_save: update\nvalues: %s", var_export($values, true)) );
 			
 			return $this->db_row_count() ? $info[$key_field] : NULL;
 		}
 		// Insert
 		else {
-            $logger->LogInfo("do_db_save: insert");
+            //$logger->LogInfo( sprintf("do_db_save: insert\nvalues: %s\n", var_export($values, true)) );
 
 			$this->db_insert($values, false, $ignore);
 			$insert_id = $this->db_last_insert_id();

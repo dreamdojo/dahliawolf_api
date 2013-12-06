@@ -220,7 +220,6 @@ class _Controller {
             unset($request['function']);
         }
 
-
         if(!$hmac_ok)
         {
             return static::wrap_result(false, NULL, $Status_Code->get_status_code_unauthorized(), array('Invalid API Key'));
@@ -248,7 +247,7 @@ class _Controller {
 					if (empty($params) || is_assoc($params)) {
 						try {
 							array_walk_recursive($params, array($this, 'convert_null_value'));
-							$results[$function] = $this->$function($params);
+							//$results[$function] = $this->$function($params);
 
 
                             //params for cache

@@ -223,7 +223,9 @@ class Social_Network_Controller extends _Controller {
 
 			// Username exists
 			if (!empty($params['username'])) {
-				$existing_username = $this->User->get_row(
+
+                //$existing_username = $this->User
+                $existing_username = $offline_user->get_row(
 					array(
 						'username' => $params['username']
 					)
@@ -241,7 +243,7 @@ class Social_Network_Controller extends _Controller {
 			}
 
 			// Email exists
-			$existing_email = $this->User->get_row(
+			$existing_email = $offline_user->get_row(
 				array(
 					'email' => $params['email']
 				)
