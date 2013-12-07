@@ -75,4 +75,4 @@ class Activity_Log_User_Last extends _Model
     }
 }
 
-?> 
+?>
