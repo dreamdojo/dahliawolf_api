@@ -103,6 +103,14 @@ class Activity_Log extends _Model {
             ';
 		}
 
+        $viewer_user_id = $request_params['viewer_user_id'];
+        if (!empty($viewer_user_id)) {
+            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $join_str = '
+                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
+                    AND follow.follower_user_id = :viewer_user_id)
+            ';
+        }
 
         if( $request_params['new_only'] ) $where_str .= self::addUserLast($user_id);
 
@@ -114,6 +122,7 @@ class Activity_Log extends _Model {
 				LEFT JOIN dahliawolf_v1_2013.like_winner ON activity_log.entity_id = like_winner.like_winner_id
 				INNER JOIN dahliawolf_v1_2013.posting ON activity_log.entity_id = posting.posting_id
 				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+                {$join_str}
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
 				AND activity_log.activity_id = :activity_id
@@ -121,12 +130,17 @@ class Activity_Log extends _Model {
 				{$where_str}
 			ORDER BY activity_log.created DESC
 		";
+
 		$values = array(
-			':user_id' => $user_id
-			, ':api_website_id' => $api_website_id
-			, ':activity_id' => Posting_Like::ACTIVITY_ID_POST_LIKED
-			, ':entity' => 'like_winner'
+			':user_id' => $user_id,
+			':api_website_id' => $api_website_id,
+			':activity_id' => Posting_Like::ACTIVITY_ID_POST_LIKED,
+			':entity' => 'like_winner',
 		);
+
+        if (!empty($viewer_user_id)) {
+            $values[':viewer_user_id'] = $viewer_user_id;
+        }
 
         if(isset($_GET['t'])){
             echo "\n".__FUNCTION__ ."\n";
@@ -168,30 +182,45 @@ class Activity_Log extends _Model {
 			';
 		}
 
+        $viewer_user_id = $request_params['viewer_user_id'];
+        if (!empty($viewer_user_id)) {
+            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $join_str = '
+                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
+                    AND follow.follower_user_id = :viewer_user_id)
+            ';
+        }
+
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
 
 		// Get rows
-		$query = '
-			SELECT ' . $select_str . '
+		$query = "
+			SELECT {$select_str}
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
 				INNER JOIN dahliawolf_v1_2013.comment ON activity_log.entity_id = comment.comment_id
 				INNER JOIN dahliawolf_v1_2013.user_username ON comment.user_id = user_username.user_id
 				INNER JOIN dahliawolf_v1_2013.posting ON comment.posting_id = posting.posting_id
 				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+				{$join_str}
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
 				AND activity_log.activity_id = :activity_id
 				AND activity_log.entity = :entity
-				' . (!empty($where_str) ? $where_str : '') . '
+				{$where_str}
 			ORDER BY activity_log.created DESC
-		';
+		";
+
 		$values = array(
-			':user_id' => $user_id
-			, ':api_website_id' => $api_website_id
-			, ':activity_id' => 32
-			, ':entity' => 'comment'
+			':user_id' => $user_id,
+			':api_website_id' => $api_website_id,
+			':activity_id' => 32,
+			':entity' => 'comment',
 		);
+
+        if (!empty($viewer_user_id)) {
+            $values[':viewer_user_id'] = $viewer_user_id;
+        }
 
         if(isset($_GET['t'])){
             echo "\n".__FUNCTION__ ."\n";
@@ -232,31 +261,44 @@ class Activity_Log extends _Model {
 			';
 		}
 
+        $viewer_user_id = $request_params['viewer_user_id'];
+        if (!empty($viewer_user_id)) {
+            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $join_str = '
+                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
+                    AND follow.follower_user_id = :viewer_user_id)
+            ';
+        }
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
 
 		// Get rows
-		$query = '
-			SELECT ' . $select_str . '
+		$query = "
+			SELECT {$select_str}
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
 				INNER JOIN dahliawolf_v1_2013.posting_like ON activity_log.entity_id = posting_like.posting_like_id
 				INNER JOIN dahliawolf_v1_2013.user_username ON posting_like.user_id = user_username.user_id
                 INNER JOIN dahliawolf_v1_2013.posting ON posting_like.posting_id = posting.posting_id
 				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+				{$join_str}
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
 				AND activity_log.activity_id = :activity_id
 				AND activity_log.entity = :entity
-				' . (!empty($where_str) ? $where_str : '') . '
+				{$where_str}
 			ORDER BY activity_log.created DESC
-		';
+		";
 		$values = array(
-			':user_id' => $user_id
-			, ':api_website_id' => $api_website_id
-			, ':activity_id' => 9
-			, ':entity' => 'posting_like'
+			':user_id' => $user_id,
+			':api_website_id' => $api_website_id,
+			':activity_id' => 9,
+			':entity' => 'posting_like',
 		);
+
+        if (!empty($viewer_user_id)) {
+            $values[':viewer_user_id'] = $viewer_user_id;
+        }
 
         if(isset($_GET['t'])){
             echo "\n".__FUNCTION__ ."\n";
@@ -294,29 +336,42 @@ class Activity_Log extends _Model {
 			';
 		}
 
+        $viewer_user_id = $request_params['viewer_user_id'];
+        if (!empty($viewer_user_id)) {
+           $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+           $join_str = '
+               LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
+                   AND follow.follower_user_id = :viewer_user_id)
+           ';
+        }
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
 
 		// Get rows
-		$query = '
-			SELECT ' . $select_str . '
+		$query = "
+			SELECT {$select_str}
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
-				INNER JOIN dahliawolf_v1_2013.follow ON activity_log.entity_id = follow.follow_id
+				#INNER JOIN dahliawolf_v1_2013.follow ON activity_log.entity_id = follow.follow_id
+				{$join_str}
 				INNER JOIN dahliawolf_v1_2013.user_username ON follow.follower_user_id = user_username.user_id
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
 				AND activity_log.activity_id = :activity_id
 				AND activity_log.entity = :entity
-				' . (!empty($where_str) ? $where_str : '') . '
+				{$where_str}
 			ORDER BY activity_log.created DESC
-		';
+		";
 		$values = array(
-			':user_id' => $user_id
-			, ':api_website_id' => $api_website_id
-			, ':activity_id' => 34
-			, ':entity' => 'follow'
+			':user_id' => $user_id,
+			':api_website_id' => $api_website_id,
+			':activity_id' => 34,
+			':entity' => 'follow',
 		);
+
+        if (!empty($viewer_user_id)) {
+            $values[':viewer_user_id'] = $viewer_user_id;
+        }
 
         if(isset($_GET['t'])){
             echo "\n".__FUNCTION__ ."\n";
@@ -355,29 +410,43 @@ class Activity_Log extends _Model {
 			';
 		}
 
+        $viewer_user_id = $request_params['viewer_user_id'];
+        if (!empty($viewer_user_id)) {
+           $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+           $join_str = '
+               LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
+                   AND follow.follower_user_id = :viewer_user_id)
+           ';
+        }
+
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
 
 		// Get rows
-		$query = '
-			SELECT ' . $select_str . '
+		$query = "
+			SELECT {$select_str}
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
                 INNER JOIN dahliawolf_v1_2013.user_username ON activity_log.user_id = user_username.user_id
                 INNER JOIN dahliawolf_v1_2013.message AS message ON message.to_user_id = activity_log.user_id
                                                                  AND message.message_id = activity_log.entity_id
+                {$join_str}
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
 				AND activity_log.activity_id = :activity_id
 				AND activity_log.entity = :entity
-				' . (!empty($where_str) ? $where_str : '') . '
+				{$where_str}
 			ORDER BY activity_log.created DESC
-		';
+		";
 		$values = array(
 			':user_id' => $user_id,
 			':api_website_id' => $api_website_id,
 			':activity_id' => $activity_id,
 			':entity' => 'message'
 		);
+
+        if (!empty($viewer_user_id)) {
+            $values[':viewer_user_id'] = $viewer_user_id;
+        }
 
 
         if(isset($_GET['t'])){
