@@ -343,6 +343,9 @@ class Activity_Log extends _Model {
                 LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = :viewer_user_id
                     AND follow.follower_user_id = activity_log.user_id )
             ';
+        }else
+        {
+            $join_str = 'INNER JOIN dahliawolf_v1_2013.follow ON activity_log.entity_id = follow.follow_id';
         }
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
@@ -352,7 +355,6 @@ class Activity_Log extends _Model {
 			SELECT {$select_str}
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
-				#INNER JOIN dahliawolf_v1_2013.follow ON activity_log.entity_id = follow.follow_id
 				{$join_str}
 				INNER JOIN dahliawolf_v1_2013.user_username ON follow.follower_user_id = user_username.user_id
 			WHERE activity_log.user_id = :user_id
