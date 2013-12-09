@@ -90,12 +90,12 @@ class Feed_Image extends db {
                 *
                 FROM
                     (SELECT
-                        imageInfo . *,
+                        imageInfo.*,
                             CONCAT('upload/', imageURL) AS src,
                             IF(bigImageURL = '', NULL, CONCAT('upload/', bigImageURL)) AS big_src,
                             imagename AS alt,
                             imageInfo.keyword AS keywords,
-                            site.domain,
+                            #site.domain,
                             site.domain_keyword
                     FROM
                         imageInfo

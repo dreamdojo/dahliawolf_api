@@ -19,6 +19,10 @@ class Boosted extends _Model
 
     public function processImage($request_data = array())
     {
+        $logger = new Jk_Logger('logs/bank_image.log');
+
+        $logger->LogInfo( "bank_image: posted params: " .var_export($request_data, true));
+
         $src_domain = $request_data['domain'];
         $image_url  = $request_data['image_url'];
         $image_caption  = $request_data['image_caption'];
@@ -114,7 +118,8 @@ class Boosted extends _Model
             'dimensionsX',
             'dimensionsY',
             'attribution_url',
-            'imageURL'
+            'imageURL',
+            'domain'
         );
 
         $data['created_at'] = date('Y-m-d h:i:s');

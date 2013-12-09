@@ -105,10 +105,10 @@ class Activity_Log extends _Model {
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
-            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_followed';
             $join_str = '
-                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
-                    AND follow.follower_user_id = :viewer_user_id)
+                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = :viewer_user_id
+                    AND follow.follower_user_id = activity_log.user_id )
             ';
         }
 
@@ -184,10 +184,10 @@ class Activity_Log extends _Model {
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
-            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_followed';
             $join_str = '
-                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
-                    AND follow.follower_user_id = :viewer_user_id)
+                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = :viewer_user_id
+                    AND follow.follower_user_id = activity_log.user_id )
             ';
         }
 
@@ -263,10 +263,10 @@ class Activity_Log extends _Model {
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
-            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_followed';
             $join_str = '
-                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
-                    AND follow.follower_user_id = :viewer_user_id)
+                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = :viewer_user_id
+                    AND follow.follower_user_id = activity_log.user_id )
             ';
         }
 
@@ -338,11 +338,11 @@ class Activity_Log extends _Model {
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
-           $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
-           $join_str = '
-               LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
-                   AND follow.follower_user_id = :viewer_user_id)
-           ';
+           $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_followed';
+            $join_str = '
+                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = :viewer_user_id
+                    AND follow.follower_user_id = activity_log.user_id )
+            ';
         }
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
@@ -412,11 +412,11 @@ class Activity_Log extends _Model {
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
-           $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+           $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_followed';
            $join_str = '
-               LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = activity_log.user_id
-                   AND follow.follower_user_id = :viewer_user_id)
-           ';
+                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = :viewer_user_id
+                    AND follow.follower_user_id = activity_log.user_id )
+            ';
         }
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
