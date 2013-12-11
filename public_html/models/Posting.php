@@ -854,20 +854,20 @@ class Posting extends db {
                     ' : '') . '
                         INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
                 WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
-                    AND posting.created >= :created
                     AND posting.posting_id != :posting_id
                     AND posting.deleted IS NULL
                     ' . (!empty($viewer_user_id) ? '
                         AND posting_like.user_id IS NULL
                         AND posting_dislike.posting_id IS NULL
                     ' : '') . '
-                #ORDER BY posting.created DESC, posting.posting_id DESC
+                #, posting.posting_id DESC
                 GROUP BY posting.posting_id
-                ORDER BY day_threshold_likes DESC
+                ORDER BY day_threshold_likes DESC, posting.created ASC
                 ) AS sub_posting
 
-             WHERE day_threshold_likes >= :total_likes
-
+            WHERE day_threshold_likes >= :total_likes
+            ORDER BY day_threshold_likes ASC
+            LIMIT 1
 		';
 
 		$values = array(
@@ -902,42 +902,55 @@ class Posting extends db {
 		return NULL;
 	}
 
-	public function get_next_posting_id($posting_id, $created, $total_likes, $viewer_user_id = NULL) {
-		$query = '
-			SELECT * FROM
+	public function get_next_posting_id($posting_id, $created, $total_likes, $viewer_user_id = NULL)
+    {
 
+        $filter_likes = "";
+        if($posting_id){
+            $filter_likes = "WHERE day_threshold_likes <= :total_likes";
+        }
+
+		$query = "
+			SELECT * FROM
                 (SELECT posting.posting_id
 			    , IFNULL(COUNT(posting_like_hot.posting_id), 0) AS day_threshold_likes
+			    , posting.created
                 FROM posting
-                    ' . (!empty($viewer_user_id) ? '
+                    " . (!empty($viewer_user_id) ? "
                         LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id AND posting_like.user_id = :viewer_user_id
                         LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id AND posting_dislike.user_id = :viewer_user_id
-                    ' : '') . '
+                    " : '') . "
                     INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
                 WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
-                    AND posting.created <= :created
                     AND posting.posting_id != :posting_id
                     AND posting.deleted IS NULL
-                    ' . (!empty($viewer_user_id) ? '
-                        AND posting_like.user_id IS NULL
-                        AND posting_dislike.posting_id IS NULL
-                    ' : '') . '
+                    " . (!empty($viewer_user_id) ? "
+                    AND posting_like.user_id IS NULL
+                    AND posting_dislike.posting_id IS NULL
+                    " : '') . "
                 #ORDER BY posting.created ASC, posting.posting_id ASC
                 GROUP BY posting.posting_id
-                ORDER BY day_threshold_likes DESC
+                ORDER BY day_threshold_likes DESC, posting.created ASC
                 ) as sub_posting
-            WHERE day_threshold_likes <= :total_likes
+            {$filter_likes}
             ORDER BY day_threshold_likes DESC
             limit 1
+		";
 
 
-		';
+
 		$values = array(
-			':posting_id' => $posting_id,
-	        ':created' => $created,
+			':posting_id' => $posting_id? $posting_id : 0,
 	        ':like_day_threshold' => 30,
-            ':total_likes' => $total_likes
 		);
+
+        if($posting_id){
+            $values[':total_likes'] = $total_likes;
+        }
+
+        if($created){
+            $values[':created'] = $created;
+        }
 
 		if (!empty($viewer_user_id)) {
 			$values[':viewer_user_id'] = $viewer_user_id;
