@@ -1465,8 +1465,8 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 
 			// Also return previous and next
 			if (!empty($post) && !empty($post['data'])) {
-				$previous = $Posting->get_previous_posting_id($post['data']['posting_id'], $post['data']['created'], $viewer_user_id);
-				$next = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], $viewer_user_id);
+				$previous   = $Posting->get_previous_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['total_likes'], $viewer_user_id );
+				$next       = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['total_likes'], $viewer_user_id  );
 
 				$post['data']['previous_posting_id'] = $previous;
 				$post['data']['next_posting_id'] = $next;
