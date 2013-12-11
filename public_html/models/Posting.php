@@ -924,19 +924,17 @@ class Posting extends db {
                 WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
                     AND posting.posting_id != :posting_id
                     AND posting.deleted IS NULL
-                    " . (!empty($viewer_user_id) ? "
+                        " . (!empty($viewer_user_id) ? "
                     AND posting_like.user_id IS NULL
                     AND posting_dislike.posting_id IS NULL
-                    " : '') . "
-                #ORDER BY posting.created ASC, posting.posting_id ASC
+                        " : '') . "
                 GROUP BY posting.posting_id
                 ORDER BY day_threshold_likes DESC, posting.created ASC
-                ) as sub_posting
+                ) AS sub_posting
             {$filter_likes}
             ORDER BY day_threshold_likes DESC
-            limit 1
+            LIMIT 1
 		";
-
 
 
 		$values = array(
@@ -956,12 +954,14 @@ class Posting extends db {
 			$values[':viewer_user_id'] = $viewer_user_id;
 		}
 
+        //$this->debug();
         if (isset($_GET['t'])) {
-			echo $query;
-			print_r($values);
+			echo "$query\n\n";
+			var_dump($values);
 		}
 
 		$result = $this->run($query, $values);
+
 
 		if ($result) {
 			$rows = $result->fetchAll();
@@ -970,6 +970,7 @@ class Posting extends db {
 				return $rows[0]['posting_id'];
 			}
 		}
+
 		return NULL;
 	}
 }

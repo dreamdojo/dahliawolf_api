@@ -1468,6 +1468,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
                 $next = $Posting->get_next_posting_id(null, $post['data']['created'], $post['data']['total_likes'], $viewer_user_id  );
 
                 $params['where']['posting_id'] = $next;
+                $post = $Posting->getPostDetails($params);
 
             }else{
                 $post = $Posting->getPostDetails($params);
