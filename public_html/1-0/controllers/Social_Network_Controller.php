@@ -405,7 +405,14 @@ class Social_Network_Controller extends _Controller {
 
             $social_link = new User_Social_Network_Link();
 
-            $data = $social_link->save($link);
+            try{
+
+                $data = $social_link->save($link);
+            }catch (Exception $e)
+            {
+                $data['error'] = 'can not save social link';
+                return $data;
+            }
 
             return $data;
         }
