@@ -75,5 +75,49 @@ class Follow extends _Model {
 
     }
 
+
+    public function removeFollow($data = array())
+    {
+        $error = NULL;
+
+        $values = array();
+
+        (int) $data['user_follow_id'] > 0 ? $data['follower_user_id'] = $data['user_follow_id'] : '';
+
+        $user_id =  $data['follower_user_id'];
+
+        $data['follower_user_id'] = $data['user_id'];
+        $data['user_id'] =  $user_id;
+
+        $fields = array(
+            'user_id',
+            'follower_user_id',
+        );
+        foreach ($fields as $field) {
+            if (array_key_exists($field, $data)) {
+                $values[$field] = $data[$field];
+            }
+        }
+
+        $logger = new Jk_Logger(APP_PATH.'logs/follow.log');
+
+        $where_sql = "user_id = :user_id
+                    AND follower_user_id = :follower_user_id";
+
+        try {
+            $logger->LogInfo(sprintf("save user follow... \nfields: %s", json_pretty($fields) ));
+            $insert_id = $this->db_delete($where_sql, $values);
+            return array(
+                strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
+                //'model_data' => $data
+                );
+
+        } catch(Exception $e) {
+            $logger->LogInfo("Unable to follow users.". $e->getMessage());
+            //self::$Exception_Helper->server_error_exception("Unable to follow users.". $e->getMessage());
+        }
+
+    }
+
 }
 ?>

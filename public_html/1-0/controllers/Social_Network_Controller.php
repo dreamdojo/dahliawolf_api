@@ -386,7 +386,33 @@ class Social_Network_Controller extends _Controller {
 			}
 		}
 	}
+
+
+    public function save_link( $params = array() )
+    {
+        $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+        $offline_user->setDataTable('user');
+        $user = $offline_user->getUserById($params['user_id']);
+
+        if (!empty($user)) {
+
+            $link = array(
+                'user_id' => $user['user_id'],
+                'social_network_id' => $params['social_network_id'],
+                'token' => $params['token'],
+                'created' => date('Y-m-d H:i:s'),
+            );
+
+            $social_link = new User_Social_Network_Link();
+
+            $data = $social_link->save($link);
+
+            return $data;
+        }
+
+        return null;
+    }
+
+
 }
 ?>
-
-
