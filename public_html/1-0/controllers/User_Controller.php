@@ -870,6 +870,14 @@ class User_Controller extends _Controller {
         return static::wrap_result( ($this->Follow->hasError()? false:true), $data, 200, $this->Follow->getErrors() );
     }
 
+    public function unfollow($request_data)
+    {
+        $this->load('Follow', DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
+        $data  = $this->Follow->removeFollow($request_data);
+
+        return static::wrap_result( ($this->Follow->hasError()? false:true), $data, 200, $this->Follow->getErrors() );
+    }
+
 
 	/*
 	user resetpassword
