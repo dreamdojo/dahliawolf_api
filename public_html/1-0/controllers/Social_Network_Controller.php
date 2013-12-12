@@ -396,10 +396,11 @@ class Social_Network_Controller extends _Controller {
 
         if (!empty($user)) {
 
-            $link = array(
+            $link_data = array(
                 'user_id' => $user['user_id'],
                 'social_network_id' => $params['social_network_id'],
                 'token' => $params['token'],
+                'token_secret' => $params['token_secret'],
                 'created' => date('Y-m-d H:i:s'),
             );
 
@@ -407,7 +408,7 @@ class Social_Network_Controller extends _Controller {
 
             try{
 
-                $data = $social_link->save($link);
+                $data = $social_link->save($link_data);
             }catch (Exception $e)
             {
                 $data['error'] = 'can not save social link';
@@ -419,6 +420,36 @@ class Social_Network_Controller extends _Controller {
 
         return null;
     }
+
+    public function get_user_links( $params = array() )
+    {
+        $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+        $offline_user->setDataTable('user');
+        $user = $offline_user->getUserById($params['user_id']);
+
+        if (!empty($user)) {
+
+            $social_link = new User_Social_Network_Link();
+
+            try{
+
+                $data = $social_link->getAll($params);
+            }catch (Exception $e)
+            {
+                $data['error'] = 'can not get social links';
+                return $data;
+            }
+
+            return $data;
+        }
+
+        return null;
+    }
+
+
+
+
+
 
 
 }
