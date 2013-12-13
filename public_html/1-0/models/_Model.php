@@ -399,7 +399,7 @@ class _Model extends Jk_Base{
     protected function trace($m, $general_log=false)
     {
         $m = ( is_array($m) || is_object($m) ?  json_encode($m) : "$m");
-        if($this->logger==null) $this->logger = new Jk_Logger(APP_PATH . sprintf('/1-0/logs/%s.log', ($general_log?'user_log':strtolower(get_class($this))) ), Jk_Logger::DEBUG);
+        if($this->logger==null) $this->logger = new Jk_Logger(APP_PATH . sprintf('logs/%s.log', ($general_log?'user_log':strtolower(get_class($this))) ), Jk_Logger::DEBUG);
 
         $this->logger->LogInfo($m);
     }
