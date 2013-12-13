@@ -104,6 +104,8 @@ class _Controller {
             unset($params['invalidate_cache']);
         }
 
+        self::trace(__FUNCTION__ . " cache params: ". var_export($params, true) );
+
         $cache_key_params['object'] = strtolower(str_ireplace('_controller', '', get_class($this)));
         $cache_key_params['action'] = $action;
         foreach ($params as $k => $v) $cache_key_params[$k] = $v;
@@ -406,5 +408,14 @@ class _Controller {
 			_Model::$Exception_Helper->request_failed_exception('Invalid token.');
 		}
 	}
+
+
+    protected function trace($m, $general_log=false)
+    {
+        $m = ( is_array($m) || is_object($m) ?  json_encode($m) : "$m");
+        if($this->logger==null) $this->logger = new Jk_Logger(APP_PATH . sprintf('logs/%s.log', ($general_log?'user_log':strtolower(get_class($this))) ), Jk_Logger::DEBUG);
+
+        $this->logger->LogInfo($m);
+    }
 }
 ?>

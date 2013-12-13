@@ -15,6 +15,8 @@ class RedisCache extends Jk_Base{
     protected static $default_server = '127.0.0.1';
     protected static $default_server_port = 6379;
     protected static $is_valid_connection = false;
+    
+    protected static $logger;
 
 
     /** @var $redis Redis  **/
@@ -60,18 +62,22 @@ class RedisCache extends Jk_Base{
 
     public static function save($key, $val, $ttl=self::DEFAULT_TTL)
     {
+        self::trace(" Redis::save $key");
         self::getRedis()->setex($key, $ttl, $val);
     }
 
 
     public static function get($key)
     {
-        return self::getRedis()->get($key);
+        $content = self::getRedis()->get($key);
+        self::trace(" Redis::get $key - cached? ". ($content?"TRUE":"FALSE") );
+        return $content;
     }
 
 
     public static function delete($key)
     {
+        self::trace(" Redis::delete $key");
         return self::getRedis()->delete($key);
     }
 
@@ -87,6 +93,17 @@ class RedisCache extends Jk_Base{
     {
         return self::getRedis()->exists($key);
     }
+
+
+    protected static function trace($m, $general_log=false)
+    {
+        $m = ( is_array($m) || is_object($m) ?  json_encode($m) : "$m");
+        if(self::$logger==null) self::$logger = new Jk_Logger(APP_PATH . sprintf('logs/%s.log', 'RedisCache' ), Jk_Logger::DEBUG);
+
+        self::$logger->LogInfo($m);
+    }
+
+
 
 
 }

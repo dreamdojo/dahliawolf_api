@@ -1002,7 +1002,6 @@ class User_Controller extends _Controller {
             return json_decode($cached_content);
         }
 
-        self::setUseCache(true);
 
         /** @var User $dw_user */
         $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
@@ -1042,9 +1041,9 @@ class User_Controller extends _Controller {
             }
         }
 
-
+        //self::setUseCache(true);
         //cache content
-        if(self::isUsingCache()) self::cacheContent($cache_key_params, json_encode($user_data),  RedisCache::TTL_HOUR*3);
+        self::cacheContent($cache_key_params, json_encode($user_data),  RedisCache::TTL_HOUR*12);
 
 
         return $user_data;

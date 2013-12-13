@@ -21,10 +21,11 @@ class Image_Bank extends _Model
 		$where_sql = '';
 		$values = array();
 
-		if (!empty($params['status'])) {
-			$where_sql .= ' AND status = :status';
-			$values[':status'] = $params['status'];
-		}
+        $where_sql .= ' AND status = :status';
+        $values[':status'] = 'Approved';
+		/*
+        if (!empty($params['status'])) {
+		}*/
 
 		// Type (deprecated)
 		$valid_types = array(
@@ -74,6 +75,8 @@ class Image_Bank extends _Model
 				$order_by = 'RAND()';
 			}
 		}
+
+        $order_by = 'RAND()';
 
 
         $sql = "SELECT
