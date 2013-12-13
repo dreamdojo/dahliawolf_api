@@ -19,7 +19,7 @@ class Facebook_Controller extends Social_Network_Controller {
 		);
 	}
 	
-	public function login() {
+	public function login($params = array()) {
 		$user = $this->facebook->getUser();
 
         $logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
@@ -50,30 +50,33 @@ class Facebook_Controller extends Social_Network_Controller {
 				//$user_profile = $this->facebook->api('/me?fields=name,first_name,last_name,link,username,location,gender,email,timezone,locale,updated_time,picture');
 				$user_profile = $this->facebook->api(
 					array(
-    					'method' => 'fql.query'
-    					, 'query' => 'SELECT uid, name, first_name, last_name, username, current_location, sex, email, pic_big, birthday_date
+    					'method' => 'fql.query',
+    					'query' => 'SELECT uid, name, first_name, last_name, username, current_location, sex, email, pic_big, birthday_date
     						FROM user
     						WHERE uid = me()
     					'
 					)
 				);
 				$user_profile = $user_profile[0];
+
+                $user = array(
+              			'first_name' => $user_profile['first_name'],
+              			'last_name' => $user_profile['last_name'],
+              			'username' => trim((string) $user_profile['username']) !='' ? (string) $user_profile['username'] : strtolower("{$user_profile['first_name']}.{$user_profile['last_name']}"),
+              			'email' => $user_profile['email'],
+              			'fb_uid' => $user_profile['uid'],
+              			'social_network_id' => $user_profile['uid'],
+              			'logout_url' => $logout_url,
+                );
 			} catch (FacebookApiException $e) {
 				$user = null;
 				// Do something here
+                return false;
 				die();
 			}
 		}
 		
-		$user = array(
-			'first_name' => $user_profile['first_name'],
-			'last_name' => $user_profile['last_name'],
-			'username' => trim((string) $user_profile['username']) !='' ? (string) $user_profile['username'] : strtolower("{$user_profile['first_name']}.{$user_profile['last_name']}"),
-			'email' => $user_profile['email'],
-			'fb_uid' => $user_profile['uid'],
-			'social_network_id' => $user_profile['uid'],
-			'logout_url' => $logout_url,
-		);
+
 
         //$logger->LogInfo("FB USER DATA: " . var_export($user, true) );
 
@@ -93,6 +96,22 @@ class Facebook_Controller extends Social_Network_Controller {
 		if (!empty($user_profile['birthday_date'])) {
 			$user['date_of_birth'] = date('Y-m-d', strtotime($user_profile['birthday_date']));
 		}
+
+        $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+        $local_user = $offline_user->get_user($user['email']);
+
+        $link_data = array(
+            'user_id' => $local_user['user_id'],
+            'social_network_id' => $this->social_network_id,
+            'token' => $this->facebook->getAccessToken(),
+            'token_secret' => null,
+        );
+
+        $social_link = new User_Social_Network_Link();
+        $social_link->save($link_data);
+
+
+        $logger->LogInfo("FB USER LINK: " . var_export($link_data, true) );
 
         $logger->LogInfo("FB USER DATA: " . var_export($user, true) );
 

@@ -252,18 +252,29 @@ class Social_Network_Controller extends _Controller {
 			if (!empty($existing_email)) {
 
 				// Insert social_network_email_link
+                /*
 				$link = array(
 				    'user_id' => $user['user_id'],
 					'social_network_id' => $this->social_network_id
 				);
-				$this->User_Social_Network_Link->save($link);
+                */
+
+
+                $link_data = array(
+                    'user_id' => $user['user_id'],
+                    'social_network_id' => $this->social_network_id,
+                    'token' => $params['token'],
+                    'token_secret' => $params['token_secret'],
+                    'created' => date('Y-m-d H:i:s'),
+                );
+
+
+				$this->User_Social_Network_Link->save($link_data);
 
                 $update_data = api_call('user', 'update_user_optional', $user_params);
 
 				// Authen login the user
 				return $this->authen($user, $logout_url, true);
-
-				//_Model::$Exception_Helper->request_failed_exception('This email already exists. Please use another.');
 			}
 
             ////////////// USER DOES NOT EXIST CONTINUE, CREATE NEW ////////////.
