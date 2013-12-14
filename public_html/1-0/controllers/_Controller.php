@@ -7,6 +7,7 @@ class _Controller {
 	
 	protected $Validate;
     protected $use_cache = false;
+    protected $object_id;
 	
 	public function __construct() {	
 		
@@ -31,6 +32,7 @@ class _Controller {
         return ($this->use_cache === true);
     }
 
+
     protected function isUsingCache()
     {
         return ($this->use_cache === true);
@@ -39,6 +41,12 @@ class _Controller {
     protected function setInvalidateCache(boolean $inv)
     {
         $this->use_cache = $inv;
+    }
+
+    protected function flushCacheObject($cache_key)
+    {
+        $redis = new RedisCache;
+        return $redis::delete($cache_key);
     }
 
 
@@ -66,6 +74,13 @@ class _Controller {
         foreach ($key_params as $k => $v) $cache_key .= "$k/$v/";
 
         return trim($cache_key, '/');
+    }
+
+
+    protected function setObjectId($id)
+    {
+
+        $this->object_id = $id;
     }
 
 
