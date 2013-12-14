@@ -6,6 +6,20 @@
  
 class Posting extends _Model
 {
+
+    const  ACTIVITY_ENTITY_ID = 6;
+    const  ACTIVITY_ID_POSTED_IMAGE = 6;
+
+    protected $fields = array(
+
+        'created',
+        'user_id',
+        'image_id',
+        'description',
+        'deleted',
+
+    );
+
     const TABLE = 'posting';
     const PRIMARY_KEY_FIELD = 'posting_id';
 
@@ -15,6 +29,55 @@ class Posting extends _Model
     {
         parent::__construct($db_host, $db_user, $db_password, $db_name );
     }
+
+    public function addPostingFromBankImage($params)
+    {
+        $posting = new Posting();
+        $post_params = array(
+            'image_id'     => $params['new_image_id'],
+            'user_id'      => $params['user_id'],
+            'description'  => $params['description'],
+            'description'  => null
+
+        );
+
+        $new_posting_id = $posting->addPost($post_params);
+
+
+        // Credit user points
+        $user_point = new User_Point();
+        $point_data = array(
+            'user_id' => $params['user_id'],
+            'point_id' => 3,
+            'posting_id' => $new_posting_id,
+        );
+
+        $user_point->addPoint($point_data);
+        $points_earned = $user_point->getPointsEarned();
+
+        $new_post_data = array();
+        $new_post_data['points_earned'] = $points_earned;
+        $new_post_data['posting_id']    = $new_posting_id;
+
+        return $new_post_data;
+    }
+
+    public function addPost($params = array())
+    {
+        self::trace("saving posting data:: " . var_export($params, true) );
+        $insert_id =  $this->save($params);
+
+   		if (empty($insert_id)) {
+   			return array('error' => 'Could not add posting.');
+   		}
+
+        // Log activity
+        //log_activity($params['user_id'], 6, 'Posted an image', 'posting', $new_post_data['data']['posting_id']);
+        self::logActivity($params['user_id'], $insert_id, $note="Posted an image",  $entity = 'posting', $activity_id=self::ACTIVITY_ID_POSTED_IMAGE);
+
+   		return $insert_id;
+   	}
+
 
 
     public function getLovers($params = array())
@@ -576,6 +639,42 @@ class Posting extends _Model
         }
 
 
+        /*
+        // Also don't show dislikes
+        if (!empty($params['viewer_user_id'])) {
+            $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked';
+            $sub_join_str = '
+                LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id
+                    AND posting_like.user_id = :viewer_user_id
+            ';
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+
+
+        }
+        */
+
+
+        if (!empty($params['viewer_user_id'])) {
+      			$select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked, IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+                $sub_join_str = '
+      				LEFT JOIN posting_like ON (posting.posting_id = posting_like.posting_id
+      					AND posting_like.user_id = :viewer_user_id)
+      				LEFT JOIN follow ON (posting.user_id = follow.user_id
+      					AND follow.follower_user_id = :viewer_user_id)
+      			';
+
+      			// Dislike
+                $sub_join_str .= '
+                    LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
+                        AND posting_dislike.user_id = :viewer_user_id
+                ';
+                $sub_where_str .= ' AND posting_dislike.posting_id IS NULL';
+
+      			$values[':viewer_user_id'] = $params['viewer_user_id'];
+                $viewer_user_id = $params['viewer_user_id'];
+      		}
+
+
         $outer_where_str = '';
         $active_limit = (60*60*24)*30;
 
@@ -742,7 +841,7 @@ class Posting extends _Model
         ";
 
         $data = $this->fetch($query, $values);
-        self::trace( sprintf("$query\nQUERY RETURNED: %s results", count($data) ) );
+        self::trace( sprintf("$query\nvalues: %s\nQUERY RETURNED: %s results", var_export($values,true), count($data) ) );
 
         return $data;
     }
@@ -785,6 +884,26 @@ class Posting extends _Model
 
         return $limit_offset_str;
     }
+
+
+    private function logActivity($user_id, $entity_id, $note="Posted an image", $entity = 'posting', $activity_id=self::ACTIVITY_ID_POSTED_IMAGE )
+    {
+        $activity = array(
+            'user_id' => $user_id,
+            'activity_id' => $activity_id,
+            'note' => $note,
+            'api_website_id' => 2,
+            'entity' => $entity,
+            'entity_id' => $entity_id
+
+        );
+
+        $activity_log = new Activity_Log();
+        $data = $activity_log::saveActivity( $activity );
+
+        return $data;
+    }
+
 
 
 }
