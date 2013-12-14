@@ -133,29 +133,16 @@ class Image_Bank_Controller extends _Controller
 
             self::trace("success adding new post: " . var_export($new_post_data, true) );
 
-
             ///flush current feed block
             $cache_key = base64_decode($params['object_id']);
             self::flushCacheObject($cache_key);
 
-
-
             ########### updating repo image.. mark as posted
             self::trace("success adding new post: " . var_export($new_post_data, true) );
 
-            $where_values = array(
-                ':id'  => $repo_image_data['id'],
-            );
-
-            $updated_status = array(
-                                'status' => 'Posted'
-                            );
-
-            $where_sql = "id = :id";
 
             $image_bank = new Image_Bank();
-            $data = $image_bank->db_update($updated_status, $where_sql, $where_values);
-
+            $data = $image_bank->setPostedStatus($repo_image_data);
 
             //finish
             return $new_post_data;

@@ -17,6 +17,24 @@ class Image_Bank extends _Model
         parent::__construct($db_host, $db_user, $db_password, $db_name );
     }
 
+
+    public function setPostedStatus($params )
+    {
+        $where_values = array(
+            ':id'  => $params['id'],
+        );
+
+        $updated_status = array(
+                            'status' => 'Posted'
+                        );
+
+        $where_sql = "id = :id";
+
+        $data = $this->db_update($updated_status, $where_sql, $where_values);
+
+        return $data;
+    }
+
 	public function getFeed($params = array()) {
 		$where_sql = '';
 		$values = array();
