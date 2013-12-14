@@ -58,7 +58,7 @@ class Image_Bank_Controller extends _Controller
 
         self::trace("user_bank_images: " . var_export($user_bank_images, true) );
 
-        if($user_bank_images && @count($bank_images_params) >= 5 )
+        if($user_bank_images && count($user_bank_images) >= 5 )
         {
             //sorry pal no mo images fo u!!!
             $response  = array(
@@ -67,6 +67,7 @@ class Image_Bank_Controller extends _Controller
                                 'posting_id' => null
             );
 
+            self::trace("user_bank_images: {$response['error']}" );
             ///// cant continue posting!!
             return $response;
         }
@@ -133,6 +134,24 @@ class Image_Bank_Controller extends _Controller
                 ///flush current feed block
                 $cache_key = base64_decode($params['object_id']);
                 self::flushCacheObject($cache_key);
+
+
+
+                ########### updating repo image.. mark as posted
+                self::trace("success adding new post: " . var_export($new_post_data, true) );
+
+                $where_values = array(
+                    ':id'  => $repo_image_data['id'],
+                );
+
+                $updated_status = array(
+                                    'status' => 'Posted'
+                                );
+
+                $where_sql = "id = :id";
+
+                $image_bank = new Image_Bank();
+                $data = $image_bank->db_update($updated_status, $where_sql, $where_values);
 
 
                 //finish
