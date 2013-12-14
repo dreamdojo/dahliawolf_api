@@ -78,7 +78,7 @@ class RedisCache extends Jk_Base{
     public static function delete($key)
     {
         self::trace(" Redis::delete $key");
-        return self::getRedis()->delete($key);
+        return self::getRedis()->del($key);
     }
 
 
