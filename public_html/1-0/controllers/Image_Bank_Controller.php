@@ -83,7 +83,7 @@ class Image_Bank_Controller extends _Controller
         }
 
 
-        ############# all good continue to post image #############
+        ############# valid image bank id continue to post image #############
         $image_params = array
         (
             'repo_image_id'     => $repo_image_data['id'],
@@ -97,7 +97,7 @@ class Image_Bank_Controller extends _Controller
         );
 
 
-        //check for dupes
+        ############# user has not reached limit.. now check for dupes #############
         $image = new Image();
         $posted_image_data = $image->getImage($image_params);
 
@@ -112,60 +112,59 @@ class Image_Bank_Controller extends _Controller
             self::trace("ERROR: O.ops This Image has already been posted by another user" );
             return array('error' => 'O.Ops This Image has already been posted by another user.');
 
-        }else{
-
-            $new_image_id = $image->addImage($image_params);
-            self::trace("adding posting image.... \nnew_image_id: " . var_export($new_image_id, true) );
-
-            $params['new_image_id'] = $new_image_id;
-            $params['deleted'] = null;
-
-            self::trace("adding posting from image bank...." );
-            $new_post_data = $posting->addPostingFromBankImage($params);
-
-            if($new_post_data)
-            {
-                $new_post_data['new_image_id']  = $new_image_id;
-                $new_post_data['new_image_url'] = $repo_image_data['baseurl'] . $repo_image_data['imageURL'];
-
-                self::trace("success adding new post: " . var_export($new_post_data, true) );
-
-
-                ///flush current feed block
-                $cache_key = base64_decode($params['object_id']);
-                self::flushCacheObject($cache_key);
-
-
-
-                ########### updating repo image.. mark as posted
-                self::trace("success adding new post: " . var_export($new_post_data, true) );
-
-                $where_values = array(
-                    ':id'  => $repo_image_data['id'],
-                );
-
-                $updated_status = array(
-                                    'status' => 'Posted'
-                                );
-
-                $where_sql = "id = :id";
-
-                $image_bank = new Image_Bank();
-                $data = $image_bank->db_update($updated_status, $where_sql, $where_values);
-
-
-                //finish
-                return $new_post_data;
-            }
-
-
-            ////
-            self::trace("could not save new posting from bank image...." );
-            return null;
-
         }
 
 
+
+        ############# all good.. continue to post image #############
+        $new_image_id = $image->addImage($image_params);
+        self::trace("adding posting image.... \nnew_image_id: " . var_export($new_image_id, true) );
+
+        $params['new_image_id'] = $new_image_id;
+        $params['deleted'] = null;
+
+        self::trace("adding posting from image bank...." );
+        $new_post_data = $posting->addPostingFromBankImage($params);
+
+        if($new_post_data)
+        {
+            $new_post_data['new_image_id']  = $new_image_id;
+            $new_post_data['new_image_url'] = $repo_image_data['baseurl'] . $repo_image_data['imageURL'];
+
+            self::trace("success adding new post: " . var_export($new_post_data, true) );
+
+
+            ///flush current feed block
+            $cache_key = base64_decode($params['object_id']);
+            self::flushCacheObject($cache_key);
+
+
+
+            ########### updating repo image.. mark as posted
+            self::trace("success adding new post: " . var_export($new_post_data, true) );
+
+            $where_values = array(
+                ':id'  => $repo_image_data['id'],
+            );
+
+            $updated_status = array(
+                                'status' => 'Posted'
+                            );
+
+            $where_sql = "id = :id";
+
+            $image_bank = new Image_Bank();
+            $data = $image_bank->db_update($updated_status, $where_sql, $where_values);
+
+
+            //finish
+            return $new_post_data;
+        }
+
+
+        ////
+        self::trace("could not save new posting from bank image...." );
+        return null;
 
     }
 
