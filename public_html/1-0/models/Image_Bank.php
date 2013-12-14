@@ -7,8 +7,8 @@
 class Image_Bank extends _Model
 {
 
-    const TABLE = 'country';
-   	const PRIMARY_KEY_FIELD = 'country_id';
+    const TABLE = 'imageInfo';
+   	const PRIMARY_KEY_FIELD = 'id';
 
 	private $table = 'imageInfo';
 
@@ -141,28 +141,28 @@ class Image_Bank extends _Model
 		return $data;
 	}
 
-	public function get_feed_image($params = array())
+	public function getBankImage($params = array())
     {
-		$error = NULL;
+        $values = array();
+        $values[':imageinfo_id'] = $params['repo_image_id'];
 
-		if (empty($params)) {
-			$error = 'Where conditions are required.';
+        $query = '
+      			SELECT *
+      			FROM imageInfo
+      			WHERE imageInfo.id > :imageinfo_id
+      			ORDER BY imageInfo.id ASC
+      			LIMIT 1
+      		';
+
+        $data = $this->query($query, $values);
+
+        self::trace("getImage: " . var_export($query, true) . "\nvalues: " . var_export($values, true) . "\n, return: " . var_export($data, true));
+
+		if (empty($data)) {
+            return null;
 		}
-		else if (!is_array($params)) {
-			$error = 'Invalid conditions.';
-		}
 
-		if (!empty($error)) {
-			return resultArray(false, NULL, $error);
-		}
-
-		$row = $this->get_row($this->table, $params);
-
-		if (empty($row)) {
-            return array('error' => 'Could not get feed image.');
-		}
-
-		return $row;
+		return $data[0];
 	}
 
 	public function update_feed_image($params = array()) {
@@ -245,7 +245,7 @@ class Image_Bank extends _Model
 
         //$result = $this->run($query, $values);
 
-        $data = $this->get_row($query, $values);
+        $data = $this->query($query, $values);
 
 		if ($data) {
 			if ($data) {
@@ -307,7 +307,7 @@ class Image_Bank extends _Model
 		';
 
         //$data = $this->query($query, $values);
-        $data = $this->get_row($query, $values);
+        $data = $this->query($query, $values);
 
 		if ($data){
             return $data['id'];
