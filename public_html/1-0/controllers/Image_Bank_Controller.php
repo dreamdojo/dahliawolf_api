@@ -74,7 +74,6 @@ class Image_Bank_Controller extends _Controller
 
     public function post_image( $params = array() )
     {
-
         ############# check for user posting limist #############
         $posting = new Posting();
 
@@ -85,7 +84,6 @@ class Image_Bank_Controller extends _Controller
         );
 
         $user_bank_images = $posting->getPostingBankImages($bank_images_params);
-
 
         self::trace("user_bank_images count: " . count($user_bank_images) );
 
@@ -105,7 +103,6 @@ class Image_Bank_Controller extends _Controller
             return $response;
         }
 
-
         ############# check for valid image bank id #############
         $image_bank = new Image_Bank();
         $repo_image_data = $image_bank->getBankImage($params);
@@ -114,7 +111,6 @@ class Image_Bank_Controller extends _Controller
         {
             return array('error' => 'image id is not valid');
         }
-
 
         ############# valid image bank id continue to post image #############
         $image_params = array
@@ -134,7 +130,6 @@ class Image_Bank_Controller extends _Controller
         $image = new Image();
         $posted_image_data = $image->getImageByRepoId($image_params);
 
-
         self::trace("does image already exist with params?: " . var_export($image_params, true) . "\nposted_image_id: " . var_export($posted_image_data, true) );
 
         if( $posted_image_data && $posted_image_data['repo_image_id'])
@@ -147,9 +142,7 @@ class Image_Bank_Controller extends _Controller
 
             self::trace("ERROR: O.ops This Image has already been posted by another user" );
             return array('error' => 'OOps This Image has already been posted by another user.');
-
         }
-
 
         ############# all good.. continue to post image #############
         $new_image_id = $image->addImage($image_params);
@@ -187,11 +180,9 @@ class Image_Bank_Controller extends _Controller
             return $new_post_data;
         }
 
-
         ////
         self::trace("could not save new posting from bank image...." );
         return null;
-
     }
 
 

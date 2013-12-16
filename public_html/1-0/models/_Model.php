@@ -52,7 +52,7 @@ class _Model extends Jk_Base{
     {
         if(!is_array(self::$primary_fields)) self::$primary_fields = array();
         $called_class = get_called_class();
-        self::$primary_fields[$called_class];
+        return self::$primary_fields[$called_class];
     }
 
 
@@ -277,6 +277,9 @@ class _Model extends Jk_Base{
 		}
 		
 		$sql .=  $single ? ' LIMIT 1' : '';
+
+        $logger = new Jk_Logger(APP_PATH.'logs/facebook.log');
+        $logger->LogInfo("SQL: $sql");
 		
 		try {
 			$data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $pdo_params);

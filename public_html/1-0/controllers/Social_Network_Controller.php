@@ -58,6 +58,7 @@ class Social_Network_Controller extends _Controller {
 
 			$params['social_network_id'] = $this->social_network_id;
 		}
+
 		if (!isset($params['api_website_id'])) {
 			$params['api_website_id'] = $_SESSION['api_website_id'];
 		}
@@ -116,23 +117,24 @@ class Social_Network_Controller extends _Controller {
 					, 'is_int' => NULL
 				)
 			)
-		);
-		$this->Validate->add_many($input_validations, $params, true);
-		$this->Validate->run();
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
 
         //$logger->LogInfo("SOCIAL USER DATA: " . var_export($params, true) );
-		// Check if email already exists
-		$this->load('User', $db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+        // Check if email already exists
+        $this->load('User', $db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
 
         $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
-		$existing_user = $offline_user->check_social_network_email_exists($params['email'], $params['social_network_id']);
+        $existing_user = $offline_user->check_social_network_email_exists($params['email'], $params['social_network_id']);
         $logger->LogInfo("IS EXISTING check_social_network ?: " . var_export($existing_user, true));
 
-		$logout_url = !empty($params['logout_url']) ? $params['logout_url'] : '';
+        $logout_url = !empty($params['logout_url']) ? $params['logout_url'] : '';
 
-		// Get user info
+        // Get user info
         /** @var User $user */
-		$user = $offline_user->get_user($params['email']);
+        $user = $offline_user->get_user($params['email']);
 
         $logger->LogInfo("LOCAL USER INFO: " . var_export($user, true));
         $logger->LogInfo("DO WE HAVE THIS ACTIVE EMAIL REGISTERED ?: " .  (strtolower(trim($user['email'])) == strtolower(trim($params['email'])) ? "TRUE" : "FALSE") );
@@ -166,33 +168,34 @@ class Social_Network_Controller extends _Controller {
         /////////////////////////////
         //
 
-		// Check that dahliawolf user exists
-		if ($existing_user || strtolower(trim($user['email'])) == strtolower(trim($user_params['email_address']))) {
-			// Scrape username
-			$dw_params = array(
-				'user_id' => $user['user_id']
-			);
-			$dw_user = api_call('user', 'get_user', $dw_params, true);
+        // Check that dahliawolf user exists
+        if ($existing_user || strtolower(trim($user['email'])) == strtolower(trim($user_params['email_address'])))
+        {
+            // Scrape username
+            $dw_params = array(
+                'user_id' => $user['user_id']
+            );
+            $dw_user = api_call('user', 'get_user', $dw_params, true);
 
             $logger->LogInfo("dw_user ?: " . var_export($dw_user, true));
 
 
-			if (!empty($dw_user['data']['pinterest_username'])) {
-				$dw_params = array(
-					'user_id' => $dw_user['data']['user_id']
-					, 'username' => $dw_user['data']['pinterest_username']
-				);
-				api_call('feed_image', 'scrape_username', $dw_params, true);
-			}
-			if (!empty($dw_user['data']['instagram_username'])) {
-				if (empty($dw_user['data']['pinterest_username']) || $dw_user['data']['instagram_username'] != $dw_user['data']['pinterest_username']) {
-					$dw_params = array(
-						'user_id' => $dw_user['data']['user_id'],
-						'username' => $dw_user['data']['instagram_username']
-					);
-					$test = api_call('feed_image', 'scrape_username', $dw_params, true);
-				}
-			}
+            if (!empty($dw_user['data']['pinterest_username'])) {
+                $dw_params = array(
+                    'user_id' => $dw_user['data']['user_id']
+                    , 'username' => $dw_user['data']['pinterest_username']
+                );
+                api_call('feed_image', 'scrape_username', $dw_params, true);
+            }
+            if (!empty($dw_user['data']['instagram_username'])) {
+                if (empty($dw_user['data']['pinterest_username']) || $dw_user['data']['instagram_username'] != $dw_user['data']['pinterest_username']) {
+                    $dw_params = array(
+                        'user_id' => $dw_user['data']['user_id'],
+                        'username' => $dw_user['data']['instagram_username']
+                    );
+                    $test = api_call('feed_image', 'scrape_username', $dw_params, true);
+                }
+            }
 
             if(!$dw_user['data']['fb_uid'] || trim($dw_user['data']['fb_uid']) == '')
             {
@@ -211,55 +214,63 @@ class Social_Network_Controller extends _Controller {
                 $user_model->registerDefaultFollows($user['user_id']);
             }
 
-			// Generate token & insert login instance
-			return $this->authen($user, $logout_url);
-		}
-        else {
-            $logger->LogInfo("register new user passed data:" . var_export($params, true));
+            // Generate token & insert login instance
+            return $this->authen($user, $logout_url);
+        }
+        else
+        {
+            ##################################################
+            #################### NEW USER ####################
+            ##################################################
+
+
             // Else register the user
             // if username is taken, should redirect back to register page to choose
+            $logger->LogInfo("check for exitsting user with data :" . var_export($params, true));
+            $this->load('User_Social_Network_Link');
 
-			$this->load('User_Social_Network_Link');
+            $offline_user->setDataTable('user');
+            $offline_user->setPrimaryField('user_id');
 
-			// Username exists
-			if (!empty($params['username'])) {
+            $logger->LogInfo("user primary field: " . $offline_user->getPrimaryField() );
 
+
+
+            // Username exists
+            if (!empty($params['username']))
+            {
                 //$existing_username = $this->User
                 $existing_username = $offline_user->get_row(
-					array(
-						'username' => $params['username']
-					)
-				);
+                    array(
+                        'username' => $params['username']
+                    )
+                );
 
-				if (!empty($existing_username)) {
-					// Get longest matched username
-					$longest_match = $this->User->get_regexp_username($params['username']);
+                if (!empty($existing_username)) {
+                    // Get longest matched username
+                    $longest_match = $this->User->get_regexp_username($params['username']);
 
-					// Generate new username
-					$params['username'] = $longest_match['username'] . rand(0, 9);
+                    // Generate new username
+                    $params['username'] = $longest_match['username'] . rand(0, 9);
 
-					//_Model::$Exception_Helper->request_failed_exception('This username already exists. Please choose another.');
-				}
-			}
-
-			// Email exists
-			$existing_email = $offline_user->get_row(
-				array(
-					'email' => $params['email']
-				)
-			);
-			// If existing email, then merge
-			if (!empty($existing_email)) {
-
-				// Insert social_network_email_link
-                /*
-				$link = array(
-				    'user_id' => $user['user_id'],
-					'social_network_id' => $this->social_network_id
-				);
-                */
+                    //_Model::$Exception_Helper->request_failed_exception('This username already exists. Please choose another.');
+                }
+            }
+            $logger->LogInfo("check for existing username... done");
 
 
+            // Email exists
+            $existing_email = $offline_user->get_row(
+                array(
+                    'email' => $params['email']
+                )
+            );
+            $logger->LogInfo("check for existing email..done");
+
+
+            // If existing email, then merge
+            if (!empty($existing_email))
+            {
                 $link_data = array(
                     'user_id' => $user['user_id'],
                     'social_network_id' => $this->social_network_id,
@@ -268,18 +279,18 @@ class Social_Network_Controller extends _Controller {
                     'created' => date('Y-m-d H:i:s'),
                 );
 
-
-				$this->User_Social_Network_Link->save($link_data);
-
+                $this->User_Social_Network_Link->save($link_data);
                 $update_data = api_call('user', 'update_user_optional', $user_params);
 
-				// Authen login the user
-				return $this->authen($user, $logout_url, true);
-			}
+                // Authen login the user
+
+                $logger->LogInfo("try to authenticate user if it exists with same user in FB:");
+                return $this->authen($user, $logout_url, true);
+            }
 
             ////////////// USER DOES NOT EXIST CONTINUE, CREATE NEW ////////////.
-			// first, last, username, email
-			// Add user
+            // first, last, username, email
+            // Add user
             $user = array_merge($params,
                 array(
                     'active' => 1,
@@ -291,9 +302,12 @@ class Social_Network_Controller extends _Controller {
 
 
             /////////////// REG INIT ///////////////
-
+            $logger->LogInfo("register new user passed data:" . var_export($params, true));
             //offline_admin DB - save user
-			$new_user_id = $this->User->save($user);
+            $offline_user = new User($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE);
+            $offline_user->setDataTable('user');
+
+            $new_user_id = $offline_user->save($user);
             $logger->LogInfo("USER SAVE RESPONSE: : $new_user_id");
 
 
@@ -301,22 +315,22 @@ class Social_Network_Controller extends _Controller {
             $user['user_id'] = $new_user_id;
 
 
-			// Add user user_group link
-			$this->load('User_User_Group_Link');
-			$link = array(
-				'user_id' => $user['user_id']
-				, 'user_group_id' => 2
-				, 'user_group_portal_id' => 2
-			);
-			$this->User_User_Group_Link->save($link);
+            // Add user user_group link
+            $this->load('User_User_Group_Link');
+            $link = array(
+                'user_id' => $user['user_id']
+                , 'user_group_id' => 2
+                , 'user_group_portal_id' => 2
+            );
+            $this->User_User_Group_Link->save($link);
 
 
-			// Add user social network link
-			$link = array(
-				'user_id' => $user['user_id'],
-				'social_network_id' => $this->social_network_id
-			);
-			$this->User_Social_Network_Link->save($link);
+            // Add user social network link
+            $link = array(
+                'user_id' => $user['user_id'],
+                'social_network_id' => $this->social_network_id
+            );
+            $this->User_Social_Network_Link->save($link);
 
 
             // commerce - Add customer
@@ -336,7 +350,7 @@ class Social_Network_Controller extends _Controller {
 
 
             // dahliawolf -- add user
-			$dw_response = api_call('user', 'add_user', $user_params);
+            $dw_response = api_call('user', 'add_user', $user_params);
 
             $user_model = $this->User;
             $user_model->registerDefaultFollows($user['user_id']);
@@ -346,7 +360,7 @@ class Social_Network_Controller extends _Controller {
             $logger->LogInfo("ALL USER REGISTRATION ACTIONS COMPLETED. LOGGING IN NEW REGISTERED USER:");
 
 
-			return $this->authen($user, $logout_url, true);
+            return $this->authen($user, $logout_url, true);
 		}
 	}
 
