@@ -89,7 +89,7 @@ class Image_Bank_Controller extends _Controller
 
         self::trace("user_bank_images count: " . count($user_bank_images) );
 
-        if($user_bank_images && count($user_bank_images) >= 50 )
+        if($user_bank_images && count($user_bank_images) >= 5 )
         {
             //sorry pal no mo images fo u!!!
             $response  = array(
