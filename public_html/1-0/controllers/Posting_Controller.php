@@ -241,6 +241,47 @@ class Posting_Controller  extends  _Controller
     }
 
 
+
+    public function post_image( $params = array() )
+    {
+       $image_params = array
+       (
+           'repo_image_id'      => $_REQUEST['id'],
+           'imagename'          => $_REQUEST['imageURL'],
+           'source'             => $_REQUEST['baseurl'],
+           'dimensionsX'        => $_REQUEST['dimensionsX'],
+           'dimensionsY'        => $_REQUEST['dimensionsY'],
+           'domain'             => $_REQUEST['domain'],
+           'attribution_url'    => $_REQUEST['attribution_url'],
+           'status'             => 'Posted'
+       );
+
+
+       ############# all good.. continue to post image #############
+        $image = new Image();
+        $new_image_id = $image->addImage($image_params);
+
+        // Then save post
+        $post_params = array(
+            'image_id' => $new_image_id ,
+            'created' => date('Y-m-d H:i:s'),
+            'user_id' => $_REQUEST['user_id'],
+            'description' => !empty($_REQUEST['description']) ? $_REQUEST['description'] : ''
+        );
+
+        $posting = new Posting();
+        $new_posting_id = $posting->addPost($post_params);
+
+        $new_post_data = array();
+        $new_post_data['points_earned'] = $posting->getPointsEarned();
+        $new_post_data['posting_id']    = $new_posting_id;
+
+
+        return $new_post_data;
+    }
+
+
+
 }
 
 ?>

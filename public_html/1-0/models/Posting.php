@@ -10,6 +10,8 @@ class Posting extends _Model
     const  ACTIVITY_ENTITY_ID = 6;
     const  ACTIVITY_ID_POSTED_IMAGE = 6;
 
+    protected $points_earned=0;
+
     protected $fields = array(
 
         'created',
@@ -25,42 +27,32 @@ class Posting extends _Model
 
     private $table = self::TABLE;
 
+
+    public function getPointsEarned()
+    {
+        return $this->points_earned;
+    }
+
+    protected function setPointsEarned($points)
+    {
+        $this->points_earned= (int ) $points;
+    }
+
     public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
     {
         parent::__construct($db_host, $db_user, $db_password, $db_name );
     }
 
+
+    /**
+     * @Alias for addPost
+     */
+
     public function addPostingFromBankImage($params)
     {
-        $posting = new Posting();
-        $post_params = array(
-            'image_id'     => $params['new_image_id'],
-            'user_id'      => $params['user_id'],
-            'description'  => $params['description'],
-            'description'  => null
-
-        );
-
-        $new_posting_id = $posting->addPost($post_params);
-
-
-        // Credit user points
-        $user_point = new User_Point();
-        $point_data = array(
-            'user_id' => $params['user_id'],
-            'point_id' => 3,
-            'posting_id' => $new_posting_id,
-        );
-
-        $user_point->addPoint($point_data);
-        $points_earned = $user_point->getPointsEarned();
-
-        $new_post_data = array();
-        $new_post_data['points_earned'] = $points_earned;
-        $new_post_data['posting_id']    = $new_posting_id;
-
-        return $new_post_data;
+        return self::addPost($params);
     }
+
 
     public function addPost($params = array())
     {
@@ -71,6 +63,8 @@ class Posting extends _Model
    			return array('error' => 'Could not add posting.');
    		}
 
+        self::addUserPoint(array( 'user_id' => $params['user_id'], 'new_posting_id' => $insert_id ));
+
         // Log activity
         //log_activity($params['user_id'], 6, 'Posted an image', 'posting', $new_post_data['data']['posting_id']);
         self::logActivity($params['user_id'], $insert_id, $note="Posted an image",  $entity = 'posting', $activity_id=self::ACTIVITY_ID_POSTED_IMAGE);
@@ -79,6 +73,23 @@ class Posting extends _Model
    	}
 
 
+    protected function addUserPoint($params)
+    {
+        // Credit user points
+        $user_point = new User_Point();
+        $point_data = array(
+            'user_id' => $params['user_id'],
+            'point_id' => 3,
+            'posting_id' => $params['new_posting_id'],
+        );
+
+        $user_point->addPoint($point_data);
+        $points_earned = $user_point->getPointsEarned();
+
+        self::setPointsEarned($points_earned);
+
+        return $points_earned;
+    }
 
     public function getLovers($params = array())
     {

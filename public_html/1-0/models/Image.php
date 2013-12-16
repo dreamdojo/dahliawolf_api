@@ -38,7 +38,7 @@ class Image extends _Model{
 	}
 
 
-    public function getImage($params = array())
+    public function getImageByRepoId($params = array())
     {
    		$query = '
    			SELECT *

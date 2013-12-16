@@ -15,31 +15,62 @@ class Image_Bank_Controller extends _Controller
 
         if($cached_content = self::getCachedContent($cache_key_params) )
         {
-            $cached_inages_obj = json_decode($cached_content);
+            $cached_images_obj = json_decode($cached_content);
 
             //$cache_key = base64_encode(self::getCacheKey($cache_key_params));
+            //self::trace("self::getCachedContent" . $cached_content);
 
-            $response = $cached_inages_obj;
+            $response = $cached_images_obj;
 
-            return $response;
+            //// return else keep looking.
+            if( $cached_images_obj && count($cached_images_obj->images) > 1 )
+            {
+                //self::trace("self::getCachedContent" . $cached_content);
+                return $response;
+            }
+
         }
 
         //// not cached.. force cache..
         //self::setUseCache(true);
 
+
         $image_bank = new Image_Bank();
 
-        $image_feed = $image_bank->getFeed($params);
+        $image_feed = $image_bank->getFeedByIds($params);
+        $cache_key = self::getCacheKey($cache_key_params);
+
+        $response = array('object_id' => base64_encode($cache_key), 'images' => $image_feed);
+
+        if(!$image_feed['error'] && count($image_feed) > 0 ){
+            //just cache it!!
+            self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR);
+
+        }
+
+        return $response;
+    }
+
+
+    public function test_feed($params)
+    {
+        $image_bank = new Image_Bank();
+        $image_feed = $image_bank->getFeedByIds($params);
+
+        $random_seed = rand(1,5);
+        $params['random_seed'] = $random_seed;
+
+
+        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
         $cache_key = self::getCacheKey($cache_key_params);
 
         $response = array('object_id' => base64_encode($cache_key), 'images' => $image_feed);
 
         //just cache it!!
-        self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR);
+        //self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR);
 
         return $response;
     }
-
 
     public function post_image( $params = array() )
     {
@@ -56,9 +87,9 @@ class Image_Bank_Controller extends _Controller
         $user_bank_images = $posting->getPostingBankImages($bank_images_params);
 
 
-        self::trace("user_bank_images: " . var_export($user_bank_images, true) );
+        self::trace("user_bank_images count: " . count($user_bank_images) );
 
-        if($user_bank_images && count($user_bank_images) >= 5 )
+        if($user_bank_images && count($user_bank_images) >= 50 )
         {
             //sorry pal no mo images fo u!!!
             $response  = array(
@@ -99,7 +130,7 @@ class Image_Bank_Controller extends _Controller
 
         ############# user has not reached limit.. now check for dupes #############
         $image = new Image();
-        $posted_image_data = $image->getImage($image_params);
+        $posted_image_data = $image->getImageByRepoId($image_params);
 
 
         self::trace("does image already exist with params?: " . var_export($image_params, true) . "\nposted_image_id: " . var_export($posted_image_data, true) );
@@ -109,11 +140,13 @@ class Image_Bank_Controller extends _Controller
             $cache_key = base64_decode($params['object_id']);
             self::flushCacheObject($cache_key);
 
+            $image_bank = new Image_Bank();
+            $data = $image_bank->setPostedStatus($repo_image_data);
+
             self::trace("ERROR: O.ops This Image has already been posted by another user" );
-            return array('error' => 'O.Ops This Image has already been posted by another user.');
+            return array('error' => 'OOps This Image has already been posted by another user.');
 
         }
-
 
 
         ############# all good.. continue to post image #############
@@ -121,13 +154,17 @@ class Image_Bank_Controller extends _Controller
         self::trace("adding posting image.... \nnew_image_id: " . var_export($new_image_id, true) );
 
         $params['new_image_id'] = $new_image_id;
+        $params['image_id'] = $new_image_id;
         $params['deleted'] = null;
 
         self::trace("adding posting from image bank...." );
-        $new_post_data = $posting->addPostingFromBankImage($params);
+        $new_posting_id = $posting->addPostingFromBankImage($params);
 
-        if($new_post_data)
+        if($new_posting_id)
         {
+            $new_post_data = array();
+            $new_post_data['points_earned'] = $posting->getPointsEarned();
+            $new_post_data['posting_id']    = $new_posting_id;
             $new_post_data['new_image_id']  = $new_image_id;
             $new_post_data['new_image_url'] = $repo_image_data['baseurl'] . $repo_image_data['imageURL'];
 

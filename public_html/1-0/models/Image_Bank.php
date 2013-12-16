@@ -128,12 +128,12 @@ class Image_Bank extends _Model
 				LEFT JOIN site ON search_site_link.site_id = site.site_id
 		 */
 
-		 if (isset($_GET['t'])) {
-		 	echo $sql;
-		 	print_r($values);
-         }
+        if (isset($_GET['t'])) {
+            echo $sql;
+            print_r($values);
+        }
 
-        self::trace(__FUNCTION__ . " $sql");
+        self::trace(__FUNCTION__ . " $sql, \nbind params: ". var_export($values, true));
 
         try{
             $data = $this->fetch($sql, $values);
@@ -159,6 +159,117 @@ class Image_Bank extends _Model
 		return $data;
 	}
 
+    public function getFeedByIds($params = array() )
+    {
+        $where_sql = "";
+        $join_str = "";
+
+        $where_sql .= " AND status = :status ";
+        $values[':status'] = 'Approved';
+
+        $limit_sql = '';
+        if (!empty($params['limit'])) {
+            $limit_sql .= " LIMIT {$params['limit']}";
+        }
+
+        $random_ids = self::getRandIds($params);
+        $random_ids_str = implode(", ",$random_ids);
+
+        $where_sql .= " AND search.user_id IS NULL";
+        $where_sql .= " AND imageInfo.id IN ($random_ids_str)";
+
+
+        $sql = "
+            SELECT
+                imageInfo.*,
+                    CONCAT('upload/', imageURL) AS src,
+                    IF(bigImageURL = '', NULL, CONCAT('upload/', bigImageURL)) AS big_src,
+                    imagename AS alt,
+                    imageInfo.keyword AS keywords,
+                    #site.domain,
+                    site.domain_keyword
+            FROM
+                imageInfo
+            LEFT JOIN search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
+            LEFT JOIN search ON search_site_link.search_id = search.search_id
+            LEFT JOIN site ON search_site_link.site_id = site.site_id
+            $join_str
+            WHERE
+                imageURL IS NOT NULL AND imageURL != ''
+                {$where_sql}
+            ";
+
+        self::trace( " $sql, \nbind params: ". var_export($values, true));
+
+        try{
+            $data = $this->fetch($sql, $values);
+            if (empty($data)) {
+                 return array('error' => 'Could not get feed images.');
+            }
+        }catch (Exception $e ) {
+            $data = array();
+            self::trace($e->getMessage());
+        }
+
+        foreach($data as &$image)
+        {
+            if( strpos($image['imageURL'], '?') > -1 )
+            {
+                $image['imageURL'] = "image.php?imagename={$image['imageURL']}";
+            }
+        }
+
+        return $data;
+    }
+
+
+    public function getAllApprovedIds()
+    {
+        $sql = "
+        SELECT
+        	id
+        from imageInfo
+            LEFT JOIN search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
+            LEFT JOIN search ON search_site_link.search_id = search.search_id
+            LEFT JOIN site ON search_site_link.site_id = site.site_id
+        where status = 'Approved'
+        	AND imageURL IS NOT NULL AND imageURL != ''
+        	AND search.user_id IS NULL
+        ";
+
+        $data = $this->fetch($sql, array());
+
+        $ids = array();
+        if($data) foreach($data as $id_data)
+        {
+            $ids[] = $id_data['id'];
+        }
+
+        return $ids;
+    }
+
+    public function getRandIds($params)
+    {
+        $ids = self::getAllApprovedIds();
+        $count = count($ids)-1;
+        $limit = (int) $params['limit'];
+        $random_ids = array();
+        while($limit > 0)
+        {
+            $id = $ids[ rand(0, $count )];
+            if($id)
+            {
+                $random_ids[] = $id;
+                $limit--;
+            }
+        }
+
+        return $random_ids;
+    }
+
+
+
+
 	public function getBankImage($params = array())
     {
         $values = array();
@@ -167,7 +278,7 @@ class Image_Bank extends _Model
         $query = '
       			SELECT *
       			FROM imageInfo
-      			WHERE imageInfo.id > :imageinfo_id
+      			WHERE imageInfo.id = :imageinfo_id
       			ORDER BY imageInfo.id ASC
       			LIMIT 1
       		';
