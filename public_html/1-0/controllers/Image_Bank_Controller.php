@@ -89,11 +89,13 @@ class Image_Bank_Controller extends _Controller
 
         self::trace("user_bank_images count: " . count($user_bank_images) );
 
-        if($user_bank_images && count($user_bank_images) >= 5 )
+        $posting_limit = 8;
+
+        if($user_bank_images && count($user_bank_images) >= $posting_limit )
         {
             //sorry pal no mo images fo u!!!
             $response  = array(
-                                'error' => "Sorry due to high demand we have temporally limited the number of images you can post from the D\W Image Bank to 5 per day",
+                                'error' => "Sorry due to high demand we have temporally limited the number of images you can post from the D\W Image Bank to {$posting_limit} per day",
                                 'data' => null,
                                 'posting_id' => null
             );
