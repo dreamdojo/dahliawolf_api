@@ -270,8 +270,8 @@ class User extends _Model
 
         foreach ($follow_these as $ftk => $fthisone) {
             $follow = array(
-                'user_id' => $fthisone,
-                'follower_user_id' => $user_id
+                'user_id' => $user_id,
+                'follower_user_id' => $fthisone
             );
             $logger->LogInfo(sprintf("registration autofollow following user: \n%s ", var_export($follow, true)));
 
