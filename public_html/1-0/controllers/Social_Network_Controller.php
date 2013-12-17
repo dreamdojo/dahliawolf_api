@@ -352,7 +352,7 @@ class Social_Network_Controller extends _Controller {
             // dahliawolf -- add user
             $dw_response = api_call('user', 'add_user', $user_params);
 
-            $user_model = $this->User;
+            $user_model = $offline_user;
             $user_model->registerDefaultFollows($user['user_id']);
 
             $logger->LogInfo("DAHLIAWOLF RESPONSE: \n" . var_export($dw_response, true));
