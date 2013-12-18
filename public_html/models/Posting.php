@@ -840,26 +840,37 @@ class Posting extends db {
 		return resultArray(true, $rows[0]);
 	}
 
-	public function get_previous_posting_id($posting_id, $created, $total_likes, $viewer_user_id = NULL) {
-		$query = '
+	public function get_previous_posting_id($posting_id, $created, $total_likes, $viewer_user_id = NULL, $next=null)
+    {
+        $notin_posting_array = array();
+        $notin_posting_array[] = ":posting_id";
+
+        if($next && intval($next) > 1)
+        {
+            $notin_posting_array[] = ":next";
+        }
+
+        $notin_posting_str =  trim(implode(", ", $notin_posting_array), ',');
+
+		$query = "
 			SELECT * FROM
 
                 (SELECT posting.posting_id
                         , IFNULL(COUNT(posting_like_hot.posting_id), 0) AS day_threshold_likes
 
                 FROM posting
-                    ' . (!empty($viewer_user_id) ? '
+                    " . (!empty($viewer_user_id) ? "
                         LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id AND posting_like.user_id = :viewer_user_id
                             LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id AND posting_dislike.user_id = :viewer_user_id
-                    ' : '') . '
+                    " : '') . "
                         INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
                 WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
-                    AND posting.posting_id != :posting_id
+                    AND posting.posting_id NOT IN ({$notin_posting_str})
                     AND posting.deleted IS NULL
-                    ' . (!empty($viewer_user_id) ? '
+                    " . (!empty($viewer_user_id) ? "
                         AND posting_like.user_id IS NULL
                         AND posting_dislike.posting_id IS NULL
-                    ' : '') . '
+                    " : '') . "
                 #, posting.posting_id DESC
                 GROUP BY posting.posting_id
                 ORDER BY day_threshold_likes DESC, posting.created ASC
@@ -868,7 +879,7 @@ class Posting extends db {
             WHERE day_threshold_likes >= :total_likes
             ORDER BY day_threshold_likes ASC
             LIMIT 1
-		';
+		";
 
 		$values = array(
 			':posting_id' => $posting_id,
@@ -877,6 +888,9 @@ class Posting extends db {
             ':total_likes' => $total_likes
 		);
 
+        if ($next) {
+            $values[':next'] = $next;
+        }
 
         if (!empty($viewer_user_id)) {
             $values[':viewer_user_id'] = $viewer_user_id;
@@ -884,7 +898,8 @@ class Posting extends db {
 
 
         if (isset($_GET['t'])) {
-            echo $query;
+            echo "$query \n";
+            echo "get_previous_posting_id \n";
             print_r($values);
         }
 
@@ -902,13 +917,25 @@ class Posting extends db {
 		return NULL;
 	}
 
-	public function get_next_posting_id($posting_id, $created, $total_likes, $viewer_user_id = NULL)
+	public function get_next_posting_id($posting_id, $created, $total_likes, $viewer_user_id = NULL, $next =null )
     {
+        $notin_posting_array = array();
+        $notin_posting_array[] = ":posting_id";
+
 
         $filter_likes = "";
         if($posting_id){
             $filter_likes = "WHERE day_threshold_likes <= :total_likes";
         }
+
+        $notin_posting_array[] = ":posting_id";
+
+        if($next && intval($next) > 1)
+        {
+            $notin_posting_array[] = ":next";
+        }
+
+        $notin_posting_str =  trim(implode(", ", $notin_posting_array), ',');
 
 		$query = "
 			SELECT * FROM
@@ -922,7 +949,7 @@ class Posting extends db {
                     " : '') . "
                     INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
                 WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
-                    AND posting.posting_id != :posting_id
+                    AND posting.posting_id NOT IN ({$notin_posting_str})
                     AND posting.deleted IS NULL
                         " . (!empty($viewer_user_id) ? "
                     AND posting_like.user_id IS NULL
@@ -950,6 +977,10 @@ class Posting extends db {
             $values[':created'] = $created;
         }
 
+        if ($next) {
+            $values[':next'] = $next;
+        }
+
 		if (!empty($viewer_user_id)) {
 			$values[':viewer_user_id'] = $viewer_user_id;
 		}
@@ -957,7 +988,8 @@ class Posting extends db {
         //$this->debug();
         if (isset($_GET['t'])) {
 			echo "$query\n\n";
-			var_dump($values);
+            echo "get_next_posting_id \n";
+			print_r($values);
 		}
 
 		$result = $this->run($query, $values);

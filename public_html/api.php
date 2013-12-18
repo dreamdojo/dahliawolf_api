@@ -1480,8 +1480,11 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
                 //$previous   = $Posting->get_previous_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id );
 				//$next       = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id  );
 
+                //previous in the app order
 				$next  = $Posting->get_previous_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id );
-				$previous  = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id  );
+
+                //next in the order ?????
+                $previous  = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id, $next  );
 
 				$post['data']['previous_posting_id'] = (!$previous ? $post['data']['posting_id'] : $previous);
 				$post['data']['next_posting_id'] = $next;
