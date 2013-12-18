@@ -3,7 +3,9 @@ class _Controller {
 	const MODELS_DIRECTORY = '/models/';
 	
 	public $default_error_message = 'Request could not be completed.';
-	public $data;
+
+    /** @var  $data Data */
+    protected $data;
 	
 	protected $Validate;
     protected $use_cache = false;
@@ -347,7 +349,21 @@ class _Controller {
 		// Done
 		return $result;
 	}
-	
+
+    public function getData()
+    {
+        if(!$this->data) $this->data = new Data();
+        return $this->data->getData();
+    }
+
+
+    protected function addData($key, $val)
+    {
+        if(!$this->data) $this->data = new Data();
+        $this->data->addData($key, $val);
+    }
+
+
 	private function log_api_request($ip_address, $endpoint, $protocol, $request, $result)
     {
 		

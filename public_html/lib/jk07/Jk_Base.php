@@ -249,7 +249,7 @@ abstract class Jk_Base extends Jk_Root
     }
 
 
-    protected function setMainLog($file, $unbuffer=false)
+    protected function setMainLog($file, $unbuffer=true)
     {
         $file_path = APP_PATH . "logs/" . dirname($file) . "/";
 

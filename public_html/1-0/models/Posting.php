@@ -1046,7 +1046,7 @@ class Posting extends _Model
     public function getNextId($posting_id, $created, $total_likes, $viewer_user_id = NULL, $previous_id =null)
     {
         $notin_posting_array = array();
-        $notin_posting_array[] = ":previous_id";
+        $notin_posting_array[] = ":posting_id";
 
         $filter_likes = "";
         if ($posting_id) {
@@ -1056,7 +1056,11 @@ class Posting extends _Model
 
         //for when no posting id is sent
         if(count($notin_posting_array) === 0 ){
-            $notin_posting_array[] = ":previous_id";
+            $notin_posting_array[] = ":posting_id";
+        }
+
+        if ($previous_id) {
+            $values[':previous_id'] = $previous_id;
         }
 
         $notin_posting_str =  trim(implode(", ", $notin_posting_array), ',');

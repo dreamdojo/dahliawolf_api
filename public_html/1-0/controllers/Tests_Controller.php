@@ -10,13 +10,25 @@ class Tests_Controller extends _Controller
     protected static $start_time;
 
 
+    public function timeout()
+    {
+        $timeout = new Timer();
+        $start_time = $timeout->getTime();
+
+        //run
+        $timeout->run(120);
+
+        self::addData('test_data' , $timeout->getData());
+
+        self::addData(__FUNCTION__ . " END TIME: ",  $timeout::getTotaltime($start_time));
+
+        return self::getData();
+    }
+
     public function test_redis()
     {
         $redis = new RedisCache;
-
         $return = array();
-
-        ///
 
         self::$start_time = $redis::getTime();
 
