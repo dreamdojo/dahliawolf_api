@@ -1486,6 +1486,34 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
                 //next in the order ?????
                 $previous  = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id, $next  );
 
+                //
+                //echo "previous_posting_id: $previous \n";
+                //echo "next_posting_id: {$next}\n";
+
+
+                ///make sure there is always a previous..
+                $prev_tries = 0;
+                while( ( $previous==null || $previous==false  || empty($previous) || $previous='' || $prev_tries < 50))
+                {
+                    //echo "were looping previous:" . var_export($previous, true) . "\n";
+                    $previous  = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], 1, $viewer_user_id  );
+
+                    $prev_tries++;
+                    //echo "were looping do we have next:" . var_export($next, true);
+                    if($previous!=null || $previous!=false || !empty($previous) || !$previous='') break;
+                }
+
+                ///make sure there is always a next..
+                $next_tries = 0;
+                while ( ($next==null || $next==false || empty($next) || $next='' || $next_tries < 50) )
+                {
+                    //echo "were looping next:" . var_export($next, true) . "\n";
+                    $next  = $Posting->get_previous_posting_id($post['data']['posting_id'], $post['data']['created'], 1, $viewer_user_id );
+                    $next_tries++;
+                    //echo "were looping do we have next:" . var_export($next, true);
+                    if($next!=null || $next!=false || !empty($next) || !$next='') break;
+                }
+
 				$post['data']['previous_posting_id'] = (!$previous ? $post['data']['posting_id'] : $previous);
 				$post['data']['next_posting_id'] = $next;
 			}

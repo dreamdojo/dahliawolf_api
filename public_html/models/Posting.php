@@ -917,7 +917,7 @@ class Posting extends db {
 		return NULL;
 	}
 
-	public function get_next_posting_id($posting_id, $created, $total_likes, $viewer_user_id = NULL, $next =null )
+	public function get_next_posting_id($posting_id, $created, $total_likes, $viewer_user_id = NULL, $next =null, $limit=1 )
     {
         $notin_posting_array = array();
         $notin_posting_array[] = ":posting_id";
@@ -960,7 +960,7 @@ class Posting extends db {
                 ) AS sub_posting
             {$filter_likes}
             ORDER BY day_threshold_likes DESC
-            LIMIT 1
+            LIMIT {$limit}
 		";
 
 
