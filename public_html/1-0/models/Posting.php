@@ -163,9 +163,13 @@ class Posting extends _Model
 
     }
 
-
     public function getAll($params = array())
     {
+        if( !empty($params['filter']) && $params['filter'] == 'loves')
+        {
+            return self::getLovedPosts($params);
+        }
+
         $order_by_str = 'created DESC';
         $outer_order_by_str = 'created DESC';
 
@@ -235,22 +239,32 @@ class Posting extends _Model
             $group_by_str = 'GROUP BY posting.posting_id';
         }
 
-
         //valid filters
         $valid_filters = array(
-            'following'     => ' AND follow.follower_user_id = :follower_user_id'
+            'following'  => " AND follow.follower_user_id = :follower_user_id",
+            'loves'      => " AND posting_like.user_id IS NOT NULL"
         );
 
-
         // Filter by following
-        if ( !empty($params['filter_by']) && isset( $valid_filters[$params['filter_by']]) && !empty($params['follower_user_id'])) {
+        if ( !empty($params['filter']) && isset( $valid_filters[$params['filter']]) ) {
             $sub_join_str .= '
                 INNER JOIN follow ON user_username.user_id = follow.user_id
             ';
 
-            $filter = $valid_filters[$params['filter_by']];
+            if( $params['filter'] == 'loves')
+            $sub_join_str .= '
+                INNER JOIN (select *
+                    from  posting_like
+                    where posting_like.user_id = 2418) AS user_loves ON user_loves.posting_id = posting
+            ';
+
+            $filter = $valid_filters[$params['filter']];
             $sub_where_str .= "$filter";
-            $values[':follower_user_id'] = $params['follower_user_id'];
+
+            if(!empty($params['follower_user_id']))
+            {
+                $values[':follower_user_id'] = $params['follower_user_id'];
+            }
         }
 
         // Timestamp
@@ -264,12 +278,6 @@ class Posting extends _Model
 
         $inner_offset_limit = $this->generateLimitOffset($params, true);
 
-        if (!empty($params['filter']) && isset( $valid_filters[$params['filter']] )) {
-            $filter = $valid_filters[$params['filter']];
-            $sub_where_str .= "\n\t\t\t\t\t AND  {$filter}";
-
-            //if($inner_order_by_str != 'created DESC') $inner_offset_limit = '';
-        }
 
         //// limit the restult set to failsafe 300,
         if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 999';
@@ -345,6 +353,86 @@ class Posting extends _Model
 
     }
 
+
+    public  function getLovedPosts($params)
+    {
+        $active_limit = (60*60*24)*30;
+        $values = array();
+        $viewer_user_id = $params["viewer_user_id"];
+        $inner_offset_limit = $this->generateLimitOffset($params, true);
+
+        $order_by_str = 'posting_like.created DESC';
+
+        $inner_order_by_columns = array(
+            'posting_like.created',
+            'total_likes',
+        );
+
+        if (!empty($params['order_by'])) {
+            if (in_array($params['order_by'], $inner_order_by_columns)) {
+                $order_by_str = "{$params['order_by']} DESC";
+            }
+        }
+
+        $query = "
+          SELECT
+              posting.posting_id, posting.created, posting.user_id, posting.image_id, posting.description, posting.deleted
+              , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
+              , user_username.username, user_username.location, user_username.avatar
+              , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
+              , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
+              , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
+              , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
+              , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+              , (SELECT COUNT(*) FROM posting_tag WHERE posting_tag.posting_id = posting.posting_id) AS `total_tags`
+              , IF(posting_like.user_id IS NULL, 0, 1) AS is_liked
+
+          FROM posting
+
+                INNER JOIN image ON posting.image_id = image.id
+                INNER JOIN user_username ON posting.user_id = user_username.user_id
+                LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
+
+                INNER JOIN (select *
+                    from  posting_like
+                    where posting_like.user_id = :viewer_user_id
+                ) AS posting_like ON posting_like.posting_id = posting.posting_id
+
+                LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
+        						AND posting_dislike.user_id = :viewer_user_id
+
+          WHERE image.imagename IS NOT NULL
+        	  AND posting.deleted IS NULL
+              AND posting_dislike.posting_id IS NULL
+
+              AND posting_like.user_id IS NOT NULL
+
+        ORDER BY {$order_by_str}
+        {$inner_offset_limit}
+        ";
+
+        $values[':viewer_user_id'] = $viewer_user_id;
+
+        if (isset($_GET['t'])) {
+            print_r($params);
+            echo "\n$query\n";
+            print_r($values);
+            if(isset($_GET['die']))die();
+        }
+
+
+        $posts = $this->fetch($query, $values);
+
+        if ($posts) {
+            return array(
+                        'posts' => $posts
+            );
+
+        }
+
+        return null;
+
+    }
 
 
     public function getByIdsArray($params = array())
@@ -652,6 +740,7 @@ class Posting extends _Model
                 'is_not_winner' => '(IF(like_winner.like_winner_id IS NOT NULL, 1, 0)) = 0',
                 'is_active'     => "(IF(UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP(), 1, 0 )) = 1",
                 'is_expired'    => "(IF(UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP(), 1, 0 )) = 0",
+                'loves'         => "posting_like.user_id IS NOT NULL",
             );
 
             if (!empty($params['filter']) && isset( $valid_filters[$params['filter']] )) {
@@ -659,20 +748,6 @@ class Posting extends _Model
                 $sub_where_str .= "\n\t\t\t\t\t AND  {$filter}";
             }
         }
-
-
-        /*
-        // Also don't show dislikes
-        if (!empty($params['viewer_user_id'])) {
-            $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked';
-            $sub_join_str = '
-                LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id
-                    AND posting_like.user_id = :viewer_user_id
-            ';
-            $values[':viewer_user_id'] = $params['viewer_user_id'];
-        }
-        */
-
 
         if (!empty($params['viewer_user_id'])) {
       			$select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked, IF(follow.follow_id IS NULL, 0, 1) AS is_following';
@@ -910,32 +985,31 @@ class Posting extends _Model
     public function getPreviousId($posting_id, $created, $total_likes, $viewer_user_id = NULL, $previous_id =null)
     {
         $query = '
-   			SELECT * FROM
+            SELECT * FROM
+               (SELECT posting.posting_id
+                       , IFNULL(COUNT(posting_like_hot.posting_id), 0) AS day_threshold_likes
 
-                   (SELECT posting.posting_id
-                           , IFNULL(COUNT(posting_like_hot.posting_id), 0) AS day_threshold_likes
+               FROM posting
+                   ' . (!empty($viewer_user_id) ? '
+                       LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id AND posting_like.user_id = :viewer_user_id
+                           LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id AND posting_dislike.user_id = :viewer_user_id
+                   ' : '') . '
+                       INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
+               WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
+                   AND posting.posting_id != :posting_id
+                   AND posting.deleted IS NULL
+                   ' . (!empty($viewer_user_id) ? '
+                       AND posting_like.user_id IS NULL
+                       AND posting_dislike.posting_id IS NULL
+                   ' : '') . '
+               #, posting.posting_id DESC
+               GROUP BY posting.posting_id
+               ORDER BY day_threshold_likes DESC, posting.created ASC
+               ) AS sub_posting
 
-                   FROM posting
-                       ' . (!empty($viewer_user_id) ? '
-                           LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id AND posting_like.user_id = :viewer_user_id
-                               LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id AND posting_dislike.user_id = :viewer_user_id
-                       ' : '') . '
-                           INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
-                   WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
-                       AND posting.posting_id != :posting_id
-                       AND posting.deleted IS NULL
-                       ' . (!empty($viewer_user_id) ? '
-                           AND posting_like.user_id IS NULL
-                           AND posting_dislike.posting_id IS NULL
-                       ' : '') . '
-                   #, posting.posting_id DESC
-                   GROUP BY posting.posting_id
-                   ORDER BY day_threshold_likes DESC, posting.created ASC
-                   ) AS sub_posting
-
-               WHERE day_threshold_likes >= :total_likes
-               ORDER BY day_threshold_likes ASC
-               LIMIT 1
+            WHERE day_threshold_likes >= :total_likes
+            ORDER BY day_threshold_likes ASC
+            LIMIT 1
    		';
 
         $values = array(
