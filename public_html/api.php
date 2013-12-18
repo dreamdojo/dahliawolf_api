@@ -1465,9 +1465,10 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 
             if(!$posting_id){
                 // should always return the top most liked in last 30 days
-                $next = $Posting->get_next_posting_id(null, $post['data']['created'], $post['data']['total_likes'], $viewer_user_id  );
+                $previous = $Posting->get_next_posting_id(null, $post['data']['created'], $post['data']['total_likes'], $viewer_user_id  );
 
-                $params['where']['posting_id'] = $next;
+                //$params['where']['posting_id'] = $next;
+                $params['where']['posting_id'] = $previous;
                 $post = $Posting->getPostDetails($params);
 
             }else{
@@ -1476,8 +1477,11 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 
 			// Also return previous and next
 			if (!empty($post) && !empty($post['data'])) {
-				$previous   = $Posting->get_previous_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id );
-				$next       = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id  );
+                //$previous   = $Posting->get_previous_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id );
+				//$next       = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id  );
+
+				$next  = $Posting->get_previous_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id );
+				$previous  = $Posting->get_next_posting_id($post['data']['posting_id'], $post['data']['created'], $post['data']['likes'], $viewer_user_id  );
 
 				$post['data']['previous_posting_id'] = (!$previous ? $post['data']['posting_id'] : $previous);
 				$post['data']['next_posting_id'] = $next;
