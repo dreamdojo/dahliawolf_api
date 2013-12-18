@@ -13,13 +13,11 @@ class Posting extends _Model
     protected $points_earned=0;
 
     protected $fields = array(
-
         'created',
         'user_id',
         'image_id',
         'description',
         'deleted',
-
     );
 
     const TABLE = 'posting';
@@ -168,7 +166,6 @@ class Posting extends _Model
 
     public function getAll($params = array())
     {
-
         $order_by_str = 'created DESC';
         $outer_order_by_str = 'created DESC';
 
@@ -504,12 +501,40 @@ class Posting extends _Model
     }
 
 
-
-
     // ?api=category&function=getCategory&params={"conditions":{"id":"4"}}
-    public function getPostDetails($params = array()) {
-        $error = NULL;
+    public function getPostDetails($params = array())
+    {
+        $posting_id     = $params['posting_id'];
+        $viewer_user_id = $params['viewer_user_id'];
 
+        if(!$posting_id){
+            // should always return the top most liked in last 30 days
+            $next = $this->getNextId(null, null, null, $viewer_user_id  );
+
+            $params['posting_id'] = $next;
+            $post = $this->_getPostDetails($params);
+
+        }else{
+            $post = $this->_getPostDetails($params);
+        }
+
+        // Also return previous and next
+        if ($post)
+        {
+            $previous   = $this->getPreviousId($post['posting_id'], $post['created'], $post['likes'], $viewer_user_id );
+            $next       = $this->getNextId($post['posting_id'], $post['created'], $post['likes'], $viewer_user_id, $previous  );
+
+            $post['previous_posting_id'] = $previous;
+            $post['next_posting_id'] = $next;
+        }
+
+        return $post;
+    }
+
+
+    protected function _getPostDetails($params)
+    {
+        $posting_id     = $params['posting_id'];
 
         $values = array();
 
@@ -517,10 +542,9 @@ class Posting extends _Model
         $posting_id = null;
         if (!empty($params['posting_id'])) {
             $values[':posting_id'] = $params['posting_id'];
-
-            $posting_id = $params['posting_id'];
         }
 
+        $posting_id = $params['posting_id'];
 
         $select_str = '';
         $join_str = '';
@@ -575,22 +599,14 @@ class Posting extends _Model
             print_r($values);
         }
 
-        //$row = $this->get_row($this->table, $params['conditions']);
-        //$data = $this->run($query, $values);
-        //$row = $data ? $data->fetchAll() : false;
 
-        $data = $this->fetch($query, $values);
-
+        $data = $this->query($query, $values);
 
         $post = $data[0];
 
-        if ( $post['total_shares'] == '0')
+        if ($data !== false)
         {
-            $post['total_shares'] = '6666';
-        }
-
-        if ($data !== false) {
-             return $post;
+            return $post;
         }
 
         return null;
@@ -610,8 +626,6 @@ class Posting extends _Model
         // we got user cont..
         $order_by_str = 'created DESC';
         $outer_order_by_str = 'created DESC';
-
-
 
         $outer_select_str = "";
         $select_str = '';
@@ -656,8 +670,6 @@ class Posting extends _Model
                     AND posting_like.user_id = :viewer_user_id
             ';
             $values[':viewer_user_id'] = $params['viewer_user_id'];
-
-
         }
         */
 
@@ -891,6 +903,157 @@ class Posting extends _Model
         }
 
         return $limit_offset_str;
+    }
+
+
+
+    public function getPreviousId($posting_id, $created, $total_likes, $viewer_user_id = NULL, $previous_id =null)
+    {
+        $query = '
+   			SELECT * FROM
+
+                   (SELECT posting.posting_id
+                           , IFNULL(COUNT(posting_like_hot.posting_id), 0) AS day_threshold_likes
+
+                   FROM posting
+                       ' . (!empty($viewer_user_id) ? '
+                           LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id AND posting_like.user_id = :viewer_user_id
+                               LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id AND posting_dislike.user_id = :viewer_user_id
+                       ' : '') . '
+                           INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
+                   WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
+                       AND posting.posting_id != :posting_id
+                       AND posting.deleted IS NULL
+                       ' . (!empty($viewer_user_id) ? '
+                           AND posting_like.user_id IS NULL
+                           AND posting_dislike.posting_id IS NULL
+                       ' : '') . '
+                   #, posting.posting_id DESC
+                   GROUP BY posting.posting_id
+                   ORDER BY day_threshold_likes DESC, posting.created ASC
+                   ) AS sub_posting
+
+               WHERE day_threshold_likes >= :total_likes
+               ORDER BY day_threshold_likes ASC
+               LIMIT 1
+   		';
+
+        $values = array(
+            ':posting_id' => $posting_id,
+            //':created' => $created,
+            ':like_day_threshold' => 30,
+            ':total_likes' => $total_likes
+        );
+
+
+        if (!empty($viewer_user_id)) {
+            $values[':viewer_user_id'] = $viewer_user_id;
+        }
+
+
+        if (isset($_GET['t'])) {
+            echo $query;
+            print_r($values);
+        }
+
+        try {
+            $result = $this->fetch($query, $values);
+        }catch (Exception $e){
+            //
+        }
+
+        if ($result) {
+            return $result[0]['posting_id'];
+        }
+
+   		return NULL;
+   	}
+
+    public function getNextId($posting_id, $created, $total_likes, $viewer_user_id = NULL, $previous_id =null)
+    {
+        $notin_posting_array = array();
+        $notin_posting_array[] = ":previous_id";
+
+        $filter_likes = "";
+        if ($posting_id) {
+            $filter_likes = "WHERE day_threshold_likes <= :total_likes";
+            $notin_posting_array[] = ":posting_id";
+        }
+
+        //for when no posting id is sent
+        if(count($notin_posting_array) === 0 ){
+            $notin_posting_array[] = ":previous_id";
+        }
+
+        $notin_posting_str =  trim(implode(", ", $notin_posting_array), ',');
+
+        $query = "
+        SELECT * FROM
+               (SELECT posting.posting_id
+            , IFNULL(COUNT(posting_like_hot.posting_id), 0) AS day_threshold_likes
+            , posting.created
+               FROM posting
+                   " . (!empty($viewer_user_id) ? "
+                       LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id AND posting_like.user_id = :viewer_user_id
+                       LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id AND posting_dislike.user_id = :viewer_user_id
+                   " : '') . "
+                   INNER JOIN posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
+               WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
+                   AND posting.posting_id NOT IN ({$notin_posting_str})
+                   AND posting.deleted IS NULL
+                       " . (!empty($viewer_user_id) ? "
+                   AND posting_like.user_id IS NULL
+                   AND posting_dislike.posting_id IS NULL
+                       " : '') . "
+               GROUP BY posting.posting_id
+               ORDER BY day_threshold_likes DESC, posting.created ASC
+               ) AS sub_posting
+           {$filter_likes}
+           ORDER BY day_threshold_likes DESC
+           LIMIT 1
+        ";
+
+
+        $values = array(
+            ':posting_id' => $posting_id ? $posting_id : 0,
+            ':like_day_threshold' => 30,
+        );
+
+        if ($posting_id) {
+            $values[':total_likes'] = $total_likes;
+        }
+
+        if ($previous_id) {
+            $values[':previous_id'] = $previous_id;
+        }
+
+        if ($created) {
+            //$values[':created'] = $created;
+        }
+
+        if (!empty($viewer_user_id)) {
+            $values[':viewer_user_id'] = $viewer_user_id;
+        }
+
+        //$this->debug();
+        if (isset($_GET['t'])) {
+            echo "$query\n\n";
+            var_dump($values);
+        }
+
+        try{
+            $result = $this->fetch($query, $values);
+        }catch (Exception $e)
+        {
+            //
+        }
+
+        if ($result) {
+            return $result[0]['posting_id'];
+        }
+
+
+        return NULL;
     }
 
 
