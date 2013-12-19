@@ -995,7 +995,6 @@ class User_Controller extends _Controller {
 
     public function get_top_users( $params = array() )
     {
-
         $cache_key_params = self::getCacheParams($params, __FUNCTION__);
 
         if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
