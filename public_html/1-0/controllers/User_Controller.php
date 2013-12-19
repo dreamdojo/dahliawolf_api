@@ -1029,30 +1029,8 @@ class User_Controller extends _Controller {
 
         $user_data = $dw_user->getTopUsers($params);
 
-        if(is_array($user_data))
-        {
-            $posts_params = array();
-            foreach( $user_data as $udkey => $u_data)
-            {
-                $posting_params = array(
-                    'user_id' =>  $u_data['user_id']
-                );
-
-                if (!empty($params['posts_offset'])) $posting_params['offset'] = $params['posts_offset'];
-
-                //query limits
-                if (!empty($params['posts_limit']))  $posting_params['limit'] = $params['posts_limit'];
-                else $posting_params['limit'] = 5;
-
-
-                $posting  = new Posting();
-                $user_posts =  $posting->getByUser($posting_params);
-
-                if($user_posts['posts']) $u_data['posts'] = $user_posts['posts'];
-
-                $user_data[$udkey] =  $u_data;
-            }
-        }
+        //// get users posts
+        if(is_array($user_data))  self::getUsersPosts($user_data, $params);
 
         //self::setUseCache(true);
         //cache content
@@ -1067,7 +1045,7 @@ class User_Controller extends _Controller {
             self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*12);
         }
 
-        return $user_data;
+        return $response;
     }
 
 
@@ -1107,30 +1085,8 @@ class User_Controller extends _Controller {
 
         $user_data = $dw_user->getTopFollowingByUser($params);
 
-        if(is_array($user_data))
-        {
-            $posts_params = array();
-            foreach( $user_data as $udkey => $u_data)
-            {
-                $posting_params = array(
-                    'user_id' =>  $u_data['user_id']
-                );
-
-                if (!empty($params['posts_offset'])) $posting_params['offset'] = $params['posts_offset'];
-
-                //query limits
-                if (!empty($params['posts_limit']))  $posting_params['limit'] = $params['posts_limit'];
-                else $posting_params['limit'] = 5;
-
-
-                $posting  = new Posting();
-                $user_posts =  $posting->getByUser($posting_params);
-
-                if($user_posts['posts']) $u_data['posts'] = $user_posts['posts'];
-
-                $user_data[$udkey] =  $u_data;
-            }
-        }
+        //// get users posts
+        if(is_array($user_data))  self::getUsersPosts($user_data, $params);
 
         $cache_key = self::getCacheKey($cache_key_params);
         $response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
@@ -1142,7 +1098,7 @@ class User_Controller extends _Controller {
             self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*2);
         }
 
-        return $user_data;
+        return $response;
     }
 
 
@@ -1182,30 +1138,8 @@ class User_Controller extends _Controller {
 
         $user_data = $dw_user->getTopFollowersByUser($params);
 
-        if(is_array($user_data))
-        {
-            $posts_params = array();
-            foreach( $user_data as $udkey => $u_data)
-            {
-                $posting_params = array(
-                    'user_id' =>  $u_data['user_id']
-                );
-
-                if (!empty($params['posts_offset'])) $posting_params['offset'] = $params['posts_offset'];
-
-                //query limits
-                if (!empty($params['posts_limit']))  $posting_params['limit'] = $params['posts_limit'];
-                else $posting_params['limit'] = 5;
-
-
-                $posting  = new Posting();
-                $user_posts =  $posting->getByUser($posting_params);
-
-                if($user_posts['posts']) $u_data['posts'] = $user_posts['posts'];
-
-                $user_data[$udkey] =  $u_data;
-            }
-        }
+        //// get users posts
+        if(is_array($user_data))  self::getUsersPosts($user_data, $params);
 
 
         $cache_key = self::getCacheKey($cache_key_params);
@@ -1218,8 +1152,37 @@ class User_Controller extends _Controller {
             self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*2);
         }
 
+        return $response;
+    }
+
+
+    protected function getUsersPosts(&$user_data, $params)
+    {
+        $posts_params = array();
+        foreach( $user_data as $udkey => &$u_data)
+        {
+            $posting_params = array(
+                'user_id' =>  $u_data['user_id']
+            );
+
+            if (!empty($params['posts_offset'])) $posting_params['offset'] = $params['posts_offset'];
+
+            //query limits
+            if (!empty($params['posts_limit']))  $posting_params['limit'] = $params['posts_limit'];
+            else $posting_params['limit'] = 5;
+
+
+            $posting  = new Posting();
+            $user_posts =  $posting->getByUser($posting_params);
+
+            if($user_posts['posts']) $u_data['posts'] = $user_posts['posts'];
+
+            $user_data[$udkey] =  $u_data;
+        }
+
         return $user_data;
     }
+
 
 
 
