@@ -794,23 +794,31 @@ class User extends _Model
         $join_str = '';
         $where_str = '';
 
-        $values[':viewer_user_id'] = $params['viewer_user_id'];
+        $values = array();
+        //$values[':viewer_user_id'] = $params['viewer_user_id'];
+        $values[':user_id'] = $params['user_id'];
+
+        if (!empty($params['viewer_user_id'])) {
+            $select_str .= ', IF(following.user_id IS NULL, 0, 1) AS is_followed';
+            $join_str .= 'LEFT JOIN follow AS following ON following.user_id = user_username.user_id
+                AND following.follower_user_id = :viewer_user_id';
+
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
 
         $offset_string = $this->generate_limit_offset_str($params);
 
         $following_query = "
         SELECT distinct
-            user_username.user_username_id,
-            user_username.user_id,
             user_username.username,
+            user_username.user_username_id,
             user_username.points,
+            user_username.user_id,
             user_username.location,
             user_username.fb_uid,
             user_username.avatar,
 
-            rank.rank,
-
-            IF(follow.user_id IS NULL, 0, 1) AS is_followed
+            rank.*
 
             {$select_str}
 
@@ -829,17 +837,17 @@ class User extends _Model
                 INNER JOIN ( select *
                                 FROM follow as following
                                 WHERE
-                                following.follower_user_id = :viewer_user_id )
+                                following.follower_user_id = :user_id )
 
                 AS follow ON follow.user_id = user_username.user_id
 
                 INNER JOIN
                         ( SELECT
-                            u.user_id,
-                            @row:=@row+1 as rank
-                            FROM user_username AS u
-                            join (SELECT @row:=0) pos
-                            ORDER BY u.points DESC
+                        	  u.user_id, u.points,
+                        	  @row:=@row+1 as rank
+                        	FROM user_username AS u
+                        	join (SELECT @row:=0) pos
+                        	ORDER BY u.points DESC
                         limit 999999999999999  )
                 AS rank ON rank.user_id = follow.user_id
 
@@ -882,12 +890,25 @@ class User extends _Model
     public function getTopFollowersByUser( $params = array() )
     {
         $error = NULL;
-
         $select_str = '';
         $join_str = '';
         $where_str = '';
 
-        $values[':viewer_user_id'] = $params['viewer_user_id'];
+        $values = array();
+        if($values[':viewer_user_id'])
+        {
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
+
+        $values[':user_id'] = $params['user_id'];
+
+        if (!empty($params['viewer_user_id'])) {
+            $select_str .= ', IF(following.user_id IS NULL, 0, 1) AS is_followed';
+            $join_str .= 'LEFT JOIN follow AS following ON following.user_id = user_username.user_id
+                AND following.follower_user_id = :viewer_user_id';
+
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
 
         $offset_string = $this->generate_limit_offset_str($params);
 
@@ -901,9 +922,7 @@ class User extends _Model
             user_username.fb_uid,
             user_username.avatar,
 
-            rank.rank,
-
-            IF(follow.user_id IS NULL, 0, 1) AS is_followed
+            rank.rank
 
             {$select_str}
 
@@ -922,20 +941,20 @@ class User extends _Model
                 INNER JOIN ( select *
                                 FROM follow as following
                                 WHERE
-                                following.user_id = :viewer_user_id )
+                                following.user_id = :user_id )
 
                 AS follow ON follow.follower_user_id = user_username.user_id
 
 
-                INNER JOIN
-                        ( SELECT
-                            u.user_id,
-                            @row:=@row+1 as rank
-                            FROM user_username AS u
-                            join (SELECT @row:=0) pos
-                            ORDER BY u.points DESC
-                        limit 999999999999999  )
-                AS rank ON rank.user_id = follow.user_id
+            INNER JOIN
+                    ( SELECT
+                          u.user_id, u.points as rank_points,
+                          @row:=@row+1 as rank
+                        FROM user_username AS u
+                        join (SELECT @row:=0) pos
+                        ORDER BY u.points DESC
+                    limit 999999999999999   )
+            AS rank ON rank.user_id = follow.follower_user_id
 
                 {$join_str}
 

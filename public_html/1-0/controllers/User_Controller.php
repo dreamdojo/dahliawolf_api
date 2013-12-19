@@ -7,6 +7,9 @@ require 'lib/php/functions.php';
  * @property Follow Follow
  */
 class User_Controller extends _Controller {
+
+    /** @var  $User User*/
+
 	private $PasswordHash;
 
 	public function __construct() {
