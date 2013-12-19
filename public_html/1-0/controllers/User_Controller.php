@@ -993,14 +993,30 @@ class User_Controller extends _Controller {
 	}
 
 
-    public function get_top_following( $params = array() )
+    public function get_top_users( $params = array() )
     {
+
         $cache_key_params = self::getCacheParams($params, __FUNCTION__);
 
         if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
         {
-            return json_decode($cached_content);
+            $cached_obj = json_decode($cached_content);
+            $response = $cached_obj;
+
+            if(!$cached_obj->object_id)
+            {
+                $cache_key = self::getCacheKey($cache_key_params);
+                $cached_obj->object_id = base64_encode($cache_key);
+            }
+
+            //// return else keep looking.
+            if( $cached_obj && count($cached_obj->users) > 1 )
+            {
+                //self::trace("self::getCachedContent" . $cached_content);
+                return $response;
+            }
         }
+
 
         /** @var User $dw_user */
         $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
@@ -1011,7 +1027,7 @@ class User_Controller extends _Controller {
             $params['offset'] = $params['offset'];
         }
 
-        $user_data = $dw_user->getTopFollowing($params);
+        $user_data = $dw_user->getTopUsers($params);
 
         if(is_array($user_data))
         {
@@ -1040,12 +1056,173 @@ class User_Controller extends _Controller {
 
         //self::setUseCache(true);
         //cache content
-        self::cacheContent($cache_key_params, json_encode($user_data),  RedisCache::TTL_HOUR*12);
 
+        $cache_key = self::getCacheKey($cache_key_params);
+        $response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
+
+        //self::setUseCache(true);
+        //cache content
+        if( $user_data && !$user_data['error'] )
+        {
+            self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*12);
+        }
 
         return $user_data;
-
     }
+
+
+
+    public function get_top_following( $params = array() )
+    {
+        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
+
+        if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
+        {
+            $cached_obj = json_decode($cached_content);
+            $response = $cached_obj;
+
+            if(!$cached_obj->object_id)
+            {
+                $cache_key = self::getCacheKey($cache_key_params);
+                $cached_obj->object_id = base64_encode($cache_key);
+            }
+
+            //// return else keep looking.
+            if( $cached_obj && count($cached_obj->users) > 1 )
+            {
+                //self::trace("self::getCachedContent" . $cached_content);
+                return $response;
+            }
+
+        }
+
+        /** @var User $dw_user */
+        $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
+
+        $params['limit'] = isset($params['limit']) ? $params['limit'] : 5;
+
+        if (!empty($params['offset'])) {
+            $params['offset'] = $params['offset'];
+        }
+
+        $user_data = $dw_user->getTopFollowingByUser($params);
+
+        if(is_array($user_data))
+        {
+            $posts_params = array();
+            foreach( $user_data as $udkey => $u_data)
+            {
+                $posting_params = array(
+                    'user_id' =>  $u_data['user_id']
+                );
+
+                if (!empty($params['posts_offset'])) $posting_params['offset'] = $params['posts_offset'];
+
+                //query limits
+                if (!empty($params['posts_limit']))  $posting_params['limit'] = $params['posts_limit'];
+                else $posting_params['limit'] = 5;
+
+
+                $posting  = new Posting();
+                $user_posts =  $posting->getByUser($posting_params);
+
+                if($user_posts['posts']) $u_data['posts'] = $user_posts['posts'];
+
+                $user_data[$udkey] =  $u_data;
+            }
+        }
+
+        $cache_key = self::getCacheKey($cache_key_params);
+        $response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
+
+        //self::setUseCache(true);
+        //cache content
+        if( $user_data && !$user_data['error'] )
+        {
+            self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*2);
+        }
+
+        return $user_data;
+    }
+
+
+
+    public function get_top_followers( $params = array() )
+    {
+        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
+
+        if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
+        {
+            $cached_obj = json_decode($cached_content);
+            $response = $cached_obj;
+
+            if(!$cached_obj->object_id)
+            {
+                $cache_key = self::getCacheKey($cache_key_params);
+                $cached_obj->object_id = base64_encode($cache_key);
+            }
+
+            //// return else keep looking.
+            if( $cached_obj && count($cached_obj->users) > 1 )
+            {
+                //self::trace("self::getCachedContent" . $cached_content);
+                return $response;
+            }
+
+        }
+
+        /** @var User $dw_user */
+        $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
+
+        $params['limit'] = isset($params['limit']) ? $params['limit'] : 5;
+
+        if (!empty($params['offset'])) {
+            $params['offset'] = $params['offset'];
+        }
+
+        $user_data = $dw_user->getTopFollowersByUser($params);
+
+        if(is_array($user_data))
+        {
+            $posts_params = array();
+            foreach( $user_data as $udkey => $u_data)
+            {
+                $posting_params = array(
+                    'user_id' =>  $u_data['user_id']
+                );
+
+                if (!empty($params['posts_offset'])) $posting_params['offset'] = $params['posts_offset'];
+
+                //query limits
+                if (!empty($params['posts_limit']))  $posting_params['limit'] = $params['posts_limit'];
+                else $posting_params['limit'] = 5;
+
+
+                $posting  = new Posting();
+                $user_posts =  $posting->getByUser($posting_params);
+
+                if($user_posts['posts']) $u_data['posts'] = $user_posts['posts'];
+
+                $user_data[$udkey] =  $u_data;
+            }
+        }
+
+
+        $cache_key = self::getCacheKey($cache_key_params);
+        $response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
+
+        //self::setUseCache(true);
+        //cache content
+        if( $user_data && !$user_data['error'] )
+        {
+            self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*2);
+        }
+
+        return $user_data;
+    }
+
+
+
 
 }
 ?>

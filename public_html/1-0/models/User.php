@@ -679,7 +679,7 @@ class User extends _Model
 
 
 
-    public function getTopFollowing( $params = array() )
+    public function getTopUsers( $params = array() )
     {
         $error = NULL;
 
@@ -754,12 +754,11 @@ class User extends _Model
             WHERE {$where_str}
             ORDER BY rank.rank ASC
             {$offset_string};
-        ";
+            ";
 
 
         if(isset($_GET['t'])) {
             echo sprintf("query: \n%s \nparams: %s\n: params: %s", $following_query, var_export($values, true), var_export($params, true));
-            return null;
         }
 
         if(isset($_GET['t'])) {
@@ -769,6 +768,99 @@ class User extends _Model
             var_dump($values);
             echo "params:\n";
             var_dump($params);
+        }
+
+        $result = $this->fetch($following_query, $values);
+
+
+        if ($result === false) {
+             if(isset($_GET['t'])) echo "\nERROR: {$this->error}" ;
+             return array('error' => 'Could not get top following.');
+        }
+
+
+        return $result;
+
+    }
+
+
+
+
+    public function getTopFollowingByUser( $params = array() )
+    {
+        $error = NULL;
+
+        $select_str = '';
+        $join_str = '';
+        $where_str = '';
+
+        $values[':viewer_user_id'] = $params['viewer_user_id'];
+
+        $offset_string = $this->generate_limit_offset_str($params);
+
+        $following_query = "
+        SELECT distinct
+            user_username.user_username_id,
+            user_username.user_id,
+            user_username.username,
+            user_username.points,
+            user_username.location,
+            user_username.fb_uid,
+            user_username.avatar,
+
+            rank.rank,
+
+            IF(follow.user_id IS NULL, 0, 1) AS is_followed
+
+            {$select_str}
+
+            ,(
+                SELECT
+                ml.name
+                FROM membership_level ml, user_username user
+                WHERE user.user_id = user_username.user_id
+                    AND CAST(user.points AS SIGNED)  / ml.points > 1
+                order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
+                LIMIT 1
+            ) AS membership_level
+
+
+            FROM user_username
+                INNER JOIN ( select *
+                                FROM follow as following
+                                WHERE
+                                following.follower_user_id = :viewer_user_id )
+
+                AS follow ON follow.user_id = user_username.user_id
+
+                INNER JOIN
+                        ( SELECT
+                            u.user_id,
+                            @row:=@row+1 as rank
+                            FROM user_username AS u
+                            join (SELECT @row:=0) pos
+                            ORDER BY u.points DESC
+                        limit 999999999999999  )
+                AS rank ON rank.user_id = follow.user_id
+
+                {$join_str}
+
+            WHERE 1
+              {$where_str}
+
+            ORDER BY rank.rank ASC
+            {$offset_string};
+            ";
+
+
+        if(isset($_GET['t'])) {
+            echo "query:\n";
+            var_dump($following_query);
+            echo "values:\n";
+            var_dump($values);
+            echo "params:\n";
+            var_dump($params);
+            echo "here here!!";
 
         }
 
@@ -784,6 +876,101 @@ class User extends _Model
         return $result;
 
     }
+
+
+
+    public function getTopFollowersByUser( $params = array() )
+    {
+        $error = NULL;
+
+        $select_str = '';
+        $join_str = '';
+        $where_str = '';
+
+        $values[':viewer_user_id'] = $params['viewer_user_id'];
+
+        $offset_string = $this->generate_limit_offset_str($params);
+
+        $following_query = "
+        SELECT distinct
+            user_username.user_username_id,
+            user_username.user_id,
+            user_username.username,
+            user_username.points,
+            user_username.location,
+            user_username.fb_uid,
+            user_username.avatar,
+
+            rank.rank,
+
+            IF(follow.user_id IS NULL, 0, 1) AS is_followed
+
+            {$select_str}
+
+            ,(
+                SELECT
+                ml.name
+                FROM membership_level ml, user_username user
+                WHERE user.user_id = user_username.user_id
+                    AND CAST(user.points AS SIGNED)  / ml.points > 1
+                order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
+                LIMIT 1
+            ) AS membership_level
+
+
+            FROM user_username
+                INNER JOIN ( select *
+                                FROM follow as following
+                                WHERE
+                                following.user_id = :viewer_user_id )
+
+                AS follow ON follow.follower_user_id = user_username.user_id
+
+
+                INNER JOIN
+                        ( SELECT
+                            u.user_id,
+                            @row:=@row+1 as rank
+                            FROM user_username AS u
+                            join (SELECT @row:=0) pos
+                            ORDER BY u.points DESC
+                        limit 999999999999999  )
+                AS rank ON rank.user_id = follow.user_id
+
+                {$join_str}
+
+            WHERE 1
+              {$where_str}
+
+            ORDER BY rank.rank ASC
+            {$offset_string};
+            ";
+
+
+        if(isset($_GET['t'])) {
+            echo "query:\n";
+            var_dump($following_query);
+            echo "values:\n";
+            var_dump($values);
+            echo "params:\n";
+            var_dump($params);
+            echo "here here!!";
+
+        }
+
+        $result = $this->fetch($following_query, $values);
+
+
+        if ($result === false) {
+             if(isset($_GET['t'])) echo $this->error;
+             return array('error' => 'Could not get top following.');
+        }
+
+
+        return $result;
+
+    }
+
 
 
     protected function generate_limit_offset_str($params, $offset=true) {
