@@ -344,13 +344,12 @@ class Posting extends _Model
 
         if (isset($_GET['t'])) { echo sprintf("result count %s\n\n", count($posts)); }
 
-        if (empty($result)) {
-            return array(
-                        'posts' => $posts
-            );
-
+        if($posts)
+        {
+            return $posts;
         }
 
+        return null;
     }
 
 
@@ -424,6 +423,8 @@ class Posting extends _Model
         $posts = $this->fetch($query, $values);
 
         if ($posts) {
+            return $posts;
+
             return array(
                         'posts' => $posts
             );
@@ -577,13 +578,10 @@ class Posting extends _Model
 
         if (isset($_GET['t'])) { echo sprintf("result count %s\n\n", count($posts)); }
 
-
-
         if (empty($result)) {
             return array(
                         'posts' => $posts
             );
-
         }
 
     }

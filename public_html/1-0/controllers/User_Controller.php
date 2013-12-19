@@ -997,11 +997,10 @@ class User_Controller extends _Controller {
     {
         $cache_key_params = self::getCacheParams($params, __FUNCTION__);
 
-        if($cached_content = self::getCachedContent($cache_key_params) )
+        if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
         {
             return json_decode($cached_content);
         }
-
 
         /** @var User $dw_user */
         $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
@@ -1029,8 +1028,6 @@ class User_Controller extends _Controller {
                 if (!empty($params['posts_limit']))  $posting_params['limit'] = $params['posts_limit'];
                 else $posting_params['limit'] = 5;
 
-                //$logger = new Jk_Logger( APP_PATH . 'logs/posting.log');
-                //echo ( sprintf("get posts with data %s", var_export($posts_params,true) ));
 
                 $posting  = new Posting();
                 $user_posts =  $posting->getByUser($posting_params);

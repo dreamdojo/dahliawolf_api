@@ -682,18 +682,6 @@ class User extends _Model
     public function getTopFollowing( $params = array() )
     {
         $error = NULL;
-        /*
-        if (empty($params['where'])) {
-            $error = 'Where conditions are required.';
-        }
-        else if (!is_array($params['where'])) {
-            $error = 'Invalid where conditions.';
-        }
-
-        if (!empty($error)) {
-            return resultArray(false, NULL, $error);
-        }
-        */
 
         $select_str = '';
         $join_str = '';
@@ -722,9 +710,7 @@ class User extends _Model
             $is_followed =", IF(f.user_id IS NULL, 0, 1) AS is_followed";
         }
 
-
         $offset_string = $this->generate_limit_offset_str($params);
-
 
         $following_query = "SELECT distinct
         	user_username.user_username_id,
@@ -767,7 +753,8 @@ class User extends _Model
 
             WHERE {$where_str}
             ORDER BY rank.rank ASC
-            {$offset_string};";
+            {$offset_string};
+        ";
 
 
         if(isset($_GET['t'])) {
@@ -775,19 +762,24 @@ class User extends _Model
             return null;
         }
 
+        if(isset($_GET['t'])) {
+            echo "query:\n";
+            var_dump($following_query);
+            echo "values:\n";
+            var_dump($values);
+            echo "params:\n";
+            var_dump($params);
 
-        $result = self::$dbs[$this->db_host][$this->db_name]->exec($following_query, $values);
+        }
 
-        //$result = $this->run($following_query, $values);
+        $result = $this->fetch($following_query, $values);
+
 
         if ($result === false) {
              if(isset($_GET['t'])) echo $this->error;
-             return resultArray(false, NULL, 'Could not get top following.');
+             return array('error' => 'Could not get top following.');
         }
 
-        //$rows = $result->fetchAll();
-
-        //if(isset($_GET['t'])) var_dump($rows);
 
         return $result;
 

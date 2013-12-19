@@ -86,7 +86,9 @@ class Tests_Controller extends _Controller
 
         $i = 0;
 
-        $to_save_sinlen_key_val = self::getRandomString( 32 );
+        $string_util = new StringUtils();
+
+        $to_save_sinlen_key_val = $string_util::getRandomString( 32 );
 
 
         while( $i < $test_samples )
@@ -98,7 +100,7 @@ class Tests_Controller extends _Controller
 
             //$return[] = "saving random key value... ";
             //$to_save_random_key_val = md5(rand(0, 999999));
-            $to_save_random_key_val = self::getRandomString( rand(16392, 32784));
+            $to_save_random_key_val = $string_util::getRandomString( rand(16392, 32784));
             $redis::save($rand_key, $to_save_sinlen_key_val);
 
 
@@ -117,22 +119,7 @@ class Tests_Controller extends _Controller
 
     }
 
-    protected function getRandomString($len=10)
-    {
-        $seeds = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $i=0;
-        $rand = "";
-        while($len > $i)
-        {
-            $seed_i = rand(0, strlen($seeds));
-            $rand .= $seeds{$seed_i};
 
-            //
-            $i++;
-        }
-
-        return $rand;
-    }
 
 
 }
