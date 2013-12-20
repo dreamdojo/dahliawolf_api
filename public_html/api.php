@@ -5,6 +5,8 @@ error_reporting(E_ERROR| E_WARNING | E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PAR
 ini_set('display_errors', '1');
 session_start();
 
+date_default_timezone_set('America/Los_Angeles');
+
 
 require_once 'includes/config.php';
 //require_once 'models/users.php';

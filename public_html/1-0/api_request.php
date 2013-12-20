@@ -5,6 +5,7 @@ error_reporting(E_ERROR|E_WARNING|E_DEPRECATED|E_COMPILE_ERROR|E_STRICT|E_PARSE)
 ini_set('display_errors', '0');
 ini_set('memory_limit', '1024M');
 session_start();
+date_default_timezone_set('America/Los_Angeles');
 
 
 require_once 'config/config.php';

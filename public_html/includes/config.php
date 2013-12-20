@@ -101,12 +101,16 @@ spl_autoload_register(function($class_name)
 
 
      try{
-        foreach ($class_dirs as $class_dir) {
+        foreach ($class_dirs as $class_dir)
+        {
             // Search through directories recursively
             $Directory = new RecursiveDirectoryIterator($class_dir, RecursiveDirectoryIterator::SKIP_DOTS);
             $Iterator = new RecursiveIteratorIterator($Directory, RecursiveIteratorIterator::SELF_FIRST);
-            $Regex = new RegexIterator($Iterator, '/' . preg_quote('\\' . $class_name) . '\.php/i');
+            $pattern = '/\/' . preg_quote($class_name) . '\.php/i';
+            $Regex = new RegexIterator($Iterator, $pattern);
             $matches = iterator_to_array($Regex, false);
+            $Iterator = iterator_to_array($Iterator, false);
+
             if (!empty($matches)) {
                 $file = $matches[0]->getPathname();
                 require $file;
@@ -114,7 +118,6 @@ spl_autoload_register(function($class_name)
             }else
             {
                 error_log("trying to load class file: no matches found, $class_name file doesnt exist");
-
             }
 
             $file = $class_dir . '/' . $class_name . '.php';
@@ -123,7 +126,9 @@ spl_autoload_register(function($class_name)
                 require $file;
                 return true;
             }else
-            error_log("OLD Fke API.php - spl_autoload_register warning: failed to load file: $file, file doesnt exist");
+            {
+                error_log("OLD Fke API.php - spl_autoload_register warning: failed to load file: $file, file doesnt exist");
+            }
 
         }
     }catch(ErrorException $e)

@@ -97,6 +97,7 @@ spl_autoload_register(function($class_name) {
 
     //error_log("1-0 API - spl_autoload_register info: trying to load file: $class_name" );
 
+
     try{
         foreach ($class_dirs as $class_dir) {
             // Search through directories recursively
@@ -111,8 +112,6 @@ spl_autoload_register(function($class_name) {
                 require $file;
                 return true;
             }
-
-
 
             // fallback
             $file = $class_dir . '/' . $class_name . '.php';
