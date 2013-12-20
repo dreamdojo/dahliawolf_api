@@ -121,6 +121,15 @@ class _Controller {
             unset($params['invalidate_cache']);
         }
 
+        if( isset( $params['invalidate_cache_object_id']) )
+        {
+            $invalidate_cache =  base64_decode($params['invalidate_cache_object_id']);
+            if($invalidate_cache) {
+                self::flushCacheObject($invalidate_cache);
+            }
+            unset($params['invalidate_cache_object_id']);
+        }
+
         self::trace(__FUNCTION__ . " cache params: ". var_export($params, true) );
 
         $cache_key_params['object'] = strtolower(str_ireplace('_controller', '', get_class($this)));

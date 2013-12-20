@@ -5,7 +5,6 @@ class User extends _Model
     const PRIMARY_KEY_FIELD = 'user_username_id';
 
     /*
-
        `user_username_id,
        `user_id,
        `username,
@@ -848,7 +847,7 @@ class User extends _Model
                         	FROM user_username AS u
                         	join (SELECT @row:=0) pos
                         	ORDER BY u.points DESC
-                        limit 999999999999999  )
+                        )
                 AS rank ON rank.user_id = follow.user_id
 
                 {$join_str}
@@ -946,15 +945,15 @@ class User extends _Model
                 AS follow ON follow.follower_user_id = user_username.user_id
 
 
-            INNER JOIN
-                    ( SELECT
-                          u.user_id, u.points as rank_points,
-                          @row:=@row+1 as rank
-                        FROM user_username AS u
-                        join (SELECT @row:=0) pos
-                        ORDER BY u.points DESC
-                    limit 999999999999999   )
-            AS rank ON rank.user_id = follow.follower_user_id
+                INNER JOIN
+                        ( SELECT
+                              u.user_id, u.points as rank_points,
+                              @row:=@row+1 as rank
+                            FROM user_username AS u
+                            join (SELECT @row:=0) pos
+                            ORDER BY u.points DESC
+                        )
+                AS rank ON rank.user_id = follow.follower_user_id
 
                 {$join_str}
 
