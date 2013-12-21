@@ -186,7 +186,7 @@ class Image_Bank extends _Model
                     IF(bigImageURL = '', NULL, CONCAT('upload/', bigImageURL)) AS big_src,
                     imagename AS alt,
                     imageInfo.keyword AS keywords,
-                    #site.domain,
+                    site.domain,
                     site.domain_keyword
             FROM
                 imageInfo
