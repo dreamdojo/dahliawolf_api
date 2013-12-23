@@ -30,6 +30,7 @@ require_once 'includes/php/json_functions.php';
 
 define('APP_PATH', sprintf("%s/", realpath('./') ));
 $include_paths = explode(":", get_include_path());
+$include_paths[] = sprintf("%s/", realpath('./lib/1-0/models'));
 $include_paths[] = sprintf("%s/", realpath('./lib/jk07'));
 $include_paths[] = sprintf("%s/", realpath('./lib/mandrill'));
 $include_paths[] = sprintf("%s/", realpath('./lib/mailchimp'));

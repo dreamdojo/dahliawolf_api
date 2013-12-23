@@ -91,7 +91,7 @@ class Posting_Fave extends _Model
 
         $user_faves = $this->fetch($query, $values);
 
-        $this->load('Posting');
+        //$this->load('Posting');
 
         $posting_ids= array();
         if($user_faves && $with_details)foreach($user_faves as &$fave_data)
