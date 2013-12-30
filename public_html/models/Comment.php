@@ -44,10 +44,14 @@ class Comment extends db {
 		//$rows = $this->get_all($this->table);
 		$result = $this->run($query, $values);
 		
-		if (empty($result)) {
+		if ( empty($result) && count($result) == 0) {
 			 return resultArray(false, NULL, 'Could not get post comments.');
 		}
 		$rows = $result->fetchAll();
+
+        if (  count($rows) == 0) {
+             return resultArray(false, NULL, 'Could not get post comments.');
+        }
 		
 		return resultArray(true, $rows);
 	}
