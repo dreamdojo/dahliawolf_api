@@ -1894,6 +1894,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting_vote') {
 		}
 	}
 }
+
 else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'comment') {
 	if (isset($_REQUEST['function'])) {
 		$Comment = new Comment();
