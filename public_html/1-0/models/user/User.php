@@ -298,7 +298,6 @@ class User extends _Model
 
     }
 
-
     public function get_regexp_username($username)
     {
         $query = '
