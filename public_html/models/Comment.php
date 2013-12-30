@@ -8,7 +8,8 @@ class Comment extends db {
 		parent::__construct();
 	}
 
-	public function get_post_comments($params = array()) {
+	public function get_post_comments($params = array())
+    {
 		$error = NULL;
 		
 		if (empty($params['where'])) {
@@ -27,12 +28,18 @@ class Comment extends db {
 			FROM comment
 				INNER JOIN user_username ON comment.user_id = user_username.user_id
 			WHERE posting_id = :posting_id
-			ORDER BY comment.created DESC
+			ORDER BY comment.created_at DESC
 			' . $this->generate_limit_offset_str($params) . '
 		';
 		$values = array(
 			':posting_id' => $params['where']['posting_id']
 		);
+
+
+        if(isset($_GET['t']))
+        {
+            echo "query: {$query}";
+        }
 		
 		//$rows = $this->get_all($this->table);
 		$result = $this->run($query, $values);
