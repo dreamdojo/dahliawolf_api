@@ -282,7 +282,7 @@ class User extends _Model
     public function follow($data = array())
     {
         $error = NULL;
-        $this->load('Follow');
+        //$this->load('Follow');
         $follow = new Follow();
 
         try {
