@@ -1,0 +1,72 @@
+	location / {
+		index           index.php index.html index.htm;
+		rewrite /js/minify.js$ /js/minify.php last;
+                if ($uri !~ "external") {
+                        set $rule_2 1$rule_2;
+                }
+                if ($rule_2 = "1") {
+                        rewrite /css/minify.css$ /css/minify.php last;
+                }
+                rewrite /css/(.+).css$ /css/$1.css.php last;
+                rewrite /(action)/[a-z0-9-/]+/(send-emails)/(send)/?$ /index.php?p=$2/$3.php&index=action last;
+                rewrite /(action|)/[a-z0-9-/]+/(import-csv)/(upload|status|work)/?$ /index.php?p=$2/$3.php&index=$1 last;
+                rewrite /[a-z0-9-/]+/(import-csv)/(upload|status|work)/?$ /index.php?p=$1/$2.php last;
+                rewrite /(action)/(.*)$ /$2?index=$1;
+
+                if ($uri ~ "ajax/") {
+			rewrite /ajax/configs/update?$ /index.php?p=configs/update.php&index=ajax last;
+                	rewrite /ajax/calendar?$ /index.php?p=calendar.php&index=ajax last;
+			rewrite /ajax/[a-z0-9-/]+/(add|edit|delete|main|edit-checked|edit-checked-choose|list|variables)/?$ /index.php?p=$1.php&index=ajax last;
+			rewrite /ajax/ecom/orders/([a-z0-9-]+)/?$ /index.php?p=ecom/orders/$1.php&index=ajax last;                
+			rewrite /ajax/dashboard/([a-z0-9-]+)/?$ /index.php?p=dashboard/$1.php&index=ajax last;
+	
+			rewrite /[a-z0-9-/]+/(print-summary|export-csv)/?$ /index.php?p=$1.php&index=ajax last;
+			rewrite /[a-z0-9-/]+/[a-z0-9-/]+/(print-summary|export-csv)/?$ /index.php?p=$1.php&index=ajax last;
+
+			rewrite /[a-z0-9-/]+/(export-csv)/(choose-fields|download)/?$ /index.php?p=$1/$2.php&index=ajax last;
+                        rewrite /[a-z0-9-/]+/[a-z0-9-/]+/(export-csv)/(choose-fields|download)/?$ /index.php?p=$1/$2.php&index=ajax last;
+		}
+
+                rewrite /[a-z0-9-/]+/(files)/(download|view-image)/?$ /index.php?p=$1/$2.php last;
+                rewrite /[a-z0-9-/]+/(send-emails)/(email-form)/?$ /index.php?p=$1/$2.php last;
+                rewrite /[a-z0-9-/]+/(add-to-white-label)/?$ /index.php?p=$1.php last;
+                rewrite /[a-z0-9-/]+/(files|notes|reminders|emails|tags)/([a-z0-9-]+)/?$ /index.php?p=$2.php last;
+                rewrite /[a-z0-9-/]+/(add|edit|delete|main|edit-checked|edit-checked-choose|list|variables)/?$ /index.php?p=$1.php last;
+                rewrite /[a-z0-9-/]+/(summary)/?$ /index.php?p=summary.php last;
+
+                if ($uri !~ "(alone|crons|css|flv|fonts|js|images|library|swf|testing|tinymce|uploads|videos|xml)/"){
+                        set $rule_17 1$rule_17;
+                }
+
+                if ($uri !~ "^(development)"){
+                        set $rule_17 2$rule_17;
+                }
+
+                if ($uri !~ "favicon.ico"){
+                        set $rule_17 3$rule_17;
+                }
+
+                if ($uri !~ "sitemap.xml"){
+                        set $rule_17 4$rule_17;
+                }
+ 
+		if ($uri !~ "robots.txt"){
+                        set $rule_17 5$rule_17;
+                }
+
+                if ($uri !~ "index.php"){
+                        set $rule_17 6$rule_17;
+                }
+
+                if ($uri !~ "(.*)/$"){
+                        set $rule_17 7$rule_17;
+                }
+
+                if ($rule_17 = "7654321") {
+                        #rewrite ^/([a-z0-9]+)$ /index.php?p=$1.php last;
+                        rewrite /(.*)$ /index.php?p=$1.php last;
+                }
+		
+                #rewrite ^(.*)/(.*)$ /index.php?p=$1/$2.php last;
+                rewrite /(.*)/$ /index.php?p=$1.php last;
+	}
