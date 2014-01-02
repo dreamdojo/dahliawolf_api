@@ -293,7 +293,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			// Log activity
 			//log_activity($api_user['user_id'], 1, 'Logged in', 'user_username', $api_user['user_id']);
 
-
+            /*
 			// Scrape social usernames
 			unset($User_Point);
 			$Search = new Search();
@@ -306,6 +306,13 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				}
 			}
 			unset($Search);
+            */
+
+
+            foreach($api_user as $k => $v)
+            {
+                if($v==null) $api_user[$k] = "";
+            }
 
 			echo json_pretty(json_encode((resultArray(true, array('user' => $api_user, 'token' => $token, 'points_earned' => $points_earned), NULL))));
 			die();
