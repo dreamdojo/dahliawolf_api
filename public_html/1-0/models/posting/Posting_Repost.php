@@ -27,10 +27,14 @@ class Posting_Repost extends _Model
             "$link_parent_field",
             'posting_id',
             'repost_user_id',
+            'repost_interval',
             'created_at',
         );
 
         $data['created_at'] = date('Y-m-d h:i:s');
+        $repost_interval = 15;//allow every 15 days for same user, same post only
+        $dotm = intval(date('d')) > 30? 30 : intval(date('d'));
+        $data['repost_interval'] = date('Y-m') ."-".  str_pad($repost_interval*floor($dotm/$repost_interval), 2, '0', STR_PAD_LEFT);
 
         foreach ($fields as $field) {
             if (array_key_exists($field, $data)) {
@@ -46,7 +50,8 @@ class Posting_Repost extends _Model
                     );
 
         } catch(Exception $e) {
-            self::$Exception_Helper->server_error_exception("Unable to save posting repost.". $e->getMessage());
+            $error = stripos($e->getMessage(), 'duplicate') > -1? "You are only allowed to repost same post every {$repost_interval} days." : "Unable to save posting repost.";
+            self::$Exception_Helper->server_error_exception( $error);
         }
     }
 
