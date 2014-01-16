@@ -24,10 +24,9 @@ class Posting_Controller  extends  _Controller
 
     public function get_all($params = array())
     {
-
         $loc_use_cache = false;
         $cache_key_params = self::getCacheParams($params, __FUNCTION__);
-        if (!empty($params['like_day_threshold']) && (int) $params['like_day_threshold'] > 15)
+        if (!empty($params['like_day_threshold']) && (int) $params['like_day_threshold'] > 4)
         {
             $loc_use_cache = true;
             if($cached_content = self::getCachedContent($cache_key_params) )
@@ -272,6 +271,21 @@ class Posting_Controller  extends  _Controller
         return static::wrap_result(($posting->hasError()? false:true), $data, 200, $posting->getErrors() );
     }
 
+
+    public function repost($params = array() )
+    {
+        $posting_model = new Posting();
+        $posting_entity=  $posting_model->getPostingEntity($params);
+
+        if($posting_entity)
+        {
+            $repost = new Posting_Repost();
+            $repost_id = $repost->addRepost($params);
+            return $repost_id;
+        }
+
+        return array('error' => "failed to load posting with posting_id: {$params['posting_id']}");
+    }
 
 
     public function post_image( $params = array() )
