@@ -296,6 +296,7 @@ class Posting extends _Model
                             , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
                             , (SELECT COUNT(*) FROM posting_tag   WHERE posting_tag.posting_id = posting.posting_id) AS `total_tags`
                             , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
+                            , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
                             , 0 as 'is_repost'
                             {$select_str}
                             {$hot_select_str}
@@ -309,8 +310,8 @@ class Posting extends _Model
                             AND posting.deleted IS NULL
                             {$sub_where_str}
                         {$group_by_str}
-                    )
-                    UNION ALL
+                    )/*
+                    UNION
                     (
                         SELECT posting.posting_id, posting.created, posting.user_id, posting.image_id, posting.description, posting.deleted
                             , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
@@ -321,7 +322,8 @@ class Posting extends _Model
                             , FROM_UNIXTIME(UNIX_TIMESTAMP(repost.created_at)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
                             , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
                             , (SELECT COUNT(*) FROM posting_tag   WHERE posting_tag.posting_id = posting.posting_id) AS `total_tags`
-                            , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
+                            , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS `total_shares`
+                            , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
                             , 1 as 'is_repost'
                             {$select_str}
                             {$hot_select_str}
@@ -338,6 +340,7 @@ class Posting extends _Model
                             {$sub_where_str}
                         {$group_by_str}
                     )
+                    */
 
                     ORDER BY {$order_by_str}
                     {$inner_offset_limit}
@@ -835,6 +838,8 @@ class Posting extends _Model
         $inner_offset_limit = $this->generateLimitOffset($params, true);
 
 
+        $sub_where_repsot_str = str_replace('AND posting.user_id', 'AND repost.repost_user_id',  $sub_where_str ) ;
+
         //// limit the restult set to failsafe
         if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 999';
 
@@ -843,7 +848,6 @@ class Posting extends _Model
             $order_by_columns = array(
                 'created',
                 'total_likes',
-                'total_votes',
                 'total_shares',
                 'total_views',
             );
@@ -855,7 +859,9 @@ class Posting extends _Model
                                         (SELECT * FROM posting_view WHERE posting_view.user_id = :user_id) AS posting_view_tmp
                                 WHERE posting_view_tmp.posting_id = posting.posting_id) AS `total_views`
                            , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
-                           , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`";
+                           , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`
+                           , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
+                           ";
             $slow_sorts = array(
                 'total_likes',
                 'total_shares',
@@ -884,28 +890,60 @@ class Posting extends _Model
                     , imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
                     {$fast_count_select}
                     {$outer_select_str}
-                FROM (
-                        SELECT posting.posting_id, posting.created, posting.user_id, posting.image_id, posting.description, posting.deleted
-                            , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
-                            , user_username.username, user_username.location, user_username.avatar
-                            , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
-                            , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
-                            , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
-                            , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
-                            {$slow_count_select}
-                            {$select_str}
-                        FROM posting
-                        INNER JOIN image ON posting.image_id = image.id
-                        INNER JOIN user_username ON posting.user_id = user_username.user_id
-                        LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
+                FROM
+                (
+                      (
+                            SELECT posting.posting_id, posting.created, posting.user_id, posting.image_id, posting.description, posting.deleted
+                                , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
+                                , user_username.username, user_username.location, user_username.avatar
+                                , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
+                                , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
+                                , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
+                                , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
+                                , 0 as 'is_repost'
+                                {$slow_count_select}
+                                {$select_str}
+                            FROM posting
+                            INNER JOIN image ON posting.image_id = image.id
+                            INNER JOIN user_username ON posting.user_id = user_username.user_id
+                            LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
 
-                            {$sub_join_str}
-                        WHERE image.imagename IS NOT NULL
-                            AND posting.deleted IS NULL
-                            {$sub_where_str}
-                        {$group_by_str}
-                        ORDER BY {$order_by_str}
-                        {$inner_offset_limit}
+                                {$sub_join_str}
+                            WHERE image.imagename IS NOT NULL
+                                AND posting.deleted IS NULL
+                                {$sub_where_str}
+                            {$group_by_str}
+                      )
+                      UNION ALL
+                      (
+                            SELECT posting.posting_id, posting.created,
+                            		repost.repost_user_id as 'user_id',
+                            	posting.image_id, posting.description, posting.deleted
+                            	, image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
+                                , user_username.username, user_username.location, user_username.avatar
+                                , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
+                                , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
+                                , IF(UNIX_TIMESTAMP(repost.created_at)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
+                                , FROM_UNIXTIME(UNIX_TIMESTAMP(repost.created_at)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
+                                {$slow_count_select}
+                                , 1 as 'is_repost'
+                                {$select_str}
+                            FROM posting_repost repost
+                                INNER JOIN posting ON posting.posting_id = repost.posting_id
+                                INNER JOIN image ON posting.image_id = image.id
+                                INNER JOIN user_username ON posting.user_id = user_username.user_id
+                                LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
+
+                                {$sub_join_str}
+                            WHERE repost.posting_repost_id IS NOT NULL
+                                AND image.imagename IS NOT NULL
+                                AND posting.deleted IS NULL
+                                {$sub_where_repsot_str}
+                            {$group_by_str}
+                      )
+
+                    ORDER BY {$order_by_str}
+                    {$inner_offset_limit}
                 ) AS posting
 
                 LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
