@@ -56,10 +56,10 @@ class Activity_Log_Controller extends _Controller {
 		// Validations
 		$input_validations = array(
 			'user_id' => array(
-				'label' => 'User ID'
-				, 'rules' => array(
-					'is_set' => NULL
-					, 'is_int' => NULL
+				'label' => 'User ID',
+				'rules' => array(
+                    'is_set' => NULL,
+					'is_int' => NULL
 				)
 			)
 		);

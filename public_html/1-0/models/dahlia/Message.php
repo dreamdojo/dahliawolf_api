@@ -66,17 +66,17 @@ class Message extends _Model{
             if(is_array($users) && count($users) > 0) foreach($users as $user_name)
             {
                 $user_data = $user_model->getUserByUsername(trim($user_name, '@'));
-                $user_id = $user_data['user_id'];
+                $to_user_id = $user_data['user_id'];
                 /// replace with current user id
-                $values['to_user_id'] = $user_id;
-                if(!$user_id || $user_id=='') continue;
+                $values['to_user_id'] = $to_user_id;
+                if(!$to_user_id || $to_user_id=='') continue;
 
-                $logger->LogInfo("SENDING MESSAGE TO USERNAME: $user_name USER ID: $user_id");
+                $logger->LogInfo("SENDING MESSAGE TO USERNAME: $user_name USER ID: $to_user_id");
 
                 try {
                     $message_id =  $this->do_db_save($values, $data);
-                    $messages_sent[$user_id] = $message_id;
-                    if( intval($message_id ) > 0 ) self::logActivity($user_id, "{$sending_user_username} sent you a message",  $message_id, 'message', self::ACTIVITY_ID_RECEIVED_MESSAGE);
+                    $messages_sent[$to_user_id] = $message_id;
+                    if( intval($message_id ) > 0 ) self::logActivity($values['to_user_id'], "{$sending_user_username} sent you a message",  $message_id, 'message', self::ACTIVITY_ID_RECEIVED_MESSAGE);
 
 
                 } catch(Exception $e) {

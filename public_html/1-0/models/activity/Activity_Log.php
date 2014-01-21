@@ -428,9 +428,9 @@ class Activity_Log extends _Model {
 			SELECT {$select_str}
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
-                INNER JOIN dahliawolf_v1_2013.user_username ON activity_log.user_id = user_username.user_id
                 INNER JOIN dahliawolf_v1_2013.message AS message ON message.to_user_id = activity_log.user_id
                                                                  AND message.message_id = activity_log.entity_id
+                INNER JOIN dahliawolf_v1_2013.user_username ON message.from_user_id = user_username.user_id
                 {$join_str}
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
