@@ -45,6 +45,8 @@ class User_Controller extends _Controller {
 		$this->load('User');
 		$user = $this->User->get_user_by_token($params['user_id'], $params['token']);
 
+        self::trace("FETCHED USER:" . var_export($user, true));
+
 		return static::wrap_result(true, $user);
 	}
 
