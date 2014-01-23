@@ -213,15 +213,17 @@ class User extends _Model
         }
     }
 
-    public function filter_columns($user)
+    public function filter_columns(&$user)
     {
-        return array(
-            'user_id' => $user['user_id'],
-            'first_name' => $user['first_name'],
-            'last_name' => $user['last_name'],
-            'username' => $user['username'],
-            'email' => $user['email'],
-        );
+        unset($user['hash']);
+        unset($user['counter']);
+        unset($user['user_group_id']);
+        unset($user['user_group_portal_id']);
+        unset($user['failed_login_count']);
+
+        return $user;
+
+
     }
 
     public function check_social_network_email_exists($email, $social_network_id)
