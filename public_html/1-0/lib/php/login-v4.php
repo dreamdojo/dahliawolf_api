@@ -370,9 +370,12 @@ class login {
 		}
 		
 		$query = '
-			SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id 
+			SELECT
+			    user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id
+			    ,dahliauser.avatar
 			FROM user 
-			INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id
+			    INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id
+			    JOIN  dahliawolf_v1_2013.user_username AS dahliauser ON dahliauser.user_id = user.user_id
 			WHERE ' . $where_str . '
 		';
 		

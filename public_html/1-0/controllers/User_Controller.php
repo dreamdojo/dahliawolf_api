@@ -174,6 +174,8 @@ class User_Controller extends _Controller {
 		else {
 			$data['user'] = $this->User->filter_columns($login->user);
 			$data['token'] = $authen;
+
+            self::trace("FETCHED USER:" . var_export($data, true));
 		}
 
 		if (!empty($error)) {
