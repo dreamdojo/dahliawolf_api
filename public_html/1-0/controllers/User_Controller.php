@@ -172,7 +172,7 @@ class User_Controller extends _Controller {
 		}
 		// Success: return user info and token
 		else {
-			$data['user'] = $this->User->filter_columns($login->user);
+			$data['user'] = $login->user;
 			$data['token'] = $authen;
 
             self::trace("FETCHED USER:" . var_export($data, true));

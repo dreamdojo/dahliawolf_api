@@ -216,11 +216,11 @@ class User extends _Model
     public function filter_columns($user)
     {
         return array(
-            'user_id' => $user['user_id']
-        , 'first_name' => $user['first_name']
-        , 'last_name' => $user['last_name']
-        , 'username' => $user['username']
-        , 'email' => $user['email']
+            'user_id' => $user['user_id'],
+            'first_name' => $user['first_name'],
+            'last_name' => $user['last_name'],
+            'username' => $user['username'],
+            'email' => $user['email'],
         );
     }
 
