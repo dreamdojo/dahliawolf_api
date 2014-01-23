@@ -205,6 +205,8 @@ class User extends _Model
         try {
             $user = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $values);
 
+            $logger->LogInfo("FETCHED USER:" . var_export($user, true));
+
             return $user;
         } catch (Exception $e) {
             self::$Exception_Helper->server_error_exception('Unable to get user by token.');
