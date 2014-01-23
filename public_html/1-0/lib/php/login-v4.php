@@ -378,6 +378,7 @@ class login {
 			    JOIN  dahliawolf_v1_2013.user_username AS dahliauser ON dahliauser.user_id = user.user_id
 			WHERE ' . $where_str . '
 		';
+
 		
 		
 		if (!empty($this->validGroupIds)) {
