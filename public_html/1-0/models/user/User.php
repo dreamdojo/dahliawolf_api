@@ -178,10 +178,13 @@ class User extends _Model
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
 
         $query = "
-			SELECT user.user_id, user.first_name, user.last_name, user.username, user.email
+			SELECT
+                user.user_id, user.first_name, user.last_name, user.username, user.email
+                ,dahliauser.avatar
 			FROM login_instance
 				/*INNER JOIN login_instance ON user.user_id = login_instance.user_id*/
 				INNER JOIN user ON user.user_id = login_instance.user_id
+				JOIN  dahliawolf_v1_2013.user_username AS dahliauser ON dahliauser.user_id = user.user_id
 			WHERE login_instance.token = :token
 				AND login_instance.logout IS NULL
 		";

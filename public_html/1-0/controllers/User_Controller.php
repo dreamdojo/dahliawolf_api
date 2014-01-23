@@ -10,7 +10,8 @@ class User_Controller extends _Controller {
 
     /** @var  $User User*/
 
-	private $PasswordHash;
+
+    private $PasswordHash;
 
 	public function __construct() {
 		parent::__construct();
@@ -18,7 +19,8 @@ class User_Controller extends _Controller {
 		$this->PasswordHash = new PasswordHash(8, FALSE);
 	}
 
-	public function token_login($params = array()) {
+
+    public function token_login($params = array()) {
 		// Validations
         /*
         'user_id' => array(
