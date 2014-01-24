@@ -223,7 +223,6 @@ class User extends _Model
 
         return $user;
 
-
     }
 
     public function check_social_network_email_exists($email, $social_network_id)

@@ -287,6 +287,19 @@ class Posting_Controller  extends  _Controller
         return array('error' => "failed to load posting with posting_id: {$params['posting_id']}");
     }
 
+    public function delete_repost($params = array() )
+    {
+        $posting_model = new Posting();
+
+
+        $repost = new Posting_Repost();
+        $repost_id = $repost->deleteRepost($params);
+        return $repost_id;
+
+
+        return array('error' => "failed to load posting with posting_id: {$params['posting_id']}");
+    }
+
 
     public function post_image( $params = array() )
     {
