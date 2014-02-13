@@ -91,7 +91,7 @@ class Activity_Log_Controller extends _Controller {
 
 		// Followers
 		$followers = $activity_log->get_followers_log($user_id, $api_website_id, false, false, $params);
-        $activity_log->markReadByType(array('activity_id' => Follow::ACTIVITY_ID_USER_FOLLOW, 'user_id' => $user_id));
+        $activity_log->markReadByType(array('activity_id' => Follow::ACTIVITY_ID_USER_FOLLOWING, 'user_id' => $user_id));
 
 
         // Messages

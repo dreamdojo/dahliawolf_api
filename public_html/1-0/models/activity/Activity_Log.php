@@ -357,6 +357,9 @@ class Activity_Log extends _Model {
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
 				{$join_str}
 				INNER JOIN dahliawolf_v1_2013.user_username ON follow.follower_user_id = user_username.user_id
+
+				INNER JOIN dahliawolf_v1_2013.user_username AS follower ON follower.user_id = follow.follower_user_id
+
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
 				AND activity_log.activity_id = :activity_id

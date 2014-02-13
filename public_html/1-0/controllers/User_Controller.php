@@ -876,15 +876,16 @@ class User_Controller extends _Controller {
         $follow = new Follow( DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
         $data  = $follow->followUser($request_data);
 
-        return static::wrap_result( ($this->Follow->hasError()? false:true), $data, 200, $this->Follow->getErrors() );
+        return static::wrap_result( ($follow->hasError()? false:true), $data, 200, $follow->getErrors() );
     }
 
     public function unfollow($request_data)
     {
-        $this->load('Follow', DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
-        $data  = $this->Follow->removeFollow($request_data);
+        //$this->load('Follow', DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
+        $follow = new Follow( DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
+        $data  = $follow->removeFollow($request_data);
 
-        return static::wrap_result( ($this->Follow->hasError()? false:true), $data, 200, $this->Follow->getErrors() );
+        return static::wrap_result( ($follow->hasError()? false:true), $data, 200, $follow->getErrors() );
     }
 
 
