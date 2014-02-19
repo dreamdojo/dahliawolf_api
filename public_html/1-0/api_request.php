@@ -82,13 +82,15 @@ try {
 
         header( sprintf("Content-Type: application/%s", $response_format));
 
-		// JSON
-		if ($response_format == 'json') {
-			echo json_pretty($result);
+        // JSONP
+		if ($response_format == 'jsonp') {
+            !empty($request['callback'] )? $callback = $request['callback'] : $callback = "?";
+			echo "$callback(" . json_encode($result) . ")";
 		}
-		// JSONP
-		else if ($response_format == 'jsonp') {
-			echo '?(' . json_encode($result) . ')';
+
+		// JSON
+		else if ($response_format == 'json') {
+			echo json_pretty($result);
 		}
 
 		die();

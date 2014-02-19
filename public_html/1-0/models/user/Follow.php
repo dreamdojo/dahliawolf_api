@@ -8,7 +8,8 @@ class Follow extends _Model {
 	const TABLE = 'follow';
 	const PRIMARY_KEY_FIELD = 'follow_id';
 
-    const ACTIVITY_ID_USER_FOLLOW = 34;
+    const ACTIVITY_ID_USER_FOLLOWING = 34;
+    const ACTIVITY_ID_USER_FOLLOWED = 37;
 
     protected $fields = array(
    		'created',
@@ -51,18 +52,31 @@ class Follow extends _Model {
 
         $logger = new Jk_Logger(APP_PATH.'logs/follow.log');
 
-        /*
+
         $logger->LogInfo(
                 sprintf("user follow init...\n params: %s\nbind values: %s \ndb settings %s ",
                 var_export($data, true),
                 var_export($values,true),
                 var_export(self::getDbCredentials(), true)
         ));
-        */
+
 
         try {
             $logger->LogInfo(sprintf("save user follow... \nfields: %s", json_pretty($values) ));
             $insert_id = $this->do_db_save($values, $data);
+
+            // Log activity
+            //log_activity($_REQUEST['user_id'], 34, 'Started Following you', 'follow', $user['data']);
+            //////logActivity($user_id,         $note="@user Started Following you", $follow_id, $entity = 'message', $activity_id=self::ACTIVITY_ID_USER_FOLLOWING )
+            self::logActivity($data['user_id'], $insert_id, $note='Started Following you', 'follow', $activity_id=self::ACTIVITY_ID_USER_FOLLOWING);
+
+            // Log activity
+            //log_activity($_REQUEST['follower_user_id'], 37, 'Followed another user', 'follow', $user['data']);
+            //////logActivity($user_id,                  $note="@user Started Following you", $follow_id, $entity = 'message', $activity_id=self::ACTIVITY_ID_USER_FOLLOWING )
+            self::logActivity($data['follower_user_id'], $insert_id, $note="Followed another user", 'follow', $activity_id=self::ACTIVITY_ID_USER_FOLLOWED);
+
+
+            $logger->LogInfo("follow entity_id: $insert_id");
             return array(
                 strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
                 //'model_data' => $data
@@ -118,6 +132,31 @@ class Follow extends _Model {
         }
 
     }
+
+
+    private function logActivity($user_id, $follow_id, $note="@user Started Following you", $entity = 'follow', $activity_id=self::ACTIVITY_ID_USER_FOLLOWING )
+    {
+
+    	$activity = array(
+            'user_id' => $user_id,
+            'activity_id' => $activity_id,
+            'note' => $note,
+            'api_website_id' => 2,
+            'entity' => $entity,
+            'entity_id' => $follow_id
+
+    	);
+
+        $activity_log = new Activity_Log();
+    	$data = $activity_log::saveActivity( $activity );
+
+    	return $data;
+    }
+
+
+
+
+
 
 }
 ?>

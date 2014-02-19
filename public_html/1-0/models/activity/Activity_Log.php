@@ -326,13 +326,13 @@ class Activity_Log extends _Model {
             else {
                 $where_str = ' AND activity_log.previewed IS NULL';
             }
-
         }
 		else {
 
 			$select_str = '
-				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
-				, user_username.user_id, user_username.username, user_username.avatar
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read,
+				  UNIX_TIMESTAMP(activity_log.created) AS time
+				, follower.user_id, follower.username, follower.avatar
 			';
 		}
 
@@ -356,7 +356,10 @@ class Activity_Log extends _Model {
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
 				{$join_str}
-				INNER JOIN dahliawolf_v1_2013.user_username ON follow.follower_user_id = user_username.user_id
+				INNER JOIN dahliawolf_v1_2013.follow AS follow_activity ON activity_log.entity_id = follow_activity.follow_id
+
+				INNER JOIN dahliawolf_v1_2013.user_username AS follower ON follower.user_id = follow_activity.follower_user_id
+
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id
 				AND activity_log.activity_id = :activity_id
@@ -428,9 +431,9 @@ class Activity_Log extends _Model {
 			SELECT {$select_str}
 			FROM activity_log
 				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
-                INNER JOIN dahliawolf_v1_2013.user_username ON activity_log.user_id = user_username.user_id
                 INNER JOIN dahliawolf_v1_2013.message AS message ON message.to_user_id = activity_log.user_id
                                                                  AND message.message_id = activity_log.entity_id
+                INNER JOIN dahliawolf_v1_2013.user_username ON message.from_user_id = user_username.user_id
                 {$join_str}
 			WHERE activity_log.user_id = :user_id
 				AND activity_log.api_website_id = :api_website_id

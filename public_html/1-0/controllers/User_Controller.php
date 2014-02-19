@@ -10,7 +10,8 @@ class User_Controller extends _Controller {
 
     /** @var  $User User*/
 
-	private $PasswordHash;
+
+    private $PasswordHash;
 
 	public function __construct() {
 		parent::__construct();
@@ -18,7 +19,8 @@ class User_Controller extends _Controller {
 		$this->PasswordHash = new PasswordHash(8, FALSE);
 	}
 
-	public function token_login($params = array()) {
+
+    public function token_login($params = array()) {
 		// Validations
         /*
         'user_id' => array(
@@ -42,6 +44,8 @@ class User_Controller extends _Controller {
 
 		$this->load('User');
 		$user = $this->User->get_user_by_token($params['user_id'], $params['token']);
+
+        self::trace("FETCHED USER:" . var_export($user, true));
 
 		return static::wrap_result(true, $user);
 	}
@@ -170,6 +174,8 @@ class User_Controller extends _Controller {
 		else {
 			$data['user'] = $this->User->filter_columns($login->user);
 			$data['token'] = $authen;
+
+            self::trace("FETCHED USER:" . var_export($data, true));
 		}
 
 		if (!empty($error)) {
@@ -890,15 +896,16 @@ class User_Controller extends _Controller {
         $follow = new Follow( DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
         $data  = $follow->followUser($request_data);
 
-        return static::wrap_result( ($this->Follow->hasError()? false:true), $data, 200, $this->Follow->getErrors() );
+        return static::wrap_result( ($follow->hasError()? false:true), $data, 200, $follow->getErrors() );
     }
 
     public function unfollow($request_data)
     {
-        $this->load('Follow', DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
-        $data  = $this->Follow->removeFollow($request_data);
+        //$this->load('Follow', DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
+        $follow = new Follow( DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
+        $data  = $follow->removeFollow($request_data);
 
-        return static::wrap_result( ($this->Follow->hasError()? false:true), $data, 200, $this->Follow->getErrors() );
+        return static::wrap_result( ($follow->hasError()? false:true), $data, 200, $follow->getErrors() );
     }
 
 

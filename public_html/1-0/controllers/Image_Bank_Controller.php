@@ -117,7 +117,7 @@ class Image_Bank_Controller extends _Controller
         (
             'repo_image_id'     => $repo_image_data['id'],
             'imagename'         => $repo_image_data['imageURL'],
-            'source'            => $repo_image_data['baseurl'],
+            'source'            => $repo_image_data['source'],
             'dimensionsX'       => $repo_image_data['dimensionsX'],
             'dimensionsY'       => $repo_image_data['dimensionsY'],
             'domain'            => $repo_image_data['domain'],
