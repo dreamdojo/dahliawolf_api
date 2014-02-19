@@ -201,7 +201,7 @@ function search_term_cron_curl($username, $domain_keyword = NULL) {
 function register_default_follows($user_id)
 {
     //follow default
-    $follow_these = array(658, 1375, 790, 1385, 3797, 2763, 3584, 2776, 3577, 2736);
+    $follow_these = array(6530, 12851, 1644, 3856, 6531, 14884, 7011, 3688, 10261, 6636, 16456, 3372, 9555, 3089, 13317, 790, 7327, 7491, 14056, 15030);
 
     foreach($follow_these as $ftk => $fthisone)
     {
