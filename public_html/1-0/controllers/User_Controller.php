@@ -185,6 +185,26 @@ class User_Controller extends _Controller {
 		return static::wrap_result(true, $data);
 	}
 
+    public function login_social_media($params = array()) {
+        $this->load('User');
+        $data = array();
+
+        $email_or_username = !empty($params['email']) ? $params['email'] : (!empty($params['username']) ? $params['username'] : NULL);
+        $password = !empty($params['password']) ? $params['password'] : NULL;
+        global $_mysql;
+        $_mysql = new mysql();
+
+        $login = new login(array(), array());
+        $error_code = NULL;
+
+        $authen = $login->authen($email_or_username, $password, 1, $error_code);
+
+        $data['user'] = $this->User->filter_columns($login->user);
+        $data['token'] = $authen;
+
+        return static::wrap_result(true, $data);
+    }
+
 	public function logout($params = array()) {
 		if (empty($params['user_id'])) {
 			_Model::$Exception_Helper->bad_request_exception('User id is not set.');
