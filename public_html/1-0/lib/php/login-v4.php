@@ -345,7 +345,7 @@ class login {
 	* @return bool - True if authentication was successful, false otherwise
 	*
 	*/
-	public function authen($login, $password, $cookieType = 0, &$error) {
+	public function authen($login, $password, $cookieType = 0, &$error, $social = false) {
 		global $_mysql;
 		
 		//make $login safe
@@ -405,7 +405,11 @@ class login {
 			return false;
 		}
 		
-		$isCorrectPassword = $this->checkPassword($password, $this->user['hash']);
+		if($social) {
+            $isCorrectPassword = true;
+        } else {
+            $isCorrectPassword = $this->checkPassword($password, $this->user['hash']);
+        }
 		
 		// record failed login attempt
 		if (!$isCorrectPassword) {

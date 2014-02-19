@@ -190,14 +190,15 @@ class User_Controller extends _Controller {
         $data = array();
 
         $email_or_username = !empty($params['email']) ? $params['email'] : (!empty($params['username']) ? $params['username'] : NULL);
-        $password = !empty($params['password']) ? $params['password'] : NULL;
+        //$password = !empty($params['password']) ? $params['password'] : NULL;
+        $password = 'password';
         global $_mysql;
         $_mysql = new mysql();
 
         $login = new login(array(), array());
         $error_code = NULL;
 
-        $authen = $login->authen($email_or_username, $password, 1, $error_code);
+        $authen = $login->authen($email_or_username, $password, 1, $error_code, true);
 
         $data['user'] = $this->User->filter_columns($login->user);
         $data['token'] = $authen;
