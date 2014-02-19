@@ -50,35 +50,35 @@ class User_Controller extends _Controller {
 		return static::wrap_result(true, $user);
 	}
 
-	public function social_login($params = array()) {
-		// Validations
-		$input_validations = array(
-			'social_network' => array(
-				'label' => 'Social Network'
-				, 'rules' => array(
-					'is_set' => NULL
-				)
-			)
-		);
-		$this->Validate->add_many($input_validations, $params, true);
-		$this->Validate->run();
+    public function social_login($params = array()) {
+        // Validations
+        $input_validations = array(
+            'social_network' => array(
+                'label' => 'Social Network'
+            , 'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
 
-		$this->load('User');
-		$this->load('Social_Network');
+        $this->load('User');
+        $this->load('Social_Network');
 
-		$social_network = $params['social_network'];
-		$social_id = $this->Social_Network->get_primary_key_id_by_field_value('name', $social_network);
-		if (empty($social_id)) {
-			_Model::$Exception_Helper->request_failed_exception('Social network does not exist.');
-		}
+        $social_network = $params['social_network'];
+        $social_id = $this->Social_Network->get_primary_key_id_by_field_value('name', $social_network);
+        if (empty($social_id)) {
+            _Model::$Exception_Helper->request_failed_exception('Social network does not exist.');
+        }
 
-		//check to see email exists for social login
-		$existing_email = $this->User->get_row(
-			array(
-				'email' => $params['email']
-				, 'social_id' => $social_id
-			)
-		);
+        //check to see email exists for social login
+        $existing_email = $this->User->get_row(
+            array(
+                'email' => $params['email']
+            , 'social_id' => $social_id
+            )
+        );
 
 		if (!empty($existing_email)) {
 			//_Model::$Exception_Helper->request_failed_exception('This email already exists. Please use another.');
