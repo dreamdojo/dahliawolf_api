@@ -68,7 +68,7 @@ class Follow extends _Model {
             // Log activity
             //log_activity($_REQUEST['user_id'], 34, 'Started Following you', 'follow', $user['data']);
             //////logActivity($user_id,         $note="@user Started Following you", $follow_id, $entity = 'message', $activity_id=self::ACTIVITY_ID_USER_FOLLOWING )
-            self::logActivity($data['user_id'], $insert_id, $note='Started Following you', 'follow', $activity_id=self::ACTIVITY_ID_USER_FOLLOWING);
+            self::logActivity($data['user_id'], $insert_id, $note='started following you', 'follow', $activity_id=self::ACTIVITY_ID_USER_FOLLOWING);
 
             // Log activity
             //log_activity($_REQUEST['follower_user_id'], 37, 'Followed another user', 'follow', $user['data']);
@@ -134,7 +134,7 @@ class Follow extends _Model {
     }
 
 
-    private function logActivity($user_id, $follow_id, $note="@user Started Following you", $entity = 'follow', $activity_id=self::ACTIVITY_ID_USER_FOLLOWING )
+    private function logActivity($user_id, $follow_id, $note="@user started following you", $entity = 'follow', $activity_id=self::ACTIVITY_ID_USER_FOLLOWING )
     {
 
     	$activity = array(
