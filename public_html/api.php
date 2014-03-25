@@ -660,7 +660,6 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'pinterest_username'
 				, 'comment_notifications'
 				, 'profile_type'
-				//, 'like_notifications'
 				//, 'comment_notifications'
 				, 'notification_interval'
 			);
