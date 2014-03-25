@@ -271,6 +271,10 @@ class User_Controller extends _Controller {
 					, */'is_date' => NULL
 				)
 			)
+            , 'profile_type' => array(
+                    'label' => 'Profile Type',
+                    'rules' => array()
+            )
 			, 'gender' => array(
 				'label' => 'Gender'
 				, 'rules' => array(
@@ -372,6 +376,7 @@ class User_Controller extends _Controller {
 			'first_name' => 'first_name',
 			'last_name' => 'last_name',
 			'date_of_birth' => 'date_of_birth',
+			'profile_type' => 'profile_type',
 			'gender' => 'gender',
 			'username' => 'username',
 			'email' => 'email',

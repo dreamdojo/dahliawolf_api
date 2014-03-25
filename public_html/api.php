@@ -1309,7 +1309,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				$posting_like['data']['points_earned'] = $points_earned;
 
 				// Log activity
-				log_activity($post_user_id, 9, 'Received a like on an image', 'posting_like', $posting_like['data']['posting_like_id']);
+				log_activity($post_user_id, 9, 'liked your image', 'posting_like', $posting_like['data']['posting_like_id']);
 
 				// Log activity
 				log_activity($_REQUEST['user_id'], 10, 'Liked an image', 'posting_like', $posting_like['data']['posting_like_id']);
