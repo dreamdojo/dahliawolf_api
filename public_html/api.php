@@ -608,7 +608,6 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'instagram_username'
 				, 'pinterest_username'
 				, 'profile_type'
-				//, 'comment_notifications'
 				//, 'like_notifications'
 				, 'notification_interval'
 
