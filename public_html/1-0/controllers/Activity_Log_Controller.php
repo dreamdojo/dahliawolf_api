@@ -98,6 +98,13 @@ class Activity_Log_Controller extends _Controller {
         $messages = $activity_log->get_messages_log($user_id, $api_website_id, 39, false, false, $params);
         $activity_log->markReadByType(array('activity_id' => Message::ACTIVITY_ID_RECEIVED_MESSAGE, 'user_id' => $user_id));
 
+        // Reposts
+        $reposts = $activity_log->get_reposts_log($user_id, $api_website_id, 33, false, false, $params);
+        $activity_log->markReadByType(array('activity_id' => Message::ACTIVITY_ID_RECEIVED_REPOST, 'user_id' => $user_id));
+
+        $reposts = $activity_log->get_sales_log($user_id, $api_website_id, 69, false, false, $params);
+        $activity_log->markReadByType(array('activity_id' => Message::ACTIVITY_ID_RECEIVED_SALE, 'user_id' => $user_id));
+
 
 
 		$data = array(
@@ -106,11 +113,68 @@ class Activity_Log_Controller extends _Controller {
 			'likes' => $likes,
 			'followers' => $followers,
 			'messages' => $messages,
+            'reposts' => $reposts,
 		);
 
 		return static::wrap_result(true, $data);
 
 	}
+
+    public function get_preview($params = array()) {
+        // Validations
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User ID',
+                'rules' => array(
+                    'is_set' => NULL,
+                    'is_int' => NULL
+                )
+            )
+        );
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $this->load('Activity_Log');
+        $activity_log = new Activity_Log();
+
+        $unread_count       = true;
+        $unpreviewed_count  = false;
+
+        $user_id = $params['user_id'];
+        $api_website_id = !empty($params['api_website_id']) ? $params['api_website_id'] : 2;
+
+        // Like winners
+        //$posts = $activity_log->get_like_winners_log($user_id, $api_website_id, false, false, $params);
+
+        // Comments
+        $comments = $activity_log->get_commented_posts_log($user_id, $api_website_id, true, false, $params);
+
+        // Likes
+        $likes = $activity_log->get_liked_posts_log($user_id, $api_website_id, true, false, $params);
+
+        // Followers
+        $followers = $activity_log->get_followers_log($user_id, $api_website_id, true, false, $params);
+        // Followers
+        $reposts = $activity_log->get_reposts_log($user_id, $api_website_id, true, false, $params);
+
+        $sales = $activity_log->get_sales_log($user_id, $api_website_id, true, false, $params);
+
+        // Messages
+        //$messages = $activity_log->get_messages_log($user_id, $api_website_id, 39, true, false, $params);
+
+
+
+        $data = array(
+            'comments' => $comments,
+            'likes' => $likes,
+            'followers' => $followers,
+            'sales' => $sales,
+            'reposts' => $reposts,
+        );
+
+        return static::wrap_result(true, $data);
+
+    }
 
 	public function get_grouped_log_count($params = array()) {
 		// Validations
@@ -208,7 +272,12 @@ class Activity_Log_Controller extends _Controller {
                 // Messages
                 $activities = $activity_log->get_messages_log($user_id, $api_website_id, 39, $unread_count, $unpreviewed_count, $params);
                 break;
-
+            case 'sales':
+                $activities = $activity_log->get_sales_log($user_id, $api_website_id, false, false, $params);
+                break;
+            case 'reposts':
+                $activities = $activity_log->get_reposts_log($user_id, $api_website_id, $unread_count, $unpreviewed_count, $params);
+                break;
         }
 
 

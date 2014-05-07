@@ -44,6 +44,7 @@ class Posting_Repost extends _Model
 
         try {
             $insert_id = $this->do_db_save($values, $data);
+            self::logActivity($data['og_id'], 33, 'reposted your post', 'posting_repost', $insert_id );
             return array(
                     strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
                     //'model_data' => $data
@@ -151,6 +152,22 @@ class Posting_Repost extends _Model
                         'total' => $data[0]['total']
                     );
         }
+
+    }
+    protected function logActivity($user_id, $activity_id, $note, $entity = NULL, $entity_id = NULL)
+    {
+        $activity_log = new Activity_Log();
+
+        $params = array(
+            'user_id' => $user_id,
+            'activity_id' => $activity_id,
+            'note' => $note,
+            'api_website_id' => 2,
+            'entity' => $entity,
+            'entity_id' => $entity_id,
+        );
+
+        $data = Activity_Log::saveActivity($params);
 
     }
 

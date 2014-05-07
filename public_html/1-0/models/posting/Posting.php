@@ -1,8 +1,4 @@
 <?php
-/**
- * User: JDorado
- * Date: 8/27/13
- */
  
 class Posting extends _Model
 {
@@ -133,6 +129,7 @@ class Posting extends _Model
 
         $query = "
                 SELECT
+                main.created,
                 user_username.user_id,
                 user_username.username, user_username.location, user_username.avatar
                 {$select_str}
@@ -156,6 +153,77 @@ class Posting extends _Model
         try {
             $data = $this->fetch($query, $values);
             return array('lovers' => $data );
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
+        }
+
+    }
+
+    public function getReposters($params = array())
+    {
+        $order_by_str = 'main.created_at DESC';
+        $order_by_columns = array(
+            'created_at',
+        );
+
+        if (!empty($params['order_by'])) {
+            if (in_array($params['order_by'], $order_by_columns)) {
+                $order_by_str = "main.{$params['order_by']} DESC";
+            }
+        }
+
+
+        $values = array();
+
+        $user_id = $params['user_id'];
+        $posting_id = $params['posting_id'];
+
+        $offset_limit = $this->generateLimitOffset($params, true);
+
+        //// limit the restult set to failsafe 300,
+        if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 999';
+
+        $where_str = 'main.posting_id = :posting_id';
+        $values[':posting_id'] = $posting_id;
+
+
+        if($params['viewer_user_id'])
+        {
+            $select_str = ", IF(follow.user_id IS NULL, 0, 1) AS is_followed
+                           , DATE_FORMAT(follow.created, '%c/%e/%Y') AS loved_date ";
+            $join_str = 'LEFT JOIN follow ON (user_username.user_id = follow.user_id
+                                                    AND follow.follower_user_id = :viewer_user_id)';
+
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
+
+        $query = "
+                SELECT
+                main.created_at,
+                user_username.user_id,
+                user_username.username, user_username.location, user_username.avatar
+                {$select_str}
+
+                FROM posting_repost main
+                    INNER JOIN user_username ON main.repost_user_id = user_username.user_id
+                    {$join_str}
+                WHERE
+                {$where_str}
+                ORDER BY {$order_by_str}
+                {$offset_limit}
+      			";
+
+        if (isset($_GET['t'])) {
+            print_r($params);
+            echo "$query\n";
+            print_r($values);
+            //die();
+        }
+
+        try {
+            $data = $this->fetch($query, $values);
+            return array('reposters' => $data );
 
         } catch(Exception $e) {
             self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
@@ -203,11 +271,11 @@ class Posting extends _Model
             $values[':viewer_user_id'] = $params['viewer_user_id'];
 
             // Dislike
-            $sub_join_str .= '
+            /*$sub_join_str .= '
                 LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
                     AND posting_dislike.user_id = :viewer_user_id
             ';
-            $sub_where_str .= ' AND posting_dislike.posting_id IS NULL';
+            $sub_where_str .= ' AND posting_dislike.posting_id IS NULL';*/
         }
 
         // Search
@@ -669,10 +737,12 @@ class Posting extends _Model
         // Also show if user is following post user
         $viewer_user_id = null;
         if (!empty($params['viewer_user_id'])) {
-            $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked, IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked,IF(posting_repost.repost_user_id IS NULL, 0, 1) AS is_repost, IF(follow.follow_id IS NULL, 0, 1) AS is_following';
             $join_str = '
                 LEFT JOIN posting_like ON (posting.posting_id = posting_like.posting_id
                     AND posting_like.user_id = :viewer_user_id)
+                LEFT JOIN posting_repost ON (posting.posting_id = posting_repost.posting_id
+                    AND posting_repost.repost_user_id = :viewer_user_id)
                 LEFT JOIN follow ON (posting.user_id = follow.user_id
                     AND follow.follower_user_id = :viewer_user_id)
             ';

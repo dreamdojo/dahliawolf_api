@@ -85,7 +85,7 @@ class Activity_Log extends _Model {
         $where_str = '';
 
         if ($unread_count) {
-            $select_str = 'COUNT(*) AS count';
+            $select_str = 'COUNT( *) AS poop';
             if ($unpreviewed_count==false) {
                 $where_str = " AND activity_log.read IS NULL \n";
             }
@@ -161,9 +161,15 @@ class Activity_Log extends _Model {
 	public function get_commented_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array()) {
 
         $where_str = '';
+        $select_str = '
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
+				, comment.posting_id, comment.comment
+				, user_username.user_id, user_username.username, user_username.avatar
+				, CONCAT(\'http://www.dahliawolf.com/post/\', comment.posting_id) AS post_url
+				, CONCAT(image.source, image.imagename) AS image_url
+			';
 
         if ($unread_count) {
-            $select_str = 'COUNT(*) AS count';
             if ($unpreviewed_count==false) {
                 $where_str = " AND activity_log.read IS NULL \n";
             }
@@ -172,15 +178,6 @@ class Activity_Log extends _Model {
             }
 
         }
-		else{
-			$select_str = '
-				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
-				, comment.posting_id, comment.comment
-				, user_username.user_id, user_username.username, user_username.avatar
-				, CONCAT(\'http://www.dahliawolf.com/post/\', comment.posting_id) AS post_url
-				, CONCAT(image.source, image.imagename) AS image_url
-			';
-		}
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
@@ -241,8 +238,15 @@ class Activity_Log extends _Model {
     {
         $where_str = '';
 
+        $select_str = '
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
+				, posting_like.posting_id
+				, user_username.user_id, user_username.username, user_username.avatar
+				, CONCAT(\'http://www.dahliawolf.com/post/\', posting_like.posting_id) AS post_url
+				, CONCAT(image.source, image.imagename) AS image_url
+			';
+
         if ($unread_count) {
-            $select_str = 'COUNT(*) AS count';
             if ($unpreviewed_count==false) {
                 $where_str = " AND activity_log.read IS NULL \n";
             }
@@ -251,15 +255,6 @@ class Activity_Log extends _Model {
             }
 
         }
-		else{
-			$select_str = '
-				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
-				, posting_like.posting_id
-				, user_username.user_id, user_username.username, user_username.avatar
-				, CONCAT(\'http://www.dahliawolf.com/post/\', posting_like.posting_id) AS post_url
-				, CONCAT(image.source, image.imagename) AS image_url
-			';
-		}
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
@@ -317,9 +312,14 @@ class Activity_Log extends _Model {
 
 	public function get_followers_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
     {
+        $select_str = '
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read,
+				  UNIX_TIMESTAMP(activity_log.created) AS time
+				, follower.user_id, follower.username, follower.avatar
+			';
+
         if ($unread_count)
         {
-            $select_str = 'COUNT(*) AS count';
             if ($unpreviewed_count==false) {
                 $where_str = " AND activity_log.read IS NULL \n";
             }
@@ -327,14 +327,6 @@ class Activity_Log extends _Model {
                 $where_str = ' AND activity_log.previewed IS NULL';
             }
         }
-		else {
-
-			$select_str = '
-				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read,
-				  UNIX_TIMESTAMP(activity_log.created) AS time
-				, follower.user_id, follower.username, follower.avatar
-			';
-		}
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
@@ -393,13 +385,162 @@ class Activity_Log extends _Model {
 		}
 	}
 
-	public function get_messages_log($user_id, $api_website_id, $activity_id=39, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+    public function get_reposts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
     {
         $where_str = '';
 
+        $select_str = '
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time
+				, posting_repost.posting_id
+				, user_username.user_id, user_username.username, user_username.avatar
+				, CONCAT(\'http://www.dahliawolf.com/post/\', posting_repost.posting_id) AS post_url
+				, CONCAT(image.source, image.imagename) AS image_url
+			';
+
+        if ($unread_count) {
+            if ($unpreviewed_count==false) {
+                $where_str = " AND activity_log.read IS NULL \n";
+            }
+            else {
+                $where_str = ' AND activity_log.previewed IS NULL';
+            }
+
+        }
+
+        $viewer_user_id = $request_params['viewer_user_id'];
+        if (!empty($viewer_user_id)) {
+            $select_str .= ', IF(follow.follow_id IS NULL, 0, 1) AS is_followed';
+            $join_str = '
+                LEFT JOIN dahliawolf_v1_2013.follow AS follow ON (follow.user_id = :viewer_user_id
+                    AND follow.follower_user_id = activity_log.user_id )
+            ';
+        }
+
+        if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
+
+        // Get rows
+        $query = "
+			SELECT {$select_str}
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				INNER JOIN dahliawolf_v1_2013.posting_repost ON activity_log.entity_id = posting_repost.posting_repost_id
+				INNER JOIN dahliawolf_v1_2013.user_username ON posting_repost.repost_user_id = user_username.user_id
+                INNER JOIN dahliawolf_v1_2013.posting ON posting_repost.posting_id = posting.posting_id
+				INNER JOIN dahliawolf_v1_2013.image ON posting.image_id = image.id
+				{$join_str}
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				AND activity_log.entity = :entity
+				{$where_str}
+			ORDER BY activity_log.created DESC
+		";
+        $values = array(
+            ':user_id' => $user_id,
+            ':api_website_id' => $api_website_id,
+            ':activity_id' => 33,
+            ':entity' => 'posting_repost',
+        );
+
+        if (!empty($viewer_user_id)) {
+            $values[':viewer_user_id'] = $viewer_user_id;
+        }
+
+        if(isset($_GET['t'])){
+            echo "\n".__FUNCTION__ ."\n";
+            echo $query;
+            var_dump($values);
+        }
+
+        try {
+            $activities = self::$dbs[$this->db_host][$this->db_name]->exec($query, $values);
+            return $activities;
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception('Unable to get activity log.');
+        }
+    }
+
+    public function get_sales_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+    {
+        $where_str = '';
+
+        if ($unread_count) {
+            if ($unpreviewed_count==false) {
+                $where_str = " AND activity_log.read IS NULL \n";
+            }
+            else {
+                $where_str = ' AND activity_log.previewed IS NULL';
+            }
+
+        }
+
+
+        // Get rows
+        $q = "
+			SELECT activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time,
+			user_username.user_id, user_username.username, user_username.avatar
+			FROM activity_log
+				INNER JOIN api_website ON activity_log.api_website_id = api_website.api_website_id
+				LEFT JOIN dahliawolf_v1_2013.user_username ON :user_id = user_username.user_id
+			WHERE activity_log.user_id = :user_id
+				AND activity_log.api_website_id = :api_website_id
+				AND activity_log.activity_id = :activity_id
+				{$where_str}
+			ORDER BY activity_log.created DESC
+		";
+
+        $params = array(
+            ':user_id' => $user_id,
+            ':api_website_id' => $api_website_id,
+            ':activity_id' => 69,
+            ':entity' => 'sale'
+        );
+
+        if (!empty($viewer_user_id)) {
+            $values[':viewer_user_id'] = $viewer_user_id;
+        }
+
+        if(isset($_GET['t'])){
+            echo "\n".__FUNCTION__ ."\n";
+            echo $q;
+            var_dump($params);
+        }
+
+        try {
+            $activities = self::$dbs[$this->db_host][$this->db_name]->exec($q, $params);
+
+            if(!empty($activities)) {
+                foreach($activities as $key=>$activity) {
+                    $query = "
+                        SELECT avatar, username FROM dahliawolf_v1_2013.user_username WHERE user_id = ".$activity['entity_id']."
+                    ";
+
+                    $activitiez = self::$dbs[$this->db_host][$this->db_name]->select_single($query);
+                    $activities[$key]['avatar'] = $activitiez['avatar'];
+                    $activities[$key]['user_id'] = $activities['entity_id'];
+                    $activities[$key]['username'] = $activitiez['username'];
+                }
+            }
+
+            return $activities;
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception('Unable to get activity log.');
+        }
+    }
+
+	public function get_messages_log($user_id, $api_website_id, $activity_id=39, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+    {
+        $where_str = '';
+        $select_str = '
+				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time,
+				user_username.user_id, user_username.username, user_username.avatar,
+				message.header, message.body
+			';
+
         if ($unread_count)
         {
-            $select_str = 'COUNT(*) AS count';
             if ($unpreviewed_count==false) {
                 $where_str = " AND activity_log.read IS NULL \n";
             }
@@ -407,13 +548,6 @@ class Activity_Log extends _Model {
                 $where_str = ' AND activity_log.previewed IS NULL';
             }
         }
-		else{
-			$select_str = '
-				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read, UNIX_TIMESTAMP(activity_log.created) AS time,
-				user_username.user_id, user_username.username, user_username.avatar,
-				message.header, message.body
-			';
-		}
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {

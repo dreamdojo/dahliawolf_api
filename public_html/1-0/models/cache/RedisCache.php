@@ -7,7 +7,7 @@
 class RedisCache extends Jk_Base{
 
     const DEFAULT_TTL = 86400;
-    const TTL_HOUR = 3600;
+    const TTL_HOUR = 360000;
     const TTL_DAY = 86400;
 
     protected static $is_init = false;

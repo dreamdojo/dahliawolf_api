@@ -58,7 +58,6 @@ class Boosted extends _Model
 
                 $source_base = $source = 'http://repository.offlinela.com/' . $upload_dir;
 
-
                 if( $dimensions[0]*$dimensions[1] >= 900 )
                 {
                     $insert_image_data = array(

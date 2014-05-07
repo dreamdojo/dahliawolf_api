@@ -76,6 +76,7 @@ class Image_Bank_Controller extends _Controller
     {
         ############# check for user posting limist #############
         $posting = new Posting();
+        $this->load('Tasks');
 
         $bank_images_params = array(
             'user_id'       => $params['user_id'],
@@ -175,6 +176,11 @@ class Image_Bank_Controller extends _Controller
 
             $image_bank = new Image_Bank();
             $data = $image_bank->setPostedStatus($repo_image_data);
+
+            $taskData = Array();
+            $taskData['action_id'] = $new_posting_id;
+            $taskData['task'] = 'add_like';
+            $this->Tasks->addTask($taskData);
 
             //finish
             return $new_post_data;

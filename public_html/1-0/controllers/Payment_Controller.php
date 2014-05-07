@@ -453,8 +453,8 @@ class Payment_Controller extends _Controller {
 			)
 		);
 		
-		$this->Validate->add_many($input_validations, $validate_params, true);
-		$this->Validate->run();
+		//$this->Validate->add_many($input_validations, $validate_params, true);
+		//$this->Validate->run();
 		
 		
 		$username = $this->Config->get_value('PayPal API Username');

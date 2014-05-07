@@ -172,7 +172,8 @@ class User_Controller extends _Controller {
 		}
 		// Success: return user info and token
 		else {
-			$data['user'] = $this->User->filter_columns($login->user);
+			//$data['user'] = $this->User->filter_columns($login->user);
+			$data['user'] = $login->user;
 			$data['token'] = $authen;
 
             self::trace("FETCHED USER:" . var_export($data, true));
@@ -229,7 +230,278 @@ class User_Controller extends _Controller {
 		return static::wrap_result(true, NULL, _Model::$Status_Code->get_status_code_no_content());
 	}
 
-	public function save_user($params = array()) {
+    public function set_user_cart_id($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'cart_id' => array(
+                'label' => 'Cart Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setCartId($params);
+
+        return static::wrap_result(true, $result);
+    }
+
+    public function get_profile_settings($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->getProfileSettings($params);
+
+        return static::wrap_result(true, $result);
+    }
+    public function set_profile_setting($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'profile_setting' => array(
+                'label' => 'profile_setting',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'new_value' => array(
+                'label' => 'New Value',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setProfileSettings($params);
+
+        return static::wrap_result(true, $result);
+    }
+
+    public function set_profile_type($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'profile_type' => array(
+                'label' => 'Profile Type',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setProfileType($params);
+
+        return static::wrap_result(true, $result);
+    }
+
+    public function set_one_click($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'last4' => array(
+                'label' => 'Last4',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setOneClick($params);
+
+        return static::wrap_result(true, $result);
+    }
+
+    public function set_user_auto($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'platform' => array(
+                'label' => 'Platform',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'sync' => array(
+                'label' =>'Sync',
+                'rules' => array(
+                    'is_set' => null
+                )
+            ),
+            'sync_action' => array(
+                'label' =>'Action',
+                'rules' => array(
+                    'is_set' => null
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setUserAuto($params);
+
+        return static::wrap_result(true, $result);
+    }
+
+    public function set_user_billing_address($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'billing_address_id' => array(
+                'label' => 'Billing Address',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setBillingAddress($params);
+
+        return static::wrap_result(true, $result);
+    }
+
+    public function set_user_tumblr_blog($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'tumblr_blog_name' => array(
+                'label' => 'Tumblr Blog Name',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setUserTumblrBlog($params);
+
+        return static::wrap_result(true, $result);
+    }
+
+    public function set_user_shipping_address($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'shipping_address_id' => array(
+                'label' => 'Shipping Address',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setShippingAddress($params);
+
+        return static::wrap_result(true, $result);
+    }
+
+    public function set_user_wolf_ticket($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'ticket_id' => array(
+                'label' => 'Ticket ID',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setWolfTicketId($params);
+        $result['ticket_id'] = $params['ticket_id'];
+        return static::wrap_result(true, $result);
+    }
+
+    public function save_user($params = array()) {
 
         $logger = new Jk_Logger(APP_PATH.'logs/user.log');
 
@@ -686,10 +958,14 @@ class User_Controller extends _Controller {
         $dahlia_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
 
         $total_sales = $dahlia_user->get_sales( $data['user_id'] );
+        $total_items = $dahlia_user->getItemCount($data['user_id']);
 
         $data['sales_total'] =  $total_sales['sales_total'];
+        $data['shop_items'] =  $total_items['products'];
 
-		return $data;
+        $data['email'] = null;
+        $data['email_address'] = null;
+        return $data;
 		return static::wrap_result(true, $data);
 	}
 
@@ -867,7 +1143,8 @@ class User_Controller extends _Controller {
 		$marketing_email_prefix = $this->Config->get_value('Marketing From Email Prefix');
 
 		// Send Email
-		$emailDomain = $_SERVER['HTTP_REFERER'];
+		$emailDomain = 'dahliawolf.com';
+
 		$fromEmail = $marketing_email_prefix . '@' . $emailDomain;
 
 		$subject = 'Password Reset Link';
@@ -898,8 +1175,16 @@ class User_Controller extends _Controller {
 
     public function follow($request_data)
     {
+        $this->load('Points');
         $follow = new Follow( DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
         $data  = $follow->followUser($request_data);
+
+        if(!$follow->hasError()) {
+            $request_data['point_id'] = 3;
+            $request_data['points'] = 20;
+            $request_data['user_id'] = $request_data['user_follow_id'];
+            $this->Points->addPoints($request_data);
+        }
 
         return static::wrap_result( ($follow->hasError()? false:true), $data, 200, $follow->getErrors() );
     }
@@ -1030,7 +1315,7 @@ class User_Controller extends _Controller {
 
     public function get_top_users( $params = array() )
     {
-        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
+        /*$cache_key_params = self::getCacheParams($params, __FUNCTION__);
 
         if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
         {
@@ -1049,7 +1334,7 @@ class User_Controller extends _Controller {
                 //self::trace("self::getCachedContent" . $cached_content);
                 return $response;
             }
-        }
+        }*/
 
 
         /** @var User $dw_user */
@@ -1063,21 +1348,27 @@ class User_Controller extends _Controller {
 
         $user_data = $dw_user->getTopUsers($params);
 
+        foreach($user_data as $x=>$user) {
+            $user_data[$x]['itemCount'] = $dw_user->getItemCount($user['user_id']);
+        }
+
+
         //// get users posts
-        if(is_array($user_data))  self::getUsersPosts($user_data, $params);
+        //if(is_array($user_data))  self::getUsersPosts($user_data, $params);
 
         //self::setUseCache(true);
         //cache content
 
-        $cache_key = self::getCacheKey($cache_key_params);
-        $response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
+        //$cache_key = self::getCacheKey($cache_key_params);
+        //$response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
+        $response = array('users' => $user_data );
 
         //self::setUseCache(true);
         //cache content
-        if( $user_data && !$user_data['error'] )
+        /*if( $user_data && !$user_data['error'] )
         {
             self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*12);
-        }
+        }*/
 
         return $response;
     }
@@ -1086,7 +1377,7 @@ class User_Controller extends _Controller {
 
     public function get_top_following( $params = array() )
     {
-        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
+        /*$cache_key_params = self::getCacheParams($params, __FUNCTION__);
 
         if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
         {
@@ -1106,7 +1397,7 @@ class User_Controller extends _Controller {
                 return $response;
             }
 
-        }
+        }*/
 
         /** @var User $dw_user */
         $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
@@ -1118,19 +1409,23 @@ class User_Controller extends _Controller {
         }
 
         $user_data = $dw_user->getTopFollowingByUser($params);
+        foreach($user_data as $x=>$user) {
+            $user_data[$x]['itemCount'] = $dw_user->getItemCount($user['user_id']);
+        }
 
         //// get users posts
-        if(is_array($user_data))  self::getUsersPosts($user_data, $params);
+        //if(is_array($user_data))  self::getUsersPosts($user_data, $params);
 
-        $cache_key = self::getCacheKey($cache_key_params);
-        $response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
+        //$cache_key = self::getCacheKey($cache_key_params);
+        //$response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
+        $response = array('users' => $user_data );
 
         //self::setUseCache(true);
         //cache content
-        if( $user_data && !$user_data['error'] )
+        /*if( $user_data && !$user_data['error'] )
         {
             self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*2);
-        }
+        }*/
 
         return $response;
     }
@@ -1139,7 +1434,7 @@ class User_Controller extends _Controller {
 
     public function get_top_followers( $params = array() )
     {
-        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
+        /*$cache_key_params = self::getCacheParams($params, __FUNCTION__);
 
         if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
         {
@@ -1159,7 +1454,7 @@ class User_Controller extends _Controller {
                 return $response;
             }
 
-        }
+        }*/
 
         /** @var User $dw_user */
         $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
@@ -1171,20 +1466,24 @@ class User_Controller extends _Controller {
         }
 
         $user_data = $dw_user->getTopFollowersByUser($params);
+        foreach($user_data as $x=>$user) {
+            $user_data[$x]['itemCount'] = $dw_user->getItemCount($user['user_id']);
+        }
 
         //// get users posts
-        if(is_array($user_data))  self::getUsersPosts($user_data, $params);
+        //if(is_array($user_data))  self::getUsersPosts($user_data, $params);
 
 
-        $cache_key = self::getCacheKey($cache_key_params);
-        $response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
+        //$cache_key = self::getCacheKey($cache_key_params);
+        //$response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
+        $response = array('users' => $user_data );
 
         //self::setUseCache(true);
         //cache content
-        if( $user_data && !$user_data['error'] )
+        /*if( $user_data && !$user_data['error'] )
         {
             self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*2);
-        }
+        }*/
 
         return $response;
     }

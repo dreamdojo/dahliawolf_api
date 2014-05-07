@@ -21,6 +21,8 @@ require_once 'models/Vote_Period.php';
 require_once 'models/Vote_Winner.php';
 require_once 'models/Point.php';
 require_once 'models/User_Point.php';
+require_once 'models/profileOptions.php';
+require_once 'models/Tasks.php';
 
 
 require DR . '/lib/php/class.phpmailer.php';
@@ -380,6 +382,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$optional_params = array(
 				'instagram_username'
 				, 'pinterest_username'
+                , 'twitter_username'
 				, 'gender'
 				, 'location'
 				, 'avatar'
@@ -402,6 +405,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			return;
 		}
 		else if ($_REQUEST['function'] == 'register') {
+            $options = new profileOptions();
 			check_required(
 				array(
 					/*'first_name'
@@ -480,6 +484,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 					, 'gender' => !empty($_REQUEST['gender']) ? $_REQUEST['gender'] : NULL
 				)
 			);
+
 			$user = $User->addUser($user_params);
 
 			// Credit user points
@@ -505,7 +510,6 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
 			$user['data']['user'] = $data['data']['login']['data']['user'];
 			$user['data']['token'] = $data['data']['login']['data']['token'];
-
 
 
 			// Send email
@@ -562,6 +566,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$optional_params = array(
 				'instagram_username'
 				, 'pinterest_username'
+                , 'twitter_username'
 				, 'gender'
 				, 'location'
 				, 'avatar'
@@ -607,6 +612,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                 , 'fb_uid'
 				, 'instagram_username'
 				, 'pinterest_username'
+                , 'twitter_username'
 				, 'profile_type'
 				//, 'like_notifications'
 				, 'notification_interval'
@@ -658,6 +664,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'instagram_import'
 				, 'instagram_username'
 				, 'pinterest_username'
+				, 'twitter_username'
 				, 'comment_notifications'
 				, 'profile_type'
 				//, 'comment_notifications'
@@ -1148,6 +1155,12 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			);
 			$post['data']['points_earned'] = $points_earned;
 			$post['data']['new_image_url'] = sprintf("%s/%s", trim($_REQUEST['source'], '/'), trim($_REQUEST['imagename'], '/'));
+
+            $task = new Tasks();
+            $taskData = Array();
+            $taskData['action_id'] = $post['data']['posting_id'];
+            $taskData['task'] = 'add_like';
+            $task->addTask($taskData);
 
 			// Update feed image (set status to 'Posted')
 			if (!empty($_REQUEST['repo_image_id'])) {

@@ -164,9 +164,14 @@ class Posting_Controller  extends  _Controller
     public function add_comment($request_data)
     {
         $this->load('Posting_Comment');
+        $this->load('Points');
 
         $posting = new Posting_Comment();
         $response = $posting->create($request_data);
+
+        $request_data['point_id'] = 3;
+        $request_data['points'] = 10;
+        $this->Points->addPoints($request_data);
 
         return  $response;
     }
@@ -237,13 +242,28 @@ class Posting_Controller  extends  _Controller
 
     }
 
+    public function get_reposters( $request_data = array() )
+    {
+
+        $posting = new Posting();
+        $response = $posting->getReposters($request_data);
+
+        return  $response;
+
+    }
+
 
     public function add_like( $request_data = array() )
     {
         $this->load('Posting_Like');
+        $this->load('Points');
 
          $posting_like = new Posting_Like();
          $data = $posting_like->addLike($request_data);
+
+        $request_data['point_id'] = 3;
+        $request_data['points'] = 3;
+        $this->Points->addPoints($request_data);
 
          return static::wrap_result(($posting_like->hasError()? false:true), $data, 200, $posting_like->getErrors() );
     }
@@ -274,13 +294,21 @@ class Posting_Controller  extends  _Controller
 
     public function repost($params = array() )
     {
+        $this->load('Points');
         $posting_model = new Posting();
         $posting_entity=  $posting_model->getPostingEntity($params);
+        $params['og_id'] = $posting_entity['user_id'];
 
         if($posting_entity)
         {
             $repost = new Posting_Repost();
             $repost_id = $repost->addRepost($params);
+
+            $request_data['point_id'] = 3;
+            $request_data['points'] = 5;
+            $request_data['user_id'] = $params['og_id'];
+            $this->Points->addPoints($request_data);
+
             return $repost_id;
         }
 

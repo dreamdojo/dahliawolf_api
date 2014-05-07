@@ -48,7 +48,8 @@ class User extends _Model
         'hash',
         'active',
         'newsletter',
-        'api_website_id'
+        'api_website_id',
+        'twitter_username'
     );
 
     protected $public_fields = array(
@@ -61,7 +62,8 @@ class User extends _Model
         'username',
         'email',
         'newsletter',
-        'api_website_id'
+        'api_website_id',
+        'twitter_username'
     );
 
 
@@ -83,7 +85,8 @@ class User extends _Model
                    'hash',
                    'active',
                    'newsletter',
-                   'api_website_id'
+                   'api_website_id',
+                   'twitter_username'
                );
 
             $this->public_fields = array(
@@ -96,7 +99,8 @@ class User extends _Model
                'username',
                'email_address',
                'newsletter',
-               'api_website_id'
+               'api_website_id',
+               'twitter_username'
            );
         }
 
@@ -131,6 +135,202 @@ class User extends _Model
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
 
         $logger->LogInfo("FETCH USER INFO: -h:{$this->db_host} -db:$this->db_name");
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function getProfileSettings($params) {
+        $data_table  = self::getDataTable();
+
+        $query = "
+            			SELECT profile_options.*
+            			FROM {$data_table} profile_options
+            			WHERE profile_options.user_id = :userId
+            		";
+
+        $params = array(
+            ':userId' => $params['user_id']
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function setProfileSettings($params) {
+        $data_table  = self::getDataTable();
+        $prof_setting = $params['profile_setting'];
+        $user_id = $params['user_id'];
+        $setting_val = $params['new_value'];
+        $query = "
+            			SELECT profile_options.*
+            			FROM {$data_table} profile_options
+            			WHERE profile_options.user_id = :userId
+            		";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+
+        if(empty($result)) {//Check to see if user profile settings exist, if not create
+            $query = "
+            			INSERT INTO {$data_table} profile_options (user_id)
+            			VALUES (:userId)
+            		";
+            $result = $this->query($query, $params);
+            $result['created'] = true;
+        }
+
+        $query = "
+            UPDATE profile_options
+            SET profile_options.".$prof_setting." = ".$setting_val."
+            WHERE profile_options.user_id = ".$user_id."
+        ";
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query);
+        return $result;
+    }
+
+    public function setCartId($params) {
+        $data_table  = self::getDataTable();
+
+        $query = "
+            UPDATE user_username
+            SET user_username.cart_id = :Id
+            WHERE user_username.user_id = :userId
+        ";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+            ':Id' => $params['cart_id']
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function setUserAuto($params) {
+        $data_table  = self::getDataTable();
+        $social = 'auto_'.$params['sync_action'].'_'.$params['platform'];
+        $query = "
+            UPDATE user_username
+            SET user_username.".$social." = :sync
+            WHERE user_username.user_id = :userId
+        ";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+            ':sync' => $params['sync']
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function setWolfTicketId($params) {
+        $data_table  = self::getDataTable();
+        $query = "
+            UPDATE user_username
+            SET user_username.wolf_ticket = :ticket
+            WHERE user_username.user_id = :userId
+        ";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+            ':ticket' => $params['ticket_id']
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function setProfileType($params) {
+        $data_table  = self::getDataTable();
+
+        $query = "
+            UPDATE user_username
+            SET user_username.profile_type = :profileType
+            WHERE user_username.user_id = :userId
+        ";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+            ':profileType' => $params['profile_type']
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function setOneClick($params) {
+        $data_table  = self::getDataTable();
+
+        $query = "
+            UPDATE user_username
+            SET user_username.one_click_checkout = :last4
+            WHERE user_username.user_id = :userId
+        ";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+            ':last4' => $params['last4']
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function setUserTumblrBlog($params) {
+        $data_table  = self::getDataTable();
+
+        $query = "
+            UPDATE user_username
+            SET user_username.auto_tumblr_blog = :tumblrName
+            WHERE user_username.user_id = :userId
+        ";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+            ':tumblrName' => $params['tumblr_blog_name']
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function setBillingAddress($params) {
+        $data_table  = self::getDataTable();
+
+        $query = "
+            UPDATE user_username
+            SET user_username.billing_address_id = :Id
+            WHERE user_username.user_id = :userId
+        ";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+            ':Id' => $params['billing_address_id']
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function setShippingAddress($params) {
+        $data_table  = self::getDataTable();
+
+        $query = "
+            UPDATE user_username
+            SET user_username.shipping_address_id = :Id
+            WHERE user_username.user_id = :userId
+        ";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+            ':Id' => $params['shipping_address_id']
+        );
 
         $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
         return $result;
@@ -182,7 +382,7 @@ class User extends _Model
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
 
         $query = "
-			SELECT user.user_id, user.first_name, user.last_name, user.username, user.email, user_username.avatar
+			SELECT user.user_id, user.first_name, user.last_name, user.username, user.email, user_username.*
 			FROM login_instance
 				/*INNER JOIN login_instance ON user.user_id = login_instance.user_id*/
 				INNER JOIN user ON user.user_id = login_instance.user_id
@@ -326,8 +526,6 @@ class User extends _Model
         }
     }
 
-
-
     public function get_sales($user_id, $summary=false, $id_shop=3, $id_lang=1 )
     {
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
@@ -417,7 +615,16 @@ class User extends _Model
 
     }
     
-    
+    public function getItemCount($user_id) {
+        $sql = "
+                SELECT  DISTINCT  COUNT(*) AS products
+                FROM offline_commerce_v1_2013.product
+                WHERE user_id = ".$user_id." AND active = 1
+                ";
+        $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $params);
+
+        return ($data && isset($data[0]) ? $data[0] : null  );
+    }
     
     public function getUserDetails($params = array()) 
     {
@@ -441,10 +648,11 @@ class User extends _Model
 
         $select_str = '';
         $join_str = '';
+        $join_str .= 'LEFT JOIN profile_options ON user_username.user_id = profile_options.user_id ';
         // Optional viewer_user_id
         if (!empty($params['viewer_user_id'])) {
             $select_str = ', IF(f.user_id IS NULL, 0, 1) AS is_followed';
-            $join_str = 'LEFT JOIN follow AS f ON user_username.user_id = f.user_id AND f.follower_user_id = :viewer_user_id';
+            $join_str .= 'LEFT JOIN follow AS f ON user_username.user_id = f.user_id AND f.follower_user_id = :viewer_user_id';
             $values[':viewer_user_id'] = $params['viewer_user_id'];
         }
 
@@ -468,7 +676,10 @@ class User extends _Model
             FROM follow
             WHERE follow.user_id = user_username.user_id
         ) AS followers
-        , (
+        ,
+         profile_options.*
+        , user_username.*
+        /*, (
             SELECT COUNT(*)
             FROM posting
             WHERE posting.user_id = user_username.user_id
@@ -483,7 +694,7 @@ class User extends _Model
             FROM posting_like
                 INNER JOIN posting ON posting_like.posting_id = posting.posting_id
             WHERE posting.user_id = user_username.user_id
-        ) AS likes
+        ) AS likes*/
         ,(
               SELECT
               ml.name
@@ -493,7 +704,7 @@ class User extends _Model
               order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
               LIMIT 1
           ) AS membership_level
-          ,(
+          /*,(
               SELECT COUNT(*)
               FROM posting
               WHERE posting.user_id = user_username.user_id
@@ -520,7 +731,7 @@ class User extends _Model
             FROM posting
             WHERE posting.user_id = user_username.user_id
                 AND posting.deleted IS NULL
-        ) AS posts_total
+        ) AS posts_total*/
 
             {$select_str}
 
@@ -539,7 +750,6 @@ class User extends _Model
 
         try {
            $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $values);
-
            return ($data && isset($data[0]) ? $data[0] : null  );
        } catch (Exception $e) {
             $logger->LogInfo("can not get user info: " . $e->getMessage() );
@@ -721,6 +931,8 @@ class User extends _Model
         	user_username.user_username_id,
         	user_username.user_id,
         	user_username.username,
+        	user_username.first_name,
+        	user_username.last_name,
         	user_username.points,
         	user_username.location,
         	user_username.fb_uid,
@@ -739,6 +951,16 @@ class User extends _Model
         		order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
         		LIMIT 1
         	) AS membership_level
+        	/*, (
+                SELECT COUNT(*)
+                FROM follow
+                WHERE follow.follower_user_id = user_username.user_id
+            ) AS following
+            , (
+                SELECT COUNT(*)
+                FROM follow
+                WHERE follow.user_id = user_username.user_id
+            ) AS followers*/
 
         	{$is_followed}
 
@@ -819,6 +1041,8 @@ class User extends _Model
             user_username.user_username_id,
             user_username.points,
             user_username.user_id,
+            user_username.first_name,
+        	user_username.last_name,
             user_username.location,
             user_username.fb_uid,
             user_username.avatar,
@@ -923,6 +1147,8 @@ class User extends _Model
             user_username.user_id,
             user_username.username,
             user_username.points,
+            user_username.first_name,
+        	user_username.last_name,
             user_username.location,
             user_username.fb_uid,
             user_username.avatar,

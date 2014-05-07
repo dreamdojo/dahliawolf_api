@@ -107,7 +107,7 @@ class login {
 		//get login info
 		if ($token !== false) {
 			$query = '
-				SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id, login_instance.token, user_username.avatar
+				SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id, login_instance.token, user_username.*
 				FROM user 
 				INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id 
 				INNER JOIN login_instance ON login_instance.user_id = user.user_id
@@ -142,10 +142,11 @@ class login {
 				$password = $this->getCookiePassword();
 				if ($password && STOREPASSWORDCOOKIE === true) { // if password is saved and STOREPASSWORDCOOKIE flag is set
 					$query = '
-						SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id, login_instance.token 
+						SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id, login_instance.token, user_username.*
 						FROM user 
 						LEFT JOIN login_instance ON login_instance.user_id = user.user_id
-						INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id 
+						INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id
+						LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = user.user_id
 						WHERE user.email = :email AND user.active = :active
 					';
 					$values = array(
@@ -373,7 +374,7 @@ class login {
 		
 		$query = '
 			SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id
-			       ,user_username.avatar
+			       ,user_username.*
 			FROM user 
 			INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id
 			LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = user.user_id
