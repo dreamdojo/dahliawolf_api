@@ -74,6 +74,7 @@ class Posting_Like extends _Model
             // Log activity
             $posting_owner_user_id = self::getUserId($data);
             self::logActivity($posting_owner_user_id, 9, 'liked your post', 'posting_like', $insert_id );
+
             return array(
                     strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
                     //'model_data' => $data
@@ -131,7 +132,6 @@ class Posting_Like extends _Model
 
         return array(true, true);
     }
-
 
     protected function logActivity($user_id, $activity_id, $note, $entity = NULL, $entity_id = NULL)
     {

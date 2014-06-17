@@ -38,6 +38,7 @@ $include_paths[] = sprintf("%s/", realpath('./lib/mandrill'));
 $include_paths[] = sprintf("%s/", realpath('./lib/mailchimp'));
 $include_paths[] = sprintf("%s/", realpath('./'));
 set_include_path(implode(":", $include_paths));
+//require_once 'lib/mandrill-api-php/src/Mandrill.php'; //Not required with Composer
 
 
 if(isset($_GET['t'])){
@@ -77,6 +78,183 @@ function delete_user_point($data) {
 	);
 	$User_Point->delete_user_point($params);
 	unset($User_Point);
+}
+
+function send_welcome_email($email, $username) {
+    try {
+        $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
+        $template_name = 'Initial Signup';
+        $template_content = null;
+        $message = array(
+            'to' => array(
+                array(
+                    'email' => $email,
+                    'name' => '',
+                    'type' => 'to'
+                )
+            ),
+            'headers' => array('Reply-To' => 'hello@dahliawolf.com'),
+            'important' => false,
+            'track_opens' => true,
+            'track_clicks' => true,
+            'auto_text' => null,
+            'auto_html' => null,
+            'inline_css' => null,
+            'url_strip_qs' => null,
+            'preserve_recipients' => null,
+            'view_content_link' => null,
+            'bcc_address' => null,
+            'tracking_domain' => null,
+            'signing_domain' => null,
+            'return_path_domain' => null,
+            'merge' => false,
+            'global_merge_vars' => array(
+                array(
+                    'name' => 'merge1',
+                    'content' => 'merge1 content'
+                )
+            ),
+            'merge_vars' => array(
+                array(
+                    'rcpt' => $email,
+                    'vars' => array(
+                        array(
+                            'name' => 'USERNAME',
+                            'content' => $username
+                        )
+                    )
+                )
+            )
+        );
+        $async = false;
+        $ip_pool = 'Main Pool';
+        $send_at = null;
+        $result = $mandrill->messages->sendTemplate($template_name, $template_content, $message, $async, $ip_pool, $send_at);
+    } catch(Mandrill_Error $e) {
+        // Mandrill errors are thrown as exceptions
+        echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
+        // A mandrill error occurred: Mandrill_Unknown_Subaccount - No subaccount exists with the id 'customer-123'
+        throw $e;
+    }
+    return;
+}
+
+function send_one_hour_email($email, $username) {
+    try {
+        $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
+        $template_name = 'Getting Started';
+        $template_content = null;
+        $message = array(
+            'to' => array(
+                array(
+                    'email' => $email,
+                    'name' => '',
+                    'type' => 'to'
+                )
+            ),
+            'headers' => array('Reply-To' => 'hello@dahliawolf.com'),
+            'important' => false,
+            'track_opens' => true,
+            'track_clicks' => true,
+            'auto_text' => null,
+            'auto_html' => null,
+            'inline_css' => null,
+            'url_strip_qs' => null,
+            'preserve_recipients' => null,
+            'view_content_link' => null,
+            'bcc_address' => null,
+            'tracking_domain' => null,
+            'signing_domain' => null,
+            'return_path_domain' => null,
+            'merge' => false,
+            'global_merge_vars' => array(
+                array(
+                    'name' => 'merge1',
+                    'content' => 'merge1 content'
+                )
+            ),
+            'merge_vars' => array(
+                array(
+                    'rcpt' => $email,
+                    'vars' => array(
+                        array(
+                            'name' => 'USERNAME',
+                            'content' => $username
+                        )
+                    )
+                )
+            )
+        );
+        $async = false;
+        $ip_pool = 'Main Pool';
+        $send_at = $send_time = gmdate('Y-m-d H:i:s', time()+(60*60));
+        $result = $mandrill->messages->sendTemplate($template_name, $template_content, $message, $async, $ip_pool, $send_at);
+    } catch(Mandrill_Error $e) {
+        // Mandrill errors are thrown as exceptions
+        echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
+        // A mandrill error occurred: Mandrill_Unknown_Subaccount - No subaccount exists with the id 'customer-123'
+        throw $e;
+    }
+    return;
+}
+
+function send_four_hour_email($email, $username) {
+    try {
+        $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
+        $template_name = 'Follow New People';
+        $template_content = null;
+        $message = array(
+            'to' => array(
+                array(
+                    'email' => $email,
+                    'name' => '',
+                    'type' => 'to'
+                )
+            ),
+            'headers' => array('Reply-To' => 'hello@dahliawolf.com'),
+            'important' => false,
+            'track_opens' => true,
+            'track_clicks' => true,
+            'auto_text' => null,
+            'auto_html' => null,
+            'inline_css' => null,
+            'url_strip_qs' => null,
+            'preserve_recipients' => null,
+            'view_content_link' => null,
+            'bcc_address' => null,
+            'tracking_domain' => null,
+            'signing_domain' => null,
+            'return_path_domain' => null,
+            'merge' => false,
+            'global_merge_vars' => array(
+                array(
+                    'name' => 'merge1',
+                    'content' => 'merge1 content'
+                )
+            ),
+            'merge_vars' => array(
+                array(
+                    'rcpt' => $email,
+                    'vars' => array(
+                        array(
+                            'name' => 'USERNAME',
+                            'content' => $username
+                        )
+                    )
+                )
+            )
+        );
+        $async = false;
+        $ip_pool = 'Main Pool';
+        $send_at = $send_time = gmdate('Y-m-d H:i:s', time()+(60*60*4));
+        $result = $mandrill->messages->sendTemplate($template_name, $template_content, $message, $async, $ip_pool, $send_at);
+    } catch(Mandrill_Error $e) {
+        // Mandrill errors are thrown as exceptions
+        echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
+        // A mandrill error occurred: Mandrill_Unknown_Subaccount - No subaccount exists with the id 'customer-123'
+        throw $e;
+    }
+    return;
 }
 
 function check_required($keys) {
@@ -514,9 +692,12 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
 			// Send email
 			unset($User);
-			$email_template = new Email();
-            $email_template->setVar('user_name', "{$_REQUEST['username']}" );
-            $email_template->email('signup', $user_id );
+			//$email_template = new Email();
+            //$email_template->setVar('user_name', "{$_REQUEST['username']}" );
+            //$email_template->email('signup', $user_id );
+            send_welcome_email($_REQUEST['email'], $_REQUEST['username']);
+            send_one_hour_email($_REQUEST['email'], $_REQUEST['username']);
+            send_four_hour_email($_REQUEST['email'], $_REQUEST['username']);
 
             /*
             //schedule :)
@@ -774,6 +955,21 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			echo json_pretty(json_encode(($user)));
 			return;
 		}
+        else if ($_REQUEST['function'] == 'test_email') {
+            check_required(
+                array(
+                    'email_address',
+                    'username',
+                )
+            );
+
+            $params = array(
+                'email_address' => !empty($_REQUEST['email_address']) ? $_REQUEST['email_address'] : NULL,
+                'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
+            );
+
+            send_one_hour_email($params['email_address'], $params['username']);
+        }
 		else if ($_REQUEST['function'] == 'get_following') {
 			$params = array(
 				'where' => array(

@@ -19,7 +19,6 @@ class User_Controller extends _Controller {
 		$this->PasswordHash = new PasswordHash(8, FALSE);
 	}
 
-
     public function token_login($params = array()) {
 		// Validations
         /*
@@ -307,6 +306,70 @@ class User_Controller extends _Controller {
         return static::wrap_result(true, $result);
     }
 
+    public function set_shop_setting($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'shop_setting' => array(
+                'label' => 'profile_setting',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'new_value' => array(
+                'label' => 'New Value',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setShopSettings($params);
+
+        return static::wrap_result(true, $result);
+    }
+
+    public function set_mail_setting($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'mail_setting' => array(
+                'label' => 'mail_setting',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            ),
+            'new_value' => array(
+                'label' => 'New Value',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setMailSettings($params);
+
+        return static::wrap_result(true, $result);
+    }
+
     public function set_profile_type($params = array()) {
         $input_validations = array(
             'user_id' => array(
@@ -497,6 +560,26 @@ class User_Controller extends _Controller {
         $user = new User();
 
         $result = $user->setWolfTicketId($params);
+        $result['ticket_id'] = $params['ticket_id'];
+        return static::wrap_result(true, $result);
+    }
+
+    public function set_user_wolf_account($params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_set' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $user = new User();
+
+        $result = $user->setWolfAccount($params);
         $result['ticket_id'] = $params['ticket_id'];
         return static::wrap_result(true, $result);
     }
@@ -959,15 +1042,62 @@ class User_Controller extends _Controller {
 
         $total_sales = $dahlia_user->get_sales( $data['user_id'] );
         $total_items = $dahlia_user->getItemCount($data['user_id']);
+        //$total_orders = $dahlia_user->getOrderCount($data['user_id']);
+
+        if(isset($params['dashboard'])) {
+            $data['customers'] = $dahlia_user->getCustomers($data['user_id']);
+            $data['commissions'] = $dahlia_user->getCommisionList($data['user_id']);
+            $data['sales'] = $dahlia_user->getUserSales($data['user_id']);
+        }
 
         $data['sales_total'] =  $total_sales['sales_total'];
         $data['shop_items'] =  $total_items['products'];
 
-        $data['email'] = null;
-        $data['email_address'] = null;
+        if(!isset($params['all_data'])) {
+            $data['email'] = null;
+            $data['email_address'] = null;
+        }
         return $data;
 		return static::wrap_result(true, $data);
 	}
+
+    public function get_user_shop($params = array()) {
+        //$this->load('User');
+
+        // User authentication: check login_instance
+        $is_user_edit = array_key_exists('token', $params);
+        if ($is_user_edit) {
+            $this->validate_login_instance($params['user_id'], $params['token']);
+        }
+
+        if(isset($params['username']))
+        {
+            //$where_params = array();
+            $where_params = array(
+                'username' => $params['username']
+            );
+        }else{
+            $where_params = array(
+                'user_id' => $params['user_id']
+            );
+        }
+
+        // User
+        $user = new User();
+
+        $data = $user->getUserShop($params );
+
+        if (empty($data)) {
+            _Model::$Exception_Helper->request_failed_exception('User could not be found.');
+        }
+
+        $dahlia_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
+
+        $data['email'] = null;
+        $data['email_address'] = null;
+        return $data;
+        return static::wrap_result(true, $data);
+    }
 
     public function get_user_details()
     {
@@ -1176,14 +1306,17 @@ class User_Controller extends _Controller {
     public function follow($request_data)
     {
         $this->load('Points');
+        $this->load('Email');
         $follow = new Follow( DW_API_HOST, DW_API_USER, DW_API_PASSWORD, DW_API_DATABASE);
         $data  = $follow->followUser($request_data);
 
         if(!$follow->hasError()) {
             $request_data['point_id'] = 3;
             $request_data['points'] = 20;
+            $id = $request_data['user_id'];
             $request_data['user_id'] = $request_data['user_follow_id'];
             $this->Points->addPoints($request_data);
+            $this->Email->send_transactional_follower_email($request_data['user_follow_id'], $id);
         }
 
         return static::wrap_result( ($follow->hasError()? false:true), $data, 200, $follow->getErrors() );
@@ -1377,29 +1510,6 @@ class User_Controller extends _Controller {
 
     public function get_top_following( $params = array() )
     {
-        /*$cache_key_params = self::getCacheParams($params, __FUNCTION__);
-
-        if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
-        {
-            $cached_obj = json_decode($cached_content);
-            $response = $cached_obj;
-
-            if(!$cached_obj->object_id)
-            {
-                $cache_key = self::getCacheKey($cache_key_params);
-                $cached_obj->object_id = base64_encode($cache_key);
-            }
-
-            //// return else keep looking.
-            if( $cached_obj && count($cached_obj->users) > 1 )
-            {
-                //self::trace("self::getCachedContent" . $cached_content);
-                return $response;
-            }
-
-        }*/
-
-        /** @var User $dw_user */
         $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
 
         $params['limit'] = isset($params['limit']) ? $params['limit'] : 5;
@@ -1409,23 +1519,33 @@ class User_Controller extends _Controller {
         }
 
         $user_data = $dw_user->getTopFollowingByUser($params);
+
         foreach($user_data as $x=>$user) {
             $user_data[$x]['itemCount'] = $dw_user->getItemCount($user['user_id']);
         }
 
-        //// get users posts
-        //if(is_array($user_data))  self::getUsersPosts($user_data, $params);
-
-        //$cache_key = self::getCacheKey($cache_key_params);
-        //$response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
         $response = array('users' => $user_data );
 
-        //self::setUseCache(true);
-        //cache content
-        /*if( $user_data && !$user_data['error'] )
-        {
-            self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*2);
+        return $response;
+    }
+
+    public function test_get_top_following( $params = array() )
+    {
+        $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
+
+        $params['limit'] = isset($params['limit']) ? $params['limit'] : 5;
+
+        if (!empty($params['offset'])) {
+            $params['offset'] = $params['offset'];
+        }
+
+        $user_data = $dw_user->getTestTopFollowingByUser($params);
+
+        /*foreach($user_data as $x=>$user) {
+            $user_data[$x]['itemCount'] = $dw_user->getItemCount($user['user_id']);
         }*/
+
+        $response = array('users' => $user_data );
 
         return $response;
     }

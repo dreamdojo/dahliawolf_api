@@ -11,9 +11,9 @@ class Image_Bank_Controller extends _Controller
         $random_seed = rand(1,5);
         $params['random_seed'] = $random_seed;
 
-        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
+        //$cache_key_params = self::getCacheParams($params, __FUNCTION__);
 
-        if($cached_content = self::getCachedContent($cache_key_params) )
+        /*if($cached_content = self::getCachedContent($cache_key_params) )
         {
             $cached_images_obj = json_decode($cached_content);
 
@@ -29,7 +29,7 @@ class Image_Bank_Controller extends _Controller
                 return $response;
             }
 
-        }
+        }*/
 
         //// not cached.. force cache..
         //self::setUseCache(true);
@@ -38,15 +38,14 @@ class Image_Bank_Controller extends _Controller
         $image_bank = new Image_Bank();
 
         $image_feed = $image_bank->getFeedByIds($params);
-        $cache_key = self::getCacheKey($cache_key_params);
 
-        $response = array('object_id' => base64_encode($cache_key), 'images' => $image_feed);
+        $response = array('images' => $image_feed);
 
-        if(!$image_feed['error'] && count($image_feed) > 0 ){
+        /*if(!$image_feed['error'] && count($image_feed) > 0 ){
             //just cache it!!
             self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR);
 
-        }
+        }*/
 
         return $response;
     }

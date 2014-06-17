@@ -185,9 +185,75 @@ class User extends _Model
 
         $query = "
             UPDATE profile_options
-            SET profile_options.".$prof_setting." = ".$setting_val."
+            SET profile_options.".$prof_setting." = '".$setting_val."'
             WHERE profile_options.user_id = ".$user_id."
         ";
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query);
+        return $result;
+    }
+
+    public function setMailSettings($params) {
+        $data_table  = self::getDataTable();
+        $mail_setting = 'mail_'.$params['mail_setting'];
+        $user_id = $params['user_id'];
+        $setting_val = $params['new_value'];
+
+        $query = "
+            UPDATE user_username
+            SET user_username.".$mail_setting." = '".$setting_val."'
+            WHERE user_username.user_id = ".$user_id."
+        ";
+
+        if(isset($_GET['t']))
+        {
+            echo sprintf("query: \n%s\n", $query);
+            //echo sprintf("sql binds: \n%s\n", var_export($values, true) );
+            //echo sprintf("params: \n%s\n", var_export($params, true));
+        }
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query);
+        return $result;
+    }
+
+    public function setShopSettings($params) {
+        $data_table  = self::getDataTable();
+        $shop_setting = $params['shop_setting'];
+        $user_id = $params['user_id'];
+        $setting_val = $params['new_value'];
+        $query = "
+            			SELECT shop_options.*
+            			FROM {$data_table} shop_options
+            			WHERE shop_options.user_id = :userId
+            		";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+
+        if(empty($result)) {//Check to see if user profile settings exist, if not create
+            $query = "
+            			INSERT INTO {$data_table} shop_options (user_id)
+            			VALUES (:userId)
+            		";
+            $result = $this->query($query, $params);
+            $result['created'] = true;
+        }
+
+        $query = "
+            UPDATE shop_options
+            SET shop_options.".$shop_setting." = '".$setting_val."'
+            WHERE shop_options.user_id = ".$user_id."
+        ";
+
+        if(isset($_GET['t']))
+        {
+            echo sprintf("query: \n%s\n", $query);
+            //echo sprintf("sql binds: \n%s\n", var_export($values, true) );
+            //echo sprintf("params: \n%s\n", var_export($params, true));
+        }
 
         $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query);
         return $result;
@@ -234,6 +300,23 @@ class User extends _Model
         $query = "
             UPDATE user_username
             SET user_username.wolf_ticket = :ticket
+            WHERE user_username.user_id = :userId
+        ";
+
+        $params = array(
+            ':userId' => $params['user_id'],
+            ':ticket' => $params['ticket_id']
+        );
+
+        $result = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $params);
+        return $result;
+    }
+
+    public function setWolfAccount($params) {
+        $data_table  = self::getDataTable();
+        $query = "
+            UPDATE user_username
+            SET user_username.wolf_account = :ticket
             WHERE user_username.user_id = :userId
         ";
 
@@ -407,6 +490,19 @@ class User extends _Model
 
         try {
             $user = self::$dbs[$this->db_host][$this->db_name]->select_single($query, $values);
+
+            try{
+                $sql = "
+                  INSERT INTO admin_offline_v1_2013.login_instance (user_id, token)
+                  VALUES (".$user['user_id'].", '".$token."')
+                ";
+
+                $values = array(
+                    //'last_login' => date('Y-m-d H:i:s', TIME),
+                    //':userId'=>2418
+                );
+                $result = $this->query($sql, $values);
+            } catch(Exception $e) {}
 
             return $user;
         } catch (Exception $e) {
@@ -625,6 +721,25 @@ class User extends _Model
 
         return ($data && isset($data[0]) ? $data[0] : null  );
     }
+
+    public function getOrderCount($user_id) {
+        $q = "
+            SELECT customer.id_customer
+            WHERE customer.user_id = ".$user_id."
+            FROM offline_commerce_v1_2013.customer
+        ";
+        $data = self::$dbs[$this->db_host][$this->db_name]->exec($q, $params);
+
+
+        $sql = "
+                SELECT  DISTINCT  COUNT(*) AS products
+                FROM offline_commerce_v1_2013.product
+                WHERE user_id = ".$user_id." AND active = 1
+                ";
+        //$data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $params);
+
+        return ($data && isset($data[0]) ? $data[0] : null  );
+    }
     
     public function getUserDetails($params = array()) 
     {
@@ -679,22 +794,32 @@ class User extends _Model
         ,
          profile_options.*
         , user_username.*
-        /*, (
+        , (
             SELECT COUNT(*)
             FROM posting
             WHERE posting.user_id = user_username.user_id
-        ) AS posts
+        ) AS total_posts
         , (
+            SELECT COUNT(*)
+            FROM offline_commerce_v1_2013.favorite_product
+            WHERE favorite_product.id_customer = user_username.user_id
+        ) AS wishlist_count
+        , (
+            SELECT COUNT(*)
+            FROM offline_commerce_v1_2013.favorite_product
+            WHERE favorite_product.id_customer = user_username.user_id
+        ) AS total_wishlist
+        /*, (
             SELECT COUNT(*)
             FROM comment
             WHERE comment.user_id = user_username.user_id
-        ) AS comments
+        ) AS comments*/
         , (
             SELECT COUNT(*)
             FROM posting_like
                 INNER JOIN posting ON posting_like.posting_id = posting.posting_id
             WHERE posting.user_id = user_username.user_id
-        ) AS likes*/
+        ) AS total_loves
         ,(
               SELECT
               ml.name
@@ -755,6 +880,76 @@ class User extends _Model
             $logger->LogInfo("can not get user info: " . $e->getMessage() );
             self::$Exception_Helper->server_error_exception('Unable to get user details.');
        }
+    }
+
+    public function getUserShop($params = array())
+    {
+        $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
+
+        //$logger->LogInfo("getUserDetails USER INFO: -h:{$this->db_host} -db:$this->db_name");
+
+        $error = NULL;
+
+        $where_str = '';
+        $values = array();
+        // user_id or username
+        if (!empty($params['user_id'])) {
+            $where_str = 'user_username.user_id = :user_id';
+            $values[':user_id'] = $params['user_id'];
+        }
+        else {
+            $where_str = 'username = :username';
+            $values[':username'] = !empty($params['username']) ? $params['username'] : '';
+        }
+
+        $select_str = '';
+        $join_str = '';
+        $join_str .= 'LEFT JOIN shop_options ON user_username.user_id = shop_options.user_id ';
+        // Optional viewer_user_id
+        if (!empty($params['viewer_user_id'])) {
+            $select_str = ', IF(f.user_id IS NULL, 0, 1) AS is_followed';
+            $join_str .= 'LEFT JOIN follow AS f ON user_username.user_id = f.user_id AND f.follower_user_id = :viewer_user_id';
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
+
+        $sql = "SELECT
+          user_username.*
+        , (
+            SELECT COUNT(*)
+            FROM follow
+            WHERE follow.follower_user_id = user_username.user_id
+        ) AS following
+        , (
+            SELECT COUNT(*)
+            FROM follow
+            WHERE follow.user_id = user_username.user_id
+        ) AS followers
+        ,
+         shop_options.*
+        , user_username.*
+
+        {$select_str}
+
+        FROM user_username
+            {$join_str}
+        WHERE {$where_str}
+        LIMIT 1";
+
+
+        if(isset($_GET['t']))
+        {
+            echo sprintf("query: \n%s\n", $sql);
+            echo sprintf("sql binds: \n%s\n", var_export($values, true) );
+            echo sprintf("params: \n%s\n", var_export($params, true));
+        }
+
+        try {
+            $data = self::$dbs[$this->db_host][$this->db_name]->exec($sql, $values);
+            return ($data && isset($data[0]) ? $data[0] : null  );
+        } catch (Exception $e) {
+            $logger->LogInfo("can not get user info: " . $e->getMessage() );
+            self::$Exception_Helper->server_error_exception('Unable to get user details.');
+        }
     }
 
 
@@ -937,12 +1132,13 @@ class User extends _Model
         	user_username.location,
         	user_username.fb_uid,
         	user_username.avatar,
+        	user_username.verified,
 
         	rank.rank
 
         	{$select_str}
 
-        	,(
+        	/*,(
         		SELECT
         		ml.name
         		FROM membership_level ml, user_username user
@@ -951,7 +1147,7 @@ class User extends _Model
         		order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
         		LIMIT 1
         	) AS membership_level
-        	/*, (
+        	, (
                 SELECT COUNT(*)
                 FROM follow
                 WHERE follow.follower_user_id = user_username.user_id
@@ -998,6 +1194,9 @@ class User extends _Model
         }
 
         $result = $this->fetch($following_query, $values);
+
+        foreach ($result->data->get_top_users->users as $key=>$user)
+            $result->data->get_top_users->users[$key]['test'] = 'blop';
 
 
         if ($result === false) {
@@ -1046,12 +1245,13 @@ class User extends _Model
             user_username.location,
             user_username.fb_uid,
             user_username.avatar,
+            user_username.verified,
 
             rank.*
 
             {$select_str}
 
-            ,(
+            /*,(
                 SELECT
                 ml.name
                 FROM membership_level ml, user_username user
@@ -1059,7 +1259,7 @@ class User extends _Model
                     AND CAST(user.points AS SIGNED)  / ml.points > 1
                 order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
                 LIMIT 1
-            ) AS membership_level
+            ) AS membership_level*/
 
 
             FROM user_username
@@ -1114,7 +1314,151 @@ class User extends _Model
 
     }
 
+    public function getTestTopFollowingByUser( $params = array() )
+    {
+        $error = NULL;
 
+        $select_str = '';
+        $join_str = '';
+        $where_str = '';
+
+        $values = array();
+        //$values[':viewer_user_id'] = $params['viewer_user_id'];
+        $values[':user_id'] = $params['user_id'];
+
+        if (!empty($params['viewer_user_id'])) {
+            $select_str .= ', IF(following.user_id IS NULL, 0, 1) AS is_followed';
+            $join_str .= 'LEFT JOIN follow AS following ON following.user_id = users.user_id
+                AND following.follower_user_id = :viewer_user_id';
+
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
+
+        $offset_string = $this->generate_limit_offset_str($params);
+
+        $following_query = "
+            SELECT users.*
+            {$select_str}
+            , (SELECT COUNT(*)
+                FROM follow
+                WHERE follow.follower_user_id = users.user_id
+            ) AS following
+            , (SELECT COUNT(*)
+                FROM follow
+                WHERE follow.user_id = users.user_id
+            ) AS followers
+            FROM
+                ( SELECT followers.user_id, user_username.username, user_username.avatar, user_username.first_name, user_username.last_name
+                FROM follow AS followers
+                  LEFT JOIN user_username ON followers.user_id = user_username.user_id
+                WHERE followers.follower_user_id = :user_id
+                GROUP BY user_id
+                {$offset_string} ) AS users
+                {$join_str}
+        ";
+
+
+        if(isset($_GET['t'])) {
+            echo "query:\n";
+            var_dump($following_query);
+            echo "values:\n";
+            var_dump($values);
+            echo "params:\n";
+            var_dump($params);
+            echo "here here!!";
+
+        }
+
+        $result = $this->fetch($following_query, $values);
+
+
+        if ($result === false) {
+            if(isset($_GET['t'])) echo $this->error;
+            return array('error' => 'Could not get top following.');
+        }
+
+
+        return $result;
+
+    }
+
+    public function getCustomers($user_id) {
+        $query = "
+            SELECT distinct customers.*, user_username.username, user_username.avatar
+            FROM dahliawolf_v1_2013.customers
+            LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = customers.customer_id
+            WHERE customers.user_id = :userId
+            GROUP BY customers.customer_id
+        ";
+
+        $values = Array(
+            ':userId' => $user_id
+        );
+
+        $result = $this->fetch($query, $values);
+
+
+        if ($result === false) {
+            if(isset($_GET['t'])) echo $this->error;
+            return array('error' => 'Could not get top following.');
+        }
+
+
+        return $result;
+
+    }
+
+    public function getUserSales($user_id) {
+        $query = "
+            SELECT customers.*, user_username.username,user_username.avatar, product.price,product_file.product_file_id, product_lang.name
+            FROM dahliawolf_v1_2013.customers
+            LEFT JOIN offline_commerce_v1_2013.product ON product.id_product = customers.id_product
+            LEFT JOIN offline_commerce_v1_2013.product_file ON product_file.product_id = customers.id_product
+            LEFT JOIN offline_commerce_v1_2013.product_lang ON product_lang.id_product = customers.id_product
+            LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = customers.customer_id
+            WHERE customers.user_id = :userId
+            GROUP BY customers.index
+        ";
+
+        $values = Array(
+            ':userId' => $user_id
+        );
+
+        $result = $this->fetch($query, $values);
+
+
+        if ($result === false) {
+            if(isset($_GET['t'])) echo $this->error;
+            return array('error' => 'Could not get top following.');
+        }
+
+
+        return $result;
+
+    }
+    public function getCommisionList($user_id) {
+        $query = "
+            SELECT commission.*
+            FROM offline_commerce_v1_2013.commission
+            WHERE commission.user_id = :userId
+        ";
+
+        $values = Array(
+            ':userId' => $user_id
+        );
+
+        $result = $this->fetch($query, $values);
+
+
+        if ($result === false) {
+            if(isset($_GET['t'])) echo $this->error;
+            return array('error' => 'Could not get top following.');
+        }
+
+
+        return $result;
+
+    }
 
     public function getTopFollowersByUser( $params = array() )
     {
@@ -1152,12 +1496,13 @@ class User extends _Model
             user_username.location,
             user_username.fb_uid,
             user_username.avatar,
+            user_username.verified,
 
             rank.rank
 
             {$select_str}
 
-            ,(
+            /*,(
                 SELECT
                 ml.name
                 FROM membership_level ml, user_username user
@@ -1165,7 +1510,7 @@ class User extends _Model
                     AND CAST(user.points AS SIGNED)  / ml.points > 1
                 order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
                 LIMIT 1
-            ) AS membership_level
+            ) AS membership_level*/
 
 
             FROM user_username

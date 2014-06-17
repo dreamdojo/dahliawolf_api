@@ -7,6 +7,7 @@ class Activity_Log extends _Model {
 
 
     protected $user_last_log_time = null;
+    protected $getLimit = 3;
 
     public function __construct($db_host = ADMIN_API_HOST, $db_user = ADMIN_API_USER, $db_password = ADMIN_API_PASSWORD, $db_name = ADMIN_API_DATABASE)
     {
@@ -40,6 +41,7 @@ class Activity_Log extends _Model {
 				' . (!empty($api_website_id) ? 'AND activity_log.api_website_id = :api_website_id' : '') . '
 				' . (!empty($activity_id) ? 'AND activity_log.activity_id = :activity_id' : '') . '
 			ORDER BY activity_log.created DESC
+			LIMIT 20
 		';
 		$values = array(
 			':user_id' => $user_id
@@ -158,7 +160,7 @@ class Activity_Log extends _Model {
 		}
 	}
 
-	public function get_commented_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array()) {
+	public function get_commented_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array(), $limit = false) {
 
         $where_str = '';
         $select_str = '
@@ -178,6 +180,9 @@ class Activity_Log extends _Model {
             }
 
         }
+        $limitStr = '';
+        if($limit)
+             $limitStr = 'LIMIT '.$this->getLimit;
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
@@ -206,6 +211,7 @@ class Activity_Log extends _Model {
 				AND activity_log.entity = :entity
 				{$where_str}
 			ORDER BY activity_log.created DESC
+			{$limitStr}
 		";
 
 		$values = array(
@@ -234,7 +240,7 @@ class Activity_Log extends _Model {
 		}
 	}
 
-	public function get_liked_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+	public function get_liked_posts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array(), $limit = false)
     {
         $where_str = '';
 
@@ -255,6 +261,9 @@ class Activity_Log extends _Model {
             }
 
         }
+        $limitStr = 'LIMIT 50';
+        if($limit)
+            $limitStr = 'LIMIT '.$this->getLimit;
 
         $viewer_user_id = $request_params['viewer_user_id'];
         if (!empty($viewer_user_id)) {
@@ -283,6 +292,7 @@ class Activity_Log extends _Model {
 				AND activity_log.entity = :entity
 				{$where_str}
 			ORDER BY activity_log.created DESC
+			{$limitStr}
 		";
 		$values = array(
 			':user_id' => $user_id,
@@ -310,7 +320,7 @@ class Activity_Log extends _Model {
 		}
 	}
 
-	public function get_followers_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+	public function get_followers_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array(), $limit = false)
     {
         $select_str = '
 				activity_log.activity_log_id, activity_log.created, activity_log.note, activity_log.entity, activity_log.entity_id, activity_log.read,
@@ -340,6 +350,10 @@ class Activity_Log extends _Model {
             $join_str = 'INNER JOIN dahliawolf_v1_2013.follow ON activity_log.entity_id = follow.follow_id';
         }
 
+        $limitStr = '';
+        if($limit)
+            $limitStr = 'LIMIT '.$this->getLimit;
+
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
 
 		// Get rows
@@ -358,6 +372,7 @@ class Activity_Log extends _Model {
 				AND activity_log.entity = :entity
 				{$where_str}
 			ORDER BY activity_log.created DESC
+			{$limitStr}
 		";
 		$values = array(
 			':user_id' => $user_id,
@@ -385,7 +400,7 @@ class Activity_Log extends _Model {
 		}
 	}
 
-    public function get_reposts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+    public function get_reposts_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array(), $limit = false)
     {
         $where_str = '';
 
@@ -415,6 +430,9 @@ class Activity_Log extends _Model {
                     AND follow.follower_user_id = activity_log.user_id )
             ';
         }
+        $limitStr = '';
+        if($limit)
+            $limitStr = 'LIMIT '.$this->getLimit;
 
         if( !empty($request_params['new_only']) ) $where_str .= self::addUserLast($user_id);
 
@@ -434,6 +452,7 @@ class Activity_Log extends _Model {
 				AND activity_log.entity = :entity
 				{$where_str}
 			ORDER BY activity_log.created DESC
+			{$limitStr}
 		";
         $values = array(
             ':user_id' => $user_id,
@@ -461,7 +480,7 @@ class Activity_Log extends _Model {
         }
     }
 
-    public function get_sales_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array())
+    public function get_sales_log($user_id, $api_website_id, $unread_count = false, $unpreviewed_count = false, $request_params = array(), $limit = false)
     {
         $where_str = '';
 
@@ -474,6 +493,9 @@ class Activity_Log extends _Model {
             }
 
         }
+        $limitStr = '';
+        if($limit)
+            $limitStr = 'LIMIT '.$this->getLimit;
 
 
         // Get rows
@@ -488,6 +510,7 @@ class Activity_Log extends _Model {
 				AND activity_log.activity_id = :activity_id
 				{$where_str}
 			ORDER BY activity_log.created DESC
+			{$limitStr}
 		";
 
         $params = array(

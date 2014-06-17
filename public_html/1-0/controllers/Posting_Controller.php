@@ -47,7 +47,11 @@ class Posting_Controller  extends  _Controller
         $this->load('Posting');
 
         $posting = new Posting();
-        $posts = $posting->getAll($params);
+        if(!empty($params['like_day_threshold'])) {
+            $posts = $posting->getAllTest($params);
+        } else {
+            $posts = $posting->getAll($params);
+        }
         $response = array('object_id' => null, 'posts' => $posts);
 
         if (empty($result))
@@ -60,6 +64,48 @@ class Posting_Controller  extends  _Controller
                 self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR);
             }
         }
+
+        return  $response;
+    }
+
+    public function get_all_test($params = array())
+    {
+        /*$loc_use_cache = false;
+        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
+        if (!empty($params['like_day_threshold']) && (int) $params['like_day_threshold'] > 4)
+        {
+            $loc_use_cache = true;
+            if($cached_content = self::getCachedContent($cache_key_params) )
+            {
+                $cached_obj = json_decode($cached_content);
+                $response = $cached_obj;
+
+                //// return else keep looking.
+                if( $cached_obj && count($cached_obj->posts) > 1 )
+                {
+                    //self::trace("self::getCachedContent" . $cached_content);
+                    return $response;
+                }
+            }
+        }*/
+
+
+        $this->load('Posting');
+
+        $posting = new Posting();
+        $posts = $posting->getAllTest($params);
+        $response = array('object_id' => null, 'posts' => $posts);
+
+        /*if (empty($result))
+        {
+            $cache_key = self::getCacheKey($cache_key_params);
+            $response = array('object_id' => base64_encode($cache_key), 'posts' => $posts);
+
+            if($loc_use_cache && !$posts['error'] && count($posts) > 0 ){
+                //just cache it!!
+                self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR);
+            }
+        }*/
 
         return  $response;
     }
@@ -257,6 +303,7 @@ class Posting_Controller  extends  _Controller
     {
         $this->load('Posting_Like');
         $this->load('Points');
+        $this->load('Email');
 
          $posting_like = new Posting_Like();
          $data = $posting_like->addLike($request_data);
@@ -264,10 +311,23 @@ class Posting_Controller  extends  _Controller
         $request_data['point_id'] = 3;
         $request_data['points'] = 3;
         $this->Points->addPoints($request_data);
+        $this->Email->send_transactional_post_email(Array('user_id'=>$request_data['user_id'], 'posting_id'=>$request_data['posting_id']));
 
          return static::wrap_result(($posting_like->hasError()? false:true), $data, 200, $posting_like->getErrors() );
     }
+    public function test_trans() {
+        $this->load('Email');
 
+        //$this->Email->send_transactional_post_email(Array('user_id'=>658, 'posting_id'=>332365));
+        $this->Email->send_transactional_follower_email(658/*id of user being followed*/, 2418/*id of follower*/);
+        //$this->Email->send_transactional_comment_email(Array('user_id'=>658, 'posting_id'=>332365,'comment'=>'Yo dis a test email'));
+        //$this->Email->send_transactional_repost_email(Array('user_id'=>2418, 'posting_id'=>332365));
+        $str = 'admin@dahliawolf.com';
+
+        $str = explode('@', $str)[1];
+
+        //echo $str == 'dahliawolf.com';
+    }
 
     public function delete_like( $request_data = array() )
     {
@@ -295,6 +355,7 @@ class Posting_Controller  extends  _Controller
     public function repost($params = array() )
     {
         $this->load('Points');
+        $this->load('Email');
         $posting_model = new Posting();
         $posting_entity=  $posting_model->getPostingEntity($params);
         $params['og_id'] = $posting_entity['user_id'];
@@ -308,6 +369,7 @@ class Posting_Controller  extends  _Controller
             $request_data['points'] = 5;
             $request_data['user_id'] = $params['og_id'];
             $this->Points->addPoints($request_data);
+            $this->Email->send_transactional_repost_email(Array('user_id'=>$params['repost_user_id'], 'posting_id'=>$params['posting_id']));
 
             return $repost_id;
         }
