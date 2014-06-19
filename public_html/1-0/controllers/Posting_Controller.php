@@ -68,44 +68,13 @@ class Posting_Controller  extends  _Controller
         return  $response;
     }
 
-    public function get_all_test($params = array())
+    public function get_following_posts($params = array())
     {
-        /*$loc_use_cache = false;
-        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
-        if (!empty($params['like_day_threshold']) && (int) $params['like_day_threshold'] > 4)
-        {
-            $loc_use_cache = true;
-            if($cached_content = self::getCachedContent($cache_key_params) )
-            {
-                $cached_obj = json_decode($cached_content);
-                $response = $cached_obj;
-
-                //// return else keep looking.
-                if( $cached_obj && count($cached_obj->posts) > 1 )
-                {
-                    //self::trace("self::getCachedContent" . $cached_content);
-                    return $response;
-                }
-            }
-        }*/
-
-
         $this->load('Posting');
 
         $posting = new Posting();
-        $posts = $posting->getAllTest($params);
-        $response = array('object_id' => null, 'posts' => $posts);
-
-        /*if (empty($result))
-        {
-            $cache_key = self::getCacheKey($cache_key_params);
-            $response = array('object_id' => base64_encode($cache_key), 'posts' => $posts);
-
-            if($loc_use_cache && !$posts['error'] && count($posts) > 0 ){
-                //just cache it!!
-                self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR);
-            }
-        }*/
+        $posts = $posting->getFollowingPosts($params);
+        $response = array('posts' => $posts);
 
         return  $response;
     }
@@ -116,6 +85,16 @@ class Posting_Controller  extends  _Controller
 
         $message = new Posting();
         $response = $message->getByUser($request_data);
+
+        return  $response;
+    }
+
+    public function get_test_by_user($request_data = array())
+    {
+        $this->load('Posting');
+
+        $message = new Posting();
+        $response = $message->getTestByUser($request_data);
 
         return  $response;
     }

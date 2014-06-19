@@ -1446,7 +1446,7 @@ class User_Controller extends _Controller {
 	}
 
 
-    public function get_top_users( $params = array() )
+    public function get_test_top_users( $params = array() )
     {
         /*$cache_key_params = self::getCacheParams($params, __FUNCTION__);
 
@@ -1506,6 +1506,28 @@ class User_Controller extends _Controller {
         return $response;
     }
 
+    public function get_top_users( $params = array() )
+    {
+        /** @var User $dw_user */
+        $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
+
+        $params['limit'] = isset($params['limit']) ? $params['limit'] : 5;
+
+        if (!empty($params['offset'])) {
+            $params['offset'] = $params['offset'];
+        }
+
+        $user_data = $dw_user->getTopUsers($params);
+
+        foreach($user_data as $x=>$user) {
+            $user_data[$x]['itemCount'] = $dw_user->getItemCount($user['user_id']);
+        }
+
+        $response = array('users' => $user_data );
+
+        return $response;
+    }
+
 
 
     public function get_top_following( $params = array() )
@@ -1529,53 +1551,8 @@ class User_Controller extends _Controller {
         return $response;
     }
 
-    public function test_get_top_following( $params = array() )
-    {
-        $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
-
-        $params['limit'] = isset($params['limit']) ? $params['limit'] : 5;
-
-        if (!empty($params['offset'])) {
-            $params['offset'] = $params['offset'];
-        }
-
-        $user_data = $dw_user->getTestTopFollowingByUser($params);
-
-        /*foreach($user_data as $x=>$user) {
-            $user_data[$x]['itemCount'] = $dw_user->getItemCount($user['user_id']);
-        }*/
-
-        $response = array('users' => $user_data );
-
-        return $response;
-    }
-
-
-
     public function get_top_followers( $params = array() )
     {
-        /*$cache_key_params = self::getCacheParams($params, __FUNCTION__);
-
-        if( !isset($_GET['t']) && $cached_content = self::getCachedContent($cache_key_params) )
-        {
-            $cached_obj = json_decode($cached_content);
-            $response = $cached_obj;
-
-            if(!$cached_obj->object_id)
-            {
-                $cache_key = self::getCacheKey($cache_key_params);
-                $cached_obj->object_id = base64_encode($cache_key);
-            }
-
-            //// return else keep looking.
-            if( $cached_obj && count($cached_obj->users) > 1 )
-            {
-                //self::trace("self::getCachedContent" . $cached_content);
-                return $response;
-            }
-
-        }*/
-
         /** @var User $dw_user */
         $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
 
@@ -1589,21 +1566,7 @@ class User_Controller extends _Controller {
         foreach($user_data as $x=>$user) {
             $user_data[$x]['itemCount'] = $dw_user->getItemCount($user['user_id']);
         }
-
-        //// get users posts
-        //if(is_array($user_data))  self::getUsersPosts($user_data, $params);
-
-
-        //$cache_key = self::getCacheKey($cache_key_params);
-        //$response = array('object_id' => base64_encode($cache_key),  'users' => $user_data );
         $response = array('users' => $user_data );
-
-        //self::setUseCache(true);
-        //cache content
-        /*if( $user_data && !$user_data['error'] )
-        {
-            self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR*2);
-        }*/
 
         return $response;
     }

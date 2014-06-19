@@ -421,6 +421,72 @@ class Posting extends _Model
         return null;
     }
 
+    public function getFollowingPosts($params = array())
+    {
+        $select_str = '';
+        $sub_join_str = '';
+
+        $inner_offset_limit = $this->generateLimitOffset($params, true);
+        $values[':userId'] = $params['user_id'];
+        $values['viewer_user_id'] = $params['user_id'];
+        if (!empty($params['viewer_user_id'])) {
+            $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked';
+            $sub_join_str = '
+                LEFT JOIN posting_like ON posts.posting_id = posting_like.posting_id
+                    AND posting_like.user_id = :viewer_user_id
+            ';
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
+
+        $query = "
+
+            SELECT posts.*
+            , user_username.username, user_username.location, user_username.avatar, user_username.first_name, user_username.last_name
+            , (SELECT COUNT(*) FROM dahliawolf_v1_2013.comment WHERE posts.posting_id = comment.posting_id) AS comments
+            , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
+            , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
+            , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posts.posting_id) AS `total_likes`
+            , (SELECT COUNT(*) FROM posting_tag   WHERE posting_tag.posting_id = posts.posting_id) AS `total_tags`
+            , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posts.posting_id) AS total_shares
+            , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posts.posting_id) AS `total_reposts`
+            , 0 as 'is_repost'
+            , IF(follow.follow_id IS NULL, 0, 1) AS is_following
+            {$select_str}
+            FROM
+            (
+                SELECT posting.posting_id, posting.created, posting.user_id, posting.image_id, posting.deleted
+                FROM posting
+                  LEFT JOIN follow ON follow.follower_user_id = :userId
+                WHERE posting.user_id = follow.user_id AND follow.follower_user_id = :userId AND posting.deleted IS NULL
+                GROUP BY posting.posting_id
+                ORDER BY posting.created DESC
+                {$inner_offset_limit}
+            ) AS posts
+            INNER JOIN user_username ON user_username.user_id = posts.user_id
+            INNER JOIN image ON posts.image_id = image.id
+            LEFT JOIN follow ON (posts.user_id = follow.user_id AND follow.follower_user_id = :viewer_user_id)
+            {$sub_join_str}
+        ";
+        //$values[':like_day_threshold'] = $params['like_day_threshold'];
+        //$rows = $this->get_all($this->table);
+        $posts = $this->fetch($query, $values);
+
+        if (empty($posts)) {
+            return array(
+                'error' => 'Could not get posts.'
+            );
+        }
+
+        if (isset($_GET['t'])) { echo sprintf("result count %s\n\n", count($posts)); }
+
+        if($posts)
+        {
+            return $posts;
+        }
+
+        return null;
+    }
+
     public function getAllTest($params = array())
     {
         $select_str = '';
@@ -1079,6 +1145,93 @@ class Posting extends _Model
 
         return array(
                     'posts' => $posts
+        );
+
+    }
+
+    public function getTestByUser($params = array())
+    {
+        if (isset($_GET['t'])) { print_r($params); }
+
+        $user_id = $params['user_id'];
+
+        if (!$user_id || empty($user_id)) {
+            return array('error' => 'user id is required');
+        }
+
+        // we got user cont..
+        $order_by_str = 'created DESC';
+        $outer_order_by_str = 'created DESC';
+
+        $outer_select_str = "";
+        $select_str = '';
+        $sub_join_str = '';
+        $values = array();
+        $sub_where_str = '';
+        $group_by_str = '';
+
+        $sub_where_str .= ' AND posting.user_id = :user_id';
+        $values[':user_id'] = $user_id;
+
+
+        {// Dislike  -- don't show dislikes
+            $sub_join_str .= '
+                LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
+                    AND posting_dislike.user_id = :user_id
+            ';
+            $sub_where_str .= ' AND posting_dislike.posting_id IS NULL';
+        }
+
+        if (!empty($params['viewer_user_id'])) {
+            $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked, IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $sub_join_str = '
+      				LEFT JOIN posting_like ON (posting.posting_id = posting_like.posting_id
+      					AND posting_like.user_id = :viewer_user_id)
+      				LEFT JOIN follow ON (posting.user_id = follow.user_id
+      					AND follow.follower_user_id = :viewer_user_id)
+      			';
+
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+            $viewer_user_id = $params['viewer_user_id'];
+        }
+
+
+        $outer_where_str = '';
+        $active_limit = (60*60*24)*30;
+
+        $inner_offset_limit = $this->generateLimitOffset($params, true);
+
+
+        //// limit the restult set to failsafe
+        if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 999';
+
+        $query = "
+                    SELECT posting.*
+                    FROM posting
+                    WHERE posting.user_id = :user_id
+                    LIMIT 10
+                ";
+
+        if (isset($_GET['t'])) {
+            echo "\n<pre>$query</pre>\n";
+            print_r($values);
+            if(isset($_GET['die']))die();
+        }
+
+        //$rows = $this->get_all($this->table);
+        $posts = $this->fetch($query, $values);
+
+        if (isset($_GET['t'])) { echo sprintf("result count %s\n\n", count($posts)); }
+
+        if (empty($posts)) {
+            return array(
+                'error' => 'Could not get posts.'
+            );
+        }
+
+
+        return array(
+            'posts' => $posts
         );
 
     }

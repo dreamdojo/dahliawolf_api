@@ -782,12 +782,12 @@ class User extends _Model
                 u.points > user_username.points
         ) + 1 AS rank
         , (
-            SELECT COUNT(*)
+            SELECT COUNT(DISTINCT user_id)
             FROM follow
             WHERE follow.follower_user_id = user_username.user_id
         ) AS following
         , (
-            SELECT COUNT(*)
+            SELECT COUNT(DISTINCT follower_user_id)
             FROM follow
             WHERE follow.user_id = user_username.user_id
         ) AS followers
@@ -1086,9 +1086,6 @@ class User extends _Model
        }
     }
 
-
-
-
     public function getTopUsers( $params = array() )
     {
         $error = NULL;
@@ -1106,7 +1103,7 @@ class User extends _Model
         else{
             $where_str = '1';
             $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id";
-                                //LEFT JOIN follow AS f ON user_username.user_id = f.user_id";
+            //LEFT JOIN follow AS f ON user_username.user_id = f.user_id";
         }
 
         // Optional viewer_user_id
@@ -1122,61 +1119,23 @@ class User extends _Model
 
         $offset_string = $this->generate_limit_offset_str($params);
 
-        $following_query = "SELECT distinct
-        	user_username.user_username_id,
-        	user_username.user_id,
-        	user_username.username,
-        	user_username.first_name,
-        	user_username.last_name,
-        	user_username.points,
-        	user_username.location,
-        	user_username.fb_uid,
-        	user_username.avatar,
-        	user_username.verified,
-
-        	rank.rank
-
-        	{$select_str}
-
-        	/*,(
-        		SELECT
-        		ml.name
-        		FROM membership_level ml, user_username user
-        		WHERE user.user_id = user_username.user_id
-        			AND CAST(user.points AS SIGNED)  / ml.points > 1
-        		order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
-        		LIMIT 1
-        	) AS membership_level
-        	, (
-                SELECT COUNT(*)
+        $following_query = "
+            SELECT u.*, user_username.username, user_username.first_name, user_username.last_name, user_username.avatar
+            , (SELECT COUNT(*)
                 FROM follow
                 WHERE follow.follower_user_id = user_username.user_id
             ) AS following
-            , (
-                SELECT COUNT(*)
-                FROM follow
-                WHERE follow.user_id = user_username.user_id
-            ) AS followers*/
-
-        	{$is_followed}
-
-            FROM follow
-                {$join_followers}
-                {$join_str}
-
-                INNER JOIN
-                        ( SELECT
-                            u.user_id,
-                            @row:=@row+1 as rank
-                            FROM user_username AS u
-                            join (SELECT @row:=0) pos
-                            ORDER BY u.points DESC
-                        limit 999999999999999  )
-                  AS rank ON rank.user_id = user_username.user_id
-
-            WHERE {$where_str}
-            ORDER BY rank.rank ASC
-            {$offset_string};
+            {$select_str}
+            FROM (
+              SELECT user_id, COUNT(user_id) AS followers
+              FROM follow
+              WHERE user_id IS NOT NULL
+              GROUP BY user_id
+              ORDER BY followers DESC
+              {$offset_string}
+            ) AS u
+            LEFT JOIN user_username ON user_username.user_id = u.user_id
+            {$join_str}
             ";
 
 
@@ -1200,121 +1159,16 @@ class User extends _Model
 
 
         if ($result === false) {
-             if(isset($_GET['t'])) echo "\nERROR: {$this->error}" ;
-             return array('error' => 'Could not get top following.');
+            if(isset($_GET['t'])) echo "\nERROR: {$this->error}" ;
+            return array('error' => 'Could not get top following.');
         }
 
 
         return $result;
 
     }
-
-
-
 
     public function getTopFollowingByUser( $params = array() )
-    {
-        $error = NULL;
-
-        $select_str = '';
-        $join_str = '';
-        $where_str = '';
-
-        $values = array();
-        //$values[':viewer_user_id'] = $params['viewer_user_id'];
-        $values[':user_id'] = $params['user_id'];
-
-        if (!empty($params['viewer_user_id'])) {
-            $select_str .= ', IF(following.user_id IS NULL, 0, 1) AS is_followed';
-            $join_str .= 'LEFT JOIN follow AS following ON following.user_id = user_username.user_id
-                AND following.follower_user_id = :viewer_user_id';
-
-            $values[':viewer_user_id'] = $params['viewer_user_id'];
-        }
-
-        $offset_string = $this->generate_limit_offset_str($params);
-
-        $following_query = "
-        SELECT distinct
-            user_username.username,
-            user_username.user_username_id,
-            user_username.points,
-            user_username.user_id,
-            user_username.first_name,
-        	user_username.last_name,
-            user_username.location,
-            user_username.fb_uid,
-            user_username.avatar,
-            user_username.verified,
-
-            rank.*
-
-            {$select_str}
-
-            /*,(
-                SELECT
-                ml.name
-                FROM membership_level ml, user_username user
-                WHERE user.user_id = user_username.user_id
-                    AND CAST(user.points AS SIGNED)  / ml.points > 1
-                order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
-                LIMIT 1
-            ) AS membership_level*/
-
-
-            FROM user_username
-                INNER JOIN ( select *
-                                FROM follow as following
-                                WHERE
-                                following.follower_user_id = :user_id )
-
-                AS follow ON follow.user_id = user_username.user_id
-
-                INNER JOIN
-                        ( SELECT
-                        	  u.user_id, u.points,
-                        	  @row:=@row+1 as rank
-                        	FROM user_username AS u
-                        	join (SELECT @row:=0) pos
-                        	ORDER BY u.points DESC
-                        )
-                AS rank ON rank.user_id = follow.user_id
-
-                {$join_str}
-
-            WHERE 1
-              {$where_str}
-
-            ORDER BY rank.rank ASC
-            {$offset_string};
-            ";
-
-
-        if(isset($_GET['t'])) {
-            echo "query:\n";
-            var_dump($following_query);
-            echo "values:\n";
-            var_dump($values);
-            echo "params:\n";
-            var_dump($params);
-            echo "here here!!";
-
-        }
-
-        $result = $this->fetch($following_query, $values);
-
-
-        if ($result === false) {
-             if(isset($_GET['t'])) echo $this->error;
-             return array('error' => 'Could not get top following.');
-        }
-
-
-        return $result;
-
-    }
-
-    public function getTestTopFollowingByUser( $params = array() )
     {
         $error = NULL;
 
@@ -1348,12 +1202,86 @@ class User extends _Model
                 WHERE follow.user_id = users.user_id
             ) AS followers
             FROM
-                ( SELECT followers.user_id, user_username.username, user_username.avatar, user_username.first_name, user_username.last_name
-                FROM follow AS followers
-                  LEFT JOIN user_username ON followers.user_id = user_username.user_id
-                WHERE followers.follower_user_id = :user_id
-                GROUP BY user_id
-                {$offset_string} ) AS users
+                (
+                    SELECT followers.user_id, followers.created, user_username.username, user_username.avatar, user_username.first_name, user_username.last_name
+                    FROM follow AS followers
+                      LEFT JOIN user_username ON followers.user_id = user_username.user_id
+                    WHERE followers.follower_user_id = :user_id AND user_username.active = 1
+                    GROUP BY user_id
+                    ORDER BY created DESC
+                    {$offset_string}
+
+                ) AS users
+                {$join_str}
+        ";
+
+
+        if(isset($_GET['t'])) {
+            echo "query:\n";
+            var_dump($following_query);
+            echo "values:\n";
+            var_dump($values);
+            echo "params:\n";
+            var_dump($params);
+            echo "here here!!";
+
+        }
+
+        $result = $this->fetch($following_query, $values);
+
+
+        if ($result === false) {
+            if(isset($_GET['t'])) echo $this->error;
+            return array('error' => 'Could not get top following.');
+        }
+
+
+        return $result;
+
+    }
+
+    public function getTopFollowersByUser( $params = array() )
+    {
+        $error = NULL;
+
+        $select_str = '';
+        $join_str = '';
+        $where_str = '';
+
+        $values = array();
+        $values[':user_id'] = $params['user_id'];
+
+        if (!empty($params['viewer_user_id'])) {
+            $select_str .= ', IF(following.user_id IS NULL, 0, 1) AS is_followed';
+            $join_str .= 'LEFT JOIN follow AS following ON following.user_id = users.follower_user_id
+                AND following.follower_user_id = :viewer_user_id';
+
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
+
+        $offset_string = $this->generate_limit_offset_str($params);
+
+        $following_query = "
+            SELECT users.*
+            {$select_str}
+            , (SELECT COUNT(*)
+                FROM follow
+                WHERE follow.follower_user_id = users.follower_user_id
+            ) AS following
+            , (SELECT COUNT(*)
+                FROM follow
+                WHERE follow.user_id = users.follower_user_id
+            ) AS followers
+            FROM
+                (
+                  SELECT followers.follower_user_id, followers.created, user_username.username, user_username.avatar, user_username.first_name, user_username.last_name, user_username.user_id
+                  FROM follow AS followers
+                    LEFT JOIN user_username ON followers.follower_user_id = user_username.user_id
+                  WHERE followers.user_id = :user_id AND user_username.active = 1
+                  GROUP BY follower_user_id
+                  ORDER BY created DESC
+                  {$offset_string}
+                ) AS users
                 {$join_str}
         ";
 
@@ -1459,114 +1387,6 @@ class User extends _Model
         return $result;
 
     }
-
-    public function getTopFollowersByUser( $params = array() )
-    {
-        $error = NULL;
-        $select_str = '';
-        $join_str = '';
-        $where_str = '';
-
-        $values = array();
-        if($values[':viewer_user_id'])
-        {
-            $values[':viewer_user_id'] = $params['viewer_user_id'];
-        }
-
-        $values[':user_id'] = $params['user_id'];
-
-        if (!empty($params['viewer_user_id'])) {
-            $select_str .= ', IF(following.user_id IS NULL, 0, 1) AS is_followed';
-            $join_str .= 'LEFT JOIN follow AS following ON following.user_id = user_username.user_id
-                AND following.follower_user_id = :viewer_user_id';
-
-            $values[':viewer_user_id'] = $params['viewer_user_id'];
-        }
-
-        $offset_string = $this->generate_limit_offset_str($params);
-
-        $following_query = "
-        SELECT distinct
-            user_username.user_username_id,
-            user_username.user_id,
-            user_username.username,
-            user_username.points,
-            user_username.first_name,
-        	user_username.last_name,
-            user_username.location,
-            user_username.fb_uid,
-            user_username.avatar,
-            user_username.verified,
-
-            rank.rank
-
-            {$select_str}
-
-            /*,(
-                SELECT
-                ml.name
-                FROM membership_level ml, user_username user
-                WHERE user.user_id = user_username.user_id
-                    AND CAST(user.points AS SIGNED)  / ml.points > 1
-                order by ABS(CAST(ml.points AS SIGNED) - CAST(user.points AS SIGNED)) ASC
-                LIMIT 1
-            ) AS membership_level*/
-
-
-            FROM user_username
-                INNER JOIN ( select *
-                                FROM follow as following
-                                WHERE
-                                following.user_id = :user_id )
-
-                AS follow ON follow.follower_user_id = user_username.user_id
-
-
-                INNER JOIN
-                        ( SELECT
-                              u.user_id, u.points as rank_points,
-                              @row:=@row+1 as rank
-                            FROM user_username AS u
-                            join (SELECT @row:=0) pos
-                            ORDER BY u.points DESC
-                        )
-                AS rank ON rank.user_id = follow.follower_user_id
-
-                {$join_str}
-
-            WHERE 1
-              {$where_str}
-
-            ORDER BY rank.rank ASC
-            {$offset_string};
-            ";
-
-
-        if(isset($_GET['t'])) {
-            echo "query:\n";
-            var_dump($following_query);
-            echo "values:\n";
-            var_dump($values);
-            echo "params:\n";
-            var_dump($params);
-            echo "here here!!";
-
-        }
-
-        $result = $this->fetch($following_query, $values);
-
-
-        if ($result === false) {
-             if(isset($_GET['t'])) echo $this->error;
-             return array('error' => 'Could not get top following.');
-        }
-
-
-        return $result;
-
-    }
-
-
 
     protected function generate_limit_offset_str($params, $offset=true) {
    		$limit_offset_str = '';
