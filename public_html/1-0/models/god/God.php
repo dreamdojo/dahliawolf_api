@@ -116,12 +116,6 @@
                 ORDER BY posting.created DESC
                 ";
 
-
-            $refs = "
-                SELECT COUNT(*) AS referral
-                FROM dahliawolf_v1_2013.referral
-                WHERE referral.user_id = ".$user_id;
-
             $likes = "
                 SELECT COUNT(*) AS total
                 FROM dahliawolf_v1_2013.posting_like
@@ -161,6 +155,25 @@
                 WHERE created > DATE_SUB(NOW(), INTERVAL 7 DAY) AND follow.follower_user_id = ".$user_id."
                 GROUP BY DATE(follow.created)
                 ORDER BY follow.created DESC
+            ";
+
+            $refs = "
+                SELECT COUNT(*) AS referral
+                FROM dahliawolf_v1_2013.referral
+                WHERE referral.user_id = ".$user_id;
+
+            $w_refs = "
+                SELECT referral.new_member_id, user_username.avatar, user_username.username, user_username.user_id, DATE_FORMAT(referral.created, '%M %D') AS date
+                FROM dahliawolf_v1_2013.referral
+                LEFT JOIN user_username ON user_username.user_id = referral.new_member_id
+                WHERE created > DATE_SUB(NOW(), INTERVAL 7 DAY) AND referral.user_id = ".$user_id;
+
+            $d_refs = "
+                SELECT COUNT(user_id) AS daily, DATE_FORMAT(created, '%M %D') AS date
+                FROM dahliawolf_v1_2013.referral
+                WHERE created > DATE_SUB(NOW(), INTERVAL 7 DAY) AND referral.user_id = ".$user_id."
+                GROUP BY DATE(referral.created)
+                ORDER BY referral.created DESC
             ";
 
             $reposts = "
@@ -208,6 +221,13 @@
                 FROM offline_commerce_v1_2013.commission
                 WHERE commission.user_id = ".$user_id;
 
+            $d_moneys = "
+                SELECT SUM(commission.commission) AS daily, DATE_FORMAT(created, '%M %D') AS date
+                FROM offline_commerce_v1_2013.commission
+                WHERE created > DATE_SUB(NOW(), INTERVAL 7 DAY) AND commission.user_id = ".$user_id."
+                GROUP BY DATE(commission.created)
+                ORDER BY commission.created DESC";
+
             try {
                 $data['posts'] = $this->fetch($posts, $values);
                 $data['posts']['title'] = 'posts';
@@ -237,9 +257,12 @@
 
                 $data['referrals']['title'] = 'referrals';
                 $data['referrals'][0]['total'] = $this->fetch($refs, $values)[0]['referral'];
+                $data['referrals'][0]['week'] = $this->fetch($w_refs, $values);
+                $data['referrals'][0]['daily'] = $this->fetch($d_refs, $values);
 
                 $data['commision'] = $this->fetch($moneys, $values);
                 $data['commision']['title'] = 'commision';
+                $data['commision'][0]['daily'] = $this->fetch($d_moneys, $values);
 
                 return $data;
             } catch(Exception $e) {

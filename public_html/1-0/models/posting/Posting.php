@@ -931,7 +931,6 @@ class Posting extends _Model
         return null;
     }
 
-
     public function getByUser($params = array())
     {
         if (isset($_GET['t'])) { print_r($params); }
@@ -942,187 +941,75 @@ class Posting extends _Model
             return array('error' => 'user id is required');
         }
 
-        // we got user cont..
-        $order_by_str = 'created DESC';
-        $outer_order_by_str = 'created DESC';
-
-        $outer_select_str = "";
         $select_str = '';
         $sub_join_str = '';
         $values = array();
         $sub_where_str = '';
-        $group_by_str = '';
+        $post_img_info = ', image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height';
+        $post_img_join = 'LEFT JOIN image ON id = posting.image_id';
+        $fast_count_select ="
+                           , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+                           , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`
+                           , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
+                           ";
 
         $sub_where_str .= ' AND posting.user_id = :user_id';
         $values[':user_id'] = $user_id;
 
-
-        {// Dislike  -- don't show dislikes
-            $sub_join_str .= '
-                LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
-                    AND posting_dislike.user_id = :user_id
-            ';
-            $sub_where_str .= ' AND posting_dislike.posting_id IS NULL';
-        }
-
-        {// filters
-            $valid_filters = array(
-                'is_winner'     => '(IF(like_winner.like_winner_id IS NOT NULL, 1, 0)) = 1',
-                'is_not_winner' => '(IF(like_winner.like_winner_id IS NOT NULL, 1, 0)) = 0',
-                'is_active'     => "(IF(UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP(), 1, 0 )) = 1",
-                'is_expired'    => "(IF(UNIX_TIMESTAMP(posting.created)+2592000 > UNIX_TIMESTAMP(), 1, 0 )) = 0",
-                'loves'         => "posting_like.user_id IS NOT NULL",
-            );
-
-            if (!empty($params['filter']) && isset( $valid_filters[$params['filter']] )) {
-                $filter = $valid_filters[$params['filter']];
-                $sub_where_str .= "\n\t\t\t\t\t AND  {$filter}";
-            }
-        }
-
         if (!empty($params['viewer_user_id'])) {
-      			$select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked, IF(follow.follow_id IS NULL, 0, 1) AS is_following';
-                $sub_join_str = '
+            $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked, IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $sub_join_str = '
       				LEFT JOIN posting_like ON (posting.posting_id = posting_like.posting_id
       					AND posting_like.user_id = :viewer_user_id)
       				LEFT JOIN follow ON (posting.user_id = follow.user_id
       					AND follow.follower_user_id = :viewer_user_id)
       			';
 
-      			// Dislike
-                $sub_join_str .= '
-                    LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
-                        AND posting_dislike.user_id = :viewer_user_id
-                ';
-                $sub_where_str .= ' AND posting_dislike.posting_id IS NULL';
-
-      			$values[':viewer_user_id'] = $params['viewer_user_id'];
-                $viewer_user_id = $params['viewer_user_id'];
-      		}
-
-
-        $outer_where_str = '';
-        $active_limit = (60*60*24)*30;
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+            $viewer_user_id = $params['viewer_user_id'];
+        }
 
         $inner_offset_limit = $this->generateLimitOffset($params, true);
 
-
-        $sub_where_repsot_str = str_replace('AND posting.user_id', 'AND repost.repost_user_id',  $sub_where_str ) ;
-
-        //// limit the restult set to failsafe
-        if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 999';
-
-
-        {//sorts
-            $order_by_columns = array(
-                'created',
-                'total_likes',
-                'total_shares',
-                'total_views',
-            );
-
-            //// slow sorts
-            $slow_count_select = "";
-            $fast_count_select ="
-                           , (SELECT COUNT(*) FROM
-                                        (SELECT * FROM posting_view WHERE posting_view.user_id = :user_id) AS posting_view_tmp
-                                WHERE posting_view_tmp.posting_id = posting.posting_id) AS `total_views`
-                           , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
-                           , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`
-                           , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
-                           ";
-            $slow_sorts = array(
-                'total_likes',
-                'total_shares',
-                'total_views',
-            );
-            if (!empty($params['order_by']) && in_array( $params['order_by'], $slow_sorts  )) {
-                $slow_count_select = $fast_count_select;
-                $fast_count_select = '';
-                $slow_sort = true;;
-            }
-
-            //
-            if (!empty($params['order_by'])) {
-                if (in_array($params['order_by'], $order_by_columns)) {
-                    if($slow_sort) $order_by_str = "{$params['order_by']} DESC";
-                    else  $outer_order_by_str = "{$params['order_by']} DESC";
-
-                    $outer_order_by_str = $order_by_str;
-                }
-            }
-        }
-
         $query = "
-                SELECT posting.*
+                    SELECT posting.*
+                    , user_username.avatar, user_username.username, user_username.first_name, user_username.last_name
                     , IFNULL(COUNT(comment.comment_id), 0) AS comments
-                    , imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
+                    , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
+                    {$select_str}
+                    {$post_img_info}
                     {$fast_count_select}
-                    {$outer_select_str}
-                FROM
-                (
-                      (
-                            SELECT posting.posting_id, posting.created, posting.user_id, posting.image_id, posting.description, posting.deleted
-                                , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
-                                , user_username.username, user_username.location, user_username.avatar
-                                , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
-                                , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
-                                , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
-                                , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
-                                , 0 as 'is_repost'
-                                {$slow_count_select}
-                                {$select_str}
-                            FROM posting
-                            INNER JOIN image ON posting.image_id = image.id
-                            INNER JOIN user_username ON posting.user_id = user_username.user_id
-                            LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
-
-                                {$sub_join_str}
-                            WHERE image.imagename IS NOT NULL
-                                AND posting.deleted IS NULL
-                                {$sub_where_str}
-                            {$group_by_str}
-                      )
-                      UNION ALL
-                      (
-                            SELECT posting.posting_id, posting.created,
-                            		repost.repost_user_id as 'user_id',
-                            	posting.image_id, posting.description, posting.deleted
-                            	, image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
-                                , user_username.username, user_username.location, user_username.avatar
-                                , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
-                                , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
-                                , IF(UNIX_TIMESTAMP(repost.created_at)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
-                                , FROM_UNIXTIME(UNIX_TIMESTAMP(repost.created_at)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
-                                {$slow_count_select}
-                                , 1 as 'is_repost'
-                                {$select_str}
-                            FROM posting_repost repost
-                                INNER JOIN posting ON posting.posting_id = repost.posting_id
-                                INNER JOIN image ON posting.image_id = image.id
-                                INNER JOIN user_username ON posting.user_id = user_username.user_id
-                                LEFT JOIN like_winner ON posting.posting_id = like_winner.posting_id
-
-                                {$sub_join_str}
-                            WHERE repost.posting_repost_id IS NOT NULL
-                                AND image.imagename IS NOT NULL
-                                AND posting.deleted IS NULL
-                                {$sub_where_repsot_str}
-                            {$group_by_str}
-                      )
-
-                    ORDER BY {$order_by_str}
-                    {$inner_offset_limit}
-                ) AS posting
-
-                LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
-                LEFT JOIN dahliawolf_repository.imageInfo AS imageInfo ON posting.repo_image_id = imageInfo.id
-                LEFT JOIN dahliawolf_repository.search_site_link AS search_site_link ON imageInfo.search_site_link_id = search_site_link.search_site_link_id
-                LEFT JOIN dahliawolf_repository.site AS site ON search_site_link.site_id = site.site_id
-
-                {$outer_where_str}
-                GROUP BY posting.posting_id
-                ORDER BY {$outer_order_by_str}
+                    FROM
+                    (
+                        (
+                          SELECT posting.*
+                          , 0 as 'is_repost'
+                          FROM posting
+                          WHERE user_id = :user_id
+                            AND posting.posting_id IS NOT NULL
+                            AND posting.deleted IS NULL
+                          ORDER BY posting.created DESC
+                        )
+                        UNION ALL
+                        (
+                          SELECT posting.*
+                          , 1 as 'is_repost'
+                          FROM posting_repost
+                            LEFT JOIN posting ON posting.posting_id = posting_repost.posting_id
+                          WHERE repost_user_id = :user_id
+                            AND posting_repost.posting_repost_id IS NOT NULL
+                            AND posting.deleted IS NULL
+                          ORDER BY posting.created DESC
+                        )
+                        ORDER BY created DESC
+                        {$inner_offset_limit}
+                    ) AS posting
+                        {$post_img_join}
+                        {$sub_join_str}
+                        LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
+                        LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = posting.user_id
+                    GROUP BY posting.posting_id
+                    ORDER BY posting.created DESC
                 ";
 
         if (isset($_GET['t'])) {
@@ -1138,18 +1025,18 @@ class Posting extends _Model
 
         if (empty($posts)) {
             return array(
-                        'error' => 'Could not get posts.'
+                'error' => 'Could not get posts.'
             );
         }
 
 
         return array(
-                    'posts' => $posts
+            'posts' => $posts
         );
 
     }
 
-    public function getTestByUser($params = array())
+    public function getLovesByUser($params = array())
     {
         if (isset($_GET['t'])) { print_r($params); }
 
@@ -1159,28 +1046,20 @@ class Posting extends _Model
             return array('error' => 'user id is required');
         }
 
-        // we got user cont..
-        $order_by_str = 'created DESC';
-        $outer_order_by_str = 'created DESC';
-
-        $outer_select_str = "";
         $select_str = '';
         $sub_join_str = '';
         $values = array();
         $sub_where_str = '';
-        $group_by_str = '';
+        $post_img_info = ', image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height';
+        $post_img_join = 'LEFT JOIN image ON id = posting.image_id';
+        $fast_count_select ="
+                           , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+                           , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`
+                           , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
+                           ";
 
         $sub_where_str .= ' AND posting.user_id = :user_id';
         $values[':user_id'] = $user_id;
-
-
-        {// Dislike  -- don't show dislikes
-            $sub_join_str .= '
-                LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
-                    AND posting_dislike.user_id = :user_id
-            ';
-            $sub_where_str .= ' AND posting_dislike.posting_id IS NULL';
-        }
 
         if (!empty($params['viewer_user_id'])) {
             $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked, IF(follow.follow_id IS NULL, 0, 1) AS is_following';
@@ -1195,21 +1074,31 @@ class Posting extends _Model
             $viewer_user_id = $params['viewer_user_id'];
         }
 
-
-        $outer_where_str = '';
-        $active_limit = (60*60*24)*30;
-
         $inner_offset_limit = $this->generateLimitOffset($params, true);
-
-
-        //// limit the restult set to failsafe
-        if(count($values) == 0 && empty($inner_offset_limit)) $inner_offset_limit = ' LIMIT 999';
 
         $query = "
                     SELECT posting.*
-                    FROM posting
-                    WHERE posting.user_id = :user_id
-                    LIMIT 10
+                    {$select_str}
+                    {$fast_count_select}
+                    {$post_img_info}
+                    , user_username.avatar, user_username.username, user_username.first_name, user_username.last_name
+                    , IFNULL(COUNT(comment.comment_id), 0) AS comments
+                    , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
+                    FROM
+                    (
+                        SELECT posting_like.posting_id
+                        FROM posting_like
+                        WHERE user_id = :user_id
+                        ORDER BY created DESC
+                        {$inner_offset_limit}
+                    ) AS posts
+                        INNER JOIN posting ON posting.posting_id = posts.posting_id AND posting.deleted IS NULL
+                        {$post_img_join}
+                        {$sub_join_str}
+                        LEFT JOIN dahliawolf_v1_2013.comment ON posting.posting_id = comment.posting_id
+                        LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = posting.user_id
+                    GROUP BY posting.posting_id
+                    ORDER BY posting.created DESC
                 ";
 
         if (isset($_GET['t'])) {

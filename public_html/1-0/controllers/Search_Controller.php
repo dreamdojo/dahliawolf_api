@@ -37,6 +37,26 @@ class Search_Controller extends _Controller
 
     }
 
+    public function find_members($request_params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_int' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $request_params, true);
+        $this->Validate->run();
+
+        $search = new Search();
+
+        $data = $search->findMembers($request_params);
+
+        return static::wrap_result( ($search->hasError()? false:true), $data, 200, $search->getErrors() );
+    }
+
 
     protected  function commerceApiRequest($service, $calls, $return_array = false)
     {

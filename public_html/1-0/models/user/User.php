@@ -1364,6 +1364,29 @@ class User extends _Model
         return $result;
 
     }
+
+    public function getAffiliates() {
+        $query = "
+            SELECT user_username.username, user_username.avatar
+            FROM dahliawolf_v1_2013.user_username
+            WHERE user_username.associate = 1
+        ";
+
+        $values = Array(
+        );
+
+        $result = $this->fetch($query, $values);
+
+
+        if ($result === false) {
+            if(isset($_GET['t'])) echo $this->error;
+            return array('error' => 'Could not get top following.');
+        }
+
+
+        return $result;
+
+    }
     public function getCommisionList($user_id) {
         $query = "
             SELECT commission.*

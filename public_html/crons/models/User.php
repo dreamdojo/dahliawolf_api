@@ -132,5 +132,34 @@ class User extends db {
 
 		return $rows;
 	}
+
+    public function get_associates() {
+        $values = Array();
+        $q = "
+            SELECT user_id, email_address, username
+            FROM user_username
+            WHERE associate = 2
+        ";
+
+        $result = $this->run($q, $values);
+        $rows = $result->fetchAll();
+
+        return $rows;
+    }
+    public function get_associate_progress($user_id) {
+        $values = Array();
+        $q = "
+            SELECT
+                (SELECT COUNT(posting.posting_id) as total FROM posting WHERE user_id = ". $user_id." AND created > SUBDATE(NOW(),2) AND created < (DATE(NOW()))) AS posts
+                , (SELECT COUNT(posting_repost.posting_repost_id) as total FROM posting_repost WHERE repost_user_id = ". $user_id." AND created_at > SUBDATE(NOW(),2) AND created_at < (DATE(NOW()))) AS reposts
+                , (SELECT COUNT(follow.follow_id) as total FROM follow WHERE follower_user_id = ". $user_id." AND created > SUBDATE(NOW(),2) AND created < (DATE(NOW()))) AS follows
+                , (SELECT COUNT(posting_like.posting_like_id) as total FROM posting_like WHERE user_id = ". $user_id." AND created > SUBDATE(NOW(),2) AND created < (DATE(NOW()))) AS likes
+                , (SELECT COUNT(comment.comment_id) as total FROM comment WHERE user_id = ". $user_id." AND created_at > SUBDATE(NOW(),2) AND created_at < (DATE(NOW()))) AS comments
+        ";
+
+        $result = $this->run($q, $values);
+        $rows = $result->fetchAll();
+        return $rows[0];
+    }
 }
 ?>

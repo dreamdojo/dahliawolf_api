@@ -584,6 +584,14 @@ class User_Controller extends _Controller {
         return static::wrap_result(true, $result);
     }
 
+    public function get_affilates($params = array()) {
+
+        $user = new User();
+
+        $result = $user->getAffiliates();
+        return static::wrap_result(true, $result);
+    }
+
     public function save_user($params = array()) {
 
         $logger = new Jk_Logger(APP_PATH.'logs/user.log');

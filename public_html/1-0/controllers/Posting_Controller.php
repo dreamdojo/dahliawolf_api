@@ -83,18 +83,18 @@ class Posting_Controller  extends  _Controller
     {
         $this->load('Posting');
 
-        $message = new Posting();
-        $response = $message->getByUser($request_data);
+        $posts = new Posting();
+        $response = $posts->getByUser($request_data);
 
         return  $response;
     }
 
-    public function get_test_by_user($request_data = array())
+    public function get_loves_by_user($request_data = array())
     {
         $this->load('Posting');
 
-        $message = new Posting();
-        $response = $message->getTestByUser($request_data);
+        $posts = new Posting();
+        $response = $posts->getLovesByUser($request_data);
 
         return  $response;
     }
