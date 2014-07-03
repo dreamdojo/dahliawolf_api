@@ -66,6 +66,31 @@ class Posting extends _Model
    		return $insert_id;
    	}
 
+    public function getTags($posting_id) {
+        $values = Array();
+
+        $query = "
+                SELECT tags.value, posting_tags.id
+                FROM tags
+                  INNER JOIN posting_tags ON posting_tags.posting_id = ".$posting_id."
+                WHERE posting_tags.tag_id = tags.tag_id
+                GROUP BY tags.tag_id
+      			";
+
+        if (isset($_GET['t'])) {
+            echo "$query\n";
+            print_r($values);
+            //die();
+        }
+
+        try {
+            $data = $this->fetch($query, $values);
+            return $data;
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
+        }
+    }
 
     protected function addUserPoint($params)
     {
@@ -159,6 +184,56 @@ class Posting extends _Model
         }
 
     }
+
+    public function getWinners($params = array()) {
+        $values = Array();
+
+        if (!empty($params['viewer_user_id'])) {
+            $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked
+                , IF(follow.follow_id IS NULL, 0, 1) AS is_following';
+            $sub_join_str = '
+                LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id
+                    AND posting_like.user_id = :viewer_user_id
+                LEFT JOIN follow ON (posting.user_id = follow.user_id AND follow.follower_user_id = :viewer_user_id)
+            ';
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+        }
+
+        $offset_limit = $this->generateLimitOffset($params, true);
+        $q = "
+            SELECT post.posting_id, posting.user_id, posting.image_id
+            , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
+            , user_username.username, user_username.location, user_username.avatar
+            , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
+            , (SELECT COUNT(*) FROM dahliawolf_v1_2013.comment WHERE post.posting_id = comment.posting_id) AS comments
+            , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+            , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
+            , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
+            , 0 as 'is_repost'
+            {$select_str}
+            FROM
+                (
+                    SELECT DISTINCT posting_product.posting_id, posting_product.created
+                    FROM posting_product
+                    GROUP BY posting_product.posting_id
+                    ORDER BY posting_product.created DESC
+                    {$offset_limit}
+                ) AS post
+            LEFT JOIN posting ON posting.posting_id = post.posting_id
+            LEFT JOIN image ON posting.image_id = image.id
+            LEFT JOIN user_username ON posting.user_id = user_username.user_id
+            {$sub_join_str}
+        ";
+
+        try {
+            $data = $this->fetch($q, $values);
+            return $data;
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
+        }
+    }
+
 
     public function getReposters($params = array())
     {
@@ -362,7 +437,6 @@ class Posting extends _Model
                             , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
                             , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'*/
                             , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
-                            , (SELECT COUNT(*) FROM posting_tag   WHERE posting_tag.posting_id = posting.posting_id) AS `total_tags`
                             , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
                             , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
                             , 0 as 'is_repost'
@@ -446,7 +520,6 @@ class Posting extends _Model
             , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
             , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
             , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posts.posting_id) AS `total_likes`
-            , (SELECT COUNT(*) FROM posting_tag   WHERE posting_tag.posting_id = posts.posting_id) AS `total_tags`
             , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posts.posting_id) AS total_shares
             , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posts.posting_id) AS `total_reposts`
             , 0 as 'is_repost'
@@ -509,7 +582,6 @@ class Posting extends _Model
             , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
             , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
             , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
-            , (SELECT COUNT(*) FROM posting_tag   WHERE posting_tag.posting_id = posting.posting_id) AS `total_tags`
             , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
             , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
             , 0 as 'is_repost'
@@ -581,7 +653,6 @@ class Posting extends _Model
               , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
               , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
               , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
-              , (SELECT COUNT(*) FROM posting_tag WHERE posting_tag.posting_id = posting.posting_id) AS `total_tags`
               , IF(posting_like.user_id IS NULL, 0, 1) AS is_liked
 
           FROM posting
@@ -728,7 +799,6 @@ class Posting extends _Model
                             , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
                             , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
                             , (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS total_views
-                            , (SELECT COUNT(*) FROM posting_tag WHERE posting_tag.posting_id = posting.posting_id) AS `total_tags`
 
 
                             {$select_str}
@@ -800,6 +870,7 @@ class Posting extends _Model
 
         }else{
             $post = $this->_getPostDetails($params);
+            $post['tags'] = $this->getTags($params['posting_id']);
         }
 
         // Also return previous and next
@@ -864,7 +935,6 @@ class Posting extends _Model
                 , (SELECT COUNT(*) FROM comment WHERE comment.posting_id = posting.posting_id) AS comments
                 , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
                 , (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS total_views
-                , (SELECT COUNT(*) FROM posting_tag WHERE posting_tag.posting_id = posting.posting_id) AS `total_tags`
                 , image.repo_image_id
                 " . $select_str . "
             FROM " . $from_prefix . "

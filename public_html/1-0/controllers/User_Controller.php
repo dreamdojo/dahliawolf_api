@@ -1065,6 +1065,7 @@ class User_Controller extends _Controller {
             $data['email'] = null;
             $data['email_address'] = null;
         }
+        $dahlia_user->recordProfileView($data['user_id'], $params['viewer_user_id']);
         return $data;
 		return static::wrap_result(true, $data);
 	}

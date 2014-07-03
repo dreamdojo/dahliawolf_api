@@ -68,6 +68,35 @@ class Posting_Controller  extends  _Controller
         return  $response;
     }
 
+    public function add_tag($params = Array()) {
+        $tag = new Tag();
+
+        $id = $tag->getTagId($params);
+
+        $data = $tag->addTagToPost($params['posting_id'], $id['tag_id']);
+
+        return $data;
+    }
+
+    public function delete_tag($params = Array()) {
+        $tag = new Tag();
+
+        $data = $tag->delPostTag($params);
+
+        return $data;
+    }
+
+    public function get_winners($params = array()) {
+        $this->load('Posting');
+
+        $posting = new Posting();
+
+        $posts = $posting->getWinners($params);
+        $response = array('posts' => $posts);
+
+        return $response;
+    }
+
     public function get_following_posts($params = array())
     {
         $this->load('Posting');
@@ -142,7 +171,7 @@ class Posting_Controller  extends  _Controller
     }
 
 
-    public function add_tag($request_data)
+    /*public function add_tag($request_data)
     {
         $this->load('Posting_Tag');
 
@@ -150,7 +179,7 @@ class Posting_Controller  extends  _Controller
         $response = $posting->create($request_data);
 
         return  $response;
-    }
+    }*/
 
     public function remove_tag($request_data)
     {

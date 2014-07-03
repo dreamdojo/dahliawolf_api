@@ -37,6 +37,12 @@ class Search_Controller extends _Controller
 
     }
 
+    public function img_search($params = Array()) {
+        $search = new Search();
+        $data = $search->fastPosts($params);
+        return $data;
+    }
+
     public function find_members($request_params = array()) {
         $input_validations = array(
             'user_id' => array(

@@ -138,7 +138,7 @@ class User extends db {
         $q = "
             SELECT user_id, email_address, username
             FROM user_username
-            WHERE associate = 2
+            WHERE associate = 1
         ";
 
         $result = $this->run($q, $values);

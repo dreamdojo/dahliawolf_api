@@ -882,6 +882,21 @@ class User extends _Model
        }
     }
 
+    public function recordProfileView($user_id, $viewer_user_id) {
+
+       if (!empty($user_id) && !empty($viewer_user_id) && $user_id != $viewer_user_id && $user_id) {
+            $values = Array();
+            $values[':user_id'] = $user_id;
+            $values[':viewer_user_id'] = $viewer_user_id;
+            $query = "
+            			INSERT INTO profile_views (user_id, viewer_user_id)
+            			VALUES (:user_id, :viewer_user_id)
+            		";
+
+            $result = $this->query($query, $values);
+        }
+    }
+
     public function getUserShop($params = array())
     {
         $logger = new Jk_Logger(APP_PATH . 'logs/user.log');
