@@ -6,6 +6,35 @@
             parent::__construct($db_host, $db_user, $db_password, $db_name );
         }
 
+        public function getLastLoginByDays($params = array()) {
+            $values = array();
+
+           if(isset($params['days']))
+                $values[':days'] = $params['days'];
+            else
+                $values[':days'] = 90;
+            $values[':offset'] = $values[':days'] + 30;
+
+            $q = "
+                SELECT m.*, user_username.email_address, user_username.username
+                FROM (
+                  SELECT login_instance.user_id, MAX(created) AS pooty
+                  FROM admin_offline_v1_2013.login_instance
+                  GROUP BY user_id
+                ) AS m
+                  LEFT JOIN user_username ON user_username.user_id = m.user_id
+                WHERE user_username.email_address IS NOT NULL AND m.pooty < DATE_SUB(NOW(), INTERVAL :days DAY) AND m.pooty > DATE_SUB(NOW(), INTERVAL :offset DAY);
+            ";
+
+            try {
+                $data = $this->fetch($q, $values);
+                return $data;
+
+            } catch(Exception $e) {
+                self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
+            }
+
+        }
         public function getData($params = array())
         {
             $values = array();
@@ -24,6 +53,27 @@
                 SELECT COUNT(DISTINCT user_id) AS dau
                 FROM admin_offline_v1_2013.login_instance
                 WHERE created > DATE_SUB(NOW(), INTERVAL 1 DAY);
+                ";
+            $mau_members = "
+                SELECT COUNT(DISTINCT user_id) AS mau
+                FROM admin_offline_v1_2013.login_instance
+                WHERE created > DATE_SUB(NOW(), INTERVAL 30 DAY);
+                ";
+            $c_members = "
+                SELECT DATE_FORMAT(created, '%M %D') AS create_date,
+                COUNT(DISTINCT user_id) AS total
+                FROM admin_offline_v1_2013.login_instance
+                GROUP BY DATE(created)
+                ORDER BY created DESC
+                LIMIT 30
+                ";
+            $m_members = "
+                SELECT DATE_FORMAT(created, '%M %Y') AS create_date,
+                COUNT(DISTINCT user_id) AS total
+                FROM admin_offline_v1_2013.login_instance
+                GROUP BY DATE_FORMAT(created, '%M-%Y')
+                ORDER BY created DESC
+                LIMIT 24
                 ";
 
             $posts = "
@@ -65,6 +115,9 @@
                 $data['members'] = $this->fetch($members, $values);
                 $data['members'][0]['today'] = $this->fetch($t_members, $values)[0]['today'];
                 $data['members'][0]['dau'] = $this->fetch($a_members, $values)[0]['dau'];
+                $data['members'][0]['mau'] = $this->fetch($mau_members, $values)[0]['mau'];
+                $data['members'][0]['cau'] = $this->fetch($c_members, $values);
+                $data['members'][0]['zau'] = $this->fetch($m_members, $values);
                 $data['posts'] = $this->fetch($posts, $values);
                 $data['posts'][0]['today'] = $this->fetch($t_posts, $values)[0]['today'];
                 $data['posts'][0]['distinct'] = $this->fetch($u_posts, $values)[0]['perday'];

@@ -25,6 +25,15 @@ class God_Controller extends _Controller
 
         return $response;
     }
+    public  function get_last_logins($params = Array()) {
+        $god = new God();
+
+        $data = $god->getLastLoginByDays($params);
+
+        $response = array('data' => $data);
+
+        return $response;
+    }
 }
 
 

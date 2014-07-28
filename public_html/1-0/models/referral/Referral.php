@@ -6,6 +6,27 @@ class Referral extends _Model
         parent::__construct($db_host, $db_user, $db_password, $db_name );
     }
 
+    public function getTotalReferrals($user_id) {
+        $values = Array(
+            ':userId' => $user_id
+        );
+
+        $q = "
+            SELECT COUNT(*) as total
+            FROM dahliawolf_v1_2013.referral
+            WHERE user_id = :userId
+        ";
+
+        try {
+            $data = $this->fetch($q, $values);
+
+            return intval($data[0]['total']);
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
+        }
+    }
+
     public function addReferral($params = array())
     {
         $params = array(
@@ -27,6 +48,9 @@ class Referral extends _Model
 
         try {
             $data = $this->fetch($query, $params);
+            if($data) {
+
+            }
             return $data[0];
 
         } catch(Exception $e) {

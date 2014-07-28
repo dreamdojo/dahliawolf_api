@@ -201,7 +201,7 @@ class Posting extends _Model
 
         $offset_limit = $this->generateLimitOffset($params, true);
         $q = "
-            SELECT post.posting_id, posting.user_id, posting.image_id
+            SELECT post.posting_id, posting.user_id, posting.image_id, posting.deleted
             , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
             , user_username.username, user_username.location, user_username.avatar
             , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
@@ -223,6 +223,7 @@ class Posting extends _Model
             LEFT JOIN image ON posting.image_id = image.id
             LEFT JOIN user_username ON posting.user_id = user_username.user_id
             {$sub_join_str}
+            WHERE posting.user_id IS NOT NULL
         ";
 
         try {
@@ -841,7 +842,6 @@ class Posting extends _Model
             return array(
                         'error' => 'Could not get posts.'
             );
-
         }
 
         if (isset($_GET['t'])) { echo sprintf("result count %s\n\n", count($posts)); }
@@ -1054,6 +1054,7 @@ class Posting extends _Model
                         (
                           SELECT posting.*
                           , 0 as 'is_repost'
+                          , NULL as 'posting_repost_id'
                           FROM posting
                           WHERE user_id = :user_id
                             AND posting.posting_id IS NOT NULL
@@ -1064,6 +1065,7 @@ class Posting extends _Model
                         (
                           SELECT posting.*
                           , 1 as 'is_repost'
+                          , posting_repost.posting_repost_id
                           FROM posting_repost
                             LEFT JOIN posting ON posting.posting_id = posting_repost.posting_id
                           WHERE repost_user_id = :user_id

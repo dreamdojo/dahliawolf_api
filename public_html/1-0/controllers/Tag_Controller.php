@@ -21,6 +21,16 @@ class Tag_Controller  extends  _Controller
 
         return $response;
     }
+    public function get_top_tags($params)
+    {
+        $tag = new Tag();
+
+        $data = $tag->getTopTags($params);
+
+        $response = array('data'=>$data);
+
+        return $response;
+    }
 }
 
 ?>

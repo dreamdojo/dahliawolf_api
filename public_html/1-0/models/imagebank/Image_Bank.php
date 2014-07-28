@@ -116,6 +116,7 @@ class Image_Bank extends _Model
                     $join_str
                     WHERE
                         imageURL IS NOT NULL AND imageURL != ''
+                        AND imageInfo.status != 'Posted'
                         {$where_sql}
                     ORDER BY id DESC
                     LIMIT 3000 ) as images

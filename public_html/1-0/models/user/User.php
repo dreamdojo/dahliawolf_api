@@ -798,6 +798,7 @@ class User extends _Model
             SELECT COUNT(*)
             FROM posting
             WHERE posting.user_id = user_username.user_id
+            AND posting.deleted IS NULL
         ) AS total_posts
         , (
             SELECT COUNT(*)
@@ -817,8 +818,7 @@ class User extends _Model
         , (
             SELECT COUNT(*)
             FROM posting_like
-                INNER JOIN posting ON posting_like.posting_id = posting.posting_id
-            WHERE posting.user_id = user_username.user_id
+            WHERE posting_like.user_id = user_username.user_id
         ) AS total_loves
         ,(
               SELECT

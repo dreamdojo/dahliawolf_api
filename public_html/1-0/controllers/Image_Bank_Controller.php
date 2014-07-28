@@ -132,17 +132,17 @@ class Image_Bank_Controller extends _Controller
 
         self::trace("does image already exist with params?: " . var_export($image_params, true) . "\nposted_image_id: " . var_export($posted_image_data, true) );
 
-        if( $posted_image_data && $posted_image_data['repo_image_id'])
+        /*if( $posted_image_data && $posted_image_data['repo_image_id'])
         {
-            $cache_key = base64_decode($params['object_id']);
-            self::flushCacheObject($cache_key);
+            //$cache_key = base64_decode($params['object_id']);
+            //self::flushCacheObject($cache_key);
 
             $image_bank = new Image_Bank();
             $data = $image_bank->setPostedStatus($repo_image_data);
 
             self::trace("ERROR: O.ops This Image has already been posted by another user" );
             return array('error' => 'OOps This Image has already been posted by another user.');
-        }
+        }*/
 
         ############# all good.. continue to post image #############
         $new_image_id = $image->addImage($image_params);

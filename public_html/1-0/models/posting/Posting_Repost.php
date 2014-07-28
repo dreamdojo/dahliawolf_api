@@ -61,19 +61,24 @@ class Posting_Repost extends _Model
         $error = NULL;
         $key_field = self::PRIMARY_KEY_FIELD;
         if (empty($params["$key_field"])) {
-
             $error = 'Invalid posting view id';
             return array('errors' => $error);
         }
 
-        $params['where'] = array(
-            ":{$key_field}" =>  $params["$key_field"]
+        $values = array(
+            ":posting_repost_id" =>  $params['posting_repost_id']
         );
 
-        $this->db_delete($this->table, $params['where']);
+        //$this->db_delete('posting_repost', $params['where']);
+        print_r($values);
+        $q = "
+            DELETE FROM posting_repost
+            WHERE posting_repost.posting_repost_id = :posting_repost_id
+            LIMIT 1
+        ";
 
-
-        return array( "$key_field" => $params['where'][ "$key_field" ]);
+        $data = $this->query($q, $values);
+        return $data;
     }
 
     public function deleteRepostByParentId($params = array())

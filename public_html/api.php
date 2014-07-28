@@ -30,12 +30,14 @@ require DR . '/lib/php/email.php';
 require_once 'models/Email.php';
 require_once 'includes/php/json_functions.php';
 
+include(DR . '/lib/mailchimp_api/Mailchimp.php');
+
 define('APP_PATH', sprintf("%s/", realpath('./') ));
 $include_paths = explode(":", get_include_path());
 $include_paths[] = sprintf("%s/", realpath('./lib/1-0/models'));
 $include_paths[] = sprintf("%s/", realpath('./lib/jk07'));
 $include_paths[] = sprintf("%s/", realpath('./lib/mandrill'));
-$include_paths[] = sprintf("%s/", realpath('./lib/mailchimp'));
+//$include_paths[] = sprintf("%s/", realpath('./lib/mailchimp'));
 $include_paths[] = sprintf("%s/", realpath('./'));
 set_include_path(implode(":", $include_paths));
 //require_once 'lib/mandrill-api-php/src/Mandrill.php'; //Not required with Composer
@@ -142,7 +144,7 @@ function send_welcome_email($email, $username) {
 function send_one_hour_email($email, $username) {
     try {
         $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
-        $template_name = 'Getting Started';
+        $template_name = 'hiw';
         $template_content = null;
         $message = array(
             'to' => array(
@@ -246,7 +248,7 @@ function send_four_hour_email($email, $username) {
         );
         $async = false;
         $ip_pool = 'Main Pool';
-        $send_at = $send_time = gmdate('Y-m-d H:i:s', time()+(60*60*4));
+        $send_at = $send_time = gmdate('Y-m-d H:i:s', time()+(60*60));
         $result = $mandrill->messages->sendTemplate($template_name, $template_content, $message, $async, $ip_pool, $send_at);
     } catch(Mandrill_Error $e) {
         // Mandrill errors are thrown as exceptions
@@ -255,6 +257,27 @@ function send_four_hour_email($email, $username) {
         throw $e;
     }
     return;
+}
+
+function add_email_mailchimp($email) {
+    $api_key = "5628ffd9a14d6878d565d3f5a1ed4ab3-us7"; //replace with your API key
+    $list_id = "b959642488"; //replace with the list id you're adding the email to
+
+    // set up our mailchimp object, and list object
+    $Mailchimp = new Mailchimp( $api_key );
+    $Mailchimp_Lists = new Mailchimp_Lists( $Mailchimp );
+
+    try {
+        $subscriber = $Mailchimp_Lists->subscribe( $list_id, array( 'email' => $email ), null, 'html', false); //pass the list id and email to mailchimp
+    } catch (Exception $e) {
+        //print_r($e);
+        //You'll need to write your own code to handle exceptions
+    }
+
+    // check that we've succeded
+    if ( !empty( $subscriber['leid'] ) ) {
+        //echo $subscriber['leid'].' Email Added to MailChimp '.$email;
+    } 
 }
 
 function check_required($keys) {
@@ -381,7 +404,7 @@ function search_term_cron_curl($username, $domain_keyword = NULL) {
 function register_default_follows($user_id)
 {
     //follow default
-    $follow_these = array(6530, 12851, 1644, 3856, 6531, 14884, 7011, 3688, 10261, 6636, 16456, 3372, 9555, 3089, 13317, 790, 7327, 7491, 14056, 15030);
+    $follow_these = array(790, 6531, 3089, 6530, 7448, 16997, 21402, 16670, 3089, 7491, 16456, 667, 7548, 17210, 16121, 3915, 13317, 20285, 9915, 6036);
 
     foreach($follow_these as $ftk => $fthisone)
     {
@@ -698,6 +721,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
             send_welcome_email($_REQUEST['email'], $_REQUEST['username']);
             send_one_hour_email($_REQUEST['email'], $_REQUEST['username']);
             send_four_hour_email($_REQUEST['email'], $_REQUEST['username']);
+            add_email_mailchimp($_REQUEST['email']);
 
             /*
             //schedule :)
@@ -968,7 +992,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                 'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
             );
 
-            send_one_hour_email($params['email_address'], $params['username']);
+            add_email_mailchimp($params['email_address']);
         }
 		else if ($_REQUEST['function'] == 'get_following') {
 			$params = array(

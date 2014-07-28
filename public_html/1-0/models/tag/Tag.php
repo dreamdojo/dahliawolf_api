@@ -90,5 +90,30 @@ class Tag extends _Model {
             self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
         }
     }
+
+    public function getTopTags ($params = Array()) {
+        $values = Array();
+        if(isset($params['limit']))
+            $values[':limit'] = $params['limit'];
+        else
+            $values[':limit'] = 10;
+
+        $q = "
+          SELECT posting_tags.tag_id, COUNT(*) AS tag_count, tags.value
+          FROM posting_tags
+            INNER JOIN tags WHERE posting_tags.tag_id = tags.tag_id
+          GROUP BY posting_tags.tag_id
+          ORDER BY tag_count DESC
+          LIMIT 20
+        ";
+
+        try {
+            $data = $this->fetch($q, $values);
+            return $data;
+
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
+        }
+    }
 }
 ?>

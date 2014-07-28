@@ -116,6 +116,7 @@ class Search extends _Model
             LEFT JOIN user_username ON user_username.user_id = posting.user_id
             LEFT JOIN image ON posting.image_id = image.id
             {$sub_join_str}
+            WHERE posting.deleted IS NULL
             ORDER BY total_likes DESC
             {$offset_limit}
         ";
