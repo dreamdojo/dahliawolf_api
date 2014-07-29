@@ -39,7 +39,10 @@ class Search_Controller extends _Controller
 
     public function img_search($params = Array()) {
         $search = new Search();
+        $tag = new Tag();
+
         $data = $search->fastPosts($params);
+        $tag->addSearchedTag($params['q']);
         return $data;
     }
 

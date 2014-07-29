@@ -255,7 +255,8 @@ class Image_Bank extends _Model
         $count = count($ids)-1;
         $limit = (int) $params['limit'];
         $random_ids = array();
-        while($limit > 0)
+        $breakPoint = 0;
+        while($limit > 0 && $breakPoint < 100000)
         {
             $id = $ids[ rand(0, $count )];
             if($id)
@@ -263,6 +264,7 @@ class Image_Bank extends _Model
                 $random_ids[] = $id;
                 $limit--;
             }
+            $breakPoint++;
         }
 
         return $random_ids;

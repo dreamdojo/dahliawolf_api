@@ -115,5 +115,26 @@ class Tag extends _Model {
             self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
         }
     }
+
+    public function addSearchedTag($tag) {
+        if( isset($tag) ) {
+            $values = Array();
+
+            $values[':tag'] = $tag;
+
+            $q = "
+                  INSERT INTO posting_tag_searched (term)
+                  VALUES (:tag)
+            ";
+
+            try {
+                $data = $this->fetch($q, $values);
+                return $data;
+
+            } catch(Exception $e) {
+                self::$Exception_Helper->server_error_exception("can not add tag". $e->getMessage());
+            }
+        }
+    }
 }
 ?>
