@@ -42,7 +42,7 @@ class Search_Controller extends _Controller
         $tag = new Tag();
 
         $data = $search->fastPosts($params);
-        $tag->addSearchedTag($params['q']);
+        $tag->addSearchedTag($params);
         return $data;
     }
 

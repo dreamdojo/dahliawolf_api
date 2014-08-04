@@ -6,6 +6,22 @@
             parent::__construct($db_host, $db_user, $db_password, $db_name );
         }
 
+        public function exportAllEmails() {
+            $q = "
+                SELECT user_username.email_address
+                FROM dahliawolf_v1_2013.user_username
+                WHERE email_address NOT LIKE '%dahliawolf.com%'
+            ";
+
+            try {
+                $data = $this->fetch($q, array());
+                return $data;
+
+            } catch(Exception $e) {
+                self::$Exception_Helper->server_error_exception("can not get posting lovers". $e->getMessage());
+            }
+        }
+
         public function getLastLoginByDays($params = array()) {
             $values = array();
 
@@ -47,12 +63,20 @@
             $t_members = "
                 SELECT COUNT(*) AS today
                 FROM admin_offline_v1_2013.user
-                WHERE created > DATE_SUB(NOW(), INTERVAL 1 DAY);
+                WHERE DATE(created) = CURRENT_DATE;
+                ";
+            $mnm_members = "
+                SELECT COUNT(*) AS mnu
+                FROM admin_offline_v1_2013.user
+                WHERE created > DATE_SUB(NOW(), INTERVAL 30 DAY);
+                GROUP BY DAY(created)
+                ORDER BY created DESC
+                LIMIT 30
                 ";
             $a_members = "
                 SELECT COUNT(DISTINCT user_id) AS dau
                 FROM admin_offline_v1_2013.login_instance
-                WHERE created > DATE_SUB(NOW(), INTERVAL 1 DAY);
+                WHERE DATE(created) = CURRENT_DATE;
                 ";
             $mau_members = "
                 SELECT COUNT(DISTINCT user_id) AS mau
@@ -84,13 +108,13 @@
             $t_posts = "
                 SELECT COUNT(*) AS today
                 FROM dahliawolf_v1_2013.posting
-                WHERE created > DATE_SUB(NOW(), INTERVAL 1 DAY);
+                WHERE DATE(created) = CURRENT_DATE;
       			";
 
             $u_posts = "
                 SELECT COUNT(DISTINCT user_id) AS perday
                 FROM dahliawolf_v1_2013.posting
-                WHERE created > DATE_SUB(NOW(), INTERVAL 1 DAY);
+                WHERE DATE(created) = CURRENT_DATE;
       			";
 
             $c_posts = "
@@ -108,12 +132,13 @@
             $t_likes = "
                 SELECT COUNT(*) AS today
                 FROM dahliawolf_v1_2013.posting_like
-                WHERE created > DATE_SUB(NOW(), INTERVAL 1 DAY);
+                WHERE DATE(created) = CURRENT_DATE;
       			";
 
             try {
                 $data['members'] = $this->fetch($members, $values);
                 $data['members'][0]['today'] = $this->fetch($t_members, $values)[0]['today'];
+                $data['members'][0]['mnm'] = $this->fetch($mnm_members, $values);
                 $data['members'][0]['dau'] = $this->fetch($a_members, $values)[0]['dau'];
                 $data['members'][0]['mau'] = $this->fetch($mau_members, $values)[0]['mau'];
                 $data['members'][0]['cau'] = $this->fetch($c_members, $values);

@@ -15,6 +15,11 @@ class Posting extends _Model
         'description',
         'deleted',
     );
+    protected $points = array(
+      'love'=>3,
+      'repost'=>5,
+      'comment'=>5
+    );
 
     const TABLE = 'posting';
     const PRIMARY_KEY_FIELD = 'posting_id';
@@ -437,7 +442,7 @@ class Posting extends _Model
                             /*, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
                             , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
                             , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'*/
-                            , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+                            , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id)*{$this->points['love']} AS `total_likes`
                             , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
                             , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
                             , 0 as 'is_repost'
@@ -520,7 +525,7 @@ class Posting extends _Model
             , (SELECT COUNT(*) FROM dahliawolf_v1_2013.comment WHERE posts.posting_id = comment.posting_id) AS comments
             , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
             , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
-            , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posts.posting_id) AS `total_likes`
+            , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posts.posting_id)*{$this->points['love']} AS `total_likes`
             , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posts.posting_id) AS total_shares
             , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posts.posting_id) AS `total_reposts`
             , 0 as 'is_repost'
@@ -575,6 +580,11 @@ class Posting extends _Model
             ';
             $values[':viewer_user_id'] = $params['viewer_user_id'];
         }
+        if($params['like_day_threshold'] == 69) {
+            $range = 'WHERE MONTH(posting.created) = MONTH(CURRENT_DATE) AND YEAR(posting.created) = YEAR(CURRENT_DATE)';
+        } else {
+            $range = 'WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()';
+        }
 
         $query = "
             SELECT user_username.username, user_username.location, user_username.avatar, user_username.first_name, user_username.last_name
@@ -582,7 +592,7 @@ class Posting extends _Model
             , (SELECT COUNT(*) FROM dahliawolf_v1_2013.comment WHERE posting.posting_id = comment.posting_id) AS comments
             , image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
             , CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
-            , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+            , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id)*{$this->points['love']} AS `total_likes`
             , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
             , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
             , 0 as 'is_repost'
@@ -592,7 +602,7 @@ class Posting extends _Model
                 SELECT posting.posting_id, posting.created, posting.user_id, posting.image_id, posting.deleted, IFNULL(COUNT(posting_like_hot.posting_id), 0) AS day_threshold_likes
                 FROM dahliawolf_v1_2013.posting
                 INNER JOIN dahliawolf_v1_2013.posting_like AS posting_like_hot ON posting.posting_id = posting_like_hot.posting_id
-                WHERE posting.created BETWEEN DATE_SUB(NOW(), INTERVAL :like_day_threshold DAY) AND NOW()
+                {$range}
                 AND posting.deleted IS NULL
                 GROUP BY posting.posting_id
                 ORDER BY day_threshold_likes DESC
@@ -653,7 +663,7 @@ class Posting extends _Model
               , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
               , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
               , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
-              , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+              , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id)*{$this->points['love']} AS `total_likes`
               , IF(posting_like.user_id IS NULL, 0, 1) AS is_liked
 
           FROM posting
@@ -797,7 +807,7 @@ class Posting extends _Model
                             , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
                             , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
                             , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
-                            , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+                            , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id)*{$this->points['love']} AS `total_likes`
                             , (SELECT COUNT(*) FROM posting_share WHERE posting_share.posting_id = posting.posting_id) AS total_shares
                             , (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS total_views
 

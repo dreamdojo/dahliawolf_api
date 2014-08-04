@@ -116,15 +116,16 @@ class Tag extends _Model {
         }
     }
 
-    public function addSearchedTag($tag) {
-        if( isset($tag) ) {
+    public function addSearchedTag($params = Array()) {
+        if( isset($params['q']) ) {
             $values = Array();
 
-            $values[':tag'] = $tag;
+            $values[':tag'] = $params['q'];
+            $values[':userId'] = isset($params['viewer_user_id']) ? $params['viewer_user_id'] : '';
 
             $q = "
-                  INSERT INTO posting_tag_searched (term)
-                  VALUES (:tag)
+                  INSERT INTO posting_tag_searched (user_id, term)
+                  VALUES (:userId, :tag)
             ";
 
             try {

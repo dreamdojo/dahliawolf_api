@@ -144,7 +144,7 @@ function send_welcome_email($email, $username) {
 function send_one_hour_email($email, $username) {
     try {
         $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
-        $template_name = 'hiw';
+        $template_name = 'how-it-works-revised-2';
         $template_content = null;
         $message = array(
             'to' => array(

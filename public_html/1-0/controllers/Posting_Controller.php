@@ -26,7 +26,7 @@ class Posting_Controller  extends  _Controller
     {
         $loc_use_cache = false;
         $cache_key_params = self::getCacheParams($params, __FUNCTION__);
-        if (!empty($params['like_day_threshold']) && (int) $params['like_day_threshold'] > 4)
+        /*if (!empty($params['like_day_threshold']) && (int) $params['like_day_threshold'] > 4)
         {
             $loc_use_cache = true;
             if($cached_content = self::getCachedContent($cache_key_params) )
@@ -41,7 +41,7 @@ class Posting_Controller  extends  _Controller
                     return $response;
                 }
             }
-        }
+        }*/
 
 
         $this->load('Posting');
@@ -66,6 +66,11 @@ class Posting_Controller  extends  _Controller
         }
 
         return  $response;
+    }
+
+    public function get_contest_posts($params = array()) {
+        $this->load('Posting');
+
     }
 
     public function add_tag($params = Array()) {

@@ -1426,6 +1426,30 @@ class User extends _Model
 
     }
 
+    public function getUserStoreCredit($user_id) {
+        $query = "
+            SELECT store_credit.*
+            FROM offline_commerce_v1_2013.store_credit
+            WHERE store_credit.user_id = :userId
+        ";
+
+        $values = Array(
+            ':userId' => $user_id
+        );
+
+        $result = $this->fetch($query, $values);
+
+
+        if ($result === false) {
+            if(isset($_GET['t'])) echo $this->error;
+            return array('error' => 'Could not get top following.');
+        }
+
+
+        return $result;
+
+    }
+
     protected function generate_limit_offset_str($params, $offset=true) {
    		$limit_offset_str = '';
    		if (!empty($params['limit'])) {

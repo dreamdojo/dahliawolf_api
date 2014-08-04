@@ -1056,6 +1056,7 @@ class User_Controller extends _Controller {
             $data['customers'] = $dahlia_user->getCustomers($data['user_id']);
             $data['commissions'] = $dahlia_user->getCommisionList($data['user_id']);
             $data['sales'] = $dahlia_user->getUserSales($data['user_id']);
+            $data['storecredit'] = $dahlia_user->getUserStoreCredit($data['user_id']);
         }
 
         $data['sales_total'] =  $total_sales['sales_total'];
