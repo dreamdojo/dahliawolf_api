@@ -66,6 +66,26 @@ class Search_Controller extends _Controller
         return static::wrap_result( ($search->hasError()? false:true), $data, 200, $search->getErrors() );
     }
 
+    public function product_search($params = array()) {
+        $input_validations = array(
+            'q' => array(
+                'label' => 'Search term',
+                'rules' => array(
+                    'is_string' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $search = new Search();
+
+        $data = $search->findProducts($params);
+        $search->addSearchRecord($params);
+
+        return static::wrap_result( ($search->hasError()? false:true), $data, 200, $search->getErrors() );
+    }
 
     protected  function commerceApiRequest($service, $calls, $return_array = false)
     {

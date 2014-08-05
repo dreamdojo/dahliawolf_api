@@ -68,6 +68,60 @@ class Search extends _Model
 
     }
 
+    public function findProducts($params = array()) {
+        $values = Array();
+        $values[':q'] = '%' . $params['q'] . '%';
+
+        $terms = explode(' ', $params['q']);
+        $searchString = '';
+        foreach($terms as $x=>$term) {
+            if(!$x)
+                $searchString .= '\'%' . $term . '%\'';
+            else
+                echo '';//$searchString .= ' OR tags.value LIKE '.'\'%' . $term . '%\'';
+        }
+
+        $cat_where = "";
+        if (!empty($params['category_id'])) {
+            $cat_where .= "AND category_product.id_category = ".$params['category_id'];
+        }
+
+        $offset_limit = $this->generateLimitOffset($params, true);
+
+        $q = "
+              SELECT DISTINCT product.*, product_lang.name as product_name, user_username.username, user_username.location, user_username.avatar
+              , category_product.id_category
+              FROM offline_commerce_v1_2013.product
+                INNER JOIN offline_commerce_v1_2013.product_lang ON product_lang.id_product = product.id_product
+                INNER JOIN user_username ON product.user_id = user_username.user_id
+                INNER JOIN offline_commerce_v1_2013.category_product ON category_product.id_product = product.id_product
+              WHERE CONCAT(design_description, product_lang.name, user_username.username) LIKE {$searchString}
+                AND product.active = 1
+                {$cat_where}
+              GROUP BY product_lang.id_product
+              {$offset_limit}
+        ";
+
+        try {
+            $data = $this->fetch($q, $values);
+            foreach($data as $x=>$product) {
+                $values = array(
+                    ':idProduct'=>$product['id_product']
+                );
+                $q = "
+                    SELECT *
+                    FROM offline_commerce_v1_2013.product_file
+                    WHERE product_id = :idProduct
+                ";
+                $data[$x]['product_images'] = $this->fetch($q, $values);
+            }
+
+            return Array('products'=>$data);
+        } catch(Exception $e) {
+            self::$Exception_Helper->server_error_exception("can not get search results". $e->getMessage());
+        }
+    }
+
     public function fastPosts($params = Array()) {
         $values = Array();
         $values[':q'] = '%' . $params['q'] . '%';
@@ -127,6 +181,28 @@ class Search extends _Model
             return Array('posts'=>$data);
         } catch(Exception $e) {
             self::$Exception_Helper->server_error_exception("can not get search results". $e->getMessage());
+        }
+    }
+
+    public function addSearchRecord($params) {
+        if( isset($params['q']) ) {
+            $values = Array();
+
+            $values[':tag'] = $params['q'];
+            $values[':userId'] = isset($params['viewer_user_id']) ? $params['viewer_user_id'] : '';
+
+            $q = "
+                  INSERT INTO product_searched (user_id, term)
+                  VALUES (:userId, :tag)
+            ";
+
+            try {
+                $data = $this->fetch($q, $values);
+                return $data;
+
+            } catch(Exception $e) {
+                self::$Exception_Helper->server_error_exception("can not add tag". $e->getMessage());
+            }
         }
     }
 

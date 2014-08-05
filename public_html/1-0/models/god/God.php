@@ -81,7 +81,7 @@
             $mau_members = "
                 SELECT COUNT(DISTINCT user_id) AS mau
                 FROM admin_offline_v1_2013.login_instance
-                WHERE created > DATE_SUB(NOW(), INTERVAL 30 DAY);
+                WHERE MONTH(created) = MONTH(CURRENT_DATE);
                 ";
             $c_members = "
                 SELECT DATE_FORMAT(created, '%M %D') AS create_date,
@@ -113,6 +113,7 @@
 
             $u_posts = "
                 SELECT COUNT(DISTINCT user_id) AS perday
+
                 FROM dahliawolf_v1_2013.posting
                 WHERE DATE(created) = CURRENT_DATE;
       			";
