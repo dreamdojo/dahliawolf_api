@@ -241,6 +241,13 @@
                 FROM dahliawolf_v1_2013.referral
                 WHERE referral.user_id = ".$user_id;
 
+            $l_refs = "
+                SELECT referral.new_member_id, user_username.avatar, user_username.username, user_username.user_id, DATE_FORMAT(referral.created, '%M %D') AS date
+                FROM dahliawolf_v1_2013.referral
+                LEFT JOIN user_username ON user_username.user_id = referral.new_member_id
+                WHERE referral.user_id = ".$user_id;
+
+
             $w_refs = "
                 SELECT referral.new_member_id, user_username.avatar, user_username.username, user_username.user_id, DATE_FORMAT(referral.created, '%M %D') AS date
                 FROM dahliawolf_v1_2013.referral
@@ -336,6 +343,7 @@
 
                 $data['referrals']['title'] = 'referrals';
                 $data['referrals'][0]['total'] = $this->fetch($refs, $values)[0]['referral'];
+                $data['referrals'][0]['list'] = $this->fetch($l_refs, $values);
                 $data['referrals'][0]['week'] = $this->fetch($w_refs, $values);
                 $data['referrals'][0]['daily'] = $this->fetch($d_refs, $values);
 
