@@ -395,11 +395,11 @@ class Posting extends db {
 				$values[':viewer_user_id'] = $params['where']['viewer_user_id'];
 
 				// Dislike
-				$join_str .= '
+				/*$join_str .= '
 					LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
 						AND posting_dislike.user_id = :viewer_user_id
 				';
-				$sub_where_str .= ' AND posting_dislike.posting_id IS NULL';
+				$sub_where_str .= ' AND posting_dislike.posting_id IS NULL';*/
 			}
 			// Search
 			if (!empty($params['where']['q'])) {
@@ -480,8 +480,9 @@ class Posting extends db {
                 SELECT posting.*
                     , IFNULL(COUNT(comment.comment_id), 0) AS comments
                     , imageInfo.baseurl, imageInfo.attribution_url, site.domain, site.domain_keyword
-                    , (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`
+                    /*, (SELECT COUNT(*) FROM posting_view WHERE posting_view.posting_id = posting.posting_id) AS `total_views`*/
                     , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`
+                    , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
 
                     {$outer_select_str}
       			FROM (
@@ -489,9 +490,10 @@ class Posting extends db {
       						, image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height
       						, user_username.username, user_username.location, user_username.avatar
       						, CONCAT(image.source, 'image.php?imagename=', image.imagename) AS image_url
-                            , IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner
+                            /*, IF(like_winner.like_winner_id IS NOT NULL, 1, 0) AS is_winner*/
                             , IF(UNIX_TIMESTAMP(posting.created)+$active_limit > UNIX_TIMESTAMP(), 1, 0 ) AS is_active
                             , FROM_UNIXTIME(UNIX_TIMESTAMP(posting.created)+$active_limit, '%c/%e/%Y') AS 'expiration_date'
+                            /*, (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`*/
       						{$select_str}
       						{$hot_select_str}
       					FROM posting

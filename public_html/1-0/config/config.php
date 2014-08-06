@@ -91,7 +91,7 @@ spl_autoload_register(function($class_name) {
 		, DR . '/' . API_VERSION . '/lib/php/'
 		, DR . '/' . API_VERSION . '/lib/php/'
 		, DR . '/lib/jk07/'
-		, DR . '/lib/mailchimp/'
+		//, DR . '/lib/mailchimp/'
 		, DR . '/lib/mandrill/'
 	);
 

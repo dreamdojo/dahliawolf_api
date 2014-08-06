@@ -21,6 +21,8 @@ require_once 'models/Vote_Period.php';
 require_once 'models/Vote_Winner.php';
 require_once 'models/Point.php';
 require_once 'models/User_Point.php';
+require_once 'models/profileOptions.php';
+require_once 'models/Tasks.php';
 
 
 require DR . '/lib/php/class.phpmailer.php';
@@ -28,14 +30,17 @@ require DR . '/lib/php/email.php';
 require_once 'models/Email.php';
 require_once 'includes/php/json_functions.php';
 
+include(DR . '/lib/mailchimp_api/Mailchimp.php');
+
 define('APP_PATH', sprintf("%s/", realpath('./') ));
 $include_paths = explode(":", get_include_path());
 $include_paths[] = sprintf("%s/", realpath('./lib/1-0/models'));
 $include_paths[] = sprintf("%s/", realpath('./lib/jk07'));
 $include_paths[] = sprintf("%s/", realpath('./lib/mandrill'));
-$include_paths[] = sprintf("%s/", realpath('./lib/mailchimp'));
+//$include_paths[] = sprintf("%s/", realpath('./lib/mailchimp'));
 $include_paths[] = sprintf("%s/", realpath('./'));
 set_include_path(implode(":", $include_paths));
+//require_once 'lib/mandrill-api-php/src/Mandrill.php'; //Not required with Composer
 
 
 if(isset($_GET['t'])){
@@ -75,6 +80,204 @@ function delete_user_point($data) {
 	);
 	$User_Point->delete_user_point($params);
 	unset($User_Point);
+}
+
+function send_welcome_email($email, $username) {
+    try {
+        $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
+        $template_name = 'Initial Signup';
+        $template_content = null;
+        $message = array(
+            'to' => array(
+                array(
+                    'email' => $email,
+                    'name' => '',
+                    'type' => 'to'
+                )
+            ),
+            'headers' => array('Reply-To' => 'hello@dahliawolf.com'),
+            'important' => false,
+            'track_opens' => true,
+            'track_clicks' => true,
+            'auto_text' => null,
+            'auto_html' => null,
+            'inline_css' => null,
+            'url_strip_qs' => null,
+            'preserve_recipients' => null,
+            'view_content_link' => null,
+            'bcc_address' => null,
+            'tracking_domain' => null,
+            'signing_domain' => null,
+            'return_path_domain' => null,
+            'merge' => false,
+            'global_merge_vars' => array(
+                array(
+                    'name' => 'merge1',
+                    'content' => 'merge1 content'
+                )
+            ),
+            'merge_vars' => array(
+                array(
+                    'rcpt' => $email,
+                    'vars' => array(
+                        array(
+                            'name' => 'USERNAME',
+                            'content' => $username
+                        )
+                    )
+                )
+            )
+        );
+        $async = false;
+        $ip_pool = 'Main Pool';
+        $send_at = null;
+        $result = $mandrill->messages->sendTemplate($template_name, $template_content, $message, $async, $ip_pool, $send_at);
+    } catch(Mandrill_Error $e) {
+        // Mandrill errors are thrown as exceptions
+        echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
+        // A mandrill error occurred: Mandrill_Unknown_Subaccount - No subaccount exists with the id 'customer-123'
+        throw $e;
+    }
+    return;
+}
+
+function send_one_hour_email($email, $username) {
+    try {
+        $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
+        $template_name = 'how-it-works-revised-2';
+        $template_content = null;
+        $message = array(
+            'to' => array(
+                array(
+                    'email' => $email,
+                    'name' => '',
+                    'type' => 'to'
+                )
+            ),
+            'headers' => array('Reply-To' => 'hello@dahliawolf.com'),
+            'important' => false,
+            'track_opens' => true,
+            'track_clicks' => true,
+            'auto_text' => null,
+            'auto_html' => null,
+            'inline_css' => null,
+            'url_strip_qs' => null,
+            'preserve_recipients' => null,
+            'view_content_link' => null,
+            'bcc_address' => null,
+            'tracking_domain' => null,
+            'signing_domain' => null,
+            'return_path_domain' => null,
+            'merge' => false,
+            'global_merge_vars' => array(
+                array(
+                    'name' => 'merge1',
+                    'content' => 'merge1 content'
+                )
+            ),
+            'merge_vars' => array(
+                array(
+                    'rcpt' => $email,
+                    'vars' => array(
+                        array(
+                            'name' => 'USERNAME',
+                            'content' => $username
+                        )
+                    )
+                )
+            )
+        );
+        $async = false;
+        $ip_pool = 'Main Pool';
+        $send_at = $send_time = gmdate('Y-m-d H:i:s', time()+(60*60));
+        $result = $mandrill->messages->sendTemplate($template_name, $template_content, $message, $async, $ip_pool, $send_at);
+    } catch(Mandrill_Error $e) {
+        // Mandrill errors are thrown as exceptions
+        echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
+        // A mandrill error occurred: Mandrill_Unknown_Subaccount - No subaccount exists with the id 'customer-123'
+        throw $e;
+    }
+    return;
+}
+
+function send_four_hour_email($email, $username) {
+    try {
+        $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
+        $template_name = 'Follow New People';
+        $template_content = null;
+        $message = array(
+            'to' => array(
+                array(
+                    'email' => $email,
+                    'name' => '',
+                    'type' => 'to'
+                )
+            ),
+            'headers' => array('Reply-To' => 'hello@dahliawolf.com'),
+            'important' => false,
+            'track_opens' => true,
+            'track_clicks' => true,
+            'auto_text' => null,
+            'auto_html' => null,
+            'inline_css' => null,
+            'url_strip_qs' => null,
+            'preserve_recipients' => null,
+            'view_content_link' => null,
+            'bcc_address' => null,
+            'tracking_domain' => null,
+            'signing_domain' => null,
+            'return_path_domain' => null,
+            'merge' => false,
+            'global_merge_vars' => array(
+                array(
+                    'name' => 'merge1',
+                    'content' => 'merge1 content'
+                )
+            ),
+            'merge_vars' => array(
+                array(
+                    'rcpt' => $email,
+                    'vars' => array(
+                        array(
+                            'name' => 'USERNAME',
+                            'content' => $username
+                        )
+                    )
+                )
+            )
+        );
+        $async = false;
+        $ip_pool = 'Main Pool';
+        $send_at = $send_time = gmdate('Y-m-d H:i:s', time()+(60*60));
+        $result = $mandrill->messages->sendTemplate($template_name, $template_content, $message, $async, $ip_pool, $send_at);
+    } catch(Mandrill_Error $e) {
+        // Mandrill errors are thrown as exceptions
+        echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
+        // A mandrill error occurred: Mandrill_Unknown_Subaccount - No subaccount exists with the id 'customer-123'
+        throw $e;
+    }
+    return;
+}
+
+function add_email_mailchimp($email) {
+    $api_key = "5628ffd9a14d6878d565d3f5a1ed4ab3-us7"; //replace with your API key
+    $list_id = "b959642488"; //replace with the list id you're adding the email to
+
+    // set up our mailchimp object, and list object
+    $Mailchimp = new Mailchimp( $api_key );
+    $Mailchimp_Lists = new Mailchimp_Lists( $Mailchimp );
+
+    try {
+        $subscriber = $Mailchimp_Lists->subscribe( $list_id, array( 'email' => $email ), null, 'html', false); //pass the list id and email to mailchimp
+    } catch (Exception $e) {
+        //print_r($e);
+        //You'll need to write your own code to handle exceptions
+    }
+
+    // check that we've succeded
+    if ( !empty( $subscriber['leid'] ) ) {
+        //echo $subscriber['leid'].' Email Added to MailChimp '.$email;
+    } 
 }
 
 function check_required($keys) {
@@ -201,7 +404,7 @@ function search_term_cron_curl($username, $domain_keyword = NULL) {
 function register_default_follows($user_id)
 {
     //follow default
-    $follow_these = array(6530, 12851, 1644, 3856, 6531, 14884, 7011, 3688, 10261, 6636, 16456, 3372, 9555, 3089, 13317, 790, 7327, 7491, 14056, 15030);
+    $follow_these = array(790, 6531, 3089, 6530, 7448, 16997, 21402, 16670, 3089, 7491, 16456, 667, 7548, 17210, 16121, 3915, 13317, 20285, 9915, 6036);
 
     foreach($follow_these as $ftk => $fthisone)
     {
@@ -380,6 +583,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$optional_params = array(
 				'instagram_username'
 				, 'pinterest_username'
+                , 'twitter_username'
 				, 'gender'
 				, 'location'
 				, 'avatar'
@@ -402,6 +606,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			return;
 		}
 		else if ($_REQUEST['function'] == 'register') {
+            $options = new profileOptions();
 			check_required(
 				array(
 					/*'first_name'
@@ -480,6 +685,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 					, 'gender' => !empty($_REQUEST['gender']) ? $_REQUEST['gender'] : NULL
 				)
 			);
+
 			$user = $User->addUser($user_params);
 
 			// Credit user points
@@ -507,12 +713,15 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$user['data']['token'] = $data['data']['login']['data']['token'];
 
 
-
 			// Send email
 			unset($User);
-			$email_template = new Email();
-            $email_template->setVar('user_name', "{$_REQUEST['username']}" );
-            $email_template->email('signup', $user_id );
+			//$email_template = new Email();
+            //$email_template->setVar('user_name', "{$_REQUEST['username']}" );
+            //$email_template->email('signup', $user_id );
+            send_welcome_email($_REQUEST['email'], $_REQUEST['username']);
+            send_one_hour_email($_REQUEST['email'], $_REQUEST['username']);
+            send_four_hour_email($_REQUEST['email'], $_REQUEST['username']);
+            add_email_mailchimp($_REQUEST['email']);
 
             /*
             //schedule :)
@@ -562,6 +771,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			$optional_params = array(
 				'instagram_username'
 				, 'pinterest_username'
+                , 'twitter_username'
 				, 'gender'
 				, 'location'
 				, 'avatar'
@@ -607,7 +817,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
                 , 'fb_uid'
 				, 'instagram_username'
 				, 'pinterest_username'
-				//, 'comment_notifications'
+                , 'twitter_username'
+				, 'profile_type'
 				//, 'like_notifications'
 				, 'notification_interval'
 
@@ -658,8 +869,9 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'instagram_import'
 				, 'instagram_username'
 				, 'pinterest_username'
+				, 'twitter_username'
 				, 'comment_notifications'
-				//, 'like_notifications'
+				, 'profile_type'
 				//, 'comment_notifications'
 				, 'notification_interval'
 			);
@@ -767,6 +979,21 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			echo json_pretty(json_encode(($user)));
 			return;
 		}
+        else if ($_REQUEST['function'] == 'test_email') {
+            check_required(
+                array(
+                    'email_address',
+                    'username',
+                )
+            );
+
+            $params = array(
+                'email_address' => !empty($_REQUEST['email_address']) ? $_REQUEST['email_address'] : NULL,
+                'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
+            );
+
+            add_email_mailchimp($params['email_address']);
+        }
 		else if ($_REQUEST['function'] == 'get_following') {
 			$params = array(
 				'where' => array(
@@ -1149,6 +1376,12 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 			$post['data']['points_earned'] = $points_earned;
 			$post['data']['new_image_url'] = sprintf("%s/%s", trim($_REQUEST['source'], '/'), trim($_REQUEST['imagename'], '/'));
 
+            $task = new Tasks();
+            $taskData = Array();
+            $taskData['action_id'] = $post['data']['posting_id'];
+            $taskData['task'] = 'add_like';
+            $task->addTask($taskData);
+
 			// Update feed image (set status to 'Posted')
 			if (!empty($_REQUEST['repo_image_id'])) {
 				$Feed_Image = new Feed_Image();
@@ -1309,7 +1542,7 @@ else if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'posting') {
 				$posting_like['data']['points_earned'] = $points_earned;
 
 				// Log activity
-				log_activity($post_user_id, 9, 'Received a like on an image', 'posting_like', $posting_like['data']['posting_like_id']);
+				log_activity($post_user_id, 9, 'liked your image', 'posting_like', $posting_like['data']['posting_like_id']);
 
 				// Log activity
 				log_activity($_REQUEST['user_id'], 10, 'Liked an image', 'posting_like', $posting_like['data']['posting_like_id']);

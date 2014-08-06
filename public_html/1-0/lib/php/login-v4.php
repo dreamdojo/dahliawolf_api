@@ -107,11 +107,12 @@ class login {
 		//get login info
 		if ($token !== false) {
 			$query = '
-				SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id, login_instance.token
+				SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id, login_instance.token, user_username.*
 				FROM user 
 				INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id 
 				INNER JOIN login_instance ON login_instance.user_id = user.user_id
-				WHERE token = :token AND active = :active
+				LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = user.user_id
+				WHERE token = :token AND user.active = :active
 			';
 			$values = array(
 				':token' => $token
@@ -133,6 +134,7 @@ class login {
 				session_regenerate_id(true); //reduce damange from hijacking
 				$_SESSION[CR]['user-error-single'] = 'You have logged in at another location.';
 			}
+            //var_dump($this->user);
 		}	
 		else {
 			$login = $this->getCookieLogin();
@@ -140,10 +142,11 @@ class login {
 				$password = $this->getCookiePassword();
 				if ($password && STOREPASSWORDCOOKIE === true) { // if password is saved and STOREPASSWORDCOOKIE flag is set
 					$query = '
-						SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id, login_instance.token 
+						SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id, login_instance.token, user_username.*
 						FROM user 
 						LEFT JOIN login_instance ON login_instance.user_id = user.user_id
-						INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id 
+						INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id
+						LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = user.user_id
 						WHERE user.email = :email AND user.active = :active
 					';
 					$values = array(
@@ -345,7 +348,7 @@ class login {
 	* @return bool - True if authentication was successful, false otherwise
 	*
 	*/
-	public function authen($login, $password, $cookieType = 0, &$error, $social = false) {
+	public function authen($login, $password, $cookieType = 0, &$error, $social=false) {
 		global $_mysql;
 		
 		//make $login safe
@@ -370,15 +373,13 @@ class login {
 		}
 		
 		$query = '
-			SELECT
-			    user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id
-			    ,dahliauser.avatar
+			SELECT user.*, user_user_group_link.user_group_id, user_user_group_link.user_group_portal_id
+			       ,user_username.*
 			FROM user 
-			    INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id
-			    JOIN  dahliawolf_v1_2013.user_username AS dahliauser ON dahliauser.user_id = user.user_id
+			INNER JOIN user_user_group_link ON user.user_id = user_user_group_link.user_id
+			LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = user.user_id
 			WHERE ' . $where_str . '
 		';
-
 		
 		
 		if (!empty($this->validGroupIds)) {
@@ -405,12 +406,12 @@ class login {
 			return false;
 		}
 		
-		if($social) {
-            $isCorrectPassword = true;
-        } else {
+		if(!$social) {
             $isCorrectPassword = $this->checkPassword($password, $this->user['hash']);
+        } else {
+            $isCorrectPassword = true;
         }
-		
+
 		// record failed login attempt
 		if (!$isCorrectPassword) {
 			$this->recordFailedLogin();

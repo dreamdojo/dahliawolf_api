@@ -116,6 +116,7 @@ class Image_Bank extends _Model
                     $join_str
                     WHERE
                         imageURL IS NOT NULL AND imageURL != ''
+                        AND imageInfo.status != 'Posted'
                         {$where_sql}
                     ORDER BY id DESC
                     LIMIT 3000 ) as images
@@ -254,7 +255,8 @@ class Image_Bank extends _Model
         $count = count($ids)-1;
         $limit = (int) $params['limit'];
         $random_ids = array();
-        while($limit > 0)
+        $breakPoint = 0;
+        while($limit > 0 && $breakPoint < 100000)
         {
             $id = $ids[ rand(0, $count )];
             if($id)
@@ -262,6 +264,7 @@ class Image_Bank extends _Model
                 $random_ids[] = $id;
                 $limit--;
             }
+            $breakPoint++;
         }
 
         return $random_ids;

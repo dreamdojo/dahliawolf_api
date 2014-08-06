@@ -12,6 +12,7 @@ class Posting_Like extends _Model
 
     CONST ACTIVITY_ID_POST_VOTE = 19;
     CONST ACTIVITY_ID_POST_LIKED = 9;
+    CONST ACTIVITY_ID_POST_SALES = 69;
     private $table = self::TABLE;
 
     public function __construct($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE)
@@ -72,7 +73,8 @@ class Posting_Like extends _Model
 
             // Log activity
             $posting_owner_user_id = self::getUserId($data);
-            self::logActivity($posting_owner_user_id, 9, 'Received a like on an image', 'posting_like', $insert_id );
+            self::logActivity($posting_owner_user_id, 9, 'liked your post', 'posting_like', $insert_id );
+
             return array(
                     strtolower( self::PRIMARY_KEY_FIELD) => $insert_id,
                     //'model_data' => $data
@@ -131,7 +133,6 @@ class Posting_Like extends _Model
         return array(true, true);
     }
 
-
     protected function logActivity($user_id, $activity_id, $note, $entity = NULL, $entity_id = NULL)
     {
         $activity_log = new Activity_Log();
@@ -146,7 +147,6 @@ class Posting_Like extends _Model
         );
 
         $data = Activity_Log::saveActivity($params);
-
     }
 
 

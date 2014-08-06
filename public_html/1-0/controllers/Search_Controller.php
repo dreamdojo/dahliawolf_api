@@ -37,6 +37,55 @@ class Search_Controller extends _Controller
 
     }
 
+    public function img_search($params = Array()) {
+        $search = new Search();
+        $tag = new Tag();
+
+        $data = $search->fastPosts($params);
+        $tag->addSearchedTag($params);
+        return $data;
+    }
+
+    public function find_members($request_params = array()) {
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_int' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $request_params, true);
+        $this->Validate->run();
+
+        $search = new Search();
+
+        $data = $search->findMembers($request_params);
+
+        return static::wrap_result( ($search->hasError()? false:true), $data, 200, $search->getErrors() );
+    }
+
+    public function product_search($params = array()) {
+        $input_validations = array(
+            'q' => array(
+                'label' => 'Search term',
+                'rules' => array(
+                    'is_string' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $search = new Search();
+
+        $data = $search->findProducts($params);
+        $search->addSearchRecord($params);
+
+        return static::wrap_result( ($search->hasError()? false:true), $data, 200, $search->getErrors() );
+    }
 
     protected  function commerceApiRequest($service, $calls, $return_array = false)
     {

@@ -26,7 +26,7 @@ class Posting_Controller  extends  _Controller
     {
         $loc_use_cache = false;
         $cache_key_params = self::getCacheParams($params, __FUNCTION__);
-        if (!empty($params['like_day_threshold']) && (int) $params['like_day_threshold'] > 4)
+        /*if (!empty($params['like_day_threshold']) && (int) $params['like_day_threshold'] > 4)
         {
             $loc_use_cache = true;
             if($cached_content = self::getCachedContent($cache_key_params) )
@@ -41,13 +41,17 @@ class Posting_Controller  extends  _Controller
                     return $response;
                 }
             }
-        }
+        }*/
 
 
         $this->load('Posting');
 
         $posting = new Posting();
-        $posts = $posting->getAll($params);
+        if(!empty($params['like_day_threshold'])) {
+            $posts = $posting->getAllTest($params);
+        } else {
+            $posts = $posting->getAll($params);
+        }
         $response = array('object_id' => null, 'posts' => $posts);
 
         if (empty($result))
@@ -64,12 +68,67 @@ class Posting_Controller  extends  _Controller
         return  $response;
     }
 
+    public function get_contest_posts($params = array()) {
+        $this->load('Posting');
+
+    }
+
+    public function add_tag($params = Array()) {
+        $tag = new Tag();
+
+        $id = $tag->getTagId($params);
+
+        $data = $tag->addTagToPost($params['posting_id'], $id['tag_id']);
+
+        return $data;
+    }
+
+    public function delete_tag($params = Array()) {
+        $tag = new Tag();
+
+        $data = $tag->delPostTag($params);
+
+        return $data;
+    }
+
+    public function get_winners($params = array()) {
+        $this->load('Posting');
+
+        $posting = new Posting();
+
+        $posts = $posting->getWinners($params);
+        $response = array('posts' => $posts);
+
+        return $response;
+    }
+
+    public function get_following_posts($params = array())
+    {
+        $this->load('Posting');
+
+        $posting = new Posting();
+        $posts = $posting->getFollowingPosts($params);
+        $response = array('posts' => $posts);
+
+        return  $response;
+    }
+
     public function get_by_user($request_data = array())
     {
         $this->load('Posting');
 
-        $message = new Posting();
-        $response = $message->getByUser($request_data);
+        $posts = new Posting();
+        $response = $posts->getByUser($request_data);
+
+        return  $response;
+    }
+
+    public function get_loves_by_user($request_data = array())
+    {
+        $this->load('Posting');
+
+        $posts = new Posting();
+        $response = $posts->getLovesByUser($request_data);
 
         return  $response;
     }
@@ -117,7 +176,7 @@ class Posting_Controller  extends  _Controller
     }
 
 
-    public function add_tag($request_data)
+    /*public function add_tag($request_data)
     {
         $this->load('Posting_Tag');
 
@@ -125,7 +184,7 @@ class Posting_Controller  extends  _Controller
         $response = $posting->create($request_data);
 
         return  $response;
-    }
+    }*/
 
     public function remove_tag($request_data)
     {
@@ -164,9 +223,14 @@ class Posting_Controller  extends  _Controller
     public function add_comment($request_data)
     {
         $this->load('Posting_Comment');
+        $this->load('Points');
 
         $posting = new Posting_Comment();
         $response = $posting->create($request_data);
+
+        $request_data['point_id'] = 3;
+        $request_data['points'] = 10;
+        $this->Points->addPoints($request_data);
 
         return  $response;
     }
@@ -237,17 +301,46 @@ class Posting_Controller  extends  _Controller
 
     }
 
+    public function get_reposters( $request_data = array() )
+    {
+
+        $posting = new Posting();
+        $response = $posting->getReposters($request_data);
+
+        return  $response;
+
+    }
+
 
     public function add_like( $request_data = array() )
     {
         $this->load('Posting_Like');
+        $this->load('Points');
+        $this->load('Email');
 
          $posting_like = new Posting_Like();
          $data = $posting_like->addLike($request_data);
 
+        $request_data['point_id'] = 3;
+        $request_data['points'] = 3;
+        $this->Points->addPoints($request_data);
+        $this->Email->send_transactional_post_email(Array('user_id'=>$request_data['user_id'], 'posting_id'=>$request_data['posting_id']));
+
          return static::wrap_result(($posting_like->hasError()? false:true), $data, 200, $posting_like->getErrors() );
     }
+    public function test_trans() {
+        $this->load('Email');
 
+        //$this->Email->send_transactional_post_email(Array('user_id'=>658, 'posting_id'=>332365));
+        $this->Email->send_transactional_follower_email(658/*id of user being followed*/, 2418/*id of follower*/);
+        //$this->Email->send_transactional_comment_email(Array('user_id'=>658, 'posting_id'=>332365,'comment'=>'Yo dis a test email'));
+        //$this->Email->send_transactional_repost_email(Array('user_id'=>2418, 'posting_id'=>332365));
+        $str = 'admin@dahliawolf.com';
+
+        $str = explode('@', $str)[1];
+
+        //echo $str == 'dahliawolf.com';
+    }
 
     public function delete_like( $request_data = array() )
     {
@@ -274,13 +367,23 @@ class Posting_Controller  extends  _Controller
 
     public function repost($params = array() )
     {
+        $this->load('Points');
+        $this->load('Email');
         $posting_model = new Posting();
         $posting_entity=  $posting_model->getPostingEntity($params);
+        $params['og_id'] = $posting_entity['user_id'];
 
         if($posting_entity)
         {
             $repost = new Posting_Repost();
             $repost_id = $repost->addRepost($params);
+
+            $request_data['point_id'] = 3;
+            $request_data['points'] = 5;
+            $request_data['user_id'] = $params['og_id'];
+            $this->Points->addPoints($request_data);
+            $this->Email->send_transactional_repost_email(Array('user_id'=>$params['repost_user_id'], 'posting_id'=>$params['posting_id']));
+
             return $repost_id;
         }
 

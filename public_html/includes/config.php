@@ -91,7 +91,7 @@ spl_autoload_register(function($class_name)
 		$_SERVER['DOCUMENT_ROOT'] . '/models/',
 		$_SERVER['DOCUMENT_ROOT'] . '/lib/php',
 		$_SERVER['DOCUMENT_ROOT'] . '/lib/jk07',
-		$_SERVER['DOCUMENT_ROOT'] . '/lib/mailchimp',
+		//$_SERVER['DOCUMENT_ROOT'] . '/lib/mailchimp',
 		$_SERVER['DOCUMENT_ROOT'] . '/lib/mandrill',
 		$_SERVER['DOCUMENT_ROOT'] . '/1-0/models',
 		$_SERVER['DOCUMENT_ROOT'] . '/includes/php/classes',

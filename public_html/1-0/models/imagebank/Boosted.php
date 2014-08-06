@@ -27,7 +27,7 @@ class Boosted extends _Model
         $image_url  = $request_data['image_url'];
         $image_caption  = $request_data['image_caption'];
 
-       	$upload_dir = 'upload/';
+       	$upload_dir = 'uploads/';
 
        	//get contents of remote file & save
        	$imagename = sprintf("%s_%s", time(), str_replace('?','_', basename(urldecode($image_url))) );
@@ -37,7 +37,7 @@ class Boosted extends _Model
         foreach($replace_arr as $replace ) $imagename = str_replace("$replace", '_', $imagename);
         */
 
-        $repo_root = "/mnt/repodata/{$upload_dir}";
+        $repo_root = "/var/gitrepos/teal_dahliawolf_api/uploads/";
         $image_repo_loc = $repo_root . $imagename;
 
         $image_data = @file_get_contents( $image_url );
@@ -56,8 +56,7 @@ class Boosted extends _Model
                 //$source = 'http://' . $_SERVER['HTTP_HOST'] . $upload_dir;
                 $source = 'http://repository.offlinela.com/' . $upload_dir . $imagename;
 
-                $source_base = $source = 'http://repository.offlinela.com/' . $upload_dir;
-
+                $source_base = $source = 'http://images.dahliawolf.com/';
 
                 if( $dimensions[0]*$dimensions[1] >= 900 )
                 {

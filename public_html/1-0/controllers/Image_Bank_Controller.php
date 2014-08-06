@@ -11,9 +11,9 @@ class Image_Bank_Controller extends _Controller
         $random_seed = rand(1,5);
         $params['random_seed'] = $random_seed;
 
-        $cache_key_params = self::getCacheParams($params, __FUNCTION__);
+        //$cache_key_params = self::getCacheParams($params, __FUNCTION__);
 
-        if($cached_content = self::getCachedContent($cache_key_params) )
+        /*if($cached_content = self::getCachedContent($cache_key_params) )
         {
             $cached_images_obj = json_decode($cached_content);
 
@@ -29,7 +29,7 @@ class Image_Bank_Controller extends _Controller
                 return $response;
             }
 
-        }
+        }*/
 
         //// not cached.. force cache..
         //self::setUseCache(true);
@@ -38,15 +38,14 @@ class Image_Bank_Controller extends _Controller
         $image_bank = new Image_Bank();
 
         $image_feed = $image_bank->getFeedByIds($params);
-        $cache_key = self::getCacheKey($cache_key_params);
 
-        $response = array('object_id' => base64_encode($cache_key), 'images' => $image_feed);
+        $response = array('images' => $image_feed);
 
-        if(!$image_feed['error'] && count($image_feed) > 0 ){
+        /*if(!$image_feed['error'] && count($image_feed) > 0 ){
             //just cache it!!
             self::cacheContent($cache_key_params, json_encode($response),  RedisCache::TTL_HOUR);
 
-        }
+        }*/
 
         return $response;
     }
@@ -76,6 +75,7 @@ class Image_Bank_Controller extends _Controller
     {
         ############# check for user posting limist #############
         $posting = new Posting();
+        $this->load('Tasks');
 
         $bank_images_params = array(
             'user_id'       => $params['user_id'],
@@ -132,17 +132,17 @@ class Image_Bank_Controller extends _Controller
 
         self::trace("does image already exist with params?: " . var_export($image_params, true) . "\nposted_image_id: " . var_export($posted_image_data, true) );
 
-        if( $posted_image_data && $posted_image_data['repo_image_id'])
+        /*if( $posted_image_data && $posted_image_data['repo_image_id'])
         {
-            $cache_key = base64_decode($params['object_id']);
-            self::flushCacheObject($cache_key);
+            //$cache_key = base64_decode($params['object_id']);
+            //self::flushCacheObject($cache_key);
 
             $image_bank = new Image_Bank();
             $data = $image_bank->setPostedStatus($repo_image_data);
 
             self::trace("ERROR: O.ops This Image has already been posted by another user" );
             return array('error' => 'OOps This Image has already been posted by another user.');
-        }
+        }*/
 
         ############# all good.. continue to post image #############
         $new_image_id = $image->addImage($image_params);
@@ -175,6 +175,11 @@ class Image_Bank_Controller extends _Controller
 
             $image_bank = new Image_Bank();
             $data = $image_bank->setPostedStatus($repo_image_data);
+
+            $taskData = Array();
+            $taskData['action_id'] = $new_posting_id;
+            $taskData['task'] = 'add_like';
+            $this->Tasks->addTask($taskData);
 
             //finish
             return $new_post_data;

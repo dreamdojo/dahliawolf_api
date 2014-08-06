@@ -152,7 +152,6 @@ class Posting_Comment extends _Model {
         return $comments;
     }
 
-
     public function remove($request_data)
     {
         $values['comment_id'] = $request_data['comment_id'];
