@@ -99,7 +99,7 @@ class Search_Controller extends _Controller
     	$result = $api->rest_api_request($service, $calls);
 
     	if (!$return_array) {
-    		return $result;
+    		return $result; //dd
     	}
 
     	$decoded = json_decode($result, true);
