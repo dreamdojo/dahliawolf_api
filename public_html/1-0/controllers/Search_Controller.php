@@ -109,8 +109,6 @@ class Search_Controller extends _Controller
     	echo $result;
     	return;
     }
-
-
 }
 
 ?>
