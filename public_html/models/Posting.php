@@ -42,10 +42,6 @@ class Posting extends db {
         return $response_data;
     }
 
-
-
-
-	// ?api=category&function=updatecategory&params={"data":{"name":"my test@"},"where":{"id":"4"}}
 	public function addPostLike($params = array()) {
 		$error = NULL;
 

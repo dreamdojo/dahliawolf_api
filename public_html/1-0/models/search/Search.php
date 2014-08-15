@@ -71,6 +71,7 @@ class Search extends _Model
     public function findProducts($params = array()) {
         $values = Array();
         $values[':q'] = '%' . $params['q'] . '%';
+        $values[':que'] = $params['q'];
 
         $terms = explode(' ', $params['q']);
         $searchString = '';
@@ -95,10 +96,14 @@ class Search extends _Model
                 INNER JOIN offline_commerce_v1_2013.product_lang ON product_lang.id_product = product.id_product
                 INNER JOIN user_username ON product.user_id = user_username.user_id
                 INNER JOIN offline_commerce_v1_2013.category_product ON category_product.id_product = product.id_product
-              WHERE CONCAT(design_description, product_lang.name, user_username.username) LIKE {$searchString}
+              WHERE
+                CONCAT(product_lang.name, design_description, user_username.username) LIKE {$searchString}
                 AND product.active = 1
                 {$cat_where}
               GROUP BY product_lang.id_product
+              ORDER BY CASE
+                  WHEN product_lang.name = ':que' THEN 1 ELSE 2
+              END, product_lang.name
               {$offset_limit}
         ";
 

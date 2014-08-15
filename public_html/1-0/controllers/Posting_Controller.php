@@ -6,10 +6,10 @@
 
 class Posting_Controller  extends  _Controller
 {
-    public function __construct()
+    /*public function __construct()
     {
         //self::delete_post($_GET);
-    }
+    }*/
 
 
     public function get_posting($request_data)
@@ -68,9 +68,25 @@ class Posting_Controller  extends  _Controller
         return  $response;
     }
 
-    public function get_contest_posts($params = array()) {
+    public function get_contest_rank($params = array()) {
         $this->load('Posting');
+        $posting = new Posting();
 
+        $input_validations = array(
+            'user_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_int' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $params, true);
+        $this->Validate->run();
+
+        $response = $posting->getContestRank($params);
+
+        return $response;
     }
 
     public function add_tag($params = Array()) {

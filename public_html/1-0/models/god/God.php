@@ -66,10 +66,10 @@
                 WHERE DATE(created) = CURRENT_DATE;
                 ";
             $mnm_members = "
-                SELECT COUNT(*) AS mnu
+                SELECT DATE_FORMAT(created, '%M %D') AS create_date,
+                COUNT(DISTINCT user_id) AS total
                 FROM admin_offline_v1_2013.user
-                WHERE created > DATE_SUB(NOW(), INTERVAL 30 DAY);
-                GROUP BY DAY(created)
+                GROUP BY DATE(created)
                 ORDER BY created DESC
                 LIMIT 30
                 ";

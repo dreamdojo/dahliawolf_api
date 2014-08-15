@@ -34,6 +34,15 @@ class User extends db {
 		return resultArray(true, array('user_id' => $insert_id));
 	}
 
+    public function addEmailHash($user_id) {
+        $hash = md5( rand(0,1000) );
+        $values = array(
+            'hash'=>$hash,
+            'user_id'=>$user_id
+        );
+
+    }
+
 	// ?api=category&function=updatecategory&params={"data":{"name":"my test@"},"where":{"id":"4"}}
 	public function updateUser($params = array()) {
 		$error = NULL;

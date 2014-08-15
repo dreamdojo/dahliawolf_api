@@ -52,6 +52,54 @@ class Posting extends _Model
         return self::addPost($params);
     }
 
+    public function getContestRank($params = array())
+    {
+        $values = array(
+          //':userId'=>$params['user_id']
+        );
+
+        $q = "
+            SELECT posts.rank, posting_id
+            FROM (
+              SELECT posting_id, user_id, COUNT(posting_id) AS rank
+              FROM posting_like
+              WHERE MONTH(created) = MONTH(CURRENT_DATE) AND YEAR(created) = YEAR(CURRENT_DATE)
+              GROUP BY posting_id
+              ORDER BY rank DESC
+              LIMIT 99999999
+            ) as posts
+            WHERE posts.user_id = :userId
+        ";
+
+        $q2 = "
+            SELECT posting.created, posting_like.posting_id, posting.user_id, COUNT(posting_like.posting_id)-1 AS rank
+            , image.*
+              FROM posting_like
+                INNER JOIN posting ON posting.posting_id = posting_like.posting_id
+                LEFT JOIN image ON image.id = posting.image_id
+              WHERE MONTH(posting.created) = MONTH(CURRENT_DATE) AND YEAR(posting.created) = YEAR(CURRENT_DATE)
+              AND posting.deleted IS NULL
+              GROUP BY posting_like.posting_id
+              ORDER BY rank DESC
+              LIMIT 9999999
+        ";
+
+        $result = $this->fetch($q2, $values);
+
+        $retItem = null;
+        $x = 1;
+        foreach($result as $item) {
+            if($item['user_id'] == $params['user_id']) {
+                $item['rank'] = $x;
+                $retItem = $item;
+                break;
+            }
+            $x++;
+        }
+
+        return array('data'=>$retItem ? $retItem : 0);
+    }
+
 
     public function addPost($params = array())
     {
@@ -343,21 +391,14 @@ class Posting extends _Model
         $sub_where_str = '';
 
         // Also don't show dislikes
-        if (!empty($params['viewer_user_id'])) {
+        /*if (!empty($params['viewer_user_id'])) {
             $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked';
             $sub_join_str = '
                 LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id
                     AND posting_like.user_id = :viewer_user_id
             ';
             $values[':viewer_user_id'] = $params['viewer_user_id'];
-
-            // Dislike
-            /*$sub_join_str .= '
-                LEFT JOIN posting_dislike ON posting.posting_id = posting_dislike.posting_id
-                    AND posting_dislike.user_id = :viewer_user_id
-            ';
-            $sub_where_str .= ' AND posting_dislike.posting_id IS NULL';*/
-        }
+        }*/
 
         // Search
         if (!empty($params['q'])) {
@@ -1028,7 +1069,7 @@ class Posting extends _Model
         $post_img_info = ', image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height';
         $post_img_join = 'LEFT JOIN image ON id = posting.image_id';
         $fast_count_select ="
-                           , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+                           , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id)*{$this->points['love']} AS `total_likes`
                            , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`
                            , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
                            ";
@@ -1135,7 +1176,7 @@ class Posting extends _Model
         $post_img_info = ', image.repo_image_id, image.imagename, image.source, image.dimensionsX AS width, image.dimensionsY AS height';
         $post_img_join = 'LEFT JOIN image ON id = posting.image_id';
         $fast_count_select ="
-                           , (SELECT COUNT(*) FROM posting_like WHERE posting_like.posting_id = posting.posting_id) AS `total_likes`
+                           , (SELECT COUNT(*) FROM posting_like  WHERE posting_like.posting_id = posting.posting_id)*{$this->points['love']} AS `total_likes`
                            , (SELECT COUNT(*) FROM posting_share WHERE posting_id = posting.posting_id) AS `total_shares`
                            , (SELECT COUNT(*) FROM posting_repost WHERE posting_repost.posting_id = posting.posting_id) AS `total_reposts`
                            ";

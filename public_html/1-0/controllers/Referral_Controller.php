@@ -34,13 +34,13 @@ class Referral_Controller extends _Controller
 
         $data = $this->Referral->addReferral($params);
         $storeCredit->add_user_credit($params['new_member_id'], 10);
+
         $referralAccount = $this->Referral->getTotalReferrals($params['user_id']);
         $com_amount = 0;
-        if($referralAccount < 5)
+        if($referralAccount <= 5) {
             $com_amount = 10;
-        else
-            $com_amount = 5;
-        $commission->add_user_commission($params['user_id'], $com_amount);
+            $commission->add_user_commission($params['user_id'], $com_amount);
+        }
 
         $response = array('data' => $data);
 

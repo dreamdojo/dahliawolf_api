@@ -85,7 +85,7 @@ function delete_user_point($data) {
 function send_welcome_email($email, $username) {
     try {
         $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
-        $template_name = 'Initial Signup';
+        $template_name = 'general-welcome-email';
         $template_content = null;
         $message = array(
             'to' => array(
@@ -203,7 +203,7 @@ function send_one_hour_email($email, $username) {
 function send_four_hour_email($email, $username) {
     try {
         $mandrill = new Mandrill('Btwe8VxWFA9LToDcq6XbXQ');
-        $template_name = 'Follow New People';
+        $template_name = 'follow-new-people-1';
         $template_content = null;
         $message = array(
             'to' => array(
@@ -310,7 +310,6 @@ function log_activity($user_id, $activity_id, $note, $entity = NULL, $entity_id 
 			, 'entity_id' => $entity_id
 		)
 	);
-
 
     $data = api_request('activity_log', $calls, true);
 
@@ -731,6 +730,7 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 
             //// follow default users
             register_default_follows($user_id);
+            //$User->addEmailHash($user_id);
 
             // Log activity
             log_activity($user_id, 4, 'Registered', 'user_username', $user_id);
@@ -980,19 +980,12 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 			return;
 		}
         else if ($_REQUEST['function'] == 'test_email') {
-            check_required(
-                array(
-                    'email_address',
-                    'username',
-                )
-            );
+            $user = new User();
 
-            $params = array(
-                'email_address' => !empty($_REQUEST['email_address']) ? $_REQUEST['email_address'] : NULL,
-                'username' => !empty($_REQUEST['username']) ? $_REQUEST['username'] : NULL,
-            );
+            $blop = $user->addEmailHash(2418);
+            //$blop = 'fdss';
 
-            add_email_mailchimp($params['email_address']);
+            var_dump($blop);
         }
 		else if ($_REQUEST['function'] == 'get_following') {
 			$params = array(
