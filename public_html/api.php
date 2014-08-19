@@ -869,6 +869,8 @@ if (isset($_REQUEST['api']) && $_REQUEST['api'] == 'user') {
 				, 'instagram_import'
 				, 'instagram_username'
 				, 'pinterest_username'
+				, 'facebook_username'
+				, 'tumblr_username'
 				, 'twitter_username'
 				, 'comment_notifications'
 				, 'profile_type'

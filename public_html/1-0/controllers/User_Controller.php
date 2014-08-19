@@ -1054,6 +1054,9 @@ class User_Controller extends _Controller {
 
         if(isset($params['dashboard'])) {
             $data['customers'] = $dahlia_user->getCustomers($data['user_id']);
+            foreach($data['customers'] as $x=>$customer){
+                $data['customers'][$x]['itemCount'] = $dahlia_user->getItemCount($customer['user_id']);
+            }
             $data['commissions'] = $dahlia_user->getCommisionList($data['user_id']);
             $data['sales'] = $dahlia_user->getUserSales($data['user_id']);
             $data['storecredit'] = $dahlia_user->getUserStoreCredit($data['user_id']);

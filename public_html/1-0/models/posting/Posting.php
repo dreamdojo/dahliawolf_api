@@ -391,14 +391,14 @@ class Posting extends _Model
         $sub_where_str = '';
 
         // Also don't show dislikes
-        /*if (!empty($params['viewer_user_id'])) {
+        if (!empty($params['viewer_user_id'])) {
             $select_str = ', IF(posting_like.user_id IS NULL, 0, 1) AS is_liked';
             $sub_join_str = '
                 LEFT JOIN posting_like ON posting.posting_id = posting_like.posting_id
                     AND posting_like.user_id = :viewer_user_id
             ';
             $values[':viewer_user_id'] = $params['viewer_user_id'];
-        }*/
+        }
 
         // Search
         if (!empty($params['q'])) {

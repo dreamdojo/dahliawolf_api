@@ -1328,6 +1328,14 @@ class User extends _Model
     public function getCustomers($user_id) {
         $query = "
             SELECT distinct customers.*, user_username.username, user_username.avatar
+            , (SELECT COUNT(*)
+                FROM follow
+                WHERE follow.follower_user_id = user_username.user_id
+            ) AS following
+            , (SELECT COUNT(*)
+                FROM follow
+                WHERE follow.user_id = user_username.user_id
+            ) AS followers
             FROM dahliawolf_v1_2013.customers
             LEFT JOIN dahliawolf_v1_2013.user_username ON user_username.user_id = customers.customer_id
             WHERE customers.user_id = :userId
