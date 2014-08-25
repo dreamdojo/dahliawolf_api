@@ -1000,6 +1000,7 @@ class User_Controller extends _Controller {
 
 	public function get_user($params = array()) {
 		//$this->load('User');
+        $talents = new User_Talents_Controller();
 
 		// User authentication: check login_instance
 		$is_user_edit = array_key_exists('token', $params);
@@ -1040,7 +1041,8 @@ class User_Controller extends _Controller {
         $user = new User();
 
 		//$data = $user->get_public_fields($where_params, array('single' => true));
-		$data = $user->getUserDetails($params );
+		$data = $user->getUserDetails($params);
+        $data['talents'] = $talents->get(array('user_id'=>$data['user_id']));
 
 		if (empty($data)) {
 			_Model::$Exception_Helper->request_failed_exception('User could not be found.');

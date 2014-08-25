@@ -87,6 +87,16 @@ class Search_Controller extends _Controller
         return static::wrap_result( ($search->hasError()? false:true), $data, 200, $search->getErrors() );
     }
 
+    public function global_search($params = array()) {
+        $returnVal = array();
+
+        $returnVal['members'] = $this->find_members($params);
+        $returnVal['posts'] = $this->img_search($params);
+        $returnVal['products'] = $this->product_search($params);
+
+        return $returnVal;
+    }
+
     protected  function commerceApiRequest($service, $calls, $return_array = false)
     {
     	if (!class_exists('Commerce_API', false)) {
