@@ -1521,6 +1521,39 @@ class User_Controller extends _Controller {
         return $response;
     }
 
+    public function get_users_by_talent($params = array()) {
+        $dw_user = new User($db_host = DW_API_HOST, $db_user = DW_API_USER, $db_password = DW_API_PASSWORD, $db_name = DW_API_DATABASE);
+
+        $validate_names = array(
+            'talent_id'=>NULL
+        );
+
+        $validate_params = array_merge($validate_names, $params);
+
+        // Validations
+        $input_validations = array(
+            'talent_id' => array(
+                'label' => 'User Id',
+                'rules' => array(
+                    'is_int' => NULL
+                )
+            )
+        );
+
+        $this->Validate->add_many($input_validations, $validate_params, true);
+        $this->Validate->run();
+
+        $user_data = $dw_user->getUsersByTalent($params);
+
+        foreach($user_data as $x=>$user) {
+            $user_data[$x]['itemCount'] = $dw_user->getItemCount($user['user_id']);
+        }
+
+        $response = array('users' => $user_data );
+
+        return $response;
+    }
+
     public function get_top_users( $params = array() )
     {
         /** @var User $dw_user */

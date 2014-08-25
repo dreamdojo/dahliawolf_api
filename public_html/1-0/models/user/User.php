@@ -1101,6 +1101,49 @@ class User extends _Model
        }
     }
 
+    public function  getUsersByTalent($params = array()) {
+        $values = array(
+            ':talentId'=>$params['talent_id']
+        );
+        $select_str = '';
+        $join_str = '';
+
+        $offset_string = $this->generate_limit_offset_str($params);
+        if (!empty($params['viewer_user_id'])) {
+            $select_str = ', IF(f.user_id IS NULL, 0, 1) AS is_followed';
+            $join_str = 'LEFT JOIN follow AS f ON user_username.user_id = f.user_id AND f.follower_user_id = :viewer_user_id';
+            $values[':viewer_user_id'] = $params['viewer_user_id'];
+
+            $join_followers = " INNER JOIN user_username ON follow.user_id = user_username.user_id";
+
+            $is_followed =", IF(f.user_id IS NULL, 0, 1) AS is_followed";
+        }
+
+        $q = "
+            SELECT user_talents.*, user_username.username, user_username.first_name, user_username.last_name, user_username.avatar
+            , (SELECT COUNT(*)
+                FROM follow
+                WHERE follow.follower_user_id = user_username.user_id
+            ) AS following
+            {$select_str}
+            FROM user_talents
+              INNER JOIN user_username ON user_username.user_id = user_talents.user_id
+              {$join_str}
+            WHERE talent_id = :talentId
+            GROUP BY user_username.user_id
+            {$offset_string}
+        ";
+
+        $result = $this->fetch($q, $values);
+
+        if ($result === false) {
+            if(isset($_GET['t'])) echo "\nERROR: {$this->error}" ;
+            return array('error' => 'Could not get top following.');
+        }
+
+        return $result;
+    }
+
     public function getTopUsers( $params = array() )
     {
         $error = NULL;
